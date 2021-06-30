@@ -31,7 +31,7 @@ class Elbuilder {
 
   off<K extends keyof ElementEventMap>(
     type: K,
-    listener: (this: Element, ev: ElementEventMap[K]) => any
+    listener: (this: Element, ev: ElementEventMap[K]) => any,
   ) {
     this.element.removeEventListener(type, listener);
     return this;

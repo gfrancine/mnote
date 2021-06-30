@@ -12,6 +12,7 @@ export class ExtensionsModule /* implements Module */ {
   add(extension: Extension) {
     this.extensions.push(extension);
     extension.startup();
+    return this;
   }
 
   remove(extension: Extension) {
@@ -19,5 +20,6 @@ export class ExtensionsModule /* implements Module */ {
     if (index === undefined) return;
     delete this.extensions[index];
     extension.cleanup();
+    return this;
   }
 }

@@ -10,7 +10,7 @@ import { MenubarModule } from "./modules/menubar";
 import { DocumentModule } from "./modules/document";
 import { SidebarModule } from "./modules/sidebar";
 
-import { el } from "./common/elbuilder";
+import { PlaintextDocExtension } from "./extensions/plaintextDoc";
 
 export class Mnote implements Type {
   element: Element;
@@ -39,6 +39,9 @@ export class Mnote implements Type {
       .addModule("menubar", new MenubarModule(this))
       .addModule("sidebar", new SidebarModule(this))
       .addModule("document", new DocumentModule(this));
+
+    (this.modules.extensions as ExtensionsModule)
+      .add(new PlaintextDocExtension(this));
   }
 
   setState(state: MnoteState) {

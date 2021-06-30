@@ -9,13 +9,23 @@
 // ----------------------
 
 import { Mnote /* , Module */ } from "../common/types";
+import { el } from "../common/elbuilder";
+import Split from "../common/split";
 
 export class LayoutModule /* implements Module */ {
-  constructor(app: Mnote) {}
+  main: Element;
 
-  mountToSidebar(el: Element) {}
+  constructor(app: Mnote) {
+    this.main = el("div")
+      .id("layout-main")
+      .element;
 
-  mountToMain(el: Element) {}
+    app.element.appendChild(this.main);
+  }
 
-  mountToMenubar(el: Element) {}
+  mountToSidebar(e: Element) {}
+
+  mountToMain(e: Element) {}
+
+  mountToMenubar(e: Element) {}
 }
