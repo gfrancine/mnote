@@ -1,0 +1,13 @@
+{
+  "name": "mnote",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "rmdir dist /s /q && Xcopy public dist /i && node build.js",
+    "serve": "npm run build && serve dist --no-clipboard"
+  },
+  "devDependencies": {
+    "esbuild": "^0.12.7",
+    "esbuild-sass-plugin": "^1.4.4",
+    "serve": "^12.0.0"
+  }
+}
