@@ -1,0 +1,6 @@
+@use "layout";
+
+@mixin core {
+  /**/
+  @include layout.layout;
+}

@@ -1,3 +1,3 @@
 import { Mnote } from "../mnote";
-import "../mnote-styles/index.scss";
+import "../mnote-styles/light.scss";
 new Mnote("#root");

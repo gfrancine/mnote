@@ -3,7 +3,7 @@ import { Extension } from "./types";
 
 export class ExtensionsModule /* implements Module */ {
   app: Mnote;
-  extensions: Extension[];
+  extensions: Extension[] = [];
 
   constructor(app: Mnote) {
     this.app = app;
