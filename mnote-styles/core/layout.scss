@@ -1,6 +1,39 @@
+// layout styles for modules/layout.ts
+// using split.js
+
 @mixin layout {
-  #layout-main {
+  #layout {
     width: 100%;
     height: 100%;
+
+    .layout-menubar {
+      height: 30px;
+      width: 100%;
+    }
+
+    .layout-container {
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+
+      .gutter {
+        background-color: #eee;
+        background-repeat: no-repeat;
+        background-position: 50%;
+      }
+    
+      .gutter.gutter-horizontal {
+        cursor: col-resize;
+      }
+
+      .layout-sidebar {
+        background-color: #fafafa;
+        max-width: 260px;
+      }
+  
+      .layout-contents {
+        background-color: #fff;
+      }
+    }
   }
 }

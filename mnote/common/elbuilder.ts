@@ -6,23 +6,24 @@ el("div")
   .class("big")
   .attr("atrribute", "value")
   .children(
-    el("div"),
+    el("div").element,
     el("button"),
       .on("click", () => console.log("hey"))
+      .element,
   ).element
 
 */
 
-class Elbuilder {
-  element: Element;
+export class Elbuilder {
+  element: HTMLElement;
 
-  constructor(element: Element) {
+  constructor(element: HTMLElement) {
     this.element = element;
   }
 
   on<K extends keyof ElementEventMap>(
     type: K,
-    listener: (this: Element, ev: ElementEventMap[K]) => any,
+    listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
     options?: boolean | AddEventListenerOptions,
   ) {
     this.element.addEventListener(type, listener, options);
@@ -31,7 +32,7 @@ class Elbuilder {
 
   off<K extends keyof ElementEventMap>(
     type: K,
-    listener: (this: Element, ev: ElementEventMap[K]) => any,
+    listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
   ) {
     this.element.removeEventListener(type, listener);
     return this;
@@ -62,10 +63,11 @@ class Elbuilder {
     return this;
   }
 
-  children(...els: Elbuilder[]) {
+  children(...els: HTMLElement[]) {
     els.forEach((el) => {
-      this.element.appendChild(el.element);
+      this.element.appendChild(el);
     });
+    return this;
   }
 }
 

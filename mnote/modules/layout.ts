@@ -9,23 +9,62 @@
 // ----------------------
 
 import { Mnote /* , Module */ } from "../common/types";
-import { el } from "../common/elbuilder";
+import { el, Elbuilder } from "../common/elbuilder";
 import Split from "../common/split";
 
+// https://split.js.org/#/
+
 export class LayoutModule /* implements Module */ {
-  main: Element;
+  main: HTMLElement;
+  menubar: HTMLElement;
+  sidebar: HTMLElement;
+  contents: HTMLElement;
 
   constructor(app: Mnote) {
-    this.main = el("div")
-      .id("layout-main")
+    this.menubar = el("div")
+      .class("layout-menubar")
       .element;
+
+    this.sidebar = el("div")
+      .class("layout-sidebar")
+      .element;
+
+    this.contents = el("div")
+      .class("layout-contents")
+      .element;
+
+    const container = el("div")
+      .class("layout-container")
+      .children(
+        this.sidebar,
+        this.contents,
+      )
+      .element;
+
+    this.main = el("div")
+      .id("layout")
+      .children(
+        this.menubar,
+        container,
+      )
+      .element;
+
+    Split([this.sidebar, this.contents], {
+      gutterSize: 5,
+    });
 
     app.element.appendChild(this.main);
   }
 
-  mountToSidebar(e: Element) {}
+  mountToSidebar(e: HTMLElement) {
+    this.sidebar.appendChild(e);
+  }
 
-  mountToMain(e: Element) {}
+  mountToContents(e: HTMLElement) {
+    this.contents.appendChild(e);
+  }
 
-  mountToMenubar(e: Element) {}
+  mountToMenubar(e: HTMLElement) {
+    this.menubar.appendChild(e);
+  }
 }

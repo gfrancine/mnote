@@ -1,6 +1,7 @@
 @use "layout";
 
+// todo: make all the mixins take colors as input
+
 @mixin core {
-  /**/
   @include layout.layout;
 }
