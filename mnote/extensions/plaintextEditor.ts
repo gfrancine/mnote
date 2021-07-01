@@ -19,6 +19,16 @@ class PlaintextEditor implements Editor {
   cleanup() {}
 
   save() {}
+
+  saveAs() {}
+
+  undo() {}
+
+  redo() {}
+
+  isSaved() {
+    return true;
+  }
 }
 
 class PlaintextEditorProvider implements EditorProvider {
@@ -28,10 +38,10 @@ class PlaintextEditorProvider implements EditorProvider {
     this.app = app;
   }
 
-  tryOpen(_path: string) {
+  tryGetEditor(_path: string) {
     return new PlaintextEditor(this.app);
   }
-  createNew() {
+  createNewEditor() {
     return new PlaintextEditor(this.app);
   }
 }

@@ -4,14 +4,23 @@ export interface Extension {
   cleanup(): void;
 }
 
+// https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor
+// https://github.com/microsoft/vscode-extension-samples/blob/main/custom-editor-sample/src/pawDrawEditor.ts
+
 export interface Editor {
-  startup(container: HTMLElement): void;
-  cleanup(): void;
-  load(path: string): void;
-  save(): void;
+  startup(container: HTMLElement): void | Promise<void>;
+  cleanup(): void | Promise<void>;
+
+  load(path: string): void | Promise<void>;
+  save(): void | Promise<void>;
+  saveAs(): void | Promise<void>;
+  isSaved(): boolean;
+
+  undo(): void | Promise<void>;
+  redo(): void | Promise<void>;
 }
 
 export interface EditorProvider {
-  tryOpen(path: string): Editor | undefined;
-  createNew(): Editor;
+  tryGetEditor(path: string): Editor | undefined;
+  createNewEditor(): Editor;
 }

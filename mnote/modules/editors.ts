@@ -38,23 +38,25 @@ export class EditorsModule /* implements Module */ {
     this.providers.push(provider);
   }
 
-  close() {
+  async close() {
     if (this.currentEditor) {
-      this.currentEditor.cleanup();
+      await this.currentEditor.cleanup();
       delete this.currentEditor;
     }
     this.element.innerHTML = "";
     this.element.appendChild(nothingHere);
   }
 
-  open(path: string) {
-    this.close();
+  async open(path: string) {
+    // todo: check if file exists
+
+    await this.close();
 
     let selectedEditor: Editor;
 
     for (let i = this.providers.length - 1; i > -1; i--) {
       const provider = this.providers[i];
-      const editor = provider.tryOpen(path);
+      const editor = provider.tryGetEditor(path);
       if (editor) {
         selectedEditor = editor;
         break;
@@ -64,20 +66,22 @@ export class EditorsModule /* implements Module */ {
     if (selectedEditor) {
       this.currentEditor = selectedEditor;
       this.element.innerHTML = "";
-      selectedEditor.startup(this.element);
-      selectedEditor.load(path);
+      await selectedEditor.startup(this.element);
+      await selectedEditor.load(path);
     }
   }
 
-  newEditor(kind: string) {
+  async newEditor(kind: string) {
     const provider = this.providerKinds[kind];
     if (!provider) {
       throw new Error(`Editor of kind "${kind}" does not exist!`);
     }
-    this.close();
+
+    await this.close();
     this.element.innerHTML = "";
-    const editor = provider.createNew();
+
+    const editor = provider.createNewEditor();
     this.currentEditor = editor;
-    editor.startup(this.element);
+    await editor.startup(this.element);
   }
 }

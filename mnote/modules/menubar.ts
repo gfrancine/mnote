@@ -10,4 +10,6 @@ export class MenubarModule /* implements Module */ {
     this.element = document.createElement("div");
     (app.modules.layout as LayoutModule).mountToMenubar(this.element);
   }
+
+  setMenubarButtons() {}
 }
