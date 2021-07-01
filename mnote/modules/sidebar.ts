@@ -2,7 +2,7 @@ import { Mnote /* , Module */ } from "../common/types";
 import { LayoutModule } from "./layout";
 
 export class SidebarModule /* implements Module */ {
-  element: Element;
+  element: HTMLElement;
   app: Mnote;
 
   constructor(app: Mnote) {

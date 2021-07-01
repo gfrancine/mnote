@@ -7,10 +7,10 @@ import { InputModule } from "./modules/input";
 import { LayoutModule } from "./modules/layout";
 import { ExtensionsModule } from "./modules/extensions";
 import { MenubarModule } from "./modules/menubar";
-import { DocumentModule } from "./modules/document";
+import { EditorsModule } from "./modules/editors";
 import { SidebarModule } from "./modules/sidebar";
 
-import { PlaintextDocExtension } from "./extensions/plaintextDoc";
+import { PlaintextEditor } from "./extensions/plaintextEditor";
 
 export class Mnote implements Type {
   element: Element;
@@ -38,10 +38,10 @@ export class Mnote implements Type {
       .addModule("layout", new LayoutModule(this))
       .addModule("menubar", new MenubarModule(this))
       .addModule("sidebar", new SidebarModule(this))
-      .addModule("document", new DocumentModule(this));
+      .addModule("editors", new EditorsModule(this));
 
     (this.modules.extensions as ExtensionsModule)
-      .add(new PlaintextDocExtension(this));
+      .add(new PlaintextEditor(this));
   }
 
   setState(state: MnoteState) {
