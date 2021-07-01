@@ -4,6 +4,16 @@
   .menubar {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: row;
+
+    .menubar-left {
+      width: 100%;
+    }
+
+    .menubar-right {
+      width: 100%;
+    }
 
     .menubar-button {
       height: 100%;
