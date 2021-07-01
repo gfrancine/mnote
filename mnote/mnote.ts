@@ -5,6 +5,7 @@ import { Mnote as Type, Module } from "./common/types";
 import {
   EditorsModule,
   ExtensionsModule,
+  FSModule,
   InputModule,
   LayoutModule,
   MenubarModule,
@@ -18,7 +19,7 @@ export class Mnote implements Type {
 
   modules: Record<string, Module> = {};
 
-  constructor(selector: string) {
+  constructor(selector: string /* , options: MnoteOptions */) {
     const element = document.querySelector(selector);
     if (!element) {
       throw new Error(`No element with selector "${selector}"!`);
@@ -27,6 +28,7 @@ export class Mnote implements Type {
     this.element = element;
 
     this
+      .addModule("fs", new FSModule(this /* , options.fs */))
       .addModule("extensions", new ExtensionsModule(this))
       .addModule("keyboard", new InputModule(this))
       .addModule("extensions", new ExtensionsModule(this))

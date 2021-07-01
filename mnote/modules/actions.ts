@@ -6,13 +6,13 @@ import { Emitter } from "../common/emitter";
 import { InputModule } from "./input";
 
 type Actions = {
-  onSave: () => void;
+  save: () => void;
 };
 
 export class ActionsModule /* implements Module */ {
   app: Mnote;
   input: InputModule;
-  events = new Emitter<Actions>();
+  actions = new Emitter<Actions>();
 
   constructor(app: Mnote) {
     this.app = app;
