@@ -1,25 +1,20 @@
 // The implementation of the Mnote type in ./types
 
-import { Mnote as Type, MnoteState, Module } from "./common/types";
-import { Emitter } from "./common/emitter";
+import { Mnote as Type, Module } from "./common/types";
 
-import { InputModule } from "./modules/input";
-import { LayoutModule } from "./modules/layout";
-import { ExtensionsModule } from "./modules/extensions";
-import { MenubarModule } from "./modules/menubar";
-import { EditorsModule } from "./modules/editors";
-import { SidebarModule } from "./modules/sidebar";
+import {
+  EditorsModule,
+  ExtensionsModule,
+  InputModule,
+  LayoutModule,
+  MenubarModule,
+  SidebarModule,
+} from "./modules";
 
 import { PlaintextExtension } from "./extensions/plaintextEditor";
 
 export class Mnote implements Type {
   element: Element;
-
-  state: MnoteState = {};
-
-  signals = new Emitter<{
-    stateChange: () => void;
-  }>();
 
   modules: Record<string, Module> = {};
 
@@ -42,11 +37,6 @@ export class Mnote implements Type {
 
     (this.modules.extensions as ExtensionsModule)
       .add(new PlaintextExtension(this));
-  }
-
-  setState(state: MnoteState) {
-    this.state = { ...state };
-    this.signals.emit("stateChange");
   }
 
   addModule(name: string, module: Module): Mnote {
