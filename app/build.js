@@ -3,7 +3,7 @@ const { sassPlugin } = require("esbuild-sass-plugin");
 
 esbuild
   .build({
-    entryPoints: ["index.ts"],
+    entryPoints: ["index.js"],
     bundle: true,
     minify: true,
     sourcemap: true,

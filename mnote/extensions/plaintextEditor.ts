@@ -1,20 +1,39 @@
 import { Mnote } from "../common/types";
 import { EditorsModule } from "../modules/editors";
-import { Extension } from "../modules/types";
+import { EditorProvider, Extension } from "../modules/types";
 import { Editor } from "../modules/types";
 
 class PlaintextEditor implements Editor {
-  startup(path: string, containter: HTMLElement) {
+  app: Mnote;
+
+  constructor(app: Mnote) {
+    this.app = app;
+  }
+
+  startup(containter: HTMLElement) {
     containter.innerHTML = "dfsdfasdf";
   }
 
+  load(path: string) {}
+
   cleanup() {}
 
-  handleSave() {}
+  save() {}
 }
 
-function getPlaintextEditor(path: string) {
-  return new PlaintextEditor();
+class PlaintextEditorProvider implements EditorProvider {
+  app: Mnote;
+
+  constructor(app: Mnote) {
+    this.app = app;
+  }
+
+  tryOpen(_path: string) {
+    return new PlaintextEditor(this.app);
+  }
+  createNew() {
+    return new PlaintextEditor(this.app);
+  }
 }
 
 export class PlaintextExtension implements Extension {
@@ -27,7 +46,7 @@ export class PlaintextExtension implements Extension {
   startup() {
     (this.app.modules.editors as EditorsModule).registerEditor(
       "plaintext",
-      getPlaintextEditor,
+      new PlaintextEditorProvider(this.app),
     );
   }
 

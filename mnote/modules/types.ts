@@ -5,9 +5,13 @@ export interface Extension {
 }
 
 export interface Editor {
-  startup(path: string, container: HTMLElement): void;
+  startup(container: HTMLElement): void;
   cleanup(): void;
-  handleSave(): void;
+  load(path: string): void;
+  save(): void;
 }
 
-export type GetEditorFunction = (path: string) => Editor | undefined;
+export interface EditorProvider {
+  tryOpen(path: string): Editor | undefined;
+  createNew(): Editor;
+}

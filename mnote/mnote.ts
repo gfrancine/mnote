@@ -42,8 +42,6 @@ export class Mnote implements Type {
 
     (this.modules.extensions as ExtensionsModule)
       .add(new PlaintextExtension(this));
-
-    (this.modules.editors as EditorsModule).open("");
   }
 
   setState(state: MnoteState) {
