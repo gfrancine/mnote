@@ -1,7 +1,9 @@
 @use "layout";
+@use "menubar";
 
 // todo: make all the mixins take colors as input
 
 @mixin core {
   @include layout.layout;
+  @include menubar.menubar;
 }

@@ -36,21 +36,22 @@ export class LayoutModule /* implements Module */ {
     const container = el("div")
       .class("layout-container")
       .children(
-        this.sidebar,
+        this.menubar,
         this.contents,
       )
       .element;
 
     this.main = el("div")
-      .id("layout")
+      .class("layout")
       .children(
-        this.menubar,
+        this.sidebar,
         container,
       )
       .element;
 
-    Split([this.sidebar, this.contents], {
+    Split([this.sidebar, container], {
       gutterSize: 5,
+      sizes: [20, 80], // in %
     });
 
     app.element.appendChild(this.main);

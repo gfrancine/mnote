@@ -8,6 +8,6 @@ export class SidebarModule /* implements Module */ {
   constructor(app: Mnote) {
     this.app = app;
     this.element = document.createElement("div");
-    (app.modules.layout as LayoutModule).mountToMenubar(this.element);
+    (app.modules.layout as LayoutModule).mountToSidebar(this.element);
   }
 }

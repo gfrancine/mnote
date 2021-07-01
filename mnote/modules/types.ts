@@ -24,3 +24,15 @@ export interface EditorProvider {
   tryGetEditor(path: string): Editor | undefined;
   createNewEditor(): Editor;
 }
+
+export type MenuButton = {
+  name: string;
+  shortcutText: string; // just for display
+  onClick?: () => void;
+  buttons?: MenuButton[];
+};
+
+export type MenubarButton = {
+  name: string;
+  buttons: MenuButton[];
+};
