@@ -1,8 +1,8 @@
 Split.js (https://github.com/nathancahill/split)
 Copyright (c) 2020 Nathan Cahill
-Distributed under the MIT License
+MIT License
 
 Hotkeys (https://github.com/jaywcjlove/hotkeys)
 Copyright (c) 2015-present Kenny Wong
 Copyright (c) 2011-2013 Thomas Fuchs (https://github.com/madrobby/keymaster)
-Distributed under the MIT License
+MIT License

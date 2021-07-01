@@ -57,14 +57,17 @@ export class LayoutModule /* implements Module */ {
   }
 
   mountToSidebar(e: HTMLElement) {
+    this.sidebar.innerHTML = "";
     this.sidebar.appendChild(e);
   }
 
   mountToContents(e: HTMLElement) {
+    this.contents.innerHTML = "";
     this.contents.appendChild(e);
   }
 
   mountToMenubar(e: HTMLElement) {
+    this.menubar.innerHTML = "";
     this.menubar.appendChild(e);
   }
 }
