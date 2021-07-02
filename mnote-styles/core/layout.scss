@@ -24,6 +24,8 @@
 
     .layout-container {
       height: 100%;
+      display: flex;
+      flex-direction: column;
 
       .layout-menubar {
         height: 24px;

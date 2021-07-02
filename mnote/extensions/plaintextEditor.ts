@@ -2,21 +2,39 @@ import { Mnote } from "../common/types";
 import { EditorsModule } from "../modules/editors";
 import { EditorProvider, Extension } from "../modules/types";
 import { Editor } from "../modules/types";
+import { el } from "../common/elbuilder";
 
 class PlaintextEditor implements Editor {
   app: Mnote;
+  element: HTMLElement;
+  textarea: HTMLElement;
+  container?: HTMLElement;
 
   constructor(app: Mnote) {
     this.app = app;
+
+    this.textarea = el("textarea")
+      .class("plaintext-textarea")
+      .element;
+
+    this.element = el("div")
+      .class("plaintext-editor")
+      .children(
+        this.textarea,
+      )
+      .element;
   }
 
   startup(containter: HTMLElement) {
-    containter.innerHTML = "dfsdfasdf";
+    this.container = containter;
+    containter.appendChild(this.element);
   }
 
   load(path: string) {}
 
-  cleanup() {}
+  cleanup() {
+    this.container.removeChild(this.element);
+  }
 
   save() {}
 

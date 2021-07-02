@@ -25,7 +25,9 @@ export class EditorsModule /* implements Module */ {
 
   constructor(app: Mnote) {
     this.app = app;
-    this.element = el("div").element;
+    this.element = el("div")
+      .class("editor-container")
+      .element;
     (app.modules.layout as LayoutModule).mountToContents(this.element);
     this.element.appendChild(nothingHere);
   }

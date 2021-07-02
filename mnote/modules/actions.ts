@@ -7,6 +7,9 @@ import { InputModule } from "./input";
 
 type Actions = {
   save: () => void;
+  saveAs: () => void;
+  undo: () => void;
+  redo: () => void;
 };
 
 export class ActionsModule /* implements Module */ {

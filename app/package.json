@@ -2,7 +2,7 @@
   "name": "mnote",
   "version": "0.1.0",
   "scripts": {
-    "build": "rmdir dist /s /q && Xcopy public dist /i && node build.js",
+    "build": "rmdir dist /s /q && mkdir dist && Xcopy public dist /i /s /e /y && node build.js",
     "serve": "npm run build && serve dist --no-clipboard"
   },
   "devDependencies": {

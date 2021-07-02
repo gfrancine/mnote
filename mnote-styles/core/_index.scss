@@ -1,9 +1,28 @@
 @use "layout";
 @use "menubar";
+@use "editor";
+
+@use "extensions";
 
 // todo: make all the mixins take colors as input
+/*
+
+fg-main
+fg-secondary
+fg-dim
+
+bg-main
+bg-secondary
+
+font-main
+font-monospace
+
+*/
 
 @mixin core {
   @include layout.layout;
   @include menubar.menubar;
+  @include editor.editor;
+
+  @include extensions.extensions;
 }
