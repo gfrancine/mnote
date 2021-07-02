@@ -1,7 +1,9 @@
 @use "plaintext";
+@use "markdown";
 
 // todo: make all the mixins take colors as input
 
 @mixin extensions {
   @include plaintext.plaintext;
+  @include markdown.markdown;
 }

@@ -1,5 +1,5 @@
 {
-  "name": "mnote",
+  "name": "mnote-app",
   "version": "0.1.0",
   "scripts": {
     "build": "rmdir dist /s /q && mkdir dist && Xcopy public dist /i /s /e /y && node build.js",

@@ -1,0 +1,5 @@
+@use "markdown-pen";
+
+@mixin markdown {
+  @include markdown-pen.pen;
+}
