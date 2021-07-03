@@ -670,9 +670,8 @@ var Pen = {};
       commandWrap(this, name, value);
     } else {
       utils.log(
-        "can not find command function for name: " + name + (value
-          ? (", value: " + value)
-          : ""),
+        "can not find command function for name: " + name +
+          (value ? (", value: " + value) : ""),
         true,
       );
     }

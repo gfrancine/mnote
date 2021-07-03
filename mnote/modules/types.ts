@@ -11,13 +11,11 @@ export interface Editor {
   startup(container: HTMLElement): void | Promise<void>;
   cleanup(): void | Promise<void>;
 
-  load(path: string): void | Promise<void>;
+  load(path: string): void | Promise<void>; // the editor guarantees the file exists
   save(): void | Promise<void>;
-  saveAs(): void | Promise<void>;
+  saveAs(path: string): void | Promise<void>;
   isSaved(): boolean;
-
-  undo(): void | Promise<void>;
-  redo(): void | Promise<void>;
+  hasPath(): boolean;
 }
 
 export interface EditorProvider {

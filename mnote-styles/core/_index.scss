@@ -4,6 +4,8 @@
 
 @use "extensions";
 
+@use "ctxmenu";
+
 // todo: make all the mixins take colors as input
 /*
 
@@ -25,4 +27,6 @@ font-monospace
   @include editor.editor;
 
   @include extensions.extensions;
+
+  @include ctxmenu.ctxmenu;
 }

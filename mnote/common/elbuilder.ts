@@ -21,7 +21,7 @@ export class Elbuilder {
     this.element = element;
   }
 
-  on<K extends keyof ElementEventMap>(
+  on<K extends keyof HTMLElementEventMap>(
     type: K,
     listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
     options?: boolean | AddEventListenerOptions,
@@ -30,7 +30,7 @@ export class Elbuilder {
     return this;
   }
 
-  off<K extends keyof ElementEventMap>(
+  off<K extends keyof HTMLElementEventMap>(
     type: K,
     listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
   ) {
@@ -60,6 +60,11 @@ export class Elbuilder {
 
   inner(contents: string) {
     this.element.innerHTML = contents;
+    return this;
+  }
+
+  style(key: string, value: string) {
+    this.element.style[key] = value;
     return this;
   }
 

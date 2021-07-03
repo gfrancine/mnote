@@ -3,7 +3,10 @@ type Arguments<T> = [T] extends [(...args: infer U) => any] ? U
   : [T];
 
 export class Emitter<E extends Record<string, (...args: unknown[]) => void>> {
-  protected events: Record<keyof E, Function[]>;
+  protected events: Record<keyof E, Function[]> = {} as Record<
+    keyof E,
+    Function[]
+  >;
 
   on<K extends keyof E>(event: K, listener: E[K]) {
     let listeners = this.events[event];

@@ -10,4 +10,10 @@ export class FSModule /* implements Module */ {
   constructor(app: Mnote /* , fs: FsInteropModule */) {
     this.app = app;
   }
+
+  async writeTextFile(path: string, contents: string): Promise<void> {}
+
+  async readTextFile(path: string): Promise<string> {
+    return "";
+  }
 }
