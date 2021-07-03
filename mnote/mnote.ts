@@ -8,6 +8,7 @@ import {
   FSModule,
   InputModule,
   LayoutModule,
+  LoggingModule,
   MenubarModule,
   SidebarModule,
 } from "./modules";
@@ -28,6 +29,7 @@ export class Mnote implements Type {
     this.element = element;
 
     this
+      .addModule("logging", new LoggingModule(this))
       .addModule("fs", new FSModule(this /* , options.fs */))
       .addModule("extensions", new ExtensionsModule(this))
       .addModule("keyboard", new InputModule(this))

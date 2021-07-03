@@ -5,3 +5,4 @@ export { MenubarModule } from "./menubar";
 export { EditorsModule } from "./editors";
 export { SidebarModule } from "./sidebar";
 export { FSModule } from "./fs";
+export { LoggingModule } from "./logging";

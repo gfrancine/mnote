@@ -47,10 +47,10 @@
     border: none;
     border-bottom: 1px solid #cfcfcf;
     margin-bottom: 25px;
-    *color: pink;
-    *filter: chroma(color=pink);
+    color: pink;
+    filter: chroma(color=pink);
     height: 10px;
-    *margin: -7px 0 15px;
+    margin: -7px 0 15px;
   }
   .pen small {
     font-size: 0.8em;

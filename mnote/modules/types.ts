@@ -7,15 +7,22 @@ export interface Extension {
 // https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor
 // https://github.com/microsoft/vscode-extension-samples/blob/main/custom-editor-sample/src/pawDrawEditor.ts
 
-export interface Editor {
-  startup(container: HTMLElement): void | Promise<void>;
-  cleanup(): void | Promise<void>;
+export type DocInfo = {
+  name: string;
+  path?: string;
+  saved: boolean;
+};
 
-  load(path: string): void | Promise<void>; // the editor guarantees the file exists
-  save(): void | Promise<void>;
-  saveAs(path: string): void | Promise<void>;
-  isSaved(): boolean;
-  hasPath(): boolean;
+export type EditorContext = {
+  updateEdited(): void; // notify the app that the document has changed
+};
+
+export interface Editor {
+  startup(container: HTMLElement, ctx: EditorContext): void | Promise<void>; // setup editor on element
+  cleanup(): void | Promise<void>; // clear state, called before closing / switching to a new doc
+
+  load(path: string): void | Promise<void>; // import contents as needed, the editor guarantees the path exists
+  save(path: string): void | Promise<void>; // write to file. the editor guarantees the path exists
 }
 
 export interface EditorProvider {
