@@ -39,7 +39,7 @@
     .menu-divider {
       width: 100%;
       height: 1px;
-      background:  map.get($theme, "border-main");
+      background:  map.get($theme, "border-dim");
       margin: .3em 0;
     }
   }

@@ -41,3 +41,9 @@ export type MenubarButton = {
   name: string;
   buttons: MenuButton[];
 };
+
+export type Context = {
+  pageX: number;
+  pageY: number;
+  element: Element;
+};

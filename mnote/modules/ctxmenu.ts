@@ -1,57 +1,57 @@
 import { Mnote } from "../common/types";
 
 import { Menu, MenuItem } from "../components/menu";
+import { Context } from "./types";
 
 export class CtxmenuModule {
-  ctxmenu: ContextMenu
-  app: Mnote
+  ctxmenu: ContextMenu;
+  app: Mnote;
+  buttons: [
+    [
+      {
+        name: "Save",
+        shortcut: "CTRL+1",
+        click: () => {},
+      },
+      {
+        name: "Copy",
+        shortcut: "CTRL+1",
+        click: () => {},
+      },
+    ],
+    [
+      {
+        name: "Save",
+        shortcut: "CTRL+1",
+        click: () => {},
+      },
+      {
+        name: "Copy",
+        shortcut: "CTRL+1",
+        click: () => {},
+      },
+    ],
+  ];
 
   constructor(app: Mnote) {
     this.app = app;
     this.ctxmenu = new ContextMenu(
       app.element,
-      () => {
-      return [
-        [
-          {
-            name: "Save",
-            shortcut: "CTRL+1",
-            click: () => {},
-          },
-          {
-            name: "Copy",
-            shortcut: "CTRL+1",
-            click: () => {},
-          },
-        ],
-        [
-          {
-            name: "Save",
-            shortcut: "CTRL+1",
-            click: () => {},
-          },
-          {
-            name: "Copy",
-            shortcut: "CTRL+1",
-            click: () => {},
-          },
-        ],
-      ];
-    });
+      (ctx: Context) => {
+        return this.buttons;
+      },
+    );
   }
 }
-
-export type Context = {
-  pageX: number;
-  pageY: number;
-  element: Element;
-};
 
 export class ContextMenu {
   cleanup: () => void;
   activeMenu?: Menu;
 
-  constructor(element: Element, getSections: (context: Context) => MenuItem[][]) {
+  constructor(
+    element: Element,
+    getSections: (context: Context) => MenuItem[][],
+  ) {
     const onContextMenu = (e: MouseEvent) => {
       e.preventDefault();
 
@@ -73,12 +73,10 @@ export class ContextMenu {
           x: e.pageX,
           y: e.pageY,
         },
-        (rect: DOMRect) => {
-          // top left if y + bottom
-
+        (rect: DOMRect /*, pos */) => {
           return {
-            top: false,
-            left: false,
+            top: e.pageY + rect.height < innerHeight,
+            left: e.pageX + rect.width < innerWidth,
           };
         },
         sections,
@@ -104,11 +102,11 @@ export class ContextMenu {
     };
 
     document.addEventListener("contextmenu", onContextMenu);
-    document.addEventListener("click", onClick);
+    document.addEventListener("mousedown", onClick);
 
     this.cleanup = () => {
       document.removeEventListener("contextmenu", onContextMenu);
-      document.removeEventListener("click", onClick);
+      document.removeEventListener("mousedown", onClick);
     };
   }
 }

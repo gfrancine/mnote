@@ -20,7 +20,34 @@ export type Mnote = {
 //    functionality
 export type MnoteOptions = {
   /*
-  args?: string[]
-  fs?: { readDir, readFile, etc }
-  */
+  args?: string[]*/
+  fs?: FsInteropModule;
+};
+
+export interface FsInteropModule {
+  //todo
+  writeTextFile(path: string, contents: string): Promise<void>;
+  readTextFile(path: string): Promise<string>;
+  readDir(path: string): Promise<FileItem>;
+  fileExists(path: string): Promise<boolean>;
+  dirExists(path: string): Promise<boolean>;
+  dialogOpen(opts: {
+    initialPath?: string;
+    extensions?: string[];
+    directory: boolean;
+  }): Promise<string | void>;
+  dialogOpenMultiple(opts: {
+    initialPath?: string;
+    extensions?: string[];
+    directory: boolean;
+  }): Promise<string[] | void>;
+  dialogSave(opts: {
+    initialPath?: string;
+    extensions?: string[];
+  }): Promise<string | void>;
+}
+
+export type FileItem = {
+  path: string;
+  children?: FileItem[];
 };

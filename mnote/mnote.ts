@@ -1,6 +1,6 @@
 // The implementation of the Mnote type in ./types
 
-import { Mnote as Type, Module } from "./common/types";
+import { Mnote as Type, MnoteOptions, Module } from "./common/types";
 
 import {
   CtxmenuModule,
@@ -22,7 +22,7 @@ export class Mnote implements Type {
 
   modules: Record<string, Module> = {};
 
-  constructor(selector: string /* , options: MnoteOptions */) {
+  constructor(selector: string, options: MnoteOptions) {
     const element = document.querySelector(selector);
     if (!element) {
       throw new Error(`No element with selector "${selector}"!`);
@@ -35,7 +35,7 @@ export class Mnote implements Type {
 
     this
       .addModule("logging", new LoggingModule(this))
-      .addModule("fs", new FSModule(this /* , options.fs */))
+      .addModule("fs", new FSModule(this, options.fs))
       .addModule("extensions", new ExtensionsModule(this))
       .addModule("keyboard", new InputModule(this))
       .addModule("ctxmenu", new CtxmenuModule(this))

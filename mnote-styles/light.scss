@@ -16,6 +16,7 @@ $theme: (
   "font-monospace": "Fira Mono",
 
   "border-main": oc.$oc-gray-3,
+  "border-dim": oc.$oc-gray-2,
 );
 
 @include core.core($theme);

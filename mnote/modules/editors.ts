@@ -74,7 +74,7 @@ export class EditorsModule /* implements Module */ {
     this.providerKinds[kind] = provider;
     this.providers.push(provider);
   }
-  
+
   // open button
   async open(): Promise<string | void> {
     // use fs.dialogOpen
@@ -173,7 +173,7 @@ export class EditorsModule /* implements Module */ {
     this.currentEditor = editor;
     await editor.startup(this.element, this.makeContext());
   }
-  
+
   // cleanup the current document, the current editor,
   // and the container element
   protected async cleanup() {

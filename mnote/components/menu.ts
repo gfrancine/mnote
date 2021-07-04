@@ -1,4 +1,4 @@
-import { el } from "../common/elbuilder";
+import { el, Elbuilder } from "../common/elbuilder";
 import { Emitter } from "../common/emitter";
 
 export type MenuItem = {
@@ -12,27 +12,35 @@ type Anchor = {
   left: boolean;
 };
 
+type Position = {
+  x: number;
+  y: number;
+}
+
 export class Menu {
   element: HTMLElement;
   events: Emitter<{
     click(): void;
   }> = new Emitter();
+  sections: MenuItem[][];
+  position: Position;
+  getAnchor: (rect: DOMRect, pos: Position) => Anchor;
 
   constructor(
-    position: {
-      x: number;
-      y: number;
-    },
-    getAnchor: (rect: DOMRect) => Anchor,
+    position: Position,
+    getAnchor: (rect: DOMRect, pos: Position) => Anchor,
     sections: MenuItem[][],
   ) {
+    this.getAnchor = getAnchor;
+    this.position = position;
+    this.sections = sections;
+
     const element = el("div").class("menu");
 
     const children: HTMLElement[] = [];
 
     sections.forEach((section, i) => {
       section.forEach((item) => {
-
         const itemEl = el("div")
           .class("menu-item")
           .children(
@@ -77,42 +85,34 @@ export class Menu {
 
     this.element = element
       .children(...children)
-      .hook((ebuilder) => {
-        const rect = ebuilder.element.getBoundingClientRect();
-        const anchor = getAnchor(rect);
-
-        const posAnchor: number[] = [];
-
-        // todo
-
-        if (anchor.top) {
-          ebuilder
-            .style("top", position.y + "px");
-          posAnchor[0] = 0;
-        } else {
-          ebuilder
-            .style("top", (rect.bottom - rect.top + position.y) + "px");
-          posAnchor[0] = 100;
-        }
-
-        if (anchor.left) {
-          ebuilder
-            .style("left", position.x + "px");
-          posAnchor[1] = 0;
-        } else {
-          ebuilder
-            .style("left", (rect.right - rect.left + position.x) + "px");
-          posAnchor[1] = 100;
-        }
-
-        ebuilder
-          .style("position-anchor", `${posAnchor[0]}% ${posAnchor[1]}%`);
-      })
       .element;
   }
 
   show(element: Element) {
-    element.appendChild(this.element);
+    if (this.sections.length > 0) {
+      element.appendChild(this.element);
+
+      const builder = new Elbuilder(this.element);
+
+      const rect = this.element.getBoundingClientRect();
+      const anchor = this.getAnchor(rect, this.position);
+
+      if (anchor.top) {
+        builder
+          .style("top", this.position.y + "px");
+      } else {
+        builder
+          .style("top", (this.position.y - rect.height) + "px");
+      }
+
+      if (anchor.left) {
+        builder
+          .style("left", this.position.x + "px");
+      } else {
+        builder
+          .style("left", (this.position.x - rect.width) + "px");
+      }
+    }
   }
 
   cleanup() {
@@ -120,5 +120,3 @@ export class Menu {
     this.events = new Emitter();
   }
 }
-
-
