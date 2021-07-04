@@ -7,34 +7,18 @@
 @use "extensions";
 @use "components";
 
-
-// todo: make all the mixins take colors as input
-/*
-
-fg-main
-fg-secondary
-fg-dim
-
-bg-main
-bg-secondary
-
-font-main
-font-monospace
-
-*/
-
-@mixin core {
+@mixin core($theme) {
   .mnote {
     width: 100%;
     height: 100%;
 
     @include normalize.normalize;
 
-    @include layout.layout;
-    @include menubar.menubar;
-    @include editor.editor;
+    @include layout.layout($theme);
+    @include menubar.menubar($theme);
+    @include editor.editor($theme);
 
-    @include extensions.extensions;
-    @include components.components;
+    @include extensions.extensions($theme);
+    @include components.components($theme);
   }
 }

@@ -1,3 +1,21 @@
 @use "core";
+@use "open-color" as oc;
 
-@include core.core;
+$theme: (
+  "fg-main": oc.$oc-gray-9,
+  "fg-secondary": oc.$oc-gray-7,
+  "fg-dim": oc.$oc-gray-5,
+
+  "bg-main": #fff,
+  "bg-secondary": oc.$oc-gray-0,
+  "bg-dim": oc.$oc-gray-2,
+
+  "shadow": 0px 2px 5px oc.$oc-gray-3,
+
+  "font-main": "Lato",
+  "font-monospace": "Fira Mono",
+
+  "border-main": oc.$oc-gray-3,
+);
+
+@include core.core($theme);

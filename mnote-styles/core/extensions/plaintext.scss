@@ -1,4 +1,6 @@
-@mixin plaintext {
+@use "sass:map";
+
+@mixin plaintext($theme) {
   .plaintext-editor {
     width: 100%;
     height: 100%;
@@ -11,6 +13,8 @@
       resize: none;
       outline: none;
       border: none;
+      font-family: map.get($theme, "font-monospace");
+      font-size: 14px;
     }
   }
 }

@@ -2,6 +2,6 @@
 
 // todo: make all the mixins take colors as input
 
-@mixin components {
-  @include menu.menu;
+@mixin components($theme) {
+  @include menu.menu($theme);
 }

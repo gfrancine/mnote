@@ -1,9 +1,11 @@
 // styles for modules/menubar.ts
 
-@mixin menubar {
+@use "sass:map";
+
+@mixin menubar($theme) {
   .menubar {
     width: 100%;
     height: 100%;
-    color: #ccc;
+    color: map.get($theme, "fg-dim");
   }
 }

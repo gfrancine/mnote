@@ -31,6 +31,7 @@ class PlaintextEditor implements Editor {
 
     this.textarea = el("textarea")
       .class("plaintext-textarea")
+      .attr("spellcheck", "false")
       .element as HTMLTextAreaElement;
 
     this.element = el("div")

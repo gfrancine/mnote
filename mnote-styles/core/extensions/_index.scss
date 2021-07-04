@@ -3,7 +3,7 @@
 
 // todo: make all the mixins take colors as input
 
-@mixin extensions {
-  @include plaintext.plaintext;
-  @include markdown.markdown;
+@mixin extensions($theme) {
+  @include plaintext.plaintext($theme);
+  @include markdown.markdown($theme);
 }
