@@ -3,11 +3,17 @@
   "version": "0.1.0",
   "scripts": {
     "build": "rmdir dist /s /q && mkdir dist && Xcopy public dist /i /s /e /y && node build.js",
-    "serve": "npm run build && serve dist --no-clipboard"
+    "serve": "npm run build && serve dist --no-clipboard",
+    "start": "npm run build && npm run tauri dev",
+    "tauri": "tauri"
   },
   "devDependencies": {
     "esbuild": "^0.12.7",
     "esbuild-sass-plugin": "^1.4.4",
-    "serve": "^12.0.0"
+    "serve": "^12.0.0",
+    "@tauri-apps/cli": "^1.0.0-beta.5"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.0.0-beta.4"
   }
 }
