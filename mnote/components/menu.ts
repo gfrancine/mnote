@@ -15,7 +15,7 @@ type Anchor = {
 type Position = {
   x: number;
   y: number;
-}
+};
 
 export class Menu {
   element: HTMLElement;

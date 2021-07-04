@@ -1,4 +1,4 @@
-import { FsInteropModule, FileItem } from "../mnote";
+import { FileItem, FsInteropModule } from "../../mnote";
 import * as fs from "@tauri-apps/api/fs";
 import * as dialog from "@tauri-apps/api/dialog";
 
@@ -19,7 +19,7 @@ export class FS implements FsInteropModule {
     return {
       path,
       children: entries,
-    }
+    };
   }
 
   async fileExists(path: string): Promise<boolean> {
@@ -46,9 +46,9 @@ export class FS implements FsInteropModule {
     directory: boolean;
   }): Promise<string | void> {
     try {
-      const filters: dialog.DialogFilter[] = opts.extensions 
-        ? [{ name: "extensions", extensions: opts.extensions   } ]
-        : undefined
+      const filters: dialog.DialogFilter[] = opts.extensions
+        ? [{ name: "extensions", extensions: opts.extensions }]
+        : undefined;
 
       const result = await dialog.open({
         defaultPath: opts.initialPath,
@@ -57,9 +57,9 @@ export class FS implements FsInteropModule {
         filters,
       }) as string;
 
-      return result
+      return result;
     } catch {
-      return
+      return;
     }
   }
 
@@ -69,9 +69,9 @@ export class FS implements FsInteropModule {
     directory: boolean;
   }): Promise<string[] | void> {
     try {
-      const filters: dialog.DialogFilter[] = opts.extensions 
-        ? [{ name: "extensions", extensions: opts.extensions   } ]
-        : undefined
+      const filters: dialog.DialogFilter[] = opts.extensions
+        ? [{ name: "extensions", extensions: opts.extensions }]
+        : undefined;
 
       const result = await dialog.open({
         defaultPath: opts.initialPath,
@@ -83,10 +83,10 @@ export class FS implements FsInteropModule {
       if (typeof result === "string") {
         return [result];
       } else {
-        return result
+        return result;
       }
     } catch {
-      return
+      return;
     }
   }
 
@@ -95,16 +95,16 @@ export class FS implements FsInteropModule {
     extensions?: string[];
   }): Promise<string | void> {
     try {
-      const filters: dialog.DialogFilter[] = opts.extensions 
-        ? [{ name: "extensions", extensions: opts.extensions   } ]
-        : undefined
+      const filters: dialog.DialogFilter[] = opts.extensions
+        ? [{ name: "extensions", extensions: opts.extensions }]
+        : undefined;
 
       return dialog.save({
         defaultPath: opts.initialPath,
         filters,
-      })
+      });
     } catch {
-      return
+      return;
     }
   }
 }
