@@ -10,6 +10,11 @@ import { Editor } from "../modules/types";
 import { el } from "../common/elbuilder";
 import { FSModule } from "../modules/fs";
 
+// an editor extension contains:
+// - the editor
+// - the provider
+// - the extension itself
+
 class PlaintextEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
@@ -60,6 +65,8 @@ class PlaintextEditor implements Editor {
   }
 }
 
+// provider
+
 class PlaintextEditorProvider implements EditorProvider {
   app: Mnote;
 
@@ -75,6 +82,8 @@ class PlaintextEditorProvider implements EditorProvider {
     return new PlaintextEditor(this.app);
   }
 }
+
+// extension
 
 export class PlaintextExtension implements Extension {
   app: Mnote;

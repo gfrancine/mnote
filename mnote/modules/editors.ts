@@ -8,6 +8,7 @@ import { LoggingModule } from "./logging";
 
 // https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor-api-basics
 
+// todo: a nicer placeholder
 const nothingHere = el("div")
   .inner("nothing here...")
   .element;
@@ -18,6 +19,7 @@ const nothingHere = el("div")
 // here
 
 /*
+
 flows
 open: user clicks open > this.open(), get path > this.load(path) > check for editor
       > create editor > statup editor > load editor(path) > end
@@ -72,58 +74,8 @@ export class EditorsModule /* implements Module */ {
     this.providerKinds[kind] = provider;
     this.providers.push(provider);
   }
-
-  async cleanup() {
-    if (this.currentDocument) {
-      delete this.currentDocument;
-    }
-    if (this.currentEditor) {
-      await this.currentEditor.cleanup();
-      delete this.currentEditor;
-    }
-    this.element.innerHTML = "";
-    this.element.appendChild(nothingHere);
-  }
-
-  makeContext(): EditorContext {
-    return {
-      updateEdited: () => {
-        if (this.currentDocument) this.currentDocument.saved = false;
-        this.logging.info("update edited");
-      },
-    };
-  }
-
-  async load(path: string) {
-    // patj guaranteed exists
-
-    await this.cleanup();
-
-    let selectedEditor: Editor;
-
-    for (let i = this.providers.length - 1; i > -1; i--) {
-      const provider = this.providers[i];
-      const editor = provider.tryGetEditor(path);
-      if (editor) {
-        selectedEditor = editor;
-        break;
-      }
-    }
-
-    if (selectedEditor) {
-      this.currentDocument = {
-        name: "", //todo: get path name
-        saved: true,
-        path,
-      };
-
-      this.currentEditor = selectedEditor;
-      this.element.innerHTML = "";
-      await selectedEditor.startup(this.element, this.makeContext()); //todo: handle err
-      await selectedEditor.load(this.currentDocument.path);
-    }
-  }
-
+  
+  // open button
   async open(): Promise<string | void> {
     // use fs.dialogOpen
     const path = await this.fs.dialogOpen({
@@ -169,6 +121,7 @@ export class EditorsModule /* implements Module */ {
     return true;
   }
 
+  // close button
   async close() {
     if (!this.currentEditor || !this.currentDocument) return;
 
@@ -200,6 +153,7 @@ export class EditorsModule /* implements Module */ {
     }
   }
 
+  // create new button
   async newEditor(kind: string) {
     const provider = this.providerKinds[kind];
     if (!provider) {
@@ -218,5 +172,65 @@ export class EditorsModule /* implements Module */ {
     const editor = provider.createNewEditor();
     this.currentEditor = editor;
     await editor.startup(this.element, this.makeContext());
+  }
+  
+  // cleanup the current document, the current editor,
+  // and the container element
+  protected async cleanup() {
+    if (this.currentDocument) {
+      delete this.currentDocument;
+    }
+    if (this.currentEditor) {
+      await this.currentEditor.cleanup();
+      delete this.currentEditor;
+    }
+    this.element.innerHTML = "";
+    this.element.appendChild(nothingHere);
+  }
+
+  // make the api publicly available to
+  // editors
+  protected makeContext(): EditorContext {
+    return {
+      updateEdited: () => {
+        if (this.currentDocument) this.currentDocument.saved = false;
+        this.logging.info("update edited");
+      },
+    };
+  }
+
+  // try and find an editor that will open a path and start it up
+  // will always find an editor, defaults to plaintext
+  // takes a path, but doesn't read , only passes it to the editor
+  protected async load(path: string) {
+    // patj guaranteed exists
+
+    await this.cleanup();
+
+    let selectedEditor: Editor;
+
+    // last added runs first, assuming it's more selective
+    // as the plaintext (which accepts all) is first
+    for (let i = this.providers.length - 1; i > -1; i--) {
+      const provider = this.providers[i];
+      const editor = provider.tryGetEditor(path);
+      if (editor) {
+        selectedEditor = editor;
+        break;
+      }
+    }
+
+    if (selectedEditor) {
+      this.currentDocument = {
+        name: "", //todo: get path name
+        saved: true,
+        path,
+      };
+
+      this.currentEditor = selectedEditor;
+      this.element.innerHTML = "";
+      await selectedEditor.startup(this.element, this.makeContext()); //todo: handle err
+      await selectedEditor.load(this.currentDocument.path);
+    }
   }
 }

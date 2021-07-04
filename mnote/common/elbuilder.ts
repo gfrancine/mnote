@@ -74,6 +74,11 @@ export class Elbuilder {
     });
     return this;
   }
+
+  parent(element: Element) {
+    element.appendChild(this.element);
+    return this;
+  }
 }
 
 export function el(tag: string) {

@@ -1,6 +1,9 @@
 import { Mnote /* , Module */ } from "../common/types";
 import { Extension } from "./types";
 
+// if modules are services, think of
+// extensions as the scripts
+
 export class ExtensionsModule /* implements Module */ {
   app: Mnote;
   extensions: Extension[] = [];

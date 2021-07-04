@@ -3,6 +3,7 @@
 import { Mnote as Type, Module } from "./common/types";
 
 import {
+  CtxmenuModule,
   EditorsModule,
   ExtensionsModule,
   FSModule,
@@ -14,6 +15,7 @@ import {
 } from "./modules";
 
 import { PlaintextExtension } from "./extensions/plaintextEditor";
+import { el } from "./common/elbuilder";
 
 export class Mnote implements Type {
   element: Element;
@@ -26,14 +28,17 @@ export class Mnote implements Type {
       throw new Error(`No element with selector "${selector}"!`);
     }
 
-    this.element = element;
+    this.element = el("div")
+      .class("mnote")
+      .parent(element)
+      .element;
 
     this
       .addModule("logging", new LoggingModule(this))
       .addModule("fs", new FSModule(this /* , options.fs */))
       .addModule("extensions", new ExtensionsModule(this))
       .addModule("keyboard", new InputModule(this))
-      .addModule("extensions", new ExtensionsModule(this))
+      .addModule("ctxmenu", new CtxmenuModule(this))
       .addModule("layout", new LayoutModule(this))
       .addModule("menubar", new MenubarModule(this))
       .addModule("sidebar", new SidebarModule(this))

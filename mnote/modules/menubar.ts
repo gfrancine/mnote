@@ -2,8 +2,7 @@ import { Mnote /* , Module */ } from "../common/types";
 import { LayoutModule } from "./layout";
 import { MenubarButton, MenuButton } from "./types";
 import { el } from "../common/elbuilder";
-
-import { ContextMenu } from "../components/ctxmenu";
+import { Menu } from "../components/menu";
 
 // https://quilljs.com/docs/modules/toolbar/
 
@@ -19,35 +18,6 @@ export class MenubarModule /* implements Module */ {
       .element;
 
     (app.modules.layout as LayoutModule).mountToMenubar(this.element);
-
-    new ContextMenu(() => {
-      return [
-        [
-          {
-            name: "Save",
-            shortcut: "CTRL+1",
-            click: () => {},
-          },
-          {
-            name: "Copy",
-            shortcut: "CTRL+1",
-            click: () => {},
-          },
-        ],
-        [
-          {
-            name: "Save",
-            shortcut: "CTRL+1",
-            click: () => {},
-          },
-          {
-            name: "Copy",
-            shortcut: "CTRL+1",
-            click: () => {},
-          },
-        ],
-      ];
-    });
   }
 
   setMenubarButtons(buttons: MenubarButton[]) {}
