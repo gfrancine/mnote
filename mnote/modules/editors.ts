@@ -1,10 +1,17 @@
 import { Mnote /* , Module */ } from "../common/types";
 import { el } from "../common/elbuilder";
 import { LayoutModule } from "./layout";
-import { DocInfo, Editor, EditorContext, EditorProvider } from "./types";
+import {
+  DocInfo,
+  Editor,
+  EditorContext,
+  EditorProvider,
+  ModalButton,
+} from "./types";
 import { MenubarModule } from "./menubar";
 import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
+import { Modal } from "../components/modal";
 
 // https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor-api-basics
 
@@ -44,7 +51,10 @@ export class EditorsModule /* implements Module */ {
   menubar: MenubarModule;
   fs: FSModule;
   logging: LoggingModule;
-  // functions that return an editor if it should open a path
+
+  confirmCloseModal: Modal;
+
+  // providers return an editor if it should open a path
   providers: EditorProvider[] = [];
   providerKinds: Record<string, EditorProvider> = {};
 
@@ -56,6 +66,12 @@ export class EditorsModule /* implements Module */ {
     this.menubar = app.modules.menubar as MenubarModule;
     this.fs = app.modules.fs as FSModule;
     this.logging = app.modules.logging as LoggingModule;
+
+    this.confirmCloseModal = new Modal({
+      container: this.app.element,
+      message: "Would you like to save the current document before closing?",
+      buttons: confirmCloseModalButtons, // at the bottom of this file to avoid clutter
+    });
 
     this.element = el("div")
       .class("editor-container")
@@ -76,11 +92,15 @@ export class EditorsModule /* implements Module */ {
   }
 
   // open button
-  async open(): Promise<string | void> {
+  async open() {
     // use fs.dialogOpen
+    const willClose = await this.close();
+    if (!willClose) {
+      return;
+    }
+
     const path = await this.fs.dialogOpen({
       directory: false,
-      multiple: false,
     });
 
     if (!path) return;
@@ -91,9 +111,11 @@ export class EditorsModule /* implements Module */ {
   // prompt a save dialog
   // returns a success boolean (whether the user cancelled)
   async saveAs(): Promise<boolean> {
+    this.logging.info("save as");
     if (!this.currentEditor || !this.currentDocument) return true;
 
     const newPath = await this.fs.dialogSave({});
+    this.logging.info("new path", newPath);
     if (!newPath) return false;
 
     this.currentDocument.path = newPath;
@@ -105,6 +127,7 @@ export class EditorsModule /* implements Module */ {
   // directly save the current document, or prompt if it doesn't have a path
   // returns a success boolean (whether the user cancelled)
   async save(): Promise<boolean> {
+    this.logging.info("save");
     if (!this.currentEditor || !this.currentDocument) return true;
 
     if (this.currentDocument.path) {
@@ -122,8 +145,11 @@ export class EditorsModule /* implements Module */ {
   }
 
   // close button
-  async close() {
-    if (!this.currentEditor || !this.currentDocument) return;
+  // returns a boolean whether it;s confirmed and anyone pending can
+  // continue
+  async close(): Promise<boolean> {
+    this.logging.info("close");
+    if (!this.currentEditor || !this.currentDocument) return true;
 
     if (!this.currentDocument.path) {
       // no path, therefore unsaved
@@ -131,37 +157,51 @@ export class EditorsModule /* implements Module */ {
       // if cancelled, abort
       if (await this.save()) {
         await this.cleanup();
+        return true;
       } else {
-        return;
+        return false;
       }
     } else if (!this.currentDocument.saved) {
       // has path, but unsaved
       // would you like to save?
-      // save
 
-      // todo: replace this with modal
-      if (await this.save()) {
-        await this.cleanup();
-      } else {
-        // user cancelled save
-        // abort close
-        return;
+      switch (await this.confirmCloseModal.prompt()) {
+        case "save":
+          this.logging.info("modal: save");
+          if (await this.save()) {
+            await this.cleanup();
+            return true;
+          } else {
+            return false;
+          }
+        case "cancel":
+          this.logging.info("modal: cancel");
+          return false;
+        case "dontsave":
+          this.logging.info("modal: donstave");
+          await this.cleanup();
+          return true;
       }
     } else {
       // has path, saved
       await this.cleanup();
+      return true;
     }
   }
 
   // create new button
   async newEditor(kind: string) {
+    this.logging.info("new editor");
+
     const provider = this.providerKinds[kind];
     if (!provider) {
       throw new Error(`Editor of kind "${kind}" does not exist!`);
     }
 
-    await this.cleanup();
-    this.element.innerHTML = "";
+    const willClose = await this.close();
+    if (!willClose) {
+      return;
+    }
 
     this.currentDocument = {
       name: "Untitled",
@@ -175,8 +215,9 @@ export class EditorsModule /* implements Module */ {
   }
 
   // cleanup the current document, the current editor,
-  // and the container element
+  // and the container element, append an empty placeholder
   protected async cleanup() {
+    this.logging.info("cleanup");
     if (this.currentDocument) {
       delete this.currentDocument;
     }
@@ -184,8 +225,13 @@ export class EditorsModule /* implements Module */ {
       await this.currentEditor.cleanup();
       delete this.currentEditor;
     }
-    this.element.innerHTML = "";
+    this.clear();
     this.element.appendChild(nothingHere);
+  }
+
+  // force clear element
+  protected clear() {
+    this.element.innerHTML = "";
   }
 
   // make the api publicly available to
@@ -206,6 +252,7 @@ export class EditorsModule /* implements Module */ {
     // patj guaranteed exists
 
     await this.cleanup();
+    this.clear();
 
     let selectedEditor: Editor;
 
@@ -234,3 +281,21 @@ export class EditorsModule /* implements Module */ {
     }
   }
 }
+
+const confirmCloseModalButtons: ModalButton[] = [
+  {
+    kind: "normal",
+    text: "Cancel",
+    command: "cancel",
+  },
+  {
+    kind: "normal",
+    text: "Don't save",
+    command: "dontsave",
+  },
+  {
+    kind: "emphasis",
+    text: "Save",
+    command: "save",
+  },
+];

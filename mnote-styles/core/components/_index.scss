@@ -1,7 +1,9 @@
 @use "menu";
+@use "modal";
 
 // todo: make all the mixins take colors as input
 
 @mixin components($theme) {
   @include menu.menu($theme);
+  @include modal.modal($theme);
 }

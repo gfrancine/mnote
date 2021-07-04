@@ -1,0 +1,68 @@
+@use "sass:map";
+
+@mixin modal($theme) {
+  .modal-overlay {
+    width: 100vw;
+    height: 100vh;
+    background: #88888840;
+    position: fixed;
+    top:0;
+    left:0;
+    z-index: 20;
+  }
+
+  .modal {
+    z-index: 21;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: map.get($theme, "bg-main");
+    padding: .8em;
+    margin-top: 2em;
+    border-radius: 5px;
+    box-sizing: border-box;
+    width: min-content;
+    min-width: 360px;
+  
+    .modal-buttons {
+      width: 100%;
+      text-align: right;
+  
+      .modal-button {
+        font-family: "Lato";
+        font-size: 13px;
+        display:inline-block;
+        flex-direction:row;
+        padding: .8em;
+        margin-left: .5em;
+        border-radius: 5px;
+        cursor: pointer;
+    
+        &.normal {
+          background: map.get($theme, "btn-main-bg");
+          color: map.get($theme, "btn-main-fg");
+
+          &:hover {
+            background: map.get($theme, "btn-main-bg-hover");
+            color: map.get($theme, "btn-main-fg-hover")
+          }
+        }
+
+        &.emphasis {
+          background: map.get($theme, "btn-emphasis-bg");
+          color: map.get($theme, "btn-emphasis-fg");
+
+          &:hover {
+            background: map.get($theme, "btn-emphasis-bg-hover");
+            color: map.get($theme, "btn-emphasis-fg-hover")
+          }
+        }
+      }
+    }
+
+    .modal-text {
+      font-family: map.get($theme, "font-main");
+      margin-bottom: 1em;
+    }
+  }
+}

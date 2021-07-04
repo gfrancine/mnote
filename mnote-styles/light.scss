@@ -2,6 +2,9 @@
 @use "open-color" as oc;
 
 $theme: (
+  "font-main": "Lato",
+  "font-monospace": "Fira Mono",
+
   "fg-main": oc.$oc-gray-9,
   "fg-secondary": oc.$oc-gray-7,
   "fg-dim": oc.$oc-gray-5,
@@ -12,11 +15,18 @@ $theme: (
 
   "shadow": 0px 2px 5px oc.$oc-gray-3,
 
-  "font-main": "Lato",
-  "font-monospace": "Fira Mono",
-
   "border-main": oc.$oc-gray-3,
   "border-dim": oc.$oc-gray-2,
+
+  "btn-main-fg": oc.$oc-gray-9, // buttons, assuming background is bg-main
+  "btn-main-fg-hover": oc.$oc-gray-9,
+  "btn-main-bg": oc.$oc-gray-2,
+  "btn-main-bg-hover": oc.$oc-gray-3,
+
+  "btn-emphasis-fg": #fff,
+  "btn-emphasis-fg-hover": #fff,
+  "btn-emphasis-bg": oc.$oc-gray-6,
+  "btn-emphasis-bg-hover": oc.$oc-gray-7,
 );
 
 @include core.core($theme);

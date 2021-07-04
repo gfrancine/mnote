@@ -26,6 +26,7 @@ export interface Editor {
 }
 
 export interface EditorProvider {
+  // getExtensions(): string[] // allowed extensions for Save As prompt
   tryGetEditor(path: string): Editor | undefined;
   createNewEditor(): Editor;
 }
@@ -42,8 +43,15 @@ export type MenubarButton = {
   buttons: MenuButton[];
 };
 
+// right click context menu context
 export type Context = {
   pageX: number;
   pageY: number;
   element: Element;
+};
+
+export type ModalButton = {
+  text: string;
+  command: string;
+  kind: "emphasis" | "normal";
 };
