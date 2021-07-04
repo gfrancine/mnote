@@ -1,6 +1,7 @@
 import { Mnote } from "../common/types";
 
 import { Menu, MenuItem } from "../components/menu";
+import { LayoutModule } from "./layout";
 import { Context } from "./types";
 
 export class CtxmenuModule {
@@ -37,6 +38,7 @@ export class CtxmenuModule {
     this.app = app;
     this.ctxmenu = new ContextMenu(
       app.element,
+      [(app.modules.layout as LayoutModule).contents],
       (ctx: Context) => {
         return this.buttons;
       },
@@ -47,12 +49,22 @@ export class CtxmenuModule {
 export class ContextMenu {
   cleanup: () => void;
   activeMenu?: Menu;
+  blacklist: Set<Element>;
 
   constructor(
     element: Element,
+    blacklist: Element[],
     getSections: (context: Context) => MenuItem[][],
   ) {
+    this.blacklist = new Set(blacklist);
+
     const onContextMenu = (e: MouseEvent) => {
+      for (const elm of document.elementsFromPoint(e.pageX, e.pageY)) {
+        if (this.blacklist.has(elm)) {
+          return;
+        }
+      }
+
       e.preventDefault();
 
       if (this.activeMenu) {
@@ -108,5 +120,9 @@ export class ContextMenu {
       document.removeEventListener("contextmenu", onContextMenu);
       document.removeEventListener("mousedown", onClick);
     };
+  }
+
+  addBlacklist(e: Element) {
+    this.blacklist.add(e);
   }
 }

@@ -38,8 +38,8 @@ export class Mnote implements Type {
       .addModule("fs", new FSModule(this, options.fs))
       .addModule("extensions", new ExtensionsModule(this))
       .addModule("keyboard", new InputModule(this))
-      .addModule("ctxmenu", new CtxmenuModule(this))
       .addModule("layout", new LayoutModule(this))
+      .addModule("ctxmenu", new CtxmenuModule(this))
       .addModule("menubar", new MenubarModule(this))
       .addModule("sidebar", new SidebarModule(this))
       .addModule("editors", new EditorsModule(this));
