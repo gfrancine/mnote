@@ -6,7 +6,7 @@ import { Context } from "./types";
 export class CtxmenuModule {
   ctxmenu: ContextMenu;
   app: Mnote;
-  buttons: [
+  buttons = [
     [
       {
         name: "Save",
