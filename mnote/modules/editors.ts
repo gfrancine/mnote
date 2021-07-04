@@ -108,6 +108,34 @@ export class EditorsModule /* implements Module */ {
     await this.load(path);
   }
 
+  // create new button
+  async newEditor(kind: string) {
+    this.logging.info("new editor");
+
+    const provider = this.providerKinds[kind];
+    if (!provider) {
+      throw new Error(`Editor of kind "${kind}" does not exist!`);
+    }
+
+    const willClose = await this.close();
+    this.logging.info("will close?", willClose);
+    if (!willClose) {
+      return;
+    }
+
+    this.clear();
+
+    this.currentDocument = {
+      name: "Untitled",
+      // no path
+      saved: false,
+    };
+
+    const editor = provider.createNewEditor();
+    this.currentEditor = editor;
+    await editor.startup(this.element, this.makeContext());
+  }
+
   // prompt a save dialog
   // returns a success boolean (whether the user cancelled)
   async saveAs(): Promise<boolean> {
@@ -187,31 +215,6 @@ export class EditorsModule /* implements Module */ {
       await this.cleanup();
       return true;
     }
-  }
-
-  // create new button
-  async newEditor(kind: string) {
-    this.logging.info("new editor");
-
-    const provider = this.providerKinds[kind];
-    if (!provider) {
-      throw new Error(`Editor of kind "${kind}" does not exist!`);
-    }
-
-    const willClose = await this.close();
-    if (!willClose) {
-      return;
-    }
-
-    this.currentDocument = {
-      name: "Untitled",
-      // no path
-      saved: false,
-    };
-
-    const editor = provider.createNewEditor();
-    this.currentEditor = editor;
-    await editor.startup(this.element, this.makeContext());
   }
 
   // cleanup the current document, the current editor,
