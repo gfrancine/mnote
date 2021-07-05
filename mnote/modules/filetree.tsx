@@ -20,6 +20,7 @@ export class FiletreeModule {
     selected: (path: string) => void;
   }> = new Emitter();
   selectedFile?: string;
+  tree?: FileTreeNodeWithChildren;
 
   constructor(app: Mnote) {
     this.element = el("div")
@@ -60,14 +61,26 @@ export class FiletreeModule {
 
   setFileTree(tree: FileTreeNodeWithChildren) {
     this.logging.info("setFileTree", tree);
+    this.tree = tree;
+    this.updateDisplay();
+  }
+
+  setSelectedFile(path: string) {
+    this.logging.info("setSelectedFile", path);
+    this.selectedFile = path;
+    this.events.emitSync("selected", path);
+    this.updateDisplay();
+  }
+
+  protected updateDisplay() {
+    this.logging.info("filetree updateDisplay", this.tree, this.selectedFile);
 
     render(
       <FileTree
-        node={tree}
+        node={this.tree as FileTreeNodeWithChildren}
         handleFocus={(path: string) => {
           this.logging.info("path focused", path);
-          this.selectedFile = path;
-          this.events.emitSync("selected", path);
+          this.setSelectedFile(path);
         }}
         initFocusedNode={this.selectedFile}
       />,

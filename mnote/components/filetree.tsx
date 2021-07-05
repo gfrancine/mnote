@@ -40,7 +40,7 @@ function DirNode(props: {
   const onClick = expanded ? () => setExpanded(false) : () => setExpanded(true);
 
   return <div className="filetree-dir">
-    <div 
+    <div
       className="filetree-item"
       onClick={onClick}
     >
@@ -71,18 +71,14 @@ export default function (props: {
   initFocusedNode?: string; // path of the focused node
   handleFocus: (path: string) => void;
 }) {
-  const [focusedNode, setFocusedNode] = useState<string | undefined>(
-    props.initFocusedNode,
-  );
+  console.log("filetree component", props);
+
   return <div className="filetree-main">
     <DirNode
       initExpanded={true}
       node={props.node}
-      focusedNode={focusedNode}
-      handleFocus={(path: string) => {
-        setFocusedNode(path);
-        props.handleFocus(path);
-      }}
+      focusedNode={props.initFocusedNode}
+      handleFocus={props.handleFocus}
     />
   </div>;
 }
