@@ -1,11 +1,6 @@
 import { el, Elbuilder } from "../common/elbuilder";
 import { Emitter } from "../common/emitter";
-
-export type MenuItem = {
-  name: string;
-  shortcut: string;
-  click(e: MouseEvent): void;
-};
+import { MenuItem } from "../common/types";
 
 type Anchor = {
   top: boolean;
@@ -50,7 +45,7 @@ export class Menu {
               .element,
             el("div")
               .class("menu-item-right")
-              .inner(item.shortcut)
+              .inner(item.shortcut || "")
               .element,
           )
           .on("click", (e) => {

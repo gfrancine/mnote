@@ -31,18 +31,6 @@ export interface EditorProvider {
   createNewEditor(): Editor;
 }
 
-export type MenuButton = {
-  name: string;
-  shortcutText: string; // just for display
-  onClick?: () => void;
-  buttons?: MenuButton[];
-};
-
-export type MenubarButton = {
-  name: string;
-  buttons: MenuButton[];
-};
-
 // right click context menu context
 export type Context = {
   pageX: number;

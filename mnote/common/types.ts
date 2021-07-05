@@ -72,3 +72,11 @@ export type FileTreeNodeWithChildren = {
   path: string; // path is the unique id
   children: FileTreeNode[]; // if none, it's a file node
 };
+
+// (context) menu
+
+export type MenuItem = {
+  name: string;
+  shortcut?: string;
+  click: (e: MouseEvent) => void;
+};
