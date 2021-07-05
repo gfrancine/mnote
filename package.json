@@ -1,0 +1,7 @@
+{
+  "name": "mnote",
+  "version": "0.1.0",
+  "dependencies": {
+    "preact": "^10.5.14"
+  }
+}

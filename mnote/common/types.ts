@@ -29,8 +29,8 @@ export interface FsInteropModule {
   writeTextFile(path: string, contents: string): Promise<void>;
   readTextFile(path: string): Promise<string>;
   readDir(path: string): Promise<FileItem>;
-  fileExists(path: string): Promise<boolean>;
-  dirExists(path: string): Promise<boolean>;
+  isFile(path: string): Promise<boolean>;
+  isDir(path: string): Promise<boolean>;
   dialogOpen(opts: {
     initialPath?: string;
     extensions?: string[];

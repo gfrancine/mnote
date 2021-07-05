@@ -36,16 +36,16 @@ export class FSModule implements FsInteropModule {
     };
   }
 
-  async fileExists(path: string): Promise<boolean> {
+  async isFile(path: string): Promise<boolean> {
     if (this.fs) {
-      return this.fs.fileExists(path);
+      return this.fs.isFile(path);
     }
     return false;
   }
 
-  async dirExists(path: string): Promise<boolean> {
+  async isDir(path: string): Promise<boolean> {
     if (this.fs) {
-      return this.fs.dirExists(path);
+      return this.fs.isDir(path);
     }
     return false;
   }

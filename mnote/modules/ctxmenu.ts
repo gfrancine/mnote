@@ -1,5 +1,4 @@
 import { Mnote } from "../common/types";
-
 import { Menu, MenuItem } from "../components/menu";
 import { LayoutModule } from "./layout";
 import { Context } from "./types";

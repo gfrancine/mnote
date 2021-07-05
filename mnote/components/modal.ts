@@ -2,7 +2,7 @@
 // https://vercel.com/design/modal
 
 import { el } from "../common/elbuilder";
-import { freeze, unfreeze } from "../common/freeze-body";
+import { freeze, unfreeze } from "../common/util/freeze-body";
 import { ModalButton } from "../modules/types";
 
 export class Modal {

@@ -14,7 +14,8 @@
       outline: none;
       border: none;
       font-family: map.get($theme, "font-monospace");
-      font-size: 14px;
+      font-size: 13px;
+      line-height: 1.5;
     }
   }
 }

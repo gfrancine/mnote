@@ -22,7 +22,7 @@ export class FS implements FsInteropModule {
     };
   }
 
-  async fileExists(path: string): Promise<boolean> {
+  async isFile(path: string): Promise<boolean> {
     try {
       fs.readTextFile(path);
       return true;
@@ -31,7 +31,7 @@ export class FS implements FsInteropModule {
     }
   }
 
-  async dirExists(path: string): Promise<boolean> {
+  async isDir(path: string): Promise<boolean> {
     try {
       fs.readDir(path);
       return true;
