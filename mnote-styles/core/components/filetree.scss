@@ -1,0 +1,34 @@
+@use "sass:map";
+
+// styles for the filetree component (components/jsx)
+
+@mixin filetree($theme) {
+  .filetree-main {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    font-family: map.get($theme, "font-main");
+    background: map.get($theme, "bg-secondary");
+
+    .filetree-item {
+      box-sizing: border-box;
+      cursor: pointer;
+      font-size: 13px;
+      display:flex;
+      flex-direction:row;
+      padding: .4em;
+      margin: 0 .3em;
+      border-radius: 5px;
+
+      &.focused,
+      &:hover {
+        background: map.get($theme, "bg-dim");
+      }
+    }
+
+    .filetree-dir-children {
+      box-sizing: border-box;
+      padding-left: .5em;
+    }
+  }
+}
