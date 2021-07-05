@@ -18,20 +18,40 @@ export class LayoutModule /* implements Module */ {
   main: HTMLElement;
   menubar: HTMLElement;
   sidebar: HTMLElement;
+  filetree: HTMLElement;
+  sidebarMenu: HTMLElement;
   contents: HTMLElement;
 
   constructor(app: Mnote) {
-    this.menubar = el("div")
-      .class("layout-menubar")
-      .element;
+    this.menubar = (() => {
+      return el("div")
+        .class("layout-menubar")
+        .element;
+    })();
 
-    this.sidebar = el("div")
-      .class("layout-sidebar")
-      .element;
+    this.sidebar = (() => {
+      this.filetree = el("div")
+        .class("sidebar-filetree")
+        .element;
 
-    this.contents = el("div")
-      .class("layout-contents")
-      .element;
+      this.sidebarMenu = el("div")
+        .class("sidebar-menu")
+        .element;
+
+      return el("div")
+        .class("layout-sidebar")
+        .children(
+          this.filetree,
+          this.sidebarMenu,
+        )
+        .element;
+    })();
+
+    this.contents = (() => {
+      return el("div")
+        .class("layout-contents")
+        .element;
+    })();
 
     const container = el("div")
       .class("layout-container")
@@ -57,9 +77,14 @@ export class LayoutModule /* implements Module */ {
     app.element.appendChild(this.main);
   }
 
-  mountToSidebar(e: HTMLElement) {
-    this.sidebar.innerHTML = "";
-    this.sidebar.appendChild(e);
+  mountToSidebarMenu(e: HTMLElement) {
+    this.sidebarMenu.innerHTML = "";
+    this.sidebarMenu.appendChild(e);
+  }
+
+  mountToFiletree(e: HTMLElement) {
+    this.filetree.innerHTML = "";
+    this.filetree.appendChild(e);
   }
 
   mountToContents(e: HTMLElement) {

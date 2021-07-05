@@ -11,7 +11,6 @@ import {
   LayoutModule,
   LoggingModule,
   MenubarModule,
-  SidebarModule,
 } from "./modules";
 
 import { PlaintextExtension } from "./extensions/plaintextEditor";
@@ -41,7 +40,6 @@ export class Mnote implements Type {
       .addModule("layout", new LayoutModule(this))
       .addModule("ctxmenu", new CtxmenuModule(this))
       .addModule("menubar", new MenubarModule(this))
-      .addModule("sidebar", new SidebarModule(this))
       .addModule("editors", new EditorsModule(this));
 
     (this.modules.extensions as ExtensionsModule)

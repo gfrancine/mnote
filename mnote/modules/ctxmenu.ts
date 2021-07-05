@@ -9,7 +9,7 @@ import { Context } from "./types";
   click: () => {},
 } */
 
-type SectionReducer = (ctx: Context) => MenuItem[] | void
+type SectionReducer = (ctx: Context) => MenuItem[] | void;
 
 export class CtxmenuModule {
   ctxmenu: ContextMenu;
@@ -26,7 +26,7 @@ export class CtxmenuModule {
         this.reducers.forEach((reducer) => {
           const section = reducer(ctx);
           if (section) buttons.push(section);
-        })
+        });
         return buttons;
       },
     );
