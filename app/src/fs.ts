@@ -1,5 +1,6 @@
-import { FileItem, FsInteropModule } from "../../mnote";
+import { FileItem, FileItemWithChildren, FsInteropModule } from "../../mnote";
 import * as fs from "@tauri-apps/api/fs";
+import * as path from "@tauri-apps/api/path";
 import * as dialog from "@tauri-apps/api/dialog";
 
 export class FS implements FsInteropModule {
@@ -14,7 +15,7 @@ export class FS implements FsInteropModule {
     return fs.readTextFile(path);
   }
 
-  async readDir(path: string): Promise<FileItem> {
+  async readDir(path: string): Promise<FileItemWithChildren> {
     const entries = await fs.readDir(path);
     return {
       path,
@@ -106,5 +107,13 @@ export class FS implements FsInteropModule {
     } catch {
       return;
     }
+  }
+
+  getConfigDir(): Promise<string> {
+    return path.configDir();
+  }
+
+  getCurrentDir(): Promise<string> {
+    return path.currentDir();
   }
 }

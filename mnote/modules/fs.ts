@@ -1,15 +1,18 @@
-import { FileItem, FsInteropModule, Mnote } from "../common/types";
+import {
+  FileItem,
+  FileItemWithChildren,
+  FsInteropModule,
+  Mnote,
+} from "../common/types";
 
 // the interop module
 // todo: mock
 // https://tauri.studio/en/docs/api/js/modules/fs
 
 export class FSModule implements FsInteropModule {
-  app: Mnote;
   fs?: FsInteropModule;
 
-  constructor(app: Mnote, fs?: FsInteropModule) {
-    this.app = app;
+  constructor(_app: Mnote, fs?: FsInteropModule) {
     if (fs) this.fs = fs;
   }
 
@@ -23,12 +26,13 @@ export class FSModule implements FsInteropModule {
     if (this.fs) {
       return this.fs.readTextFile(path);
     }
-    return "";
+    return ".";
   }
 
-  async readDir(path: string): Promise<FileItem> {
+  async readDir(path: string): Promise<FileItemWithChildren> {
     if (this.fs) {
-      return this.fs.readDir(path);
+      const entries = this.fs.readDir(path);
+      return entries;
     }
     return {
       path: "TEMP",
@@ -56,7 +60,7 @@ export class FSModule implements FsInteropModule {
     directory: boolean;
   }): Promise<string | void> {
     if (this.fs) {
-      return this.dialogOpen(opts);
+      return this.fs.dialogOpen(opts);
     }
   }
 
@@ -66,7 +70,7 @@ export class FSModule implements FsInteropModule {
     directory: boolean;
   }): Promise<string[] | void> {
     if (this.fs) {
-      return this.dialogOpenMultiple(opts);
+      return this.fs.dialogOpenMultiple(opts);
     }
   }
 
@@ -75,7 +79,21 @@ export class FSModule implements FsInteropModule {
     extensions?: string[];
   }): Promise<string | void> {
     if (this.fs) {
-      return this.dialogSave(opts);
+      return this.fs.dialogSave(opts);
     }
+  }
+
+  async getConfigDir(): Promise<string> {
+    if (this.fs) {
+      return this.fs.getConfigDir();
+    }
+    return ".";
+  }
+
+  async getCurrentDir(): Promise<string> {
+    if (this.fs) {
+      return this.fs.getCurrentDir();
+    }
+    return ".";
   }
 }

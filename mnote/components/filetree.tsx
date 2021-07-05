@@ -1,16 +1,11 @@
 import { Fragment, h } from "preact";
 import { useMemo, useState } from "preact/hooks";
 import { getPathName } from "../common/util/path";
-
-type Node = {
-  path: string; // path is the unique id
-  children?: Node[]; // if none, it's a file node
-};
-
-type NodeWithChildren = {
-  path: string; // path is the unique id
-  children?: Node[]; // if none, it's a file node
-};
+import {
+  FileTreeNode as Node,
+  FileTreeNodeWithChildren,
+  FileTreeNodeWithChildren as NodeWithChildren,
+} from "../common/types";
 
 function FileNode(props: {
   node: Node;
@@ -52,12 +47,12 @@ function DirNode(props: {
       {props.node.children.map((node) =>
         node.children
           ? <DirNode
-            node={props.node}
+            node={node as FileTreeNodeWithChildren}
             focusedNode={props.focusedNode}
             handleFocus={props.handleFocus}
           />
           : <FileNode
-            node={props.node}
+            node={node}
             focusedNode={props.focusedNode}
             handleFocus={props.handleFocus}
           />
@@ -66,17 +61,25 @@ function DirNode(props: {
   </div>;
 }
 
+// file tree component
+// not meant to be used with another react component
 export default function (props: {
   node: NodeWithChildren;
-  focusedNode?: string; // path of the focused node
+  initFocusedNode?: string; // path of the focused node
   handleFocus: (path: string) => void;
 }) {
+  const [focusedNode, setFocusedNode] = useState<string | undefined>(
+    props.initFocusedNode,
+  );
   return <div className="filetree-main">
     <DirNode
       initExpanded={true}
       node={props.node}
-      focusedNode={props.focusedNode}
-      handleFocus={props.handleFocus}
+      focusedNode={focusedNode}
+      handleFocus={(path: string) => {
+        setFocusedNode(path);
+        props.handleFocus(path);
+      }}
     />
   </div>;
 }

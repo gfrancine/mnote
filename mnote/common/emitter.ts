@@ -2,7 +2,7 @@ type Arguments<T> = [T] extends [(...args: infer U) => any] ? U
   : [T] extends [void] ? []
   : [T];
 
-export class Emitter<E extends Record<string, (...args: unknown[]) => void>> {
+export class Emitter<E extends Record<string, Function>> {
   protected events: Record<keyof E, Function[]> = {} as Record<
     keyof E,
     Function[]
@@ -33,5 +33,12 @@ export class Emitter<E extends Record<string, (...args: unknown[]) => void>> {
     if (!listeners) return;
 
     listeners.forEach((listener) => setTimeout(listener, 0, ...args));
+  }
+
+  emitSync<K extends keyof E>(event: K, ...args: Arguments<E[K]>) {
+    const listeners = this.events[event];
+    if (!listeners) return;
+
+    listeners.forEach((listener) => listener(...args));
   }
 }

@@ -89,33 +89,33 @@ export class Menu {
   }
 
   show(element: Element) {
-    if (this.sections.length > 0) {
-      element.appendChild(this.element);
+    // todo wrap another container just to display none?
+    element.appendChild(this.element);
 
-      const builder = new Elbuilder(this.element);
+    const builder = new Elbuilder(this.element);
 
-      const rect = this.element.getBoundingClientRect();
-      const anchor = this.getAnchor(rect, this.position);
+    const rect = this.element.getBoundingClientRect();
+    const anchor = this.getAnchor(rect, this.position);
 
-      if (anchor.top) {
-        builder
-          .style("top", this.position.y + "px");
-      } else {
-        builder
-          .style("top", (this.position.y - rect.height) + "px");
-      }
+    if (anchor.top) {
+      builder
+        .style("top", this.position.y + "px");
+    } else {
+      builder
+        .style("top", (this.position.y - rect.height) + "px");
+    }
 
-      if (anchor.left) {
-        builder
-          .style("left", this.position.x + "px");
-      } else {
-        builder
-          .style("left", (this.position.x - rect.width) + "px");
-      }
+    if (anchor.left) {
+      builder
+        .style("left", this.position.x + "px");
+    } else {
+      builder
+        .style("left", (this.position.x - rect.width) + "px");
     }
   }
 
   cleanup() {
+    console.log("menu: cleanup", this.element, this.element.parentNode);
     this.element = this.element.parentNode.removeChild(this.element);
     this.events = new Emitter();
   }

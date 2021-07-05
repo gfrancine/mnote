@@ -7,6 +7,8 @@ export type Module = unknown;
 export type Mnote = {
   element: Element;
 
+  directory: string;
+
   modules: Record<string, Module>;
 
   addModule: (name: string, module: Module) => Mnote;
@@ -19,8 +21,8 @@ export type Mnote = {
 // 3. modules: if they don't receive the argument, mock all the
 //    functionality
 export type MnoteOptions = {
-  /*
-  args?: string[]*/
+  startFile?: string;
+  startDir?: string;
   fs?: FsInteropModule;
 };
 
@@ -28,7 +30,7 @@ export interface FsInteropModule {
   //todo
   writeTextFile(path: string, contents: string): Promise<void>;
   readTextFile(path: string): Promise<string>;
-  readDir(path: string): Promise<FileItem>;
+  readDir(path: string): Promise<FileItemWithChildren>;
   isFile(path: string): Promise<boolean>;
   isDir(path: string): Promise<boolean>;
   dialogOpen(opts: {
@@ -45,9 +47,28 @@ export interface FsInteropModule {
     initialPath?: string;
     extensions?: string[];
   }): Promise<string | void>;
+  getConfigDir(): Promise<string>;
+  getCurrentDir(): Promise<string>;
 }
 
 export type FileItem = {
   path: string;
   children?: FileItem[];
+};
+
+export type FileItemWithChildren = {
+  path: string;
+  children: FileItem[];
+};
+
+// file tree
+
+export type FileTreeNode = {
+  path: string; // path is the unique id
+  children?: FileTreeNode[]; // if none, it's a file node
+};
+
+export type FileTreeNodeWithChildren = {
+  path: string; // path is the unique id
+  children: FileTreeNode[]; // if none, it's a file node
 };

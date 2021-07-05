@@ -3,7 +3,13 @@
 // styles for the filetree component (components/jsx)
 
 @mixin filetree($theme) {
+  .filetree-container {
+    width: 100%;
+    height: 100%;
+  }
+
   .filetree-main {
+    padding: .5em;
     width: 100%;
     height: 100%;
     box-sizing: border-box;

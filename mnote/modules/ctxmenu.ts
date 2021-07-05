@@ -52,16 +52,13 @@ export class ContextMenu {
     const onContextMenu = (e: MouseEvent) => {
       for (const elm of document.elementsFromPoint(e.pageX, e.pageY)) {
         if (this.blacklist.has(elm)) {
+          delete this.activeMenu; //?
           return;
         }
       }
 
+      e.stopPropagation();
       e.preventDefault();
-
-      if (this.activeMenu) {
-        this.activeMenu.cleanup();
-        delete this.activeMenu;
-      }
 
       const context: Context = {
         pageX: e.pageX,
@@ -70,6 +67,16 @@ export class ContextMenu {
       };
 
       const sections = getSections(context);
+
+      if (sections.length < 1) {
+        delete this.activeMenu;
+        return;
+      }
+
+      if (this.activeMenu) {
+        this.activeMenu.cleanup();
+        delete this.activeMenu;
+      }
 
       this.activeMenu = new Menu(
         {
@@ -86,6 +93,8 @@ export class ContextMenu {
       );
 
       this.activeMenu.events.on("click", () => {
+        console.log("menu event button click");
+
         if (this.activeMenu) {
           this.activeMenu.cleanup();
           delete this.activeMenu;
@@ -96,6 +105,8 @@ export class ContextMenu {
     };
 
     const onClick = (e: MouseEvent) => {
+      console.log("somewhereelse click");
+
       if (!this.activeMenu) return;
 
       if (e.target !== this.activeMenu.element) {

@@ -2,8 +2,13 @@ import { EditorsModule, Mnote } from "../../mnote";
 import { FS } from "./fs";
 import "../../mnote-styles/light.scss";
 
-const app = new Mnote("#root", {
-  fs: new FS(),
-});
+(async () => {
+  const app = new Mnote("#root", {
+    startDir: "C:\\Users\\Administrator\\Desktop\\notes",
+    fs: new FS(),
+  });
 
-(app.modules.editors as EditorsModule).newEditor("plaintext");
+  await app.startup();
+
+  // (app.modules.editors as EditorsModule).newEditor("plaintext");
+})();

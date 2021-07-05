@@ -1,9 +1,11 @@
 @use "menu";
 @use "modal";
+@use "filetree";
 
 // todo: make all the mixins take colors as input
 
 @mixin components($theme) {
   @include menu.menu($theme);
   @include modal.modal($theme);
+  @include filetree.filetree($theme);
 }
