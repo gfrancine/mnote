@@ -3,35 +3,18 @@ import { Menu, MenuItem } from "../components/menu";
 import { LayoutModule } from "./layout";
 import { Context } from "./types";
 
+/* {
+  name: "Copy",
+  shortcut: "CTRL+1",
+  click: () => {},
+} */
+
+type SectionReducer = (ctx: Context) => MenuItem[] | void
+
 export class CtxmenuModule {
   ctxmenu: ContextMenu;
   app: Mnote;
-  buttons = [
-    [
-      {
-        name: "Save",
-        shortcut: "CTRL+1",
-        click: () => {},
-      },
-      {
-        name: "Copy",
-        shortcut: "CTRL+1",
-        click: () => {},
-      },
-    ],
-    [
-      {
-        name: "Save",
-        shortcut: "CTRL+1",
-        click: () => {},
-      },
-      {
-        name: "Copy",
-        shortcut: "CTRL+1",
-        click: () => {},
-      },
-    ],
-  ];
+  reducers: SectionReducer[] = [];
 
   constructor(app: Mnote) {
     this.app = app;
@@ -39,9 +22,18 @@ export class CtxmenuModule {
       app.element,
       [(app.modules.layout as LayoutModule).contents],
       (ctx: Context) => {
-        return this.buttons;
+        const buttons: MenuItem[][] = [];
+        this.reducers.forEach((reducer) => {
+          const section = reducer(ctx);
+          if (section) buttons.push(section);
+        })
+        return buttons;
       },
     );
+  }
+
+  addSectionReducer(reducer: SectionReducer) {
+    this.reducers.push(reducer);
   }
 }
 
