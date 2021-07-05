@@ -1,5 +1,5 @@
 const EXTENSION_REGEX = /(\.[^.]+)$/;
-const NAME_REGEX = /(\w|[-.])+$/;
+const NAME_REGEX = /([^\\/])+$/;
 
 /** returns the entire path if not found */
 export function getPathName(path: string): string {

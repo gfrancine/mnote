@@ -16,7 +16,10 @@ export class FS implements FsInteropModule {
   }
 
   async readDir(path: string): Promise<FileItemWithChildren> {
-    const entries = await fs.readDir(path);
+    const entries = await fs.readDir(path, {
+      recursive: true
+    });
+
     return {
       path,
       children: entries,

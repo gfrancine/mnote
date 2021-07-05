@@ -39,12 +39,15 @@ function DirNode(props: {
 
   const onClick = expanded ? () => setExpanded(false) : () => setExpanded(true);
 
-  return <div className="filetree-dir" onClick={onClick}>
-    <div className="filetree-item">
+  return <div className="filetree-dir">
+    <div 
+      className="filetree-item"
+      onClick={onClick}
+    >
       {name}
     </div>
     <div className="filetree-dir-children">
-      {props.node.children.map((node) =>
+      {expanded && props.node.children.map((node) =>
         node.children
           ? <DirNode
             node={node as FileTreeNodeWithChildren}
