@@ -30,7 +30,8 @@ export class Menu {
     this.position = position;
     this.sections = sections;
 
-    const element = el("div").class("menu");
+    const element = el("div")
+      .class("menu");
 
     const children: HTMLElement[] = [];
 

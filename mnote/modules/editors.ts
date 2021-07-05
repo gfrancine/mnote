@@ -40,9 +40,9 @@ save: user clicks save > this.save > if file, editor.save(path) > mark doc as sa
         > no path > end
 
 close: user clicks close
-   > doc is untitled? > save flow
-   > doc is unsaved > would you like to save? > if yes, save flow end > else cancel
-   > doc is saved > editor.save(path)
+    > doc is untitled? > save flow
+    > doc is unsaved > would you like to save? > if yes, save flow end > else cancel
+    > doc is saved > editor.save(path)
   > this.cleanup() > cleanup editor
 
 */
@@ -85,6 +85,7 @@ export class EditorsModule /* implements Module */ {
     this.element = el("div")
       .class("editor-container")
       .element;
+
     (app.modules.layout as LayoutModule).mountToContents(this.element);
 
     this.element.appendChild(nothingHere);
