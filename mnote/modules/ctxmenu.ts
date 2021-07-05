@@ -1,5 +1,5 @@
-import { Mnote } from "../common/types";
-import { Menu, MenuItem } from "../components/menu";
+import { MenuItem, Mnote } from "../common/types";
+import { Menu } from "../components/menu";
 import { LayoutModule } from "./layout";
 import { Context } from "./types";
 
@@ -93,8 +93,6 @@ export class ContextMenu {
       );
 
       this.activeMenu.events.on("click", () => {
-        console.log("menu event button click");
-
         if (this.activeMenu) {
           this.activeMenu.cleanup();
           delete this.activeMenu;
@@ -109,7 +107,8 @@ export class ContextMenu {
 
       if (!this.activeMenu) return;
 
-      if (e.target !== this.activeMenu.element) {
+      const mouseoverEls = document.elementsFromPoint(e.pageX, e.pageY);
+      if (mouseoverEls.indexOf(this.activeMenu.element) === -1) {
         this.activeMenu.cleanup();
         delete this.activeMenu;
       }

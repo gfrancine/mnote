@@ -2,11 +2,13 @@ import { MenuItem, Mnote /* , Module */ } from "../common/types";
 import { LayoutModule } from "./layout";
 import { el } from "../common/elbuilder";
 import { Menu } from "../components/menu";
+import { LoggingModule } from "./logging";
 
 // https://quilljs.com/docs/modules/toolbar/
 
 export class MenubarModule /* implements Module */ {
   layout: LayoutModule;
+  logging: LoggingModule;
 
   element: HTMLElement;
   left: HTMLElement;
@@ -14,7 +16,16 @@ export class MenubarModule /* implements Module */ {
   app: Mnote;
 
   menuToggle: HTMLElement;
-  menuButtons: MenuItem[][] = [];
+  menuButtons: MenuItem[][] = [
+    [
+      {
+        name: "hey",
+        click: () => {
+          this.logging.info("menubar: menu item click");
+        },
+      },
+    ],
+  ];
   menuCurrent?: Menu;
 
   constructor(app: Mnote) {
@@ -24,14 +35,21 @@ export class MenubarModule /* implements Module */ {
       .class("menubar-left")
       .element;
 
-    const menuToggle = el("div")
+    this.menuToggle = el("div")
       .class("menubar-menu-toggle")
       .inner("svg here")
+      .on("click", () => {
+        if (this.menuCurrent) {
+          this.hideMenu();
+        } else {
+          this.showMenu();
+        }
+      })
       .element;
 
     this.right = el("div")
       .class("menubar-right")
-      .children(menuToggle)
+      .children(this.menuToggle)
       .element;
 
     this.element = el("div")
@@ -42,26 +60,52 @@ export class MenubarModule /* implements Module */ {
       )
       .element;
 
+    this.logging = app.modules.logging as LoggingModule;
     this.layout = app.modules.layout as LayoutModule;
     this.layout.mountToMenubar(this.element);
+
+    // close the menu when the user clicks somewhere else
+    document.addEventListener("mousedown", (e: MouseEvent) => {
+      this.logging.info("menubar: menu listener for external mousedown");
+
+      if (!this.menuCurrent) return;
+      const mouseoverEls = document.elementsFromPoint(e.pageX, e.pageY);
+
+      if (mouseoverEls.indexOf(this.menuCurrent.element) === -1) {
+        this.hideMenu();
+      }
+    });
   }
 
-  toggleMenu() {
+  showMenu() {
+    this.logging.info("menubar: showMenu");
+
+    this.hideMenu();
+
+    const rect = this.element.getBoundingClientRect();
+    const menu = new Menu({
+      x: rect.right,
+      y: rect.bottom,
+    }, () => {
+      return { top: true, left: false };
+    }, this.menuButtons);
+
+    this.menuCurrent = menu;
+
+    menu.events.on("click", () => {
+      this.logging.info("menubar: menu event on click");
+      this.hideMenu();
+    });
+
+    menu.show(this.app.element);
+  }
+
+  hideMenu() {
+    this.logging.info("menubar: hideMenu", this.menuCurrent);
+
     if (this.menuCurrent) {
-      delete this.menuCurrent;
       this.menuCurrent.cleanup();
-    } else {
-      const toggleRect = this.menuToggle.getBoundingClientRect();
-      const menu = new Menu({
-        x: toggleRect.right,
-        y: toggleRect.bottom,
-      }, () => {
-        return { top: true, left: false };
-      }, this.menuButtons);
-
-      this.menuCurrent = menu;
-
-      menu.show(this.app.element);
+      delete this.menuCurrent;
     }
   }
 

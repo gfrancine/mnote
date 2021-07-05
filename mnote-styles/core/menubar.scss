@@ -10,6 +10,7 @@
     font-family: map.get($theme, "font-main");
     display: flex;
     flex-direction: row;
+    font-size: 12px;
 
     .menubar-left {
       width: 100%;
