@@ -12,6 +12,8 @@ import { MenubarModule } from "./menubar";
 import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
 import { Modal } from "../components/modal";
+import { FiletreeModule } from "./filetree";
+import { Emitter } from "../common/emitter";
 
 // https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor-api-basics
 
@@ -51,6 +53,12 @@ export class EditorsModule /* implements Module */ {
   menubar: MenubarModule;
   fs: FSModule;
   logging: LoggingModule;
+  filetree: FiletreeModule;
+
+  events: Emitter<{
+    docSavedChanged: (doc: DocInfo) => void;
+    docSet: (doc: DocInfo) => void;
+  }> = new Emitter();
 
   confirmCloseModal: Modal;
 
@@ -66,6 +74,7 @@ export class EditorsModule /* implements Module */ {
     this.menubar = app.modules.menubar as MenubarModule;
     this.fs = app.modules.fs as FSModule;
     this.logging = app.modules.logging as LoggingModule;
+    this.filetree = app.modules.filetree as FiletreeModule;
 
     this.confirmCloseModal = new Modal({
       container: this.app.element,
@@ -80,7 +89,14 @@ export class EditorsModule /* implements Module */ {
 
     this.element.appendChild(nothingHere);
 
-    // todo: hook methods to fs events
+    // hook methods to the rest of the app
+
+    this.filetree.events.on("selected", (path: string) => {
+      this.logging.info("editors: load path", path);
+      this.open(path).then(() => {
+        this.logging.info("editors: loaded path", path);
+      });
+    });
   }
 
   registerEditor(kind: string, provider: EditorProvider) {
@@ -91,19 +107,26 @@ export class EditorsModule /* implements Module */ {
     this.providers.push(provider);
   }
 
+  // wrapper so that we can hook events
+  protected setCurrentDocument(doc?: DocInfo) {
+    this.currentDocument = doc;
+    this.events.emit("docSet", doc);
+  }
+
   // open button
-  async open() {
+  async open(path: string) {
     // use fs.dialogOpen
     const willClose = await this.close();
     if (!willClose) {
       return;
     }
 
-    const path = await this.fs.dialogOpen({
-      directory: false,
-    });
-
-    if (!path) return;
+    if (!path) {
+      const maybePath = await this.fs.dialogOpen({
+        directory: false,
+      });
+      if (!maybePath) return;
+    }
 
     await this.load(path);
   }
@@ -125,11 +148,11 @@ export class EditorsModule /* implements Module */ {
 
     this.clear();
 
-    this.currentDocument = {
+    this.setCurrentDocument({
       name: "Untitled",
       // no path
       saved: false,
-    };
+    });
 
     const editor = provider.createNewEditor();
     this.currentEditor = editor;
@@ -169,6 +192,7 @@ export class EditorsModule /* implements Module */ {
     }
 
     this.currentDocument.saved = true;
+    this.events.emit("docSavedChanged", this.currentDocument);
     return true;
   }
 
@@ -176,26 +200,31 @@ export class EditorsModule /* implements Module */ {
   // returns a boolean whether it;s confirmed and anyone pending can
   // continue
   async close(): Promise<boolean> {
-    this.logging.info("close");
+    this.logging.info("close", this.currentDocument, this.currentEditor);
     if (!this.currentEditor || !this.currentDocument) return true;
+    this.logging.info("close: has editor and document");
 
     if (!this.currentDocument.path) {
+      this.logging.info("close: doc has no path");
       // no path, therefore unsaved
       // popup save as
       // if cancelled, abort
       if (await this.save()) {
+        this.logging.info("close: saved");
         await this.cleanup();
         return true;
       } else {
+        this.logging.info("close: unsaved");
         return false;
       }
     } else if (!this.currentDocument.saved) {
+      this.logging.info("close: doc has path, but not saved");
       // has path, but unsaved
       // would you like to save?
 
       switch (await this.confirmCloseModal.prompt()) {
         case "save":
-          this.logging.info("modal: save");
+          this.logging.info("close modal: save");
           if (await this.save()) {
             await this.cleanup();
             return true;
@@ -203,14 +232,15 @@ export class EditorsModule /* implements Module */ {
             return false;
           }
         case "cancel":
-          this.logging.info("modal: cancel");
+          this.logging.info("close modal: cancel");
           return false;
         case "dontsave":
-          this.logging.info("modal: donstave");
+          this.logging.info("close modal: donstave");
           await this.cleanup();
           return true;
       }
     } else {
+      this.logging.info("close: doc has path, is saved");
       // has path, saved
       await this.cleanup();
       return true;
@@ -222,7 +252,7 @@ export class EditorsModule /* implements Module */ {
   protected async cleanup() {
     this.logging.info("cleanup");
     if (this.currentDocument) {
-      delete this.currentDocument;
+      this.setCurrentDocument(undefined);
     }
     if (this.currentEditor) {
       await this.currentEditor.cleanup();
@@ -242,8 +272,10 @@ export class EditorsModule /* implements Module */ {
   protected makeContext(): EditorContext {
     return {
       updateEdited: () => {
-        if (this.currentDocument) this.currentDocument.saved = false;
-        this.logging.info("update edited");
+        if (this.currentDocument) {
+          this.currentDocument.saved = false;
+          this.events.emit("docSavedChanged", this.currentDocument);
+        }
       },
     };
   }
@@ -271,11 +303,11 @@ export class EditorsModule /* implements Module */ {
     }
 
     if (selectedEditor) {
-      this.currentDocument = {
+      this.setCurrentDocument({
         name: "", //todo: get path name
         saved: true,
         path,
-      };
+      });
 
       this.currentEditor = selectedEditor;
       this.element.innerHTML = "";

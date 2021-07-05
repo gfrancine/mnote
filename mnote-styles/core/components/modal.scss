@@ -4,7 +4,7 @@
   .modal-overlay {
     width: 100vw;
     height: 100vh;
-    background: rgba(map.get($theme, "bg-dim"), 64);
+    background: rgba(map.get($theme, "bg-dim"), 0.3);
     position: fixed;
     top:0;
     left:0;
