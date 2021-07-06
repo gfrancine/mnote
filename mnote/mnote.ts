@@ -18,6 +18,7 @@ import { el } from "./common/elbuilder";
 import { FiletreeModule } from "./modules/filetree";
 import { Modal } from "./components/modal";
 import { ModalButton } from "./modules/types";
+import { getPathParent } from "./common/util/path";
 
 export class Mnote implements Type {
   options: MnoteOptions;
@@ -44,21 +45,59 @@ export class Mnote implements Type {
 
   async startup() {
     const fs = new FSModule(this, this.options.fs);
-    if (this.options.startDir && await fs.isDir(this.options.startDir)) {
-      this.directory = this.options.startDir;
+
+    const ifStartFile = async () => {
+      if (await fs.isFile(this.options.startFile)) {
+        // get the parent dir path
+        const dir = getPathParent(this.options.startFile);
+        this.directory = dir;
+      } else {
+        // default to cwd, inform the user
+        this.directory = await fs.getCurrentDir();
+        const button: ModalButton = {
+          text: "OK",
+          command: "",
+          kind: "emphasis",
+        };
+        new Modal({
+          container: this.element,
+          message:
+            `Oops - we couldn't find the file "${this.options.startFile}". Try relaunching the app.`,
+          buttons: [button],
+        }).prompt();
+      }
+    }
+
+    if (this.options.startDir) {
+      // user provided a dir
+      // verify that it's a directory
+      if (await fs.isDir(this.options.startDir)) {
+        // open it
+        this.directory = this.options.startDir;
+      } else if (this.options.startFile) {
+        // can't open dir, but a start file is provided
+        await ifStartFile()
+      } else {
+        // default to cwd and inform the user with a modal
+        this.directory = await fs.getCurrentDir();
+        const button: ModalButton = {
+          text: "OK",
+          command: "",
+          kind: "emphasis",
+        };
+        new Modal({
+          container: this.element,
+          message:
+            `Oops - we couldn't find the directory "${this.options.startDir}". Try relaunching the app.`,
+          buttons: [button],
+        }).prompt();
+      }
+    } else if (this.options.startFile) {
+      // a start file is provided
+      await ifStartFile()
     } else {
+      // default to cwd
       this.directory = await fs.getCurrentDir();
-      const button: ModalButton = {
-        text: "OK",
-        command: "",
-        kind: "emphasis",
-      };
-      new Modal({
-        container: this.element,
-        message:
-          `Oops - we couldn't find the directory for "${this.options.startDir}". Try relaunching the app.`,
-        buttons: [button],
-      }).prompt();
     }
 
     this
