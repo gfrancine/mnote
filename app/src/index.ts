@@ -4,7 +4,7 @@ import "../../mnote-styles/light.scss";
 
 (async () => {
   const app = new Mnote("#root", {
-    startFile: "D:\\Notes\\written\\sample.md",
+    startPath: "D:\\Notes\\written\\sample.md",
     fs: new FS(),
   });
 

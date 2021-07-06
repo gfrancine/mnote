@@ -23,8 +23,7 @@ export type Mnote = {
 // 3. modules: if they don't receive the argument, mock all the
 //    functionality
 export type MnoteOptions = {
-  startFile?: string; //todo
-  startDir?: string;
+  startPath?: string;
   fs?: FsInteropModule;
   isProduction?: boolean;
 };

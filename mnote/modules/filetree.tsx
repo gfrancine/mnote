@@ -22,7 +22,7 @@ export class FiletreeModule {
   selectedFile?: string;
   tree?: FileTreeNodeWithChildren;
 
-  constructor(app: Mnote) {
+  constructor(app: Mnote, startFile?: string) {
     this.element = el("div")
       .class("filetree-container")
       .element;
@@ -37,6 +37,8 @@ export class FiletreeModule {
     this.ctxmenu.addSectionReducer(ctxmenuReducer);
 
     this.layout.mountToFiletree(this.element);
+
+    if (startFile) this.selectedFile = startFile;
 
     this.fs.readDir(app.directory) // replace with watcher?
       .then((tree) => {

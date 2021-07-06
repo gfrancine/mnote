@@ -92,6 +92,15 @@ export class EditorsModule /* implements Module */ {
 
     // hook methods to the rest of the app
 
+    if (this.filetree.selectedFile) {
+      this.open(this.filetree.selectedFile).then(() => {
+        this.logging.info(
+          "editors: loaded start file path from filetree",
+          this.filetree.selectedFile,
+        );
+      });
+    }
+
     this.filetree.events.on("selected", (path: string) => {
       this.logging.info("editors: load path", path);
       this.open(path).then(() => {

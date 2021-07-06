@@ -44,15 +44,20 @@ export class Mnote implements Type {
   }
 
   async startup() {
-    const fs = new FSModule(this, this.options.fs);
+    // initialize with the startpath option
 
-    const ifStartFile = async () => {
-      if (await fs.isFile(this.options.startFile)) {
-        // get the parent dir path
-        const dir = getPathParent(this.options.startFile);
+    const fs = new FSModule(this, this.options.fs);
+    const startPath = this.options.startPath;
+    let startFile: string | undefined;
+
+    if (startPath) {
+      if (await fs.isDir(startPath)) {
+        this.directory = startPath;
+      } else if (await fs.isFile(startPath)) {
+        startFile = startPath;
+        const dir = getPathParent(startPath);
         this.directory = dir;
       } else {
-        // default to cwd, inform the user
         this.directory = await fs.getCurrentDir();
         const button: ModalButton = {
           text: "OK",
@@ -62,43 +67,15 @@ export class Mnote implements Type {
         new Modal({
           container: this.element,
           message:
-            `Oops - we couldn't find the file "${this.options.startFile}". Try relaunching the app.`,
+            `Oops - we couldn't find the path "${startPath}". Try relaunching the app.`,
           buttons: [button],
         }).prompt();
       }
-    }
-
-    if (this.options.startDir) {
-      // user provided a dir
-      // verify that it's a directory
-      if (await fs.isDir(this.options.startDir)) {
-        // open it
-        this.directory = this.options.startDir;
-      } else if (this.options.startFile) {
-        // can't open dir, but a start file is provided
-        await ifStartFile()
-      } else {
-        // default to cwd and inform the user with a modal
-        this.directory = await fs.getCurrentDir();
-        const button: ModalButton = {
-          text: "OK",
-          command: "",
-          kind: "emphasis",
-        };
-        new Modal({
-          container: this.element,
-          message:
-            `Oops - we couldn't find the directory "${this.options.startDir}". Try relaunching the app.`,
-          buttons: [button],
-        }).prompt();
-      }
-    } else if (this.options.startFile) {
-      // a start file is provided
-      await ifStartFile()
     } else {
-      // default to cwd
       this.directory = await fs.getCurrentDir();
     }
+
+    // register the modules
 
     this
       .addModule("logging", new LoggingModule(this))
@@ -107,9 +84,11 @@ export class Mnote implements Type {
       .addModule("keyboard", new InputModule(this))
       .addModule("layout", new LayoutModule(this))
       .addModule("ctxmenu", new CtxmenuModule(this))
-      .addModule("filetree", new FiletreeModule(this))
+      .addModule("filetree", new FiletreeModule(this, startFile))
       .addModule("menubar", new MenubarModule(this))
       .addModule("editors", new EditorsModule(this));
+
+    // register the extensions
 
     (this.modules.extensions as ExtensionsModule)
       .add(new PlaintextExtension(this));
