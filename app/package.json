@@ -4,7 +4,7 @@
   "scripts": {
     "build": "rmdir dist /s /q && mkdir dist && Xcopy public dist /i /s /e /y && node build.js",
     "serve": "npm run build && serve dist --no-clipboard",
-    "start": "npm run build && npm run tauri -- build --debug && run",
+    "start": "npm run build && npm run tauri dev && run",
     "tauri": "tauri"
   },
   "devDependencies": {

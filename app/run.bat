@@ -1,1 +1,1 @@
-src-tauri\target\debug\Mnote "D:/Notes"
+src-tauri\target\debug\app "D:/Notes"
