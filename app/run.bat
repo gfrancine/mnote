@@ -1,1 +1,1 @@
-src-tauri\target\debug\Mnote "tauri.txt dest.txt"
+src-tauri\target\debug\Mnote "D:/Notes"

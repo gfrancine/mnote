@@ -1,23 +1,16 @@
-import { EditorsModule, Mnote } from "../../mnote";
+import { Mnote } from "../../mnote";
 import { FS } from "./fs";
+import { invoke } from "@tauri-apps/api/tauri";
 import "../../mnote-styles/light.scss";
-import * as cli from "@tauri-apps/api/cli";
-cli.getMatches().then(console.log);
-
-console.log("hey");
 
 (async () => {
-  console.log("YoO");
-  const matches = await cli.getMatches();
-  let startPath: string | undefined;
-  console.log("YO", matches);
+  const args = await invoke("get_args");
+  const startPath = args[1];
 
   const app = new Mnote("#root", {
-    startPath: "D:\\Notes\\written\\sample.md",
+    startPath,
     fs: new FS(),
   });
 
   await app.startup();
-
-  // (app.modules.editors as EditorsModule).newEditor("plaintext");
 })();

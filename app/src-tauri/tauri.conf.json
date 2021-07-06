@@ -10,18 +10,6 @@
     "beforeBuildCommand": ""
   },
   "tauri": {
-    "cli": {
-      "args": [
-        {
-          "name": "source",
-          "index": 1
-        },
-        {
-          "name": "destination",
-          "index": 2
-        }
-      ]
-    },
     "bundle": {
       "active": true,
       "targets": "all",
