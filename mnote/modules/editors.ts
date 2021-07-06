@@ -15,6 +15,7 @@ import { Modal } from "../components/modal";
 import { FiletreeModule } from "./filetree";
 import { Emitter } from "../common/emitter";
 import { getPathName } from "../common/util/path";
+import { SystemModule } from "./system";
 
 // https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor-api-basics
 
@@ -44,7 +45,7 @@ export class EditorsModule {
   constructor(app: Mnote)
 
   protected hookToMenubar() {
-  protected hookToInputs() {
+  protected hookToSystem() {
   protected hookToFiletree() {
 
   registerEditor(kind: string, provider: EditorProvider) {
@@ -65,6 +66,7 @@ export class EditorsModule /* implements Module */ {
   app: Mnote;
   menubar: MenubarModule;
   fs: FSModule;
+  system: SystemModule;
   logging: LoggingModule;
   filetree: FiletreeModule;
 
@@ -86,6 +88,7 @@ export class EditorsModule /* implements Module */ {
     this.app = app;
     this.menubar = app.modules.menubar as MenubarModule;
     this.fs = app.modules.fs as FSModule;
+    this.system = app.modules.system as SystemModule;
     this.logging = app.modules.logging as LoggingModule;
     this.filetree = app.modules.filetree as FiletreeModule;
 
@@ -106,7 +109,7 @@ export class EditorsModule /* implements Module */ {
     // hook methods to the rest of the app
 
     this.hookToMenubar();
-    this.hookToInputs();
+    this.hookToSystem();
     this.hookToFiletree();
   }
 
@@ -169,42 +172,33 @@ export class EditorsModule /* implements Module */ {
     this.menubar.addSectionReducer(menubarReducer);
   }
 
-  protected hookToInputs() {
+  protected hookToSystem() {
     // hotkeys
-
-    //todo: make hotkeys work
-    /*
-    this.inputs.hotkeys("ctrl+o", {
-      element: this.app.element as HTMLElement
-    }, (e: KeyboardEvent) => {
-      this.logging.info("editor keys: ctrl o")
-      e.preventDefault();
+    this.system.registerShortcut("CmdOrControl+O", () => {
+      this.logging.info("editor keys: ctrl o");
       this.open();
     });
 
-    this.inputs.hotkeys("ctrl+s", (e: KeyboardEvent) => {
-      this.logging.info("editor keys: ctrl s")
+    this.system.registerShortcut("CmdOrControl+S", () => {
+      this.logging.info("editor keys: ctrl s");
       if (this.currentDocument) {
-        e.preventDefault();
         this.save();
       }
     });
 
-    this.inputs.hotkeys("ctrl+shift+s", (e: KeyboardEvent) => {
-      this.logging.info("editor keys: ctrl shift s")
+    this.system.registerShortcut("CmdOrControl+Shift+S", () => {
+      this.logging.info("editor keys: ctrl shift s");
       if (this.currentDocument) {
-        e.preventDefault();
         this.saveAs();
       }
     });
 
-    this.inputs.hotkeys("ctrl+w", (e: KeyboardEvent) => {
-      this.logging.info("editor keys: ctrl w")
+    this.system.registerShortcut("CmdOrControl+W", () => {
+      this.logging.info("editor keys: ctrl w");
       if (this.currentDocument) {
-        e.preventDefault();
         this.close();
       }
-    });*/
+    });
   }
 
   protected hookToFiletree() {
