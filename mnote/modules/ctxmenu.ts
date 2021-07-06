@@ -18,17 +18,18 @@ export class CtxmenuModule {
 
   constructor(app: Mnote) {
     this.app = app;
+
+    const getSections = (ctx: Context) => {
+      return this.reducers.map((reducer) => {
+        const section = reducer(ctx);
+        if (section) return section;
+      });
+    };
+
     this.ctxmenu = new ContextMenu(
       app.element,
       [(app.modules.layout as LayoutModule).contents],
-      (ctx: Context) => {
-        const buttons: MenuItem[][] = [];
-        this.reducers.forEach((reducer) => {
-          const section = reducer(ctx);
-          if (section) buttons.push(section);
-        });
-        return buttons;
-      },
+      getSections,
     );
   }
 

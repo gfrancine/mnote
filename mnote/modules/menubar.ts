@@ -6,6 +6,8 @@ import { LoggingModule } from "./logging";
 
 // https://quilljs.com/docs/modules/toolbar/
 
+type SectionReducer = () => MenuItem[];
+
 export class MenubarModule /* implements Module */ {
   layout: LayoutModule;
   logging: LoggingModule;
@@ -26,6 +28,7 @@ export class MenubarModule /* implements Module */ {
       },
     ],
   ];
+  menuReducers: SectionReducer[] = [];
   menuCurrent?: Menu;
 
   constructor(app: Mnote) {
@@ -82,13 +85,18 @@ export class MenubarModule /* implements Module */ {
 
     this.hideMenu();
 
+    const buttons = this.menuReducers.map((reducer) => {
+      const section = reducer();
+      if (section) return section;
+    });
+
     const rect = this.element.getBoundingClientRect();
     const menu = new Menu({
       x: rect.right,
       y: rect.bottom,
     }, () => {
       return { top: true, left: false };
-    }, this.menuButtons);
+    }, buttons);
 
     this.menuCurrent = menu;
 
@@ -109,8 +117,7 @@ export class MenubarModule /* implements Module */ {
     }
   }
 
-  setMenubarButtons(buttons: MenuItem[][]) {
-    this.menuButtons = buttons;
+  addSectionReducer() {
   }
 
   setMenubarText(text: string) {
