@@ -10,6 +10,18 @@
     "beforeBuildCommand": ""
   },
   "tauri": {
+    "cli": {
+      "args": [
+        {
+          "name": "source",
+          "index": 1
+        },
+        {
+          "name": "destination",
+          "index": 2
+        }
+      ]
+    },
     "bundle": {
       "active": true,
       "targets": "all",
@@ -54,8 +66,8 @@
     "windows": [
       {
         "title": "Mnote",
-        "width": 800,
-        "height": 600,
+        "width": 1200,
+        "height": 800,
         "resizable": true,
         "fullscreen": false
       }
