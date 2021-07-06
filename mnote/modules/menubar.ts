@@ -90,6 +90,8 @@ export class MenubarModule /* implements Module */ {
       if (section) return section;
     });
 
+    if (buttons.length === 0) return;
+
     const rect = this.element.getBoundingClientRect();
     const menu = new Menu({
       x: rect.right,
@@ -117,7 +119,8 @@ export class MenubarModule /* implements Module */ {
     }
   }
 
-  addSectionReducer() {
+  addSectionReducer(reducer: SectionReducer) {
+    this.menuReducers.push(reducer);
   }
 
   setMenubarText(text: string) {

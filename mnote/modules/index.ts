@@ -1,6 +1,5 @@
 // think of modules as the "services"
 
-export { InputModule } from "./input";
 export { LayoutModule } from "./layout";
 export { ExtensionsModule } from "./extensions";
 export { MenubarModule } from "./menubar";

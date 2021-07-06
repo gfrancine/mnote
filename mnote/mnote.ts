@@ -7,7 +7,6 @@ import {
   EditorsModule,
   ExtensionsModule,
   FSModule,
-  InputModule,
   LayoutModule,
   LoggingModule,
   MenubarModule,
@@ -81,7 +80,6 @@ export class Mnote implements Type {
       .addModule("logging", new LoggingModule(this))
       .addModule("fs", fs)
       .addModule("extensions", new ExtensionsModule(this))
-      .addModule("keyboard", new InputModule(this))
       .addModule("layout", new LayoutModule(this))
       .addModule("ctxmenu", new CtxmenuModule(this))
       .addModule("filetree", new FiletreeModule(this, startFile))

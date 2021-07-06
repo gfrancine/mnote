@@ -1,4 +1,4 @@
-import { Mnote /* , Module */ } from "../common/types";
+import { MenuItem, Mnote /* , Module */ } from "../common/types";
 import { el } from "../common/elbuilder";
 import { LayoutModule } from "./layout";
 import {
@@ -14,6 +14,7 @@ import { LoggingModule } from "./logging";
 import { Modal } from "../components/modal";
 import { FiletreeModule } from "./filetree";
 import { Emitter } from "../common/emitter";
+import { getPathName } from "../common/util/path";
 
 // https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor-api-basics
 
@@ -27,25 +28,37 @@ const nothingHere = el("div")
 // no other component can ever access the editor object without going
 // here
 
-/*
+/* outline ( annotations can be found in the actual code )
 
-flows
-open: user clicks open > this.open(), get path > this.load(path) > check for editor
-      > create editor > statup editor > load editor(path) > end
-open: user clicks open > this.open(), no path > end
+export class EditorsModule {
+  element: HTMLElement;
+  events: Emitter<
+  confirmCloseModal: Modal;
 
-save: user clicks save > this.save > if file, editor.save(path) > mark doc as saved > end
-      > else open dialog
-        > get path > editor.save(path) > mark doc as saved > update doc name > end
-        > no path > end
+  providers: EditorProvider[] = [];
+  providerKinds: Record<string, EditorProvider> = {};
 
-close: user clicks close
-    > doc is untitled? > save flow
-    > doc is unsaved > would you like to save? > if yes, save flow end > else cancel
-    > doc is saved > editor.save(path)
-  > this.cleanup() > cleanup editor
+  currentEditor?: Editor;
+  currentDocument?: DocInfo;
 
-*/
+  constructor(app: Mnote)
+
+  protected hookToMenubar() {
+  protected hookToInputs() {
+  protected hookToFiletree() {
+
+  registerEditor(kind: string, provider: EditorProvider) {
+  protected setCurrentDocument(doc?: DocInfo) {
+  async open(path?: string) {
+  async newEditor(kind: string) {d)
+  async saveAs(): Promise<boolean> {
+  async save(): Promise<boolean> {
+  async close(): Promise<boolean> {
+  protected async cleanup() {
+  protected clear() {
+  protected makeContext(): EditorContext {
+  protected async load(path: string) {
+} */
 
 export class EditorsModule /* implements Module */ {
   element: HTMLElement;
@@ -57,7 +70,7 @@ export class EditorsModule /* implements Module */ {
 
   events: Emitter<{
     docSavedChanged: (doc: DocInfo) => void;
-    docSet: (doc: DocInfo) => void;
+    docSet?: (doc: DocInfo) => void;
   }> = new Emitter();
 
   confirmCloseModal: Modal;
@@ -92,6 +105,110 @@ export class EditorsModule /* implements Module */ {
 
     // hook methods to the rest of the app
 
+    this.hookToMenubar();
+    this.hookToInputs();
+    this.hookToFiletree();
+  }
+
+  protected hookToMenubar() {
+    // update the menubar title
+    const updateMenubarTitle = (doc?: DocInfo) => {
+      if (doc) {
+        this.menubar.setMenubarText(
+          (doc.saved ? "" : "*") + doc.name,
+        );
+      } else {
+        this.menubar.setMenubarText("");
+      }
+    };
+
+    this.events.on("docSavedChanged", updateMenubarTitle);
+    this.events.on("docSet", updateMenubarTitle);
+
+    // menubar reducer
+    const menubarReducer = () => {
+      const buttons = [];
+
+      buttons.push({
+        name: "Open",
+        shortcut: "Ctrl+O",
+        click: () => {
+          this.open();
+        },
+      });
+
+      if (this.currentDocument) {
+        buttons.push({
+          name: "Save",
+          shortcut: "Ctrl+S",
+          click: () => {
+            this.save();
+          },
+        });
+
+        buttons.push({
+          name: "Save As",
+          shortcut: "Ctrl+Shift+S",
+          click: () => {
+            this.saveAs();
+          },
+        });
+
+        buttons.push({
+          name: "Close",
+          shortcut: "CTRL+W",
+          click: () => {
+            this.close();
+          },
+        });
+      }
+
+      return buttons;
+    };
+
+    this.menubar.addSectionReducer(menubarReducer);
+  }
+
+  protected hookToInputs() {
+    // hotkeys
+
+    //todo: make hotkeys work
+    /*
+    this.inputs.hotkeys("ctrl+o", {
+      element: this.app.element as HTMLElement
+    }, (e: KeyboardEvent) => {
+      this.logging.info("editor keys: ctrl o")
+      e.preventDefault();
+      this.open();
+    });
+
+    this.inputs.hotkeys("ctrl+s", (e: KeyboardEvent) => {
+      this.logging.info("editor keys: ctrl s")
+      if (this.currentDocument) {
+        e.preventDefault();
+        this.save();
+      }
+    });
+
+    this.inputs.hotkeys("ctrl+shift+s", (e: KeyboardEvent) => {
+      this.logging.info("editor keys: ctrl shift s")
+      if (this.currentDocument) {
+        e.preventDefault();
+        this.saveAs();
+      }
+    });
+
+    this.inputs.hotkeys("ctrl+w", (e: KeyboardEvent) => {
+      this.logging.info("editor keys: ctrl w")
+      if (this.currentDocument) {
+        e.preventDefault();
+        this.close();
+      }
+    });*/
+  }
+
+  protected hookToFiletree() {
+    // when filetree selects from startPath
     if (this.filetree.selectedFile) {
       this.open(this.filetree.selectedFile).then(() => {
         this.logging.info(
@@ -101,6 +218,7 @@ export class EditorsModule /* implements Module */ {
       });
     }
 
+    // when a filetree file gets selected
     this.filetree.events.on("selected", (path: string) => {
       this.logging.info("editors: load path", path);
       this.open(path).then(() => {
@@ -109,6 +227,7 @@ export class EditorsModule /* implements Module */ {
     });
   }
 
+  /** Register an editor provider */
   registerEditor(kind: string, provider: EditorProvider) {
     if (this.providerKinds[kind]) {
       throw new Error(`Editor of kind "${kind}" already exists!`);
@@ -124,7 +243,7 @@ export class EditorsModule /* implements Module */ {
   }
 
   // open button
-  async open(path: string) {
+  async open(path?: string) {
     // use fs.dialogOpen
     const willClose = await this.close();
     if (!willClose) {
@@ -175,12 +294,19 @@ export class EditorsModule /* implements Module */ {
     this.logging.info("save as");
     if (!this.currentEditor || !this.currentDocument) return true;
 
-    const newPath = await this.fs.dialogSave({});
+    const newPath = await this.fs.dialogSave({
+      // initialPath: dir,
+    });
+
     this.logging.info("new path", newPath);
     if (!newPath) return false;
 
-    this.currentDocument.path = newPath;
-    this.currentDocument.name = ""; // todo: path name
+    this.setCurrentDocument({
+      path: newPath,
+      name: getPathName(newPath),
+      saved: true,
+    });
+
     await this.currentEditor.save(this.currentDocument.path);
     return true;
   }
@@ -261,15 +387,15 @@ export class EditorsModule /* implements Module */ {
   // and the container element, append an empty placeholder
   protected async cleanup() {
     this.logging.info("cleanup");
-    if (this.currentDocument) {
-      this.setCurrentDocument(undefined);
-    }
     if (this.currentEditor) {
       await this.currentEditor.cleanup();
       delete this.currentEditor;
     }
     this.clear();
     this.element.appendChild(nothingHere);
+    if (this.currentDocument) {
+      this.setCurrentDocument(undefined);
+    }
   }
 
   // force clear element
@@ -314,7 +440,7 @@ export class EditorsModule /* implements Module */ {
 
     if (selectedEditor) {
       this.setCurrentDocument({
-        name: "", //todo: get path name
+        name: getPathName(path),
         saved: true,
         path,
       });
