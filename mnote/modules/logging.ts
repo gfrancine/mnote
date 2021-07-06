@@ -1,11 +1,19 @@
 import { Mnote /* , Module */ } from "../common/types";
 
 export class LoggingModule /* implements Module */ {
-  constructor(_app: Mnote) {}
-  // todo: disable in production
+  enabled: boolean = true;
+
+  constructor(app: Mnote) {
+    if (app.options.isProduction) {
+      this.enabled = false;
+      this.info = () => {};
+    }
+  }
 
   info(...messages: unknown[]) {
-    console.log("[INFO]", ...messages);
+    if (this.enabled) {
+      console.log("[INFO]", ...messages);
+    }
   }
 
   err(...messages: unknown[]) {

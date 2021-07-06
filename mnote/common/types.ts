@@ -5,6 +5,8 @@
 export type Module = unknown;
 
 export type Mnote = {
+  options: MnoteOptions;
+
   element: Element;
 
   directory: string;
@@ -21,9 +23,10 @@ export type Mnote = {
 // 3. modules: if they don't receive the argument, mock all the
 //    functionality
 export type MnoteOptions = {
-  startFile?: string;
+  startFile?: string; //todo
   startDir?: string;
   fs?: FsInteropModule;
+  isProduction?: boolean;
 };
 
 export interface FsInteropModule {
