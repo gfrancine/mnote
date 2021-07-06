@@ -16,6 +16,8 @@ import {
 import { PlaintextExtension } from "./extensions/plaintextEditor";
 import { el } from "./common/elbuilder";
 import { FiletreeModule } from "./modules/filetree";
+import { Modal } from "./components/modal";
+import { ModalButton } from "./modules/types";
 
 export class Mnote implements Type {
   options: MnoteOptions;
@@ -46,9 +48,18 @@ export class Mnote implements Type {
       this.directory = this.options.startDir;
     } else {
       this.directory = await fs.getCurrentDir();
+      const button: ModalButton = {
+        text: "OK",
+        command: "",
+        kind: "emphasis",
+      };
+      new Modal({
+        container: this.element,
+        message:
+          `Oops - we couldn't find the directory for "${this.options.startDir}". Try relaunching the app.`,
+        buttons: [button],
+      }).prompt();
     }
-
-    console.log(this.directory);
 
     this
       .addModule("logging", new LoggingModule(this))

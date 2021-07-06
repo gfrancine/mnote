@@ -49,9 +49,8 @@ function DirNode(props: {
       {name}
     </div>
     <div
-      className={"filetree-dir-children" + (props.visible && expanded
-        ? ""
-        : " hidden")}
+      className={"filetree-dir-children" +
+        (props.visible && expanded ? "" : " hidden")}
     >
       {props.node.children.map((node) =>
         node.children
