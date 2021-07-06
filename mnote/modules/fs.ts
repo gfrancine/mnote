@@ -12,7 +12,7 @@ import {
 export class FSModule implements FsInteropModule {
   fs?: FsInteropModule;
 
-  constructor(_app: Mnote, fs?: FsInteropModule) {
+  constructor(fs?: FsInteropModule) {
     if (fs) this.fs = fs;
   }
 

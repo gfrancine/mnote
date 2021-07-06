@@ -7,3 +7,4 @@ export { EditorsModule } from "./editors";
 export { FSModule } from "./fs";
 export { LoggingModule } from "./logging";
 export { CtxmenuModule } from "./ctxmenu";
+export { SystemModule } from "./system";

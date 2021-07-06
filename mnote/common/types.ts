@@ -25,6 +25,7 @@ export type Mnote = {
 export type MnoteOptions = {
   startPath?: string;
   fs?: FsInteropModule;
+  system?: SystemInteropModule;
   isProduction?: boolean;
 };
 
@@ -82,3 +83,14 @@ export type MenuItem = {
   shortcut?: string;
   click: (e: MouseEvent) => void;
 };
+
+// system module
+
+export interface SystemInteropModule {
+  registerShortcut(
+    shortcut: string,
+    handler: SystemShortcutHandler,
+  ): Promise<void>;
+}
+
+export type SystemShortcutHandler = (shortcut: string) => void;

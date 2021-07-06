@@ -10,6 +10,7 @@ import {
   LayoutModule,
   LoggingModule,
   MenubarModule,
+  SystemModule,
 } from "./modules";
 
 import { PlaintextExtension } from "./extensions/plaintextEditor";
@@ -43,9 +44,11 @@ export class Mnote implements Type {
   }
 
   async startup() {
-    // initialize with the startpath option
+    // setup the interop modules
+    const fs = new FSModule(this.options.fs);
+    const system = new SystemModule(this.options.system);
 
-    const fs = new FSModule(this, this.options.fs);
+    // initialize with the startpath option
     const startPath = this.options.startPath;
     let startFile: string | undefined;
 
@@ -75,10 +78,10 @@ export class Mnote implements Type {
     }
 
     // register the modules
-
     this
       .addModule("logging", new LoggingModule(this))
       .addModule("fs", fs)
+      .addModule("system", system)
       .addModule("extensions", new ExtensionsModule(this))
       .addModule("layout", new LayoutModule(this))
       .addModule("ctxmenu", new CtxmenuModule(this))
@@ -87,7 +90,6 @@ export class Mnote implements Type {
       .addModule("editors", new EditorsModule(this));
 
     // register the extensions
-
     (this.modules.extensions as ExtensionsModule)
       .add(new PlaintextExtension(this));
   }
