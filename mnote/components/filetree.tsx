@@ -3,11 +3,11 @@ import { useMemo, useState } from "preact/hooks";
 import { getPathName } from "../common/util/path";
 import {
   FileTreeNode as Node,
-  FileTreeNodeWithChildren,
   FileTreeNodeWithChildren as NodeWithChildren,
 } from "../common/types";
 
 function FileNode(props: {
+  visible?: boolean;
   node: Node;
   focusedNode?: string; // path of the focused node
   handleFocus: (path: string) => void;
@@ -18,7 +18,8 @@ function FileNode(props: {
 
   return <div
     className={"filetree-item" +
-      (props.focusedNode === props.node.path ? " focused" : "")}
+      (props.focusedNode === props.node.path ? " focused" : "") +
+      (props.visible ? "" : " hidden")}
     onClick={onClick}
   >
     {name}
@@ -26,8 +27,9 @@ function FileNode(props: {
 }
 
 function DirNode(props: {
+  visible?: boolean; // dir is only shown if state is expanded and this boolean
   node: NodeWithChildren;
-  initExpanded?: boolean;
+  initExpanded?: boolean; // is the dir open at initialization?
   focusedNode?: string; // path of the focused node
   handleFocus: (path: string) => void;
 }) {
@@ -41,21 +43,29 @@ function DirNode(props: {
 
   return <div className="filetree-dir">
     <div
-      className="filetree-item"
+      className={"filetree-item" + (props.visible && expanded ? "" : " hidden")}
       onClick={onClick}
     >
       {name}
     </div>
-    <div className="filetree-dir-children">
-      {expanded && props.node.children.map((node) =>
+    <div
+      className={"filetree-dir-children" + (props.visible && expanded
+        ? ""
+        : " hidden")}
+    >
+      {props.node.children.map((node) =>
         node.children
           ? <DirNode
-            node={node as FileTreeNodeWithChildren}
+            visible={expanded}
+            key={node.path}
+            node={node as NodeWithChildren}
             focusedNode={props.focusedNode}
             handleFocus={props.handleFocus}
           />
           : <FileNode
+            visible={expanded}
             node={node}
+            key={node.path}
             focusedNode={props.focusedNode}
             handleFocus={props.handleFocus}
           />
@@ -71,10 +81,12 @@ export default function (props: {
   initFocusedNode?: string; // path of the focused node
   handleFocus: (path: string) => void;
 }) {
-  console.log("filetree component", props);
+  // console.log("filetree component", props);
 
   return <div className="filetree-main">
     <DirNode
+      visible={true}
+      key={props.node.path}
       initExpanded={true}
       node={props.node}
       focusedNode={props.initFocusedNode}

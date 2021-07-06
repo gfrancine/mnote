@@ -16,6 +16,10 @@
     font-family: map.get($theme, "font-main");
     background: map.get($theme, "bg-secondary");
 
+    .hidden {
+      display: none;
+    }
+
     .filetree-item {
       box-sizing: border-box;
       cursor: pointer;

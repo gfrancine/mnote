@@ -48,6 +48,8 @@ export class Mnote implements Type {
       this.directory = await fs.getCurrentDir();
     }
 
+    console.log(this.directory);
+
     this
       .addModule("logging", new LoggingModule(this))
       .addModule("fs", fs)
