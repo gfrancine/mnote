@@ -1,6 +1,9 @@
 @use "core";
 @use "open-color" as oc;
 
+// todo: turn this into an array of only variable names
+// so javascript can programatically initialize them?
+
 $theme: (
   "font-main": "Lato",
   "font-monospace": "Fira Mono",
