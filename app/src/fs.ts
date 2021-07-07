@@ -1,9 +1,13 @@
 import { FileItem, FileItemWithChildren, FsInteropModule } from "../../mnote";
+import { invoke } from "@tauri-apps/api/tauri";
+import { Emitter } from "../../mnote/common/emitter";
 import * as fs from "@tauri-apps/api/fs";
 import * as path from "@tauri-apps/api/path";
 import * as dialog from "@tauri-apps/api/dialog";
 
 export class FS implements FsInteropModule {
+  protected watcher = new Watcher(); // at the bottom of the file
+
   async writeTextFile(path: string, contents: string): Promise<void> {
     return fs.writeFile({
       path,
@@ -118,5 +122,66 @@ export class FS implements FsInteropModule {
 
   getCurrentDir(): Promise<string> {
     return path.currentDir();
+  }
+
+  async watchInit(path: string) {
+    if (this.watcher.isInitialized()) {
+      throw new Error("watcher is alerady initialized");
+    }
+    await this.watcher.init(path);
+  }
+
+  onWatchEvent(handler: () => void | Promise<void>) {
+    this.watcher.onEvent(handler);
+  }
+}
+
+// the plan is to use the notify crate and propagate events
+// through the app object but what's in the docs isn't released
+// when the channel api is stable, this will be moved to rust
+
+type WatcherDidChangeResult = {
+  didChange: boolean;
+  newFiles: Record<string, true>;
+};
+
+export class Watcher {
+  protected INTERVAL = 1000;
+
+  protected intervalID: NodeJS.Timer;
+  protected lastFiles: Record<string, true> = {};
+  protected emitter = new Emitter<{
+    event: () => void | Promise<void>;
+  }>();
+
+  protected initialized: boolean = false;
+
+  isInitialized() {
+    return this.initialized;
+  }
+
+  async init(path: string) {
+    this.initialized = true;
+
+    const update = () => {
+      invoke("dir_did_change", {
+        path,
+        files: this.lastFiles,
+      }).then((result: WatcherDidChangeResult) => {
+        this.lastFiles = result.newFiles;
+        if (result.didChange) {
+          this.emitter.emit("event");
+        }
+      }).catch((err) => {
+        console.log("rust err", err);
+        clearInterval(this.intervalID);
+      });
+    };
+
+    this.intervalID = setInterval(update, this.INTERVAL);
+  }
+
+  onEvent(handler: () => void | Promise<void>) {
+    this.emitter.on("event", handler);
   }
 }

@@ -129,7 +129,7 @@ export class EditorsModule /* implements Module */ {
     this.events.on("docSavedChanged", updateMenubarTitle);
     this.events.on("docSet", updateMenubarTitle);
 
-    const cmdOrCtrl = this.system.USES_CMD? "Cmd" : "Ctrl" ;
+    const cmdOrCtrl = this.system.USES_CMD ? "Cmd" : "Ctrl";
     this.logging.info("command or ctrl?", cmdOrCtrl);
 
     // menubar reducer

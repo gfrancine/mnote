@@ -7,7 +7,7 @@ import { LayoutModule } from "./layout";
 import { CtxmenuModule } from "./ctxmenu";
 import { LoggingModule } from "./logging";
 
-import { h, render, VNode } from "preact";
+import { h, render } from "preact";
 import FileTree from "../components/filetree";
 
 export class FiletreeModule {
@@ -21,8 +21,11 @@ export class FiletreeModule {
   }> = new Emitter();
   selectedFile?: string;
   tree?: FileTreeNodeWithChildren;
+  app: Mnote;
 
   constructor(app: Mnote, startFile?: string) {
+    this.app = app;
+
     this.element = el("div")
       .class("filetree-container")
       .element;
@@ -40,25 +43,22 @@ export class FiletreeModule {
 
     if (startFile) this.selectedFile = startFile;
 
-    this.fs.readDir(app.directory) // replace with watcher?
-      .then((tree) => {
-        if (tree.children) {
-          this.setFileTree(tree as FileTreeNodeWithChildren);
-        } else {
-          this.logging.err(
-            "filetree read directory - no children, Dir:",
-            app.directory,
-          );
-        }
-      })
-      .catch((err) => {
-        this.logging.err(
-          "filetree read directory - failure, Dir:",
-          app.directory,
-          "Err:",
-          err,
-        );
-      });
+    this.fs.onWatchEvent(() => this.refreshTree());
+
+    this.refreshTree();
+  }
+
+  async refreshTree() {
+    const tree = await this.fs.readDir(this.app.directory); // replace with watcher?
+
+    if (tree.children) {
+      this.setFileTree(tree as FileTreeNodeWithChildren);
+    } else {
+      this.logging.err(
+        "filetree read directory - no children, Dir:",
+        this.app.directory,
+      );
+    }
   }
 
   setFileTree(tree: FileTreeNodeWithChildren) {

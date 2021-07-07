@@ -10,7 +10,7 @@ import {
 // https://tauri.studio/en/docs/api/js/modules/fs
 
 export class FSModule implements FsInteropModule {
-  fs?: FsInteropModule;
+  protected fs?: FsInteropModule;
 
   constructor(fs?: FsInteropModule) {
     if (fs) this.fs = fs;
@@ -95,5 +95,17 @@ export class FSModule implements FsInteropModule {
       return this.fs.getCurrentDir();
     }
     return ".";
+  }
+
+  async watchInit(path: string) {
+    if (this.fs) {
+      return this.fs.watchInit(path);
+    }
+  }
+
+  onWatchEvent(handler: () => void | Promise<void>) {
+    if (this.fs) {
+      return this.fs.onWatchEvent(handler);
+    }
   }
 }

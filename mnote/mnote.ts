@@ -77,6 +77,10 @@ export class Mnote implements Type {
       this.directory = await fs.getCurrentDir();
     }
 
+    // initialize the watcher
+
+    fs.watchInit(this.directory);
+
     // register the modules
     this
       .addModule("logging", new LoggingModule(this))
