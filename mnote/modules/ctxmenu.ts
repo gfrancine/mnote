@@ -20,10 +20,12 @@ export class CtxmenuModule {
     this.app = app;
 
     const getSections = (ctx: Context) => {
-      return this.reducers.map((reducer) => {
+      const sections = [];
+      this.reducers.forEach((reducer) => {
         const section = reducer(ctx);
-        if (section) return section;
+        if (section) sections.push(section);
       });
+      return sections;
     };
 
     this.ctxmenu = new ContextMenu(
