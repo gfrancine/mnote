@@ -129,13 +129,16 @@ export class EditorsModule /* implements Module */ {
     this.events.on("docSavedChanged", updateMenubarTitle);
     this.events.on("docSet", updateMenubarTitle);
 
+    const cmdOrCtrl = this.system.USES_CMD? "Cmd" : "Ctrl" ;
+    this.logging.info("command or ctrl?", cmdOrCtrl);
+
     // menubar reducer
     const menubarReducer = () => {
       const buttons = [];
 
       buttons.push({
         name: "Open",
-        shortcut: "Ctrl+O",
+        shortcut: cmdOrCtrl + "+O",
         click: () => {
           this.open();
         },
@@ -144,7 +147,7 @@ export class EditorsModule /* implements Module */ {
       if (this.currentDocument) {
         buttons.push({
           name: "Save",
-          shortcut: "Ctrl+S",
+          shortcut: cmdOrCtrl + "+S",
           click: () => {
             this.save();
           },
@@ -152,7 +155,7 @@ export class EditorsModule /* implements Module */ {
 
         buttons.push({
           name: "Save As",
-          shortcut: "Ctrl+Shift+S",
+          shortcut: cmdOrCtrl + "+Shift+S",
           click: () => {
             this.saveAs();
           },
@@ -160,7 +163,7 @@ export class EditorsModule /* implements Module */ {
 
         buttons.push({
           name: "Close",
-          shortcut: "CTRL+W",
+          shortcut: cmdOrCtrl + "+W",
           click: () => {
             this.close();
           },

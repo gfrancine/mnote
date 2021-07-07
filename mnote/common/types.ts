@@ -87,6 +87,8 @@ export type MenuItem = {
 // system module
 
 export interface SystemInteropModule {
+  USES_CMD: boolean;
+
   registerShortcut(
     shortcut: string,
     handler: SystemShortcutHandler,

@@ -11,7 +11,7 @@ import "../../mnote-styles/default.scss";
   const app = new Mnote("#root", {
     startPath,
     fs: new FS(),
-    system: new System(),
+    system: await new System().init(),
   });
 
   await app.startup();
