@@ -17,7 +17,7 @@ function FileNode(props: {
   const onClick = () => props.handleFocus(props.node.path);
 
   return <div
-    className={"filetree-item" +
+    className={"filetree-item file" +
       (props.focusedNode === props.node.path ? " focused" : "") +
       (props.visible ? "" : " hidden")}
     onClick={onClick}

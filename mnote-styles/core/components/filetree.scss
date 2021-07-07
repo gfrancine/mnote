@@ -34,6 +34,10 @@
       &:hover {
         background: map.get($theme, "bg-dim");
       }
+
+      &.file {
+        word-break: break-all;
+      }
     }
 
     .filetree-dir-children {
