@@ -19,6 +19,7 @@ import { FiletreeModule } from "./modules/filetree";
 import { Modal } from "./components/modal";
 import { ModalButton } from "./modules/types";
 import { getPathParent } from "./common/util/path";
+import { strings } from "./common/strings";
 
 export class Mnote implements Type {
   options: MnoteOptions;
@@ -68,8 +69,7 @@ export class Mnote implements Type {
         };
         new Modal({
           container: this.element,
-          message:
-            `Oops - we couldn't find the path "${startPath}". Try relaunching the app.`,
+          message: strings.noStartPath(startPath),
           buttons: [button],
         }).prompt();
       }

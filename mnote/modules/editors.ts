@@ -16,6 +16,7 @@ import { FiletreeModule } from "./filetree";
 import { Emitter } from "../common/emitter";
 import { getPathName } from "../common/util/path";
 import { SystemModule } from "./system";
+import { strings } from "../common/strings";
 
 // https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor-api-basics
 
@@ -94,7 +95,7 @@ export class EditorsModule /* implements Module */ {
 
     this.confirmCloseModal = new Modal({
       container: this.app.element,
-      message: "Would you like to save the current document before closing?",
+      message: strings.confirmSaveBeforeClose(),
       buttons: confirmCloseModalButtons, // at the bottom of this file to avoid clutter
     });
 
