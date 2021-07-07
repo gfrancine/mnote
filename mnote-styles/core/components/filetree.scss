@@ -9,12 +9,12 @@
   }
 
   .filetree-main {
+    color: map.get($theme, "sidebar-fg-main");
     padding: 1em .3em 0 calc(5px + .3em); // 5px for gutter
     width: 100%;
     height: 100%;
     box-sizing: border-box;
     font-family: map.get($theme, "font-main");
-    background: map.get($theme, "bg-secondary");
 
     .hidden {
       display: none;
@@ -32,7 +32,7 @@
 
       &.focused,
       &:hover {
-        background: map.get($theme, "bg-dim");
+        background: map.get($theme, "sidebar-bg-hover");
       }
 
       &.file {

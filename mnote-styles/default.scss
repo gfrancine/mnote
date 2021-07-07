@@ -1,5 +1,5 @@
 @use "core";
-@use "open-color" as oc;
+@use "~open-color/open-color" as oc;
 
 // todo: turn this into an array of only variable names
 // so javascript can programatically initialize them?
@@ -20,6 +20,10 @@ $theme: (
 
   "border-main": oc.$oc-gray-3,
   "border-dim": oc.$oc-gray-2,
+
+  "sidebar-bg-main": oc.$oc-gray-1,
+  "sidebar-bg-hover": oc.$oc-gray-5,
+  "sidebar-fg-main": oc.$oc-gray-9,
 
   "btn-main-fg": oc.$oc-gray-9, // buttons, assuming background is bg-main
   "btn-main-fg-hover": oc.$oc-gray-9,
