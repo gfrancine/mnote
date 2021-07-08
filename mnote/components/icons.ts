@@ -3,25 +3,59 @@ import { toHtml } from "../common/util/dom";
 // icons will require a stroke class and a fill class. stroke
 // classes will have the color in the stroke property and so on
 
-export function kebabMenu(
+export type IconsList = typeof icons;
+
+export function createIcon(
+  name: keyof IconsList,
   strokeClass: string,
-  _fillClass: string,
-): HTMLElement {
-  return toHtml(`
+  fillClass: string,
+) {
+  return icons[name](strokeClass, fillClass);
+}
+
+const icons = {
+  //
+  kebabMenu: (
+    strokeClass: string,
+    _fillClass: string,
+  ) =>
+    toHtml(`
     <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
       <title>ionicons-v5-f</title>
       <circle cx="256" cy="256" r="32" class="${strokeClass}" style="fill:none;stroke-miterlimit:10;stroke-width:32px"/>
       <circle cx="256" cy="416" r="32" class="${strokeClass}" style="fill:none;stroke-miterlimit:10;stroke-width:32px"/>
       <circle cx="256" cy="96" r="32" class="${strokeClass}" style="fill:none;stroke-miterlimit:10;stroke-width:32px"/>
     </svg>
-  `);
-}
-
-export function openedFolder(
-  strokeClass: string,
-  _fillClass: string,
-): HTMLElement {
-  return toHtml(`
+  `),
+  //
+  closedFolder: (
+    _strokeClass: string,
+    fillClass: string,
+  ) =>
+    toHtml(`
+    <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" version="1.1">
+      <defs>
+        <path d="M0 0L512 0L512 512L0 512L0 0Z" id="path_1"/>
+        <clipPath id="mask_1">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#path_1"/>
+        </clipPath>
+      </defs>
+      <g id="folder-open-outline-svgrepo-com-Copy">
+        <path d="M0 128L0 56C0 40.536 5.46734 27.3367 16.402 16.402C27.3367 5.46734 40.536 -3.8147e-06 56 7.62939e-06L131.89 0C143.195 0.000282288 153.551 3.13628 162.956 9.408L190.795 27.9672C194.827 30.6556 199.265 31.9999 204.11 32L360 32C375.464 32 388.663 37.4674 399.598 48.402C410.533 59.3367 416 72.536 416 88L416 128C416 132.418 414.438 136.189 411.314 139.314C408.19 142.438 404.418 144 400 144C395.582 144 391.81 142.438 388.686 139.314C385.562 136.189 384 132.418 384 128L384 88C384 81.3726 381.657 75.7157 376.971 71.0294C372.284 66.3431 366.627 64 360 64L204.11 64C192.805 63.9997 182.45 60.864 173.045 54.5928L145.204 36.032C141.173 33.3441 136.735 32.0001 131.89 32L56 32C49.3726 32 43.7157 34.3431 39.0294 39.0294C34.3431 43.7157 32 49.3726 32 56L32 128C32 132.418 30.4379 136.189 27.3137 139.314C24.1895 142.438 20.4183 144 16 144C11.5817 144 7.81048 142.438 4.68629 139.314C1.56209 136.189 -3.8147e-06 132.418 0 128L0 128Z"
+          class="${fillClass}" transform="translate(48 96)" id="Vector" fill-rule="evenodd" stroke="none"/>
+        <path xmlns="http://www.w3.org/2000/svg" d="M32 2.89864e-06Q21.4764 3.04896 13.1421 11.3833Q0 24.5254 0 43.1111L0 241.371C0 253.762 4.3807 264.338 13.1421 273.099C21.9035 281.86 32.4795 286.241 44.87 286.241L371.13 286.241C383.521 286.241 394.096 281.86 402.858 273.099C411.619 264.338 416 253.762 416 241.371L416 43.1111Q416 24.5254 402.858 11.3833C397.302 5.82706 391.016 2.03264 384 4.83332e-06L384 241.371C384 244.925 382.743 247.959 380.23 250.472C377.717 252.985 374.684 254.241 371.13 254.241L44.87 254.241C41.316 254.241 38.2826 252.985 35.7695 250.472C33.2565 247.959 32 244.925 32 241.371L32 2.89864e-06Z"
+          class="${fillClass}" transform="translate(48 161.75885)" id="Vector-Difference" fill-rule="evenodd" stroke="none"/>
+        <path d="M0 0L512 0L512 512L0 512L0 0Z" id="Background" 
+          fill="none" fill-rule="evenodd" stroke="none"/>
+      </g>
+    </svg>
+  `),
+  //
+  openedFolder: (
+    strokeClass: string,
+    _fillClass: string,
+  ) =>
+    toHtml(`
     <svg viewBox="0 0 544 544" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <path d="M0 0L512 0L512 512L0 512L0 0Z" id="path_1" />
@@ -39,39 +73,14 @@ export function openedFolder(
         </g>
       </g>
     </svg>
-  `);
-}
-
-export function closedFolder(
-  strokeClass: string,
-  fillClass: string,
-): HTMLElement {
-  return toHtml(`
-    <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" version="1.1">
-      <defs>
-        <path d="M0 0L512 0L512 512L0 512L0 0Z" id="path_1"/>
-        <clipPath id="mask_1">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#path_1"/>
-        </clipPath>
-      </defs>
-      <g id="folder-open-outline-svgrepo-com-Copy">
-        <path d="M0 128L0 56C0 40.536 5.46734 27.3367 16.402 16.402C27.3367 5.46734 40.536 -3.8147e-06 56 7.62939e-06L131.89 0C143.195 0.000282288 153.551 3.13628 162.956 9.408L190.795 27.9672C194.827 30.6556 199.265 31.9999 204.11 32L360 32C375.464 32 388.663 37.4674 399.598 48.402C410.533 59.3367 416 72.536 416 88L416 128C416 132.418 414.438 136.189 411.314 139.314C408.19 142.438 404.418 144 400 144C395.582 144 391.81 142.438 388.686 139.314C385.562 136.189 384 132.418 384 128L384 88C384 81.3726 381.657 75.7157 376.971 71.0294C372.284 66.3431 366.627 64 360 64L204.11 64C192.805 63.9997 182.45 60.864 173.045 54.5928L145.204 36.032C141.173 33.3441 136.735 32.0001 131.89 32L56 32C49.3726 32 43.7157 34.3431 39.0294 39.0294C34.3431 43.7157 32 49.3726 32 56L32 128C32 132.418 30.4379 136.189 27.3137 139.314C24.1895 142.438 20.4183 144 16 144C11.5817 144 7.81048 142.438 4.68629 139.314C1.56209 136.189 -3.8147e-06 132.418 0 128L0 128Z"
-          class="${fillClass}" transform="translate(48 96)" id="Vector" fill-rule="evenodd" stroke="none"/>
-        <path xmlns="http://www.w3.org/2000/svg" d="M32 2.89864e-06Q21.4764 3.04896 13.1421 11.3833Q0 24.5254 0 43.1111L0 241.371C0 253.762 4.3807 264.338 13.1421 273.099C21.9035 281.86 32.4795 286.241 44.87 286.241L371.13 286.241C383.521 286.241 394.096 281.86 402.858 273.099C411.619 264.338 416 253.762 416 241.371L416 43.1111Q416 24.5254 402.858 11.3833C397.302 5.82706 391.016 2.03264 384 4.83332e-06L384 241.371C384 244.925 382.743 247.959 380.23 250.472C377.717 252.985 374.684 254.241 371.13 254.241L44.87 254.241C41.316 254.241 38.2826 252.985 35.7695 250.472C33.2565 247.959 32 244.925 32 241.371L32 2.89864e-06Z"
-          class="${fillClass}" transform="translate(48 161.75885)" id="Vector-Difference" fill-rule="evenodd" stroke="none"/>
-        <path d="M0 0L512 0L512 512L0 512L0 0Z" id="Background" 
-          fill="none" fill-rule="evenodd" stroke="none"/>
-      </g>
-    </svg>
-  `);
-}
-
-export function add(
-  strokeClass: string,
-  _fillClass: string,
-): HTMLElement {
-  return toHtml(`
-    <svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  `),
+  //
+  add: (
+    strokeClass: string,
+    _fillClass: string,
+  ) =>
+    toHtml(`
+    <svg viewBox="0 0 512 512" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <path d="M0 0L512 0L512 512L0 512L0 0Z" id="path_1" />
         <clipPath id="mask_1">
@@ -88,5 +97,5 @@ export function add(
         </g>
       </g>
     </svg>
-  `);
-}
+  `),
+};

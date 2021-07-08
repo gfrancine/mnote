@@ -8,7 +8,7 @@
 export as namespace Split;
 
 // Module loader
-export = Split;
+export default Split;
 
 declare function Split(
   elements: Array<string | HTMLElement>,

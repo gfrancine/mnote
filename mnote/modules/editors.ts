@@ -17,6 +17,8 @@ import { Emitter } from "../common/emitter";
 import { getPathName } from "../common/util/path";
 import { SystemModule } from "./system";
 import { strings } from "../common/strings";
+import { Menu } from "../components/menu";
+import { SidemenuModule } from "./sidemenu";
 
 // https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor-api-basics
 
@@ -45,6 +47,7 @@ export class EditorsModule {
 
   constructor(app: Mnote)
 
+  protected hookToSidebarMenu() {
   protected hookToMenubar() {
   protected hookToSystem() {
   protected hookToFiletree() {
@@ -69,6 +72,7 @@ export class EditorsModule /* implements Module */ {
   fs: FSModule;
   system: SystemModule;
   logging: LoggingModule;
+  sidemenu: SidemenuModule;
   filetree: FiletreeModule;
 
   events: Emitter<{
@@ -91,6 +95,7 @@ export class EditorsModule /* implements Module */ {
     this.fs = app.modules.fs as FSModule;
     this.system = app.modules.system as SystemModule;
     this.logging = app.modules.logging as LoggingModule;
+    this.sidemenu = app.modules.sidemenu as SidemenuModule;
     this.filetree = app.modules.filetree as FiletreeModule;
 
     this.confirmCloseModal = new Modal({
@@ -109,9 +114,58 @@ export class EditorsModule /* implements Module */ {
 
     // hook methods to the rest of the app
 
+    this.hookToSidebarMenu();
     this.hookToMenubar();
     this.hookToSystem();
     this.hookToFiletree();
+  }
+
+  protected hookToSidebarMenu() {
+    // the "New File" button and menu
+    const button = this.sidemenu.createButton("add");
+    let menu: Menu | undefined;
+
+    const getSections: () => MenuItem[] = () => {
+      const result: MenuItem[] = [];
+      for (const kind in this.providerKinds) {
+        result.push({
+          name: kind,
+          click: () => this.newEditor(kind),
+        });
+      }
+      return result;
+    }
+
+    const hideMenu = () => {
+      if (menu) {
+        menu.cleanup();
+        menu = undefined;
+      }
+    }
+
+    const showMenu = () => {
+      hideMenu();
+
+      const buttonRect = button.getBoundingClientRect();
+
+      menu = new Menu(
+        { x: buttonRect.right, y: buttonRect.top },
+        () => ({ top: false, left: false }),
+        [getSections()],
+      );
+
+      menu.show(this.app.element);
+    };
+
+    button.addEventListener("click", showMenu);
+    document.addEventListener("mousedown", (e) => {
+      if (menu) {
+        const els = document.elementsFromPoint(e.pageX, e.pageY);
+        if (els.indexOf(menu.element) === -1) hideMenu();
+      }
+    });
+
+    this.sidemenu.addButton(button);
   }
 
   protected hookToMenubar() {

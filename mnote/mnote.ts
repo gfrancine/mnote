@@ -11,11 +11,12 @@ import {
   LoggingModule,
   MenubarModule,
   SystemModule,
+  FiletreeModule,
+  SidemenuModule,
 } from "./modules";
 
 import { PlaintextExtension } from "./extensions/plaintextEditor";
 import { el } from "./common/elbuilder";
-import { FiletreeModule } from "./modules/filetree";
 import { Modal } from "./components/modal";
 import { ModalButton } from "./modules/types";
 import { getPathParent } from "./common/util/path";
@@ -89,6 +90,7 @@ export class Mnote implements Type {
       .addModule("extensions", new ExtensionsModule(this))
       .addModule("layout", new LayoutModule(this))
       .addModule("ctxmenu", new CtxmenuModule(this))
+      .addModule("sidemenu", new SidemenuModule(this))
       .addModule("filetree", new FiletreeModule(this, startFile))
       .addModule("menubar", new MenubarModule(this))
       .addModule("editors", new EditorsModule(this));

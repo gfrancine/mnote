@@ -6,7 +6,7 @@ const DOM_PARSER = new DOMParser();
 
 export function toHtml(s: string): HTMLElement {
   const doc = DOM_PARSER.parseFromString(s, "text/html");
-  return doc.body;
+  return doc.body.childNodes[0] as HTMLElement;
 }
 
 // body freezing
