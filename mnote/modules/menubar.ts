@@ -3,6 +3,7 @@ import { LayoutModule } from "./layout";
 import { el } from "../common/elbuilder";
 import { Menu } from "../components/menu";
 import { LoggingModule } from "./logging";
+import { createIcon } from "../components/icons";
 
 // https://quilljs.com/docs/modules/toolbar/
 
@@ -40,7 +41,14 @@ export class MenubarModule /* implements Module */ {
 
     this.menuToggle = el("div")
       .class("menubar-menu-toggle")
-      .inner("svg here")
+      .children(
+        el("div")
+          .class("menubar-icon")
+          .children(
+            createIcon("kebabMenu", "stroke", "fill"),
+          )
+          .element,
+      )
       .on("click", () => {
         if (this.menuCurrent) {
           this.hideMenu();

@@ -34,6 +34,7 @@
         font-size: 13px;
         display:inline-block;
         flex-direction:row;
+        color: map.get($theme, "fg-main");
         padding: .8em;
         margin-left: .5em;
         border-radius: 5px;

@@ -9,6 +9,7 @@
     color: map.get($theme, "fg-dim");
     font-family: map.get($theme, "font-main");
     display: flex;
+    padding: 0 .5em;
     flex-direction: row;
     font-size: 12px;
 
@@ -23,6 +24,17 @@
       height: 100%;
       text-align: right;
       padding-right: .5em;
+    }
+
+    .menubar-icon {
+      height: 100%;
+
+      .fill {
+        fill: map.get($theme, "fg-dim");
+      }
+      .stroke {
+        stroke: map.get($theme, "fg-dim")
+      }
     }
   }
 }
