@@ -44,6 +44,7 @@ use serde::{Serialize};
 struct ChangedResult {
   did_change: bool,
   new_files: HashMap<String, bool>,
+  file_count: u32,
 }
 
 // for now this is the solution bego
@@ -52,11 +53,13 @@ struct ChangedResult {
 fn dir_did_change(path: String, files: HashMap<String, bool>) -> ChangedResult {
   let mut new_files: HashMap<String, bool> = HashMap::new();
   let mut changed = false;
+  let mut file_count = 0;
 
   for maybe_entry in WalkDir::new(path) {
     if let Ok(entry) = maybe_entry {
       if let Some(entry_path) = entry.path().to_str() {
         new_files.insert(String::from(entry_path), true);
+        file_count += 1;
         if !files.contains_key(entry_path) {
           changed = true;
         }
@@ -68,6 +71,7 @@ fn dir_did_change(path: String, files: HashMap<String, bool>) -> ChangedResult {
     return ChangedResult {
       did_change: changed,
       new_files,
+      file_count,
     };
   }
 
@@ -77,6 +81,7 @@ fn dir_did_change(path: String, files: HashMap<String, bool>) -> ChangedResult {
       return ChangedResult {
         did_change: changed,
         new_files,
+        file_count,
       };
     }
   }
@@ -84,6 +89,7 @@ fn dir_did_change(path: String, files: HashMap<String, bool>) -> ChangedResult {
   ChangedResult {
     did_change: changed,
     new_files,
+    file_count,
   }
 }
 

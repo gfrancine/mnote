@@ -143,12 +143,12 @@ export class FS implements FsInteropModule {
 type WatcherDidChangeResult = {
   didChange: boolean;
   newFiles: Record<string, true>;
+  fileCount: number;
 };
 
 export class Watcher {
-  protected INTERVAL = 1000;
+  protected INTERVAL_RATIO = 2000 / 150; // n miliseconds / n files
 
-  protected intervalID: NodeJS.Timer;
   protected lastFiles: Record<string, true> = {};
   protected emitter = new Emitter<{
     event: () => void | Promise<void>;
@@ -172,13 +172,18 @@ export class Watcher {
         if (result.didChange) {
           this.emitter.emit("event");
         }
+
+        console.log("result file count", result.fileCount);
+        setTimeout(
+          update,
+          Math.max(1500, this.INTERVAL_RATIO * result.fileCount),
+        );
       }).catch((err) => {
-        console.log("rust err", err);
-        clearInterval(this.intervalID);
+        console.error("rust err", err);
       });
     };
 
-    this.intervalID = setInterval(update, this.INTERVAL);
+    setTimeout(update, 2000);
   }
 
   onEvent(handler: () => void | Promise<void>) {
