@@ -50,8 +50,7 @@ export class SettingsModule {
         throw null;
       }
     } catch {
-      this.settings = this.defaultSettings();
-      await this.persistSettings();
+      await this.resetSettings();
     }
 
     return this;
@@ -88,9 +87,9 @@ export class SettingsModule {
     return this.settings[key];
   }
 
-  setKey<K extends keyof Settings>(key: K, value: Settings[K]) {
+  setKey<K extends keyof Settings>(key: K, value: Settings[K]): Promise<void> {
     this.settings[key] = value;
-    this.persistSettings()
+    return this.persistSettings()
       .then(() => this.events.emit("change", this.settings));
   }
 
@@ -98,9 +97,15 @@ export class SettingsModule {
     return this.settings;
   }
 
-  setSettings(settings: Settings) {
+  setSettings(settings: Settings): Promise<void> {
     this.settings = settings;
-    this.persistSettings()
+    return this.persistSettings()
+      .then(() => this.events.emit("change", this.settings));
+  }
+
+  resetSettings(): Promise<void> {
+    this.settings = this.defaultSettings();
+    return this.persistSettings()
       .then(() => this.events.emit("change", this.settings));
   }
 }
