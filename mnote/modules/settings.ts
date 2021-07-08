@@ -1,10 +1,15 @@
 import { Mnote } from "../common/types";
 import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
-import { Settings } from "./types";
+import { builtinThemes, Settings, ThemeName } from "./types";
 import { Emitter } from "../common/emitter";
 
+/** rule to check if a value is a valid settings object */
 type ValidSettingsRule = (value: Record<string, unknown>) => boolean;
+
+// the file is only read once at initialization. as long as the
+// app is running state is kept here and persisted based on the
+// data in this module
 
 export class SettingsModule {
   app: Mnote;
@@ -15,8 +20,7 @@ export class SettingsModule {
   protected settingsPath: string;
   protected settings: Settings = this.defaultSettings();
 
-  // rules to check if a value is a valid settings
-  // object. see the bottom of the file
+  // see the bottom of the file
   protected settingsRules: ValidSettingsRule[] = [
     hasValidTheme,
   ];
@@ -104,15 +108,8 @@ export class SettingsModule {
 // settings validators
 
 const hasValidTheme: ValidSettingsRule = (value) => {
-  const theme = value.theme;
-
-  if (typeof theme === "undefined") return true;
-  if (typeof theme !== "object") return false;
-  if (theme instanceof Array) return false;
-
-  for (const k in theme) {
-    if (typeof theme[k] !== "string") return false;
+  if (builtinThemes[value.theme as string]) {
+    return true;
   }
-
-  return true;
+  return false;
 };

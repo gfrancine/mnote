@@ -44,6 +44,16 @@ export type ModalButton = {
   kind: "emphasis" | "normal";
 };
 
+// themes
+// use an object for easier validation
+
+export const builtinThemes = {
+  light: true,
+  dark: true,
+};
+
+export type ThemeName = keyof typeof builtinThemes;
+
 export type Settings = {
-  theme?: Record<string, string>;
+  theme?: ThemeName;
 };

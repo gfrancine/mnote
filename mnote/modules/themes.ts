@@ -1,40 +1,60 @@
 import OpenColor from "open-color";
 import { Mnote } from "../common/types";
+import { ThemeName } from "./types";
 import { SettingsModule } from "./settings";
 
+// colors are declared at bottom
+
+// variables are in an "mnote" namespace (--mnote-<key>)
 function setVar(key: string, value: string) {
   document.documentElement.style.setProperty("--mnote-" + key, value);
 }
 
+// themes used to be loaded from plain tables, but it doesn't
+// work nicely when new keys are added / values are adjusted
+
 export class ThemesModule {
   app: Mnote;
   settings: SettingsModule;
+
+  themes: Record<ThemeName, Record<string, string>> = {
+    light: lightTheme,
+    dark: darkTheme,
+  };
 
   constructor(app: Mnote) {
     this.app = app;
     this.settings = app.modules.settings as SettingsModule;
   }
 
+  // load from settings
   async init() {
     const settings = this.settings.getSettings();
     if (settings.theme) {
-      this.updateTheme(settings.theme);
+      this.rawSetTheme(settings.theme);
     } else {
-      await this.setTheme(lightTheme);
+      await this.setTheme("light");
     }
   }
 
-  protected updateTheme(theme: Record<string, string>) {
-    for (const k in theme) {
-      setVar(k, theme[k]);
+  protected rawSetTheme(theme: ThemeName) {
+    const colors = this.themes[theme];
+    for (const k in colors) {
+      setVar(k, colors[k]);
     }
   }
 
-  async setTheme(theme: Record<string, string>) {
-    await this.settings.setKey("theme", { ...theme });
-    this.updateTheme(theme);
+  /** set the theme and persist */
+  async setTheme(theme: ThemeName) {
+    await this.settings.setKey("theme", theme);
+    this.rawSetTheme(theme);
   }
 }
+
+// themes
+
+// note: see the reference
+// https://github.com/yeun/open-color
 
 const gray = OpenColor.gray;
 
@@ -46,7 +66,39 @@ const lightTheme = {
   "fg-secondary": gray[7],
   "fg-dim": gray[5],
 
-  "bg-main": "#fff",
+  "bg-main": "#f66",
+  "bg-secondary": gray[1],
+  "bg-dim": gray[3],
+
+  "shadow": "0px 2px 5px " + gray[3],
+
+  "border-main": gray[3],
+  "border-dim": gray[2],
+
+  "sidebar-bg-main": gray[1],
+  "sidebar-bg-hover": gray[3],
+  "sidebar-fg-main": gray[9],
+
+  "btn-main-fg": gray[9], // buttons, assuming background is bg-main
+  "btn-main-fg-hover": gray[9],
+  "btn-main-bg": gray[2],
+  "btn-main-bg-hover": gray[3],
+
+  "btn-emphasis-fg": "#fff",
+  "btn-emphasis-fg-hover": "#fff",
+  "btn-emphasis-bg": gray[6],
+  "btn-emphasis-bg-hover": gray[7],
+};
+
+const darkTheme = {
+  "font-main": "Lato",
+  "font-monospace": "Fira Mono",
+
+  "fg-main": gray[9],
+  "fg-secondary": gray[7],
+  "fg-dim": gray[5],
+
+  "bg-main": "#f66",
   "bg-secondary": gray[1],
   "bg-dim": gray[3],
 
