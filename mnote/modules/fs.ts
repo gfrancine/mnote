@@ -97,6 +97,13 @@ export class FSModule implements FsInteropModule {
     return ".";
   }
 
+  joinPath(items: string[]): string {
+    if (this.fs) {
+      return this.fs.joinPath(items);
+    }
+    return items.join("/");
+  }
+
   async watchInit(path: string) {
     if (this.fs) {
       return this.fs.watchInit(path);

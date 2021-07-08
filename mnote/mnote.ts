@@ -11,6 +11,7 @@ import {
   LayoutModule,
   LoggingModule,
   MenubarModule,
+  SettingsModule,
   SidemenuModule,
   SystemModule,
 } from "./modules";
@@ -88,6 +89,7 @@ export class Mnote implements Type {
       .addModule("fs", fs)
       .addModule("system", system)
       .addModule("extensions", new ExtensionsModule(this))
+      .addModule("settings", await new SettingsModule(this).init())
       .addModule("layout", new LayoutModule(this))
       .addModule("ctxmenu", new CtxmenuModule(this))
       .addModule("sidemenu", new SidemenuModule(this))

@@ -43,3 +43,5 @@ export type ModalButton = {
   command: string;
   kind: "emphasis" | "normal";
 };
+
+export type Settings = {};

@@ -52,6 +52,7 @@ export interface FsInteropModule {
   }): Promise<string | void>;
   getConfigDir(): Promise<string>;
   getCurrentDir(): Promise<string>;
+  joinPath(items: string[]): string;
 
   watchInit(path: string): Promise<void>;
   onWatchEvent(handler: () => void | Promise<void>): void;

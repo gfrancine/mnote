@@ -1,4 +1,5 @@
 import { FileItem, FileItemWithChildren, FsInteropModule } from "../../mnote";
+import { invoke } from "@tauri-apps/api/tauri";
 import { emit, listen } from "@tauri-apps/api/event";
 import { Emitter } from "../../mnote/common/emitter";
 import * as fs from "@tauri-apps/api/fs";
@@ -7,6 +8,14 @@ import * as dialog from "@tauri-apps/api/dialog";
 
 export class FS implements FsInteropModule {
   protected watcher = new Watcher(); // at the bottom of the file
+
+  protected USES_BACKSLASH: boolean = false;
+
+  async init() {
+    this.USES_BACKSLASH = await invoke("is_windows");
+    console.log("uses backslash?", this.USES_BACKSLASH);
+    return this;
+  }
 
   async writeTextFile(path: string, contents: string): Promise<void> {
     return fs.writeFile({
@@ -116,12 +125,37 @@ export class FS implements FsInteropModule {
     }
   }
 
-  getConfigDir(): Promise<string> {
+  async getConfigDir(): Promise<string> {
     return path.configDir();
   }
 
-  getCurrentDir(): Promise<string> {
+  async getCurrentDir(): Promise<string> {
     return path.currentDir();
+  }
+
+  joinPath(items: string[]) {
+    const join = (delimiter: string, items_: string[]) => {
+      let final = "";
+      items.forEach((item, i) => {
+        if (item.charAt(0) === delimiter) {
+          item = item.slice(1);
+        }
+
+        const length = item.length;
+        if (item.charAt(length - 1) === delimiter) {
+          item = item.slice(0, length - 1);
+        }
+
+        final += item + (i === items_.length - 1 ? "" : delimiter);
+      });
+
+      return final;
+    };
+
+    return join(
+      this.USES_BACKSLASH ? "\\" : "/",
+      items,
+    );
   }
 
   async watchInit(path: string) {

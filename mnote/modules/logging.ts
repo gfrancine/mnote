@@ -19,4 +19,8 @@ export class LoggingModule /* implements Module */ {
   err(...messages: unknown[]) {
     console.error("[ERR]", ...messages);
   }
+
+  warn(...messages: unknown[]) {
+    console.warn("[WARN]", ...messages);
+  }
 }

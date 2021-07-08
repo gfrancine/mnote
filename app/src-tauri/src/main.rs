@@ -10,10 +10,12 @@ fn get_args() -> Vec<String> {
 
 #[tauri::command]
 fn is_mac() -> bool {
-  if cfg!(target_os = "macos") {
-    return true;
-  }
-  false
+  cfg!(target_os = "macos")
+}
+
+#[tauri::command]
+fn is_windows() -> bool {
+  cfg!(windows)
 }
 
 use notify::{watcher, RecursiveMode, Watcher};
@@ -22,7 +24,7 @@ use std::time::Duration;
 
 fn main() {
   tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![get_args, is_mac,])
+    .invoke_handler(tauri::generate_handler![get_args, is_mac, is_windows])
     .on_page_load(|win, _| {
       let win_ = win.clone();
 
