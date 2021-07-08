@@ -1,5 +1,5 @@
 import { FileItem, FileItemWithChildren, FsInteropModule } from "../../mnote";
-import { invoke } from "@tauri-apps/api/tauri";
+import { emit, listen } from "@tauri-apps/api/event";
 import { Emitter } from "../../mnote/common/emitter";
 import * as fs from "@tauri-apps/api/fs";
 import * as path from "@tauri-apps/api/path";
@@ -136,25 +136,11 @@ export class FS implements FsInteropModule {
   }
 }
 
-// the plan is to use the notify crate and propagate events
-// through the app object but what's in the docs isn't released
-// when the channel api is stable, this will be moved to rust
-
-type WatcherDidChangeResult = {
-  didChange: boolean;
-  newFiles: Record<string, true>;
-  fileCount: number;
-};
-
 export class Watcher {
-  protected INTERVAL_RATIO = 2000 / 150; // n miliseconds / n files
-
-  protected lastFiles: Record<string, true> = {};
+  protected initialized: boolean = false;
   protected emitter = new Emitter<{
     event: () => void | Promise<void>;
   }>();
-
-  protected initialized: boolean = false;
 
   isInitialized() {
     return this.initialized;
@@ -162,28 +148,10 @@ export class Watcher {
 
   async init(path: string) {
     this.initialized = true;
-
-    const update = () => {
-      invoke("dir_did_change", {
-        path,
-        files: this.lastFiles,
-      }).then((result: WatcherDidChangeResult) => {
-        this.lastFiles = result.newFiles;
-        if (result.didChange) {
-          this.emitter.emit("event");
-        }
-
-        console.log("result file count", result.fileCount);
-        setTimeout(
-          update,
-          Math.max(1500, this.INTERVAL_RATIO * result.fileCount),
-        );
-      }).catch((err) => {
-        console.error("rust err", err);
-      });
-    };
-
-    setTimeout(update, 2000);
+    listen("watcher_event", () => {
+      this.emitter.emit("event");
+    });
+    emit("watcher_init", path);
   }
 
   onEvent(handler: () => void | Promise<void>) {
