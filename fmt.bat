@@ -1,1 +1,1 @@
-deno fmt app/src && deno fmt mnote && cd app/src-tauri && cargo fmt && cd ../..
+deno fmt app/src && deno fmt mnote && deno fmt extensions && cd app/src-tauri && cargo fmt && cd ../..

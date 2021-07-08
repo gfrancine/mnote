@@ -134,14 +134,14 @@ export class EditorsModule /* implements Module */ {
         });
       }
       return result;
-    }
+    };
 
     const hideMenu = () => {
       if (menu) {
         menu.cleanup();
         menu = undefined;
       }
-    }
+    };
 
     const showMenu = () => {
       hideMenu();

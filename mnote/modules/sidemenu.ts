@@ -1,6 +1,6 @@
 import { el } from "../common/elbuilder";
 import { Mnote } from "../common/types";
-import { IconsList, createIcon } from "../components/icons";
+import { createIcon, IconsList } from "../components/icons";
 import { LayoutModule } from "./layout";
 
 export class SidemenuModule {
@@ -12,7 +12,7 @@ export class SidemenuModule {
     this.element = el("div")
       .class("sidemenu-main")
       .element;
-    
+
     this.layout.mountToSidebarMenu(this.element);
   }
 

@@ -6,13 +6,13 @@ import {
   CtxmenuModule,
   EditorsModule,
   ExtensionsModule,
+  FiletreeModule,
   FSModule,
   LayoutModule,
   LoggingModule,
   MenubarModule,
-  SystemModule,
-  FiletreeModule,
   SidemenuModule,
+  SystemModule,
 } from "./modules";
 
 import { PlaintextExtension } from "./extensions/plaintextEditor";
