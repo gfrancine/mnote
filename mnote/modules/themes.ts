@@ -33,7 +33,7 @@ export class ThemesModule {
     if (settings.theme) {
       this.rawSetTheme(settings.theme);
     } else {
-      await this.setTheme("light");
+      await this.setTheme("dark");
     }
   }
 
@@ -66,11 +66,12 @@ const lightTheme = {
   "fg-secondary": gray[7],
   "fg-dim": gray[5],
 
-  "bg-main": "#f66",
+  "bg-main": "#fff",
   "bg-secondary": gray[1],
   "bg-dim": gray[3],
 
   "shadow": "0px 2px 5px " + gray[3],
+  "overlay": gray[7] + "32",
 
   "border-main": gray[3],
   "border-dim": gray[2],
@@ -94,30 +95,31 @@ const darkTheme = {
   "font-main": "Lato",
   "font-monospace": "Fira Mono",
 
-  "fg-main": gray[9],
-  "fg-secondary": gray[7],
+  "fg-main": gray[2],
+  "fg-secondary": gray[4],
   "fg-dim": gray[5],
 
-  "bg-main": "#f66",
-  "bg-secondary": gray[1],
+  "bg-main": gray[8],
+  "bg-secondary": gray[9],
   "bg-dim": gray[3],
 
-  "shadow": "0px 2px 5px " + gray[3],
+  "shadow": "0px 2px 5px " + "#111",
+  "overlay": "#11111132",
 
-  "border-main": gray[3],
-  "border-dim": gray[2],
+  "border-main": gray[9],
+  "border-dim": gray[9],
 
-  "sidebar-bg-main": gray[1],
-  "sidebar-bg-hover": gray[3],
-  "sidebar-fg-main": gray[9],
+  "sidebar-bg-main": gray[9],
+  "sidebar-bg-hover": gray[7],
+  "sidebar-fg-main": gray[4],
 
-  "btn-main-fg": gray[9], // buttons, assuming background is bg-main
-  "btn-main-fg-hover": gray[9],
-  "btn-main-bg": gray[2],
-  "btn-main-bg-hover": gray[3],
+  "btn-main-fg": gray[2], // buttons, assuming background is bg-main
+  "btn-main-fg-hover": gray[2],
+  "btn-main-bg": gray[7],
+  "btn-main-bg-hover": gray[6],
 
-  "btn-emphasis-fg": "#fff",
-  "btn-emphasis-fg-hover": "#fff",
-  "btn-emphasis-bg": gray[6],
-  "btn-emphasis-bg-hover": gray[7],
+  "btn-emphasis-fg": gray[9],
+  "btn-emphasis-fg-hover": gray[9],
+  "btn-emphasis-bg": gray[3],
+  "btn-emphasis-bg-hover": gray[4],
 };
