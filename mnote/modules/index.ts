@@ -11,3 +11,4 @@ export { SystemModule } from "./system";
 export { SidemenuModule } from "./sidemenu";
 export { FiletreeModule } from "./filetree";
 export { SettingsModule } from "./settings";
+export { ThemesModule } from "./themes";

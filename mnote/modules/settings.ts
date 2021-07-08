@@ -4,6 +4,8 @@ import { LoggingModule } from "./logging";
 import { Settings } from "./types";
 import { Emitter } from "../common/emitter";
 
+type ValidSettingsRule = (value: Record<string, unknown>) => boolean;
+
 export class SettingsModule {
   app: Mnote;
   fs: FSModule;
@@ -12,6 +14,12 @@ export class SettingsModule {
   protected SETTINGS_NAME = ".mnotesettings";
   protected settingsPath: string;
   protected settings: Settings = this.defaultSettings();
+
+  // rules to check if a value is a valid settings
+  // object. see the bottom of the file
+  protected settingsRules: ValidSettingsRule[] = [
+    hasValidTheme,
+  ];
 
   events: Emitter<{
     change: (settings: Settings) => void | Promise<void>;
@@ -64,6 +72,11 @@ export class SettingsModule {
   }
 
   isValidSettings(value: unknown): value is Settings {
+    if (typeof value !== "object") return false;
+    if (value instanceof Array) return false;
+    for (const rule of this.settingsRules) {
+      if (!rule(value as Record<string, unknown>)) return false;
+    }
     return true;
   }
 
@@ -78,7 +91,7 @@ export class SettingsModule {
   }
 
   getSettings(): Settings {
-    return this.setSettings;
+    return this.settings;
   }
 
   setSettings(settings: Settings) {
@@ -87,3 +100,19 @@ export class SettingsModule {
       .then(() => this.events.emit("change", this.settings));
   }
 }
+
+// settings validators
+
+const hasValidTheme: ValidSettingsRule = (value) => {
+  const theme = value.theme;
+
+  if (typeof theme === "undefined") return true;
+  if (typeof theme !== "object") return false;
+  if (theme instanceof Array) return false;
+
+  for (const k in theme) {
+    if (typeof theme[k] !== "string") return false;
+  }
+
+  return true;
+};

@@ -44,4 +44,6 @@ export type ModalButton = {
   kind: "emphasis" | "normal";
 };
 
-export type Settings = {};
+export type Settings = {
+  theme?: Record<string, string>;
+};

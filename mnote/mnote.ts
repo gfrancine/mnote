@@ -14,6 +14,7 @@ import {
   SettingsModule,
   SidemenuModule,
   SystemModule,
+  ThemesModule,
 } from "./modules";
 
 import { PlaintextExtension } from "./extensions/plaintextEditor";
@@ -95,7 +96,8 @@ export class Mnote implements Type {
       .addModule("sidemenu", new SidemenuModule(this))
       .addModule("filetree", new FiletreeModule(this, startFile))
       .addModule("menubar", new MenubarModule(this))
-      .addModule("editors", new EditorsModule(this));
+      .addModule("editors", new EditorsModule(this))
+      .addModule("themes", await new ThemesModule(this).init());
 
     // register the extensions
     (this.modules.extensions as ExtensionsModule)
