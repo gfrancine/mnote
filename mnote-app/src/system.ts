@@ -1,4 +1,4 @@
-import { SystemInteropModule } from "../../mnote";
+import { SystemInteropModule } from "mnote-core";
 import { invoke } from "@tauri-apps/api/tauri";
 
 export class System implements SystemInteropModule {

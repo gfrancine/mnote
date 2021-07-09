@@ -1,7 +1,7 @@
-import { FileItem, FileItemWithChildren, FsInteropModule } from "../../mnote";
+import { FileItem, FileItemWithChildren, FsInteropModule } from "mnote-core";
 import { invoke } from "@tauri-apps/api/tauri";
 import { emit, listen } from "@tauri-apps/api/event";
-import { Emitter } from "../../mnote/common/emitter";
+import { Emitter } from "./emitter";
 import * as fs from "@tauri-apps/api/fs";
 import * as path from "@tauri-apps/api/path";
 import * as dialog from "@tauri-apps/api/dialog";
