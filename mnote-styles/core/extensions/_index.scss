@@ -1,9 +1,7 @@
 @use "plaintext";
-@use "markdown";
 
 // todo: make all the mixins take colors as input
 
 @mixin extensions($theme) {
   @include plaintext.plaintext($theme);
-  @include markdown.markdown($theme);
 }

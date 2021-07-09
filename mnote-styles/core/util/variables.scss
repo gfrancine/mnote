@@ -1,0 +1,24 @@
+@use "sass:map";
+@use "sass:list";
+
+// variables.from(keys: string[])
+// convert the keys into a map of variables
+// e.g. "background" -> "var(--mnote-background)"
+@function from($keys) {
+  $vars: ();
+  @each $k in $keys {
+    $vars: map-merge($vars, (
+      $k: var(#{"--mnote-" + $k})
+    ));
+  }
+  @return $vars;
+}
+
+// get the keys in a map
+@function keys($map) {
+  $list: [];
+  @each $k, $_ in $map {
+    $list: append($list, $k);
+  }
+  @return $list;
+}

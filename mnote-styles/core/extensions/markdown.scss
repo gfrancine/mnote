@@ -1,5 +1,0 @@
-@use "markdown-pen";
-
-@mixin markdown($theme) {
-  @include markdown-pen.pen($theme);
-}
