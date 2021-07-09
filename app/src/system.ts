@@ -1,5 +1,4 @@
-import { SystemInteropModule, SystemShortcutHandler } from "../../mnote";
-import { globalShortcut } from "@tauri-apps/api";
+import { SystemInteropModule } from "../../mnote";
 import { invoke } from "@tauri-apps/api/tauri";
 
 export class System implements SystemInteropModule {
@@ -8,9 +7,5 @@ export class System implements SystemInteropModule {
   async init() {
     this.USES_CMD = await invoke("is_mac");
     return this;
-  }
-
-  async registerShortcut(shortcut: string, handler: SystemShortcutHandler) {
-    return globalShortcut.register(shortcut, handler);
   }
 }

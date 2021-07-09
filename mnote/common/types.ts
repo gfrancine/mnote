@@ -92,11 +92,4 @@ export type MenuItem = {
 
 export interface SystemInteropModule {
   USES_CMD: boolean;
-
-  registerShortcut(
-    shortcut: string,
-    handler: SystemShortcutHandler,
-  ): Promise<void>;
 }
-
-export type SystemShortcutHandler = (shortcut: string) => void;

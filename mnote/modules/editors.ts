@@ -20,6 +20,7 @@ import { SystemModule } from "./system";
 import { strings } from "../common/strings";
 import { Menu } from "../components/menu";
 import { SidemenuModule } from "./sidemenu";
+import { InputModule } from "./input";
 
 // https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor-api-basics
 
@@ -50,7 +51,7 @@ export class EditorsModule {
 
   protected hookToSidebarMenu() {
   protected hookToMenubar() {
-  protected hookToSystem() {
+  protected hookToInputs() {
   protected hookToFiletree() {
 
   registerEditor(kind: string, provider: EditorProvider) {
@@ -72,6 +73,7 @@ export class EditorsModule /* implements Module */ {
   menubar: MenubarModule;
   fs: FSModule;
   system: SystemModule;
+  input: InputModule;
   logging: LoggingModule;
   sidemenu: SidemenuModule;
   filetree: FiletreeModule;
@@ -96,6 +98,7 @@ export class EditorsModule /* implements Module */ {
     this.menubar = app.modules.menubar as MenubarModule;
     this.fs = app.modules.fs as FSModule;
     this.system = app.modules.system as SystemModule;
+    this.input = app.modules.input as InputModule;
     this.logging = app.modules.logging as LoggingModule;
     this.sidemenu = app.modules.sidemenu as SidemenuModule;
     this.filetree = app.modules.filetree as FiletreeModule;
@@ -118,7 +121,7 @@ export class EditorsModule /* implements Module */ {
 
     this.hookToSidebarMenu();
     this.hookToMenubar();
-    this.hookToSystem();
+    this.hookToInputs();
     this.hookToFiletree();
   }
 
@@ -235,28 +238,28 @@ export class EditorsModule /* implements Module */ {
     this.menubar.addSectionReducer(menubarReducer);
   }
 
-  protected hookToSystem() {
+  protected hookToInputs() {
     // hotkeys
-    this.system.registerShortcut("CmdOrControl+O", () => {
+    this.input.registerShortcut(["command+o", "ctrl+o"], () => {
       this.logging.info("editor keys: ctrl o");
       this.open();
     });
 
-    this.system.registerShortcut("CmdOrControl+S", () => {
+    this.input.registerShortcut(["command+s", "ctrl+s"], () => {
       this.logging.info("editor keys: ctrl s");
       if (this.currentDocument) {
         this.save();
       }
     });
 
-    this.system.registerShortcut("CmdOrControl+Shift+S", () => {
+    this.input.registerShortcut(["command+shift+s", "ctrl+shift+s"], () => {
       this.logging.info("editor keys: ctrl shift s");
       if (this.currentDocument) {
         this.saveAs();
       }
     });
 
-    this.system.registerShortcut("CmdOrControl+W", () => {
+    this.input.registerShortcut(["command+w", "ctrl+w"], () => {
       this.logging.info("editor keys: ctrl w");
       if (this.currentDocument) {
         this.close();
