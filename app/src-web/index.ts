@@ -1,6 +1,6 @@
-import { Mnote } from "../../mnote";
+import { Mnote } from "mnote-core";
 import { FS } from "./fs";
-import "../../mnote-styles/default.scss";
+import "../styles.scss";
 
 // web build
 // for quick visual debugging

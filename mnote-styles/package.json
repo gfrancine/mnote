@@ -1,0 +1,7 @@
+{
+  "name": "mnote-styles",
+  "version": "0.1.0",
+  "dependencies": {
+    "open-color": "^1.8.0"
+  }
+}

@@ -1,8 +1,8 @@
-import { Mnote } from "../../mnote";
+import { Mnote } from "mnote-core";
 import { FS } from "./fs";
 import { System } from "./system";
 import { invoke } from "@tauri-apps/api/tauri";
-import "../../mnote-styles/default.scss";
+import "../styles.scss";
 
 (async () => {
   const args = await invoke("get_args");

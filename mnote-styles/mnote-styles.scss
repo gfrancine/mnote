@@ -1,11 +1,6 @@
 @use "core";
 @use "./core/util/variables";
-@use "~open-color/open-color" as oc;
-
-// map of root variables
-// all keys can be found in the default theme below
-
-$vars: variables.from($default-theme);
+@use "node_modules/open-color/open-color" as oc;
 
 // default light theme. will be overriden with javascript
 // when changing something here, update modules/themes.ts
@@ -45,5 +40,10 @@ $default-theme: (
   "btn-emphasis-bg": oc.$oc-gray-6,
   "btn-emphasis-bg-hover": oc.$oc-gray-7,
 );
+
+// map of root variables
+// all keys can be found in the default theme below
+
+$vars: variables.from($default-theme);
 
 @include core.core($default-theme);
