@@ -1,36 +1,10 @@
 import OpenColor from "open-color";
-import { Emitter } from "../common/emitter";
-import { Mnote } from "../common/types";
-
-export class ThemeRegistryModule {
-  themes: Record<string, Record<string, string>> = {};
-
-  events: Emitter<{
-    register: () => void | Promise<void>;
-  }> = new Emitter();
-
-  constructor(_app: Mnote) {
-    this
-      .registerTheme("dark", dark)
-      .registerTheme("light", light);
-  }
-
-  registerTheme(name: string, colors: Record<string, string>) {
-    this.themes[name] = colors;
-    return this;
-  }
-
-  hasTheme(name: string) {
-    return this.themes[name] !== undefined;
-  }
-}
-
 // note: see the reference
 // https://github.com/yeun/open-color
 
 const gray = OpenColor.gray;
 
-const light = {
+export const light = {
   "font-main": "Lato",
   "font-monospace": "Fira Mono",
 
@@ -66,7 +40,7 @@ const light = {
 
 // dark theme from my UI prototype
 
-const dark = {
+export const dark = {
   "font-main": "Lato",
   "font-monospace": "Fira Mono",
 

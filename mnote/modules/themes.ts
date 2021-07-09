@@ -1,6 +1,7 @@
 import { Mnote } from "../common/types";
-import { ThemeRegistryModule } from "./theme-registry";
+import { Emitter } from "../common/emitter";
 import { SettingsModule } from "./settings";
+import { dark, light } from "../components/colors";
 
 // colors are declared at bottom
 
@@ -17,14 +18,24 @@ function setVar(key: string, value: string) {
 export class ThemesModule {
   app: Mnote;
   settings: SettingsModule;
-  themeRegistry: ThemeRegistryModule;
+  themes: Record<string, Record<string, string>> = {
+    dark,
+    light,
+  };
+
+  events: Emitter<{
+    register: (name: string) => void | Promise<void>;
+  }> = new Emitter();
 
   constructor(app: Mnote) {
     this.app = app;
-    this.themeRegistry = app.modules.themeRegistry as ThemeRegistryModule;
     this.settings = app.modules.settings as SettingsModule;
 
     this.settings.events.on("change", () => {
+      this.init();
+    });
+
+    this.events.on("register", () => {
       this.init();
     });
   }
@@ -35,12 +46,12 @@ export class ThemesModule {
     if (settings.theme) {
       this.rawSetTheme(settings.theme);
     } else {
-      await this.setTheme("dark");
+      await this.setTheme("light");
     }
   }
 
   protected rawSetTheme(theme: string) {
-    const colors = this.themeRegistry.themes[theme];
+    const colors = this.themes[theme];
     for (const k in colors) {
       setVar(k, colors[k]);
     }
@@ -48,7 +59,18 @@ export class ThemesModule {
 
   /** set the theme and persist */
   async setTheme(theme: string) {
+    if (!this.hasTheme(theme)) theme = "light";
     await this.settings.setKey("theme", theme);
     this.rawSetTheme(theme);
+  }
+
+  registerTheme(name: string, colors: Record<string, string>) {
+    this.themes[name] = colors;
+    this.events.emit("register", name);
+    return this;
+  }
+
+  hasTheme(name: string) {
+    return this.themes[name] !== undefined;
   }
 }

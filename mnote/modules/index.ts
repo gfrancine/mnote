@@ -13,4 +13,3 @@ export { FiletreeModule } from "./filetree";
 export { SettingsModule } from "./settings";
 export { ThemesModule } from "./themes";
 export { InputModule } from "./input";
-export { ThemeRegistryModule } from "./theme-registry";

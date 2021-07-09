@@ -3,7 +3,6 @@ import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
 import { Settings } from "./types";
 import { Emitter } from "../common/emitter";
-import { ThemeRegistryModule } from "./theme-registry";
 
 /** rule to check if a value is a valid settings object */
 type ValidSettingsRule = (value: Record<string, unknown>) => boolean;
@@ -22,7 +21,9 @@ export class SettingsModule {
   protected settings: Settings = this.defaultSettings();
 
   // see the bottom of the file
-  protected settingsRules: ValidSettingsRule[] = [];
+  protected settingsRules: ValidSettingsRule[] = [
+    hasValidTheme,
+  ];
 
   events: Emitter<{
     change: (settings: Settings) => void | Promise<void>;
@@ -32,13 +33,6 @@ export class SettingsModule {
     this.app = app;
     this.fs = app.modules.fs as FSModule;
     this.logging = app.modules.logging as LoggingModule;
-
-    const hasValidTheme: ValidSettingsRule = (value) => {
-      return (this.app.modules.themeRegistry as ThemeRegistryModule)
-        .hasTheme(value.theme as string);
-    };
-
-    this.settingsRules.push(hasValidTheme);
   }
 
   async init() {
@@ -115,3 +109,7 @@ export class SettingsModule {
       .then(() => this.events.emit("change", this.settings));
   }
 }
+
+const hasValidTheme: ValidSettingsRule = (value) => {
+  return value.theme === undefined || typeof value.theme === "string";
+};
