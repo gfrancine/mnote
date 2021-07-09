@@ -15,6 +15,8 @@ export type DocInfo = {
 
 export type EditorContext = {
   updateEdited(): void; // notify the app that the document has changed
+  getDocument(): DocInfo | undefined;
+  setDocument(doc: DocInfo): void;
 };
 
 export interface Editor {
@@ -27,7 +29,7 @@ export interface Editor {
 
 export interface EditorProvider {
   // getExtensions(): string[] // allowed extensions for Save As prompt
-  tryGetEditor(path: string): Editor | undefined;
+  tryGetEditor(path: string): Editor | void;
   createNewEditor(): Editor;
 }
 

@@ -355,6 +355,25 @@ export class EditorsModule /* implements Module */ {
     await editor.startup(this.element, this.makeContext());
   }
 
+  // DRY for saving with a modal on error
+  protected async trySaveEditor(): Promise<boolean> {
+    try {
+      await this.currentEditor.save(this.currentDocument.path);
+      return true;
+    } catch (e) {
+      new Modal({
+        container: this.element,
+        message: `An error occurred while saving: ${e}`,
+        buttons: [{
+          kind: "emphasis",
+          text: "OK",
+          command: "",
+        }],
+      }).prompt();
+      return false;
+    }
+  }
+
   // prompt a save dialog
   // returns a success boolean (whether the user cancelled)
   async saveAs(): Promise<boolean> {
@@ -368,13 +387,16 @@ export class EditorsModule /* implements Module */ {
     this.logging.info("new path", newPath);
     if (!newPath) return false;
 
+    const success = await this.trySaveEditor();
+    this.logging.info("save editor success", success);
+    if (!success) return false;
+
     this.setCurrentDocument({
       path: newPath,
       name: getPathName(newPath),
       saved: true,
     });
 
-    await this.currentEditor.save(this.currentDocument.path);
     return true;
   }
 
@@ -385,7 +407,10 @@ export class EditorsModule /* implements Module */ {
     if (!this.currentEditor || !this.currentDocument) return true;
 
     if (this.currentDocument.path) {
-      await this.currentEditor.save(this.currentDocument.path);
+      const success = await this.trySaveEditor();
+      if (!success) {
+        return false;
+      }
     } else {
       // prompt save
       const success = await this.saveAs();
@@ -479,6 +504,10 @@ export class EditorsModule /* implements Module */ {
           this.currentDocument.saved = false;
           this.events.emit("docSavedChanged", this.currentDocument);
         }
+      },
+      getDocument: () => this.currentDocument,
+      setDocument: (doc: DocInfo) => {
+        this.setCurrentDocument(doc);
       },
     };
   }

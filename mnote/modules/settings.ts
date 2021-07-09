@@ -16,7 +16,7 @@ export class SettingsModule {
   fs: FSModule;
   logging: LoggingModule;
 
-  protected SETTINGS_NAME = ".mnotesettings";
+  SETTINGS_NAME = ".mnotesettings";
   protected settingsPath: string;
   protected settings: Settings = this.defaultSettings();
 

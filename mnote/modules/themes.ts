@@ -25,6 +25,10 @@ export class ThemesModule {
   constructor(app: Mnote) {
     this.app = app;
     this.settings = app.modules.settings as SettingsModule;
+
+    this.settings.events.on("change", () => {
+      this.init();
+    });
   }
 
   // load from settings

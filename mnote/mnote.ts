@@ -19,6 +19,8 @@ import {
 } from "./modules";
 
 import { PlaintextExtension } from "./extensions/plaintextEditor";
+import { SettingsExtension } from "./extensions/settingsEditor";
+
 import { el } from "./common/elbuilder";
 import { Modal } from "./components/modal";
 import { ModalButton } from "./modules/types";
@@ -103,7 +105,8 @@ export class Mnote implements Type {
 
     // register the extensions
     (this.modules.extensions as ExtensionsModule)
-      .add(new PlaintextExtension(this));
+      .add(new PlaintextExtension(this))
+      .add(new SettingsExtension(this));
   }
 
   addModule(name: string, module: Module): Mnote {
