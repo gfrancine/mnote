@@ -91,6 +91,44 @@ const lightTheme = {
   "btn-emphasis-bg-hover": gray[7],
 };
 
+
+// dark theme from my UI prototype
+
+const darkTheme = {
+  "font-main": "Lato",
+  "font-monospace": "Fira Mono",
+
+  "fg-main": "#B0B6BB",
+  "fg-secondary": "#767E85",
+  "fg-dim": "#656A70",
+
+  "bg-main": "#2B2D2E",
+  "bg-secondary": "#242627",
+  "bg-dim": "#5A6164",
+
+  "shadow": "0px 2px 5px " + "#111",
+  "overlay": "#11111132",
+
+  "border-main":"#5A6164",
+  "border-dim":"#5A6164",
+
+  "sidebar-bg-main": "#242627",
+  "sidebar-bg-hover": "#2B2D2E",
+  "sidebar-fg-main": "#B0B6BB",
+
+  "btn-main-fg":"#B0B6BB", // buttons, assuming background is bg-main
+  "btn-main-fg-hover": "#B0B6BB",
+  "btn-main-bg": "#5A6164",
+  "btn-main-bg-hover": "#656A70",
+
+  "btn-emphasis-fg": "#2B2D2E",
+  "btn-emphasis-fg-hover": "#2B2D2E",
+  "btn-emphasis-bg": "#767E85",
+  "btn-emphasis-bg-hover": "#5A6164",
+};
+
+/* oc dark theme
+
 const darkTheme = {
   "font-main": "Lato",
   "font-monospace": "Fira Mono",
@@ -122,4 +160,4 @@ const darkTheme = {
   "btn-emphasis-fg-hover": gray[9],
   "btn-emphasis-bg": gray[3],
   "btn-emphasis-bg-hover": gray[4],
-};
+}; */
