@@ -51,6 +51,12 @@ class SettingsEditor implements Editor {
       saved: true,
     });
 
+    this.textarea.value = JSON.stringify(
+      this.settings.getSettings(),
+      undefined,
+      2,
+    );
+
     this.textarea.addEventListener("input", () => {
       this.contents = this.textarea.value;
       ctx.updateEdited();
