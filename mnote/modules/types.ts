@@ -55,13 +55,6 @@ export type ModalButton = {
 // themes
 // use an object for easier validation
 
-export const builtinThemes = {
-  light: true,
-  dark: true,
-};
-
-export type ThemeName = keyof typeof builtinThemes;
-
 export type Settings = {
-  theme?: ThemeName;
+  theme?: string;
 };

@@ -1,8 +1,9 @@
 import { Mnote } from "../common/types";
 import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
-import { builtinThemes, Settings, ThemeName } from "./types";
+import { Settings } from "./types";
 import { Emitter } from "../common/emitter";
+import { ThemeRegistryModule } from "./theme-registry";
 
 /** rule to check if a value is a valid settings object */
 type ValidSettingsRule = (value: Record<string, unknown>) => boolean;
@@ -21,9 +22,7 @@ export class SettingsModule {
   protected settings: Settings = this.defaultSettings();
 
   // see the bottom of the file
-  protected settingsRules: ValidSettingsRule[] = [
-    hasValidTheme,
-  ];
+  protected settingsRules: ValidSettingsRule[] = [];
 
   events: Emitter<{
     change: (settings: Settings) => void | Promise<void>;
@@ -33,6 +32,13 @@ export class SettingsModule {
     this.app = app;
     this.fs = app.modules.fs as FSModule;
     this.logging = app.modules.logging as LoggingModule;
+
+    const hasValidTheme: ValidSettingsRule = (value) => {
+      return (this.app.modules.themeRegistry as ThemeRegistryModule)
+        .hasTheme(value.theme as string);
+    };
+
+    this.settingsRules.push(hasValidTheme);
   }
 
   async init() {
@@ -109,12 +115,3 @@ export class SettingsModule {
       .then(() => this.events.emit("change", this.settings));
   }
 }
-
-// settings validators
-
-const hasValidTheme: ValidSettingsRule = (value) => {
-  if (builtinThemes[value.theme as string]) {
-    return true;
-  }
-  return false;
-};

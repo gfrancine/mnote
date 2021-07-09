@@ -63,8 +63,8 @@ class SettingsEditor implements Editor {
   async load(_path: string) {
     this.textarea.value = JSON.stringify(
       this.settings.getSettings(),
-      undefined, 
-      2
+      undefined,
+      2,
     );
   }
 
