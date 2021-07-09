@@ -1,4 +1,4 @@
-import { toHtml } from "../common/util/dom";
+import { toHtml } from "mnote-util/dom";
 
 // icons will require a stroke class and a fill class. stroke
 // classes will have the color in the stroke property and so on

@@ -7,7 +7,7 @@ import {
   Extension,
 } from "../modules/types";
 import { Editor } from "../modules/types";
-import { el } from "../common/elbuilder";
+import { el } from "mnote-util/elbuilder";
 import { MenubarModule, SettingsModule } from "../modules";
 
 // an editor extension contains:

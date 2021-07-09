@@ -1,4 +1,4 @@
-import { el } from "../common/elbuilder";
+import { el } from "mnote-util/elbuilder";
 import { Mnote } from "../common/types";
 import { createIcon, IconsList } from "../components/icons";
 import { LayoutModule } from "./layout";

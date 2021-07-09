@@ -1,5 +1,5 @@
-import { el, Elbuilder } from "../common/elbuilder";
-import { Emitter } from "../common/emitter";
+import { el, Elbuilder } from "mnote-util/elbuilder";
+import { Emitter } from "mnote-util/emitter";
 import { MenuItem } from "../common/types";
 
 type Anchor = {

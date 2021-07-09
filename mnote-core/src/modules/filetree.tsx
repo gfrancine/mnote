@@ -1,6 +1,6 @@
 import { FileTreeNodeWithChildren, Mnote } from "../common/types";
-import { Emitter } from "../common/emitter";
-import { el } from "../common/elbuilder";
+import { Emitter } from "mnote-util/emitter";
+import { el } from "mnote-util/elbuilder";
 import { Context } from "./types";
 import { FSModule } from "./fs";
 import { LayoutModule } from "./layout";

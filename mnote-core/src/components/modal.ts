@@ -1,8 +1,8 @@
 // https://code.visualstudio.com/api/references/vscode-api#window.showInformationMessage
 // https://vercel.com/design/modal
 
-import { el } from "../common/elbuilder";
-import { freeze, unfreeze } from "../common/util/dom";
+import { el } from "mnote-util/elbuilder";
+import { freeze, unfreeze } from "mnote-util/dom";
 import { ModalButton } from "../modules/types";
 
 export class Modal {

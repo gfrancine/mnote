@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useMemo, useState } from "preact/hooks";
 import { BlankFile, ClosedFolder, OpenedFolder } from "./icons-jsx";
-import { getPathName } from "../common/util/path";
+import { getPathName } from "mnote-util/path";
 import {
   FileTreeNode as Node,
   FileTreeNodeWithChildren as NodeWithChildren,

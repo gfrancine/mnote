@@ -1,12 +1,11 @@
 import { MenuItem, Mnote /* , Module */ } from "../common/types";
-import { el } from "../common/elbuilder";
+import { el } from "mnote-util/elbuilder";
 import { LayoutModule } from "./layout";
 import {
   DocInfo,
   Editor,
   EditorContext,
   EditorInfo,
-  EditorProvider,
   ModalButton,
 } from "./types";
 import { MenubarModule } from "./menubar";
@@ -14,8 +13,8 @@ import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
 import { Modal } from "../components/modal";
 import { FiletreeModule } from "./filetree";
-import { Emitter } from "../common/emitter";
-import { getPathName } from "../common/util/path";
+import { Emitter } from "mnote-util/emitter";
+import { getPathName } from "mnote-util/path";
 import { SystemModule } from "./system";
 import { strings } from "../common/strings";
 import { Menu } from "../components/menu";

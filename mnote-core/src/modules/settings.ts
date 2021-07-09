@@ -2,7 +2,7 @@ import { Mnote } from "../common/types";
 import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
 import { Settings } from "./types";
-import { Emitter } from "../common/emitter";
+import { Emitter } from "mnote-util/emitter";
 
 /** rule to check if a value is a valid settings object */
 type ValidSettingsRule = (value: Record<string, unknown>) => boolean;

@@ -1,5 +1,5 @@
 import { Mnote } from "../common/types";
-import { Emitter } from "../common/emitter";
+import { Emitter } from "mnote-util/emitter";
 import { SettingsModule } from "./settings";
 import { dark, light } from "../components/colors";
 

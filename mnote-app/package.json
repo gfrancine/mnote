@@ -17,6 +17,7 @@
   "dependencies": {
     "@tauri-apps/api": "^1.0.0-beta.4",
     "mnote-core": "file:../mnote-core",
-    "mnote-styles": "file:../mnote-styles"
+    "mnote-styles": "file:../mnote-styles",
+    "mnote-util": "file:../mnote-util"
   }
 }

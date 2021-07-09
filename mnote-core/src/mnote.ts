@@ -21,10 +21,10 @@ import {
 import { PlaintextExtension } from "./extensions/plaintextEditor";
 import { SettingsExtension } from "./extensions/settingsEditor";
 
-import { el } from "./common/elbuilder";
+import { el } from "mnote-util/elbuilder";
 import { Modal } from "./components/modal";
 import { ModalButton } from "./modules/types";
-import { getPathParent } from "./common/util/path";
+import { getPathParent } from "mnote-util/path";
 import { strings } from "./common/strings";
 
 export class Mnote implements Type {

@@ -1,4 +1,8 @@
 {
   "name": "mnote-extensions",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "dependencies": {
+    "mnote-core": "file:../mnote-core",
+    "mnote-util": "file:../mnote-util"
+  }
 }

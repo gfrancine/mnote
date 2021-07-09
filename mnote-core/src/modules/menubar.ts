@@ -1,6 +1,6 @@
 import { MenuItem, Mnote /* , Module */ } from "../common/types";
 import { LayoutModule } from "./layout";
-import { el } from "../common/elbuilder";
+import { el } from "mnote-util/elbuilder";
 import { Menu } from "../components/menu";
 import { LoggingModule } from "./logging";
 import { createIcon } from "../components/icons";

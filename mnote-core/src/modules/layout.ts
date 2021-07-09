@@ -9,7 +9,7 @@
 // ----------------------
 
 import { Mnote /* , Module */ } from "../common/types";
-import { el, Elbuilder } from "../common/elbuilder";
+import { el, Elbuilder } from "mnote-util/elbuilder";
 import Split from "../common/split";
 
 // https://split.js.org/#/

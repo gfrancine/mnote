@@ -1,14 +1,13 @@
-import { Mnote } from "../common/types";
-import { EditorsModule } from "../modules/editors";
 import {
-  DocInfo,
+  Mnote,
+  EditorsModule,
   EditorContext,
   EditorProvider,
   Extension,
-} from "../modules/types";
-import { Editor } from "../modules/types";
+  FSModule,
+  Editor,
+} from "mnote-core"
 import { el } from "mnote-util/elbuilder";
-import { FSModule } from "../modules/fs";
 
 // an editor extension contains:
 // - the editor
@@ -18,7 +17,6 @@ import { FSModule } from "../modules/fs";
 class PlaintextEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
-  textarea: HTMLTextAreaElement;
   container?: HTMLElement;
   fs: FSModule;
 
@@ -26,36 +24,15 @@ class PlaintextEditor implements Editor {
 
   constructor(app: Mnote) {
     this.app = app;
-
     this.fs = (app.modules.fs as FSModule);
-
-    this.textarea = el("textarea")
-      .class("plaintext-textarea")
-      .class("mousetrap") // enable shortcuts
-      .attr("spellcheck", "false")
-      .element as HTMLTextAreaElement;
-
-    this.element = el("div")
-      .class("plaintext-editor")
-      .children(
-        this.textarea,
-      )
-      .element;
   }
 
   startup(containter: HTMLElement, ctx: EditorContext) {
-    this.textarea.addEventListener("input", () => {
-      this.contents = this.textarea.value;
-      ctx.updateEdited();
-    });
-
     this.container = containter;
-    containter.appendChild(this.element);
   }
 
   async load(path: string) {
     const contents = await this.fs.readTextFile(path);
-    this.textarea.value = contents;
   }
 
   cleanup() {
@@ -63,7 +40,6 @@ class PlaintextEditor implements Editor {
   }
 
   async save(path: string) {
-    console.log("plaintext: save file", path, this.contents);
     await this.fs.writeTextFile(path, this.contents);
   }
 }
@@ -78,7 +54,6 @@ class PlaintextEditorProvider implements EditorProvider {
   }
 
   tryGetEditor(_path: string) {
-    // always return true, plaintext can open anything
     return new PlaintextEditor(this.app);
   }
   createNewEditor() {
