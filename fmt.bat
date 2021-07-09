@@ -1,5 +1,5 @@
 deno fmt mnote-core/src
 deno fmt mnote-extensions/markdown
-deno fmt app/src 
-deno fmt app/src-web
-cd app/src-tauri && cargo fmt && cd ../..
+deno fmt mnote-app/src 
+deno fmt mnote-app/src-web
+cd mnote-app/src-tauri && cargo fmt && cd ../..
