@@ -80,8 +80,8 @@ const dark = {
   "shadow": "0px 2px 5px " + "#111",
   "overlay": "#11111132",
 
-  "border-main": "#5A6164",
-  "border-dim": "#5A6164",
+  "border-main": "#111",
+  "border-dim": "#111",
 
   "sidebar-bg-main": "#242627",
   "sidebar-bg-hover": "#2B2D2E",

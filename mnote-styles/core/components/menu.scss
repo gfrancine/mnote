@@ -8,9 +8,9 @@
     padding: .5em 0;
     border-radius: 5px;
     box-sizing: border-box;
-    width: min-content;
+    width: max-content;
     box-shadow: map.get($theme, "shadow");
-    min-width: 160px;
+    min-width: 180px;
   
     .menu-item {
       font-family: map.get($theme, "font-main");
@@ -18,8 +18,8 @@
       font-size: 13px;
       display:flex;
       flex-direction:row;
-      padding: .4em;
-      margin: 0 .3em;
+      padding: .5em;
+      margin: 0 .4em;  
       border-radius: 5px;
       cursor: pointer;
   
