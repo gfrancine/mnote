@@ -130,6 +130,13 @@ export class EditorsModule /* implements Module */ {
     const button = this.sidemenu.createButton("add");
     let menu: Menu | undefined;
 
+    const hideMenu = () => {
+      if (menu) {
+        menu.cleanup();
+        menu = undefined;
+      }
+    };
+
     const getSections: () => MenuItem[] | undefined = () => {
       const result: MenuItem[] = [];
       for (const i in this.editors) {
@@ -137,18 +144,14 @@ export class EditorsModule /* implements Module */ {
         if (!editorInfo.hideFromNewMenu) {
           result.push({
             name: editorInfo.kind,
-            click: () => this.newEditor(editorInfo.kind),
+            click: () => {
+              this.newEditor(editorInfo.kind);
+              hideMenu();
+            },
           });
         }
       }
       return result.length > 0 && result;
-    };
-
-    const hideMenu = () => {
-      if (menu) {
-        menu.cleanup();
-        menu = undefined;
-      }
     };
 
     const showMenu = () => {

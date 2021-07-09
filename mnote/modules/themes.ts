@@ -91,7 +91,6 @@ const lightTheme = {
   "btn-emphasis-bg-hover": gray[7],
 };
 
-
 // dark theme from my UI prototype
 
 const darkTheme = {
@@ -109,14 +108,14 @@ const darkTheme = {
   "shadow": "0px 2px 5px " + "#111",
   "overlay": "#11111132",
 
-  "border-main":"#5A6164",
-  "border-dim":"#5A6164",
+  "border-main": "#5A6164",
+  "border-dim": "#5A6164",
 
   "sidebar-bg-main": "#242627",
   "sidebar-bg-hover": "#2B2D2E",
   "sidebar-fg-main": "#B0B6BB",
 
-  "btn-main-fg":"#B0B6BB", // buttons, assuming background is bg-main
+  "btn-main-fg": "#B0B6BB", // buttons, assuming background is bg-main
   "btn-main-fg-hover": "#B0B6BB",
   "btn-main-bg": "#5A6164",
   "btn-main-bg-hover": "#656A70",
