@@ -1,3 +1,7 @@
 Split.js (https://github.com/nathancahill/split)
 Copyright (c) 2020 Nathan Cahill
 MIT License
+
+Ionicons (https://www.svgrepo.com/collection/ionicons-outline-interface-icons/)
+Copyright (c) Ionicons
+MIT License

@@ -1,5 +1,6 @@
-import { Fragment, h } from "preact";
+import { h } from "preact";
 import { useMemo, useState } from "preact/hooks";
+import { BlankFile, ClosedFolder, OpenedFolder } from "./icons-jsx";
 import { getPathName } from "../common/util/path";
 import {
   FileTreeNode as Node,
@@ -22,6 +23,9 @@ function FileNode(props: {
       (props.visible ? "" : " hidden")}
     onClick={onClick}
   >
+    <div className="filetree-item-icon">
+      <BlankFile fillClass="fill" strokeClass="stroke" />
+    </div>
     {name}
   </div>;
 }
@@ -46,6 +50,11 @@ function DirNode(props: {
       className={"filetree-item" + (props.visible && expanded ? "" : " hidden")}
       onClick={onClick}
     >
+      <div className="filetree-item-icon">
+        {expanded
+          ? <OpenedFolder fillClass="fill" strokeClass="stroke" />
+          : <ClosedFolder fillClass="fill" strokeClass="stroke" />}
+      </div>
       {name}
     </div>
     <div

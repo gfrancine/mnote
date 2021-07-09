@@ -47,7 +47,21 @@
 
     .filetree-dir-children {
       box-sizing: border-box;
-      padding-left: .5em;
+      padding-left: .8em;
+    }
+
+    .filetree-item-icon {
+      width: 14px;
+      height: 14px;
+      margin: auto .5em auto 0;
+
+      .fill {
+        fill: map.get($theme, "sidebar-fg-secondary");
+      }
+
+      .stroke {
+        stroke: map.get($theme, "sidebar-fg-secondary");
+      }
     }
   }
 }

@@ -51,6 +51,7 @@ const light = {
   "sidebar-bg-main": gray[1],
   "sidebar-bg-hover": gray[3],
   "sidebar-fg-main": gray[9],
+  "sidebar-fg-secondary": gray[9],
 
   "btn-main-fg": gray[9], // buttons, assuming background is bg-main
   "btn-main-fg-hover": gray[9],
@@ -86,6 +87,7 @@ const dark = {
   "sidebar-bg-main": "#242627",
   "sidebar-bg-hover": "#2B2D2E",
   "sidebar-fg-main": "#B0B6BB",
+  "sidebar-fg-secondary": "#767E85",
 
   "btn-main-fg": "#B0B6BB", // buttons, assuming background is bg-main
   "btn-main-fg-hover": "#B0B6BB",
@@ -94,8 +96,8 @@ const dark = {
 
   "btn-emphasis-fg": "#2B2D2E",
   "btn-emphasis-fg-hover": "#2B2D2E",
-  "btn-emphasis-bg": "#767E85",
-  "btn-emphasis-bg-hover": "#5A6164",
+  "btn-emphasis-bg": "#B0B6BB",
+  "btn-emphasis-bg-hover": "#767E85",
 };
 
 /* oc dark theme
