@@ -5,6 +5,7 @@ import {
   DocInfo,
   Editor,
   EditorContext,
+  EditorInfo,
   EditorProvider,
   ModalButton,
 } from "./types";
@@ -24,7 +25,7 @@ import { SidemenuModule } from "./sidemenu";
 
 // todo: a nicer placeholder
 const nothingHere = el("div")
-  .inner("nothing here...")
+  .inner("...")
   .element;
 
 // editors keep the contents in their stae
@@ -39,8 +40,8 @@ export class EditorsModule {
   events: Emitter<
   confirmCloseModal: Modal;
 
-  providers: EditorProvider[] = [];
-  providerKinds: Record<string, EditorProvider> = {};
+  editors: EditorInfo[] = [];
+  editorKinds: Record<string, EditorInfo> = {};
 
   currentEditor?: Editor;
   currentDocument?: DocInfo;
@@ -82,9 +83,10 @@ export class EditorsModule /* implements Module */ {
 
   confirmCloseModal: Modal;
 
+  // collection of editors, thier providers and their configurations
   // providers return an editor if it should open a path
-  providers: EditorProvider[] = [];
-  providerKinds: Record<string, EditorProvider> = {};
+  editors: EditorInfo[] = [];
+  editorKinds: Record<string, EditorInfo> = {};
 
   currentEditor?: Editor;
   currentDocument?: DocInfo;
@@ -125,15 +127,18 @@ export class EditorsModule /* implements Module */ {
     const button = this.sidemenu.createButton("add");
     let menu: Menu | undefined;
 
-    const getSections: () => MenuItem[] = () => {
+    const getSections: () => MenuItem[] | undefined = () => {
       const result: MenuItem[] = [];
-      for (const kind in this.providerKinds) {
-        result.push({
-          name: kind,
-          click: () => this.newEditor(kind),
-        });
+      for (const i in this.editors) {
+        const editorInfo = this.editors[i];
+        if (!editorInfo.hideFromNewMenu) {
+          result.push({
+            name: editorInfo.kind,
+            click: () => this.newEditor(editorInfo.kind),
+          });
+        }
       }
-      return result;
+      return result.length > 0 && result;
     };
 
     const hideMenu = () => {
@@ -280,12 +285,12 @@ export class EditorsModule /* implements Module */ {
   }
 
   /** Register an editor provider */
-  registerEditor(kind: string, provider: EditorProvider) {
-    if (this.providerKinds[kind]) {
-      throw new Error(`Editor of kind "${kind}" already exists!`);
+  registerEditor(opts: EditorInfo) {
+    if (this.editorKinds[opts.kind]) {
+      throw new Error(`Editor of kind "${opts.kind}" already exists!`);
     }
-    this.providerKinds[kind] = provider;
-    this.providers.push(provider);
+    this.editorKinds[opts.kind] = opts;
+    this.editors.push(opts);
   }
 
   // wrapper so that we can hook events
@@ -316,8 +321,8 @@ export class EditorsModule /* implements Module */ {
   async newEditor(kind: string) {
     this.logging.info("new editor");
 
-    const provider = this.providerKinds[kind];
-    if (!provider) {
+    const editorInfo = this.editorKinds[kind];
+    if (!editorInfo) {
       throw new Error(`Editor of kind "${kind}" does not exist!`);
     }
 
@@ -335,7 +340,7 @@ export class EditorsModule /* implements Module */ {
       saved: false,
     });
 
-    const editor = provider.createNewEditor();
+    const editor = editorInfo.provider.createNewEditor();
     this.currentEditor = editor;
     await editor.startup(this.element, this.makeContext());
   }
@@ -481,8 +486,8 @@ export class EditorsModule /* implements Module */ {
 
     // last added runs first, assuming it's more selective
     // as the plaintext (which accepts all) is first
-    for (let i = this.providers.length - 1; i > -1; i--) {
-      const provider = this.providers[i];
+    for (let i = this.editors.length - 1; i > -1; i--) {
+      const provider = this.editors[i].provider;
       const editor = provider.tryGetEditor(path);
       if (editor) {
         selectedEditor = editor;

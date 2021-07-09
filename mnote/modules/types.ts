@@ -31,6 +31,12 @@ export interface EditorProvider {
   createNewEditor(): Editor;
 }
 
+export type EditorInfo = {
+  kind: string;
+  provider: EditorProvider;
+  hideFromNewMenu?: boolean;
+};
+
 // right click context menu context
 export type Context = {
   pageX: number;
