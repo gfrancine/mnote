@@ -1,6 +1,15 @@
+@use "./util/scrollbar.scss";
+@use "sass:map";
+
 @mixin editor($theme) {
   .editor-container {
     width: 100%;
     height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
+
+    @include scrollbar.scrollbar(
+      map.get($theme, "bg-secondary")
+    );
   }
 }

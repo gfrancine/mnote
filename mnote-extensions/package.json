@@ -2,6 +2,7 @@
   "name": "mnote-extensions",
   "version": "0.1.0",
   "dependencies": {
+    "micromark": "^3.0.0",
     "mnote-core": "file:../mnote-core",
     "mnote-util": "file:../mnote-util"
   }

@@ -9,7 +9,7 @@ export function getPathName(path: string): string {
   return path;
 }
 
-/** returns a blank string if not found */
+/** includes the leading ".", returns a blank string if not found */
 export function getPathExtension(path: string): string {
   const matches = path.match(EXTENSION_REGEX);
   if (matches) return matches[1];

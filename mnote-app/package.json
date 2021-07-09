@@ -2,6 +2,7 @@
   "name": "mnote-app",
   "version": "0.1.0",
   "scripts": {
+    "bump": "cd .. && bump",
     "build-web": "rmdir dist /s /q && mkdir dist && Xcopy public dist /i /s /e /y && node build-web.js",
     "serve": "npm run build-web && serve dist --no-clipboard",
     "build": "rmdir dist /s /q && mkdir dist && Xcopy public dist /i /s /e /y && node build.js",
@@ -18,6 +19,7 @@
     "@tauri-apps/api": "^1.0.0-beta.4",
     "mnote-core": "file:../mnote-core",
     "mnote-styles": "file:../mnote-styles",
-    "mnote-util": "file:../mnote-util"
+    "mnote-util": "file:../mnote-util",
+    "mnote-extensions": "file:../mnote-extensions"
   }
 }

@@ -1,8 +1,6 @@
 /*! Licensed under MIT, https://github.com/sofish/pen */
-var Pen = {};
-
 (function (root, doc) {
-  var debugMode, selection, utils = Pen;
+  var Pen, debugMode, selection, utils = {};
   var toString = Object.prototype.toString;
   var slice = Array.prototype.slice;
 
@@ -111,10 +109,8 @@ var Pen = {};
         "createlink",
         "insertimage",
       ],
-      titles: {},
       cleanAttrs: ["id", "class", "style", "name"],
       cleanTags: ["script"],
-      linksInNewWindow: false,
     };
 
     // user-friendly config
@@ -136,7 +132,7 @@ var Pen = {};
     try {
       doc.execCommand(cmd, false, val);
     } catch (err) {
-      // TODO: there's an error when insert a image to document, but not a bug
+      // TODO: there's an error when insert a image to document, bug not a bug
       return utils.log("fail" + message, true);
     }
 
@@ -167,16 +163,6 @@ var Pen = {};
     return commandOverall(ctx, "insertHTML", value);
   }
 
-  function commandLink(ctx, tag, value) {
-    if (ctx.config.linksInNewWindow) {
-      value = '< a href="' + value + '" target="_blank">' +
-        (selection.toString()) + "</a>";
-      return commandOverall(ctx, "insertHTML", value);
-    } else {
-      return commandOverall(ctx, tag, value);
-    }
-  }
-
   function initToolbar(ctx) {
     var icons = "",
       inputStr = '<input class="pen-input" placeholder="http://" />';
@@ -186,13 +172,11 @@ var Pen = {};
       var toolList = ctx.config.list;
       utils.forEach(toolList, function (name) {
         var klass = "pen-icon icon-" + name;
-        var title = ctx.config.titles[name] || "";
-        icons += '<i class="' + klass + '" data-action="' + name + '" title="' +
-          title + '"></i>';
+        icons += '<i class="' + klass + '" data-action="' + name + '"></i>';
       }, true);
       if (
         toolList.indexOf("createlink") >= 0 ||
-        toolList.indexOf("insertimage") >= 0
+        toolList.indexOf("createlink") >= 0
       ) {
         icons += inputStr;
       }
@@ -579,25 +563,11 @@ var Pen = {};
 
     // stay on the page
     if (this.config.stay) this.stay(this.config);
-
-    if (this.config.input) {
-      this.addOnSubmitListener(this.config.input);
-    }
   };
 
   Pen.prototype.on = function (type, listener) {
     addListener(this, this.config.editor, type, listener);
     return this;
-  };
-
-  Pen.prototype.addOnSubmitListener = function (inputElement) {
-    var form = inputElement.form;
-    var me = this;
-    form.addEventListener("submit", function () {
-      inputElement.value = me.config.saveAsMarkdown
-        ? me.toMd(me.config.editor.innerHTML)
-        : me.config.editor.innerHTML;
-    });
   };
 
   Pen.prototype.isEmpty = function (node) {
@@ -660,10 +630,8 @@ var Pen = {};
 
     if (commandsReg.block.test(name)) {
       commandBlock(this, name);
-    } else if (commandsReg.inline.test(name)) {
+    } else if (commandsReg.inline.test(name) || commandsReg.source.test(name)) {
       commandOverall(this, name, value);
-    } else if (commandsReg.source.test(name)) {
-      commandLink(this, name, value);
     } else if (commandsReg.insert.test(name)) {
       commandInsert(this, name, value);
     } else if (commandsReg.wrap.test(name)) {
@@ -893,7 +861,6 @@ var Pen = {};
     li: [/<(li)\b[^>]*>(.*?)<\/\1>/ig, "* $2\n"],
     blockquote: [/<(blockquote)\b[^>]*>(.*?)<\/\1>/ig, "\n> $2\n"],
     pre: [/<pre\b[^>]*>(.*?)<\/pre>/ig, "\n```\n$1\n```\n"],
-    code: [/<code\b[^>]*>(.*?)<\/code>/ig, "\n`\n$1\n`\n"],
     p: [/<p\b[^>]*>(.*?)<\/p>/ig, "\n$1\n"],
     hr: [/<hr\b[^>]*>/ig, "\n---\n"],
   };
@@ -904,9 +871,7 @@ var Pen = {};
       .replace(/<([uo])l\b[^>]*>(.*?)<\/\1l>/ig, "$2"); // remove ul/ol
 
     for (var p in regs) {
-      if (regs.hasOwnProperty(p)) {
-        html = html.replace.apply(html, regs[p]);
-      }
+      html = html.replace.apply(html, regs[p]);
     }
     return html.replace(/\*{5}/g, "**");
   };
@@ -918,4 +883,88 @@ var Pen = {};
   }
 }(window, document));
 
-export default Pen;
+/*! Licensed under MIT, https://github.com/sofish/pen */
+(function (root) {
+  // only works with Pen
+  if (!root.Pen) return;
+
+  // markdown covertor obj
+  var covertor = {
+    keymap: {
+      "96": "`",
+      "62": ">",
+      "49": "1",
+      "46": ".",
+      "45": "-",
+      "42": "*",
+      "35": "#",
+    },
+    stack: [],
+  };
+
+  // return valid markdown syntax
+  covertor.valid = function (str) {
+    var len = str.length;
+
+    if (str.match(/[#]{1,6}/)) {
+      return ["h" + len, len];
+    } else if (str === "```") {
+      return ["pre", len];
+    } else if (str === ">") {
+      return ["blockquote", len];
+    } else if (str === "1.") {
+      return ["insertorderedlist", len];
+    } else if (str === "-" || str === "*") {
+      return ["insertunorderedlist", len];
+    } else if (str.match(/(?:\.|\*|\-){3,}/)) {
+      return ["inserthorizontalrule", len];
+    }
+  };
+
+  // parse command
+  covertor.parse = function (e) {
+    var code = e.keyCode || e.which;
+
+    // when `space` is pressed
+    if (code === 32) {
+      var markdownSyntax = this.stack.join("");
+      // reset stack
+      this.stack = [];
+
+      var cmd = this.valid(markdownSyntax);
+      if (cmd) {
+        // prevents leading space after executing command
+        e.preventDefault();
+        return cmd;
+      }
+    }
+
+    // make cmd
+    if (this.keymap[code]) this.stack.push(this.keymap[code]);
+
+    return false;
+  };
+
+  // exec command
+  covertor.action = function (pen, cmd) {
+    // only apply effect at line start
+    if (pen.selection.focusOffset > cmd[1]) return;
+
+    var node = pen.selection.focusNode;
+    node.textContent = node.textContent.slice(cmd[1]);
+    pen.execCommand(cmd[0]);
+  };
+
+  // init covertor
+  covertor.init = function (pen) {
+    pen.on("keypress", function (e) {
+      var cmd = covertor.parse(e);
+      if (cmd) return covertor.action(pen, cmd);
+    });
+  };
+
+  // append to Pen
+  root.Pen.prototype.markdown = covertor;
+}(window));
+
+export default window.Pen;

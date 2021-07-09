@@ -1,4 +1,4 @@
-import { FileItemWithChildren, FsInteropModule } from "../../mnote";
+import { FileItemWithChildren, FsInteropModule } from "mnote-core";
 
 export class FS implements FsInteropModule {
   writeTextFile(path: string, contents: string): Promise<void> {
@@ -18,6 +18,7 @@ export class FS implements FsInteropModule {
           children: [
             { path: "file-e" },
             { path: "file-f" },
+            { path: "file-g.md" },
           ],
         },
       ],

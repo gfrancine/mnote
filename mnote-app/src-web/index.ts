@@ -1,6 +1,8 @@
-import { Mnote } from "mnote-core";
+import { ExtensionsModule, Mnote } from "mnote-core";
 import { FS } from "./fs";
 import "../styles.scss";
+
+import { MarkdownExtension } from "mnote-extensions/markdown";
 
 // web build
 // for quick visual debugging
@@ -12,4 +14,7 @@ import "../styles.scss";
   });
 
   await app.startup();
+
+  (app.modules.extensions as ExtensionsModule)
+    .add(new MarkdownExtension(app));
 })();
