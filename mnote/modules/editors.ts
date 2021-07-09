@@ -240,28 +240,32 @@ export class EditorsModule /* implements Module */ {
 
   protected hookToInputs() {
     // hotkeys
-    this.input.registerShortcut(["command+o", "ctrl+o"], () => {
+    this.input.registerShortcut(["command+o", "ctrl+o"], (e) => {
       this.logging.info("editor keys: ctrl o");
+      e.preventDefault();
       this.open();
     });
 
-    this.input.registerShortcut(["command+s", "ctrl+s"], () => {
+    this.input.registerShortcut(["command+s", "ctrl+s"], (e) => {
       this.logging.info("editor keys: ctrl s");
       if (this.currentDocument) {
+        e.preventDefault();
         this.save();
       }
     });
 
-    this.input.registerShortcut(["command+shift+s", "ctrl+shift+s"], () => {
+    this.input.registerShortcut(["command+shift+s", "ctrl+shift+s"], (e) => {
       this.logging.info("editor keys: ctrl shift s");
       if (this.currentDocument) {
+        e.preventDefault();
         this.saveAs();
       }
     });
 
-    this.input.registerShortcut(["command+w", "ctrl+w"], () => {
+    this.input.registerShortcut(["command+w", "ctrl+w"], (e) => {
       this.logging.info("editor keys: ctrl w");
       if (this.currentDocument) {
+        e.preventDefault();
         this.close();
       }
     });
