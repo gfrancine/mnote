@@ -19,8 +19,8 @@
     border: 0;
   }
   .pen blockquote {
-    padding-left: 10px;
-    margin-left: -14px;
+    padding-left: 1em;
+    margin-left: -1em;
     border-left: 4px solid map.get($theme, "bg-dim");
   }
   .pen a {

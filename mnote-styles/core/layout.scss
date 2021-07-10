@@ -58,6 +58,7 @@
 
       .layout-contents {
         background-color: map.get($theme, "bg-main");
+        overflow: auto;
         width: 100%;
         height: 100%;
       }

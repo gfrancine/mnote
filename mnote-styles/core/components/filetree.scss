@@ -10,7 +10,7 @@
     overflow-y: auto;
 
     @include scrollbar.scrollbar(
-      map.get($theme, "sidebar-bg-secondary")
+      map.get($theme, "sidebar-bg-hover")
     );
   }
 

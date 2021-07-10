@@ -1,3 +1,6 @@
+// todo:
+// find a better and maintained editor
+
 import {
   Editor,
   EditorContext,
@@ -20,8 +23,14 @@ import Pen from "./pen";
 // - the provider
 // - the extension itself
 
+function wordCount(text: string): number {
+  return text.split(/\s+/g).length;
+}
+
 class MarkdownEditor implements Editor {
   app: Mnote;
+  editor: HTMLElement;
+  statsbar: HTMLElement;
   element: HTMLElement;
   container?: HTMLElement;
   pen: Pen;
@@ -30,8 +39,21 @@ class MarkdownEditor implements Editor {
   constructor(app: Mnote) {
     this.app = app;
     this.fs = (app.modules.fs as FSModule);
+
+    this.editor = el("div")
+      .class("pen")
+      .element;
+
+    this.statsbar = el("div")
+      .class("statsbar")
+      .element;
+
     this.element = el("div")
-      .class("markdown-editor")
+      .class("md-extension")
+      .children(
+        this.editor,
+        this.statsbar,
+      )
       .element;
   }
 
@@ -40,8 +62,7 @@ class MarkdownEditor implements Editor {
     this.container.appendChild(this.element);
 
     this.pen = new Pen({
-      class: "pen",
-      editor: this.element,
+      editor: this.editor,
       debug: true,
       list: [
         "insertimage",
@@ -63,16 +84,22 @@ class MarkdownEditor implements Editor {
       linksInNewWindow: true,
     });
 
-    this.element.setAttribute("spellcheck", "false");
+    this.editor.setAttribute("spellcheck", "false");
 
-    this.element.addEventListener("input", () => {
+    this.editor.addEventListener("input", () => {
       ctx.updateEdited();
+      this.updateStats();
     });
+  }
+
+  protected updateStats() {
+    this.statsbar.innerHTML = "W " + wordCount(this.editor.innerText);
   }
 
   async load(path: string) {
     const contents = await this.fs.readTextFile(path);
     this.pen.setContent(micromark(contents));
+    this.updateStats();
   }
 
   cleanup() {

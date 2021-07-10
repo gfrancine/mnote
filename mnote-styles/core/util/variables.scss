@@ -6,7 +6,7 @@
 // e.g. "background" -> "var(--mnote-background)"
 @function from($keys) {
   $vars: ();
-  @each $k in $keys {
+  @each $k, $_v in $keys {
     $vars: map-merge($vars, (
       $k: var(#{"--mnote-" + $k})
     ));
