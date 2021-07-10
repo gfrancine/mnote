@@ -1,11 +1,19 @@
 import { FileItemWithChildren, FsInteropModule } from "mnote-core";
+import { getPathExtension } from "../../mnote-util/path";
+
+const contents = {
+  md: `# lorem ipsum`,
+};
 
 export class FS implements FsInteropModule {
   writeTextFile(_path: string, _contents: string): Promise<void> {
     return Promise.resolve();
   }
-  readTextFile(_path: string): Promise<string> {
-    return Promise.resolve("lorem ipsum");
+  readTextFile(path: string): Promise<string> {
+    return Promise.resolve(
+      contents[getPathExtension(path)] ||
+        "lorem ipsum",
+    );
   }
   readDir(_path: string): Promise<FileItemWithChildren> {
     const tree = {
