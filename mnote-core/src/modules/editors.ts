@@ -28,6 +28,18 @@ const nothingHere = el("div")
   .inner("...")
   .element;
 
+function notifyError(message: string) {
+  new Modal({
+    container: this.element,
+    message: message,
+    buttons: [{
+      kind: "emphasis",
+      text: "OK",
+      command: "",
+    }],
+  }).prompt();
+}
+
 // editors keep the contents in their stae
 // this module communicates between all the other parts of the app, so
 // no other component can ever access the editor object without going
@@ -362,15 +374,7 @@ export class EditorsModule /* implements Module */ {
       await this.currentEditor.save(this.currentDocument.path);
       return true;
     } catch (e) {
-      new Modal({
-        container: this.element,
-        message: `An error occurred while saving: ${e}`,
-        buttons: [{
-          kind: "emphasis",
-          text: "OK",
-          command: "",
-        }],
-      }).prompt();
+      notifyError(`An error occurred while saving: ${e}`);
       return false;
     }
   }
@@ -549,8 +553,14 @@ export class EditorsModule /* implements Module */ {
       this.currentEditorKind = selectedEditorKind;
       this.currentEditor = selectedEditor;
       this.element.innerHTML = "";
-      await selectedEditor.startup(this.element, this.makeContext()); //todo: handle err
-      await selectedEditor.load(this.currentDocument.path);
+
+      try {
+        await selectedEditor.startup(this.element, this.makeContext()); //todo: handle err
+        await selectedEditor.load(this.currentDocument.path);
+      } catch (e) {
+        notifyError(`An error occurred while loading: ${e}`);
+        await this.cleanup();
+      }
     }
   }
 }
