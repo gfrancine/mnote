@@ -1,4 +1,4 @@
-@use "pen";
+@use "milkdown";
 @use "sass:map";
 @use "~mnote-styles/mnote-styles" as mn;
 
@@ -6,20 +6,25 @@
   width: 100%;
   height: 100%;
 
-  @include pen.pen(mn.$vars);
+  @include milkdown.milkdown(mn.$vars);
 
-  .pen {
+  .md-container {
     width: 80%;
     height: 100%;
     margin: 0 auto;
     box-sizing: border-box;
-    outline: none;
-    line-height: 1.35;
-    padding: 20px 0;
+    background: map.get(mn.$vars, "bg-main");
     color: map.get(mn.$vars, "fg-main");
+
+    .editor {
+      box-sizing: border-box;
+      line-height: 1.35;
+      padding: 20px 0;
+      outline: none;
+    }
   }
 
-  .statsbar {
+  .md-statsbar {
     position: absolute;
     right: 1em;
     font-size: 12px;

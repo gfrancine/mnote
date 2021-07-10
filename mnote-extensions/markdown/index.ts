@@ -11,8 +11,8 @@ import {
   Mnote,
 } from "mnote-core";
 
-import * as HyperMD from "hypermd";
-import { Editor as CMEditor } from "codemirror";
+import { Editor as MilkdownEditor } from "@milkdown/core";
+import { commonmark } from "@milkdown/preset-commonmark";
 
 import { getPathExtension } from "mnote-util/path";
 import { el } from "mnote-util/elbuilder";
@@ -23,33 +23,33 @@ import "./markdown.scss";
 // - the provider
 // - the extension itself
 
-HyperMD.fromTextArea;
-
 function countWords(text: string): number {
   return text.split(/\s+/g).length;
 }
 
 class MarkdownEditor implements Editor {
   app: Mnote;
-  editorContainer: HTMLTextAreaElement;
+  editorContainer: HTMLElement;
   statsbar: HTMLElement;
   element: HTMLElement;
   container?: HTMLElement;
   fs: FSModule;
+  ctx: EditorContext;
 
-  hyper: CMEditor;
+  milkdown: MilkdownEditor;
+  contents = "";
 
   constructor(app: Mnote) {
     this.app = app;
     this.fs = (app.modules.fs as FSModule);
 
-    this.editorContainer = el("textarea")
-      .class("pen")
+    this.editorContainer = el("div")
+      .class("md-container")
       .attr("spellcheck", "false")
-      .element as HTMLTextAreaElement;
+      .element as HTMLElement;
 
     this.statsbar = el("div")
-      .class("statsbar")
+      .class("md-statsbar")
       .element;
 
     this.element = el("div")
@@ -62,38 +62,49 @@ class MarkdownEditor implements Editor {
   }
 
   startup(containter: HTMLElement, ctx: EditorContext) {
+    this.ctx = ctx;
     this.container = containter;
     this.container.appendChild(this.element);
-
-    const onUpdate = () => {
-      ctx.updateEdited();
-      this.updateStats();
-    };
-
-    this.hyper = HyperMD.fromTextArea(this.editorContainer, {});
-
-    this.hyper.on("change", onUpdate);
   }
 
   protected updateStats() {
-    const wordCount = countWords(this.hyper.getValue());
+    const wordCount = countWords(this.contents);
     this.statsbar.innerHTML = "W " + wordCount;
   }
 
   async load(path: string) {
     const contents = await this.fs.readTextFile(path);
-    this.hyper.setValue(contents);
+
+    const onUpdate = () => {
+      this.ctx.updateEdited();
+      this.updateStats();
+    };
+
+    this.milkdown = new MilkdownEditor({
+      root: this.editorContainer,
+      defaultValue: contents,
+      listener: {
+        markdown: [(getMarkdown) => {
+          this.contents = getMarkdown();
+          onUpdate();
+        }],
+      },
+    })
+      .use(commonmark);
+
+    this.milkdown.create();
+
     this.updateStats();
   }
 
   cleanup() {
     this.container.removeChild(this.element);
-    delete this.hyper;
+    delete this.milkdown;
     this.element.innerHTML = "";
   }
 
   async save(path: string) {
-    const contents = this.hyper.getValue();
+    const contents = this.contents;
     await this.fs.writeTextFile(path, contents);
   }
 }
