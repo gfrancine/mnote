@@ -6,7 +6,9 @@
     "mnote-deps": "file:../mnote-deps",
     "mnote-util": "file:../mnote-util",
     "mousetrap": "^1.6.5",
-    "open-color": "^1.8.0",
+    "open-color": "^1.8.0"
+  },
+  "peerDependencies": {
     "preact": "^10.5.14"
   }
 }

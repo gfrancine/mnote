@@ -1,5 +1,6 @@
 const esbuild = require("esbuild");
 const { sassPlugin } = require("esbuild-sass-plugin");
+const alias = require('esbuild-plugin-alias');
 
 esbuild
   .build({
@@ -8,6 +9,12 @@ esbuild
     minify: true,
     sourcemap: false,
     outfile: "dist/bundle.js",
-    plugins: [sassPlugin()],
+    plugins: [
+      sassPlugin(),
+      alias({
+        "react": require.resolve("preact/compat"),
+        "react-dom": require.resolve("preact/compat"),
+      }),
+    ],
   })
   .catch((e) => console.error(e.message));
