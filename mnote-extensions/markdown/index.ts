@@ -119,6 +119,7 @@ export class MarkdownExtension implements Extension {
     (this.app.modules.editors as EditorsModule).registerEditor({
       kind: "Markdown",
       provider: new MarkdownEditorProvider(this.app),
+      saveAsExtensions: ["md"],
     });
   }
 

@@ -37,6 +37,7 @@ export type EditorInfo = {
   kind: string;
   provider: EditorProvider;
   hideFromNewMenu?: boolean;
+  saveAsExtensions?: string[];
 };
 
 // right click context menu context

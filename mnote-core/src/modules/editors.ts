@@ -78,17 +78,19 @@ export class EditorsModule /* implements Module */ {
   filetree: FiletreeModule;
 
   events: Emitter<{
-    docSavedChanged: (doc: DocInfo) => void;
-    docSet?: (doc: DocInfo) => void;
+    docSet: (doc: DocInfo) => void; // menubar *Untitled text
   }> = new Emitter();
 
   confirmCloseModal: Modal;
 
   // collection of editors, thier providers and their configurations
   // providers return an editor if it should open a path
+  // keep both a list and a map, the list for finding a match from
+  // last to first registered
   editors: EditorInfo[] = [];
   editorKinds: Record<string, EditorInfo> = {};
 
+  currentEditorKind?: string;
   currentEditor?: Editor;
   currentDocument?: DocInfo;
 
@@ -190,7 +192,6 @@ export class EditorsModule /* implements Module */ {
       }
     };
 
-    this.events.on("docSavedChanged", updateMenubarTitle);
     this.events.on("docSet", updateMenubarTitle);
 
     const cmdOrCtrl = this.system.USES_CMD ? "Cmd" : "Ctrl";
@@ -349,6 +350,7 @@ export class EditorsModule /* implements Module */ {
       saved: false,
     });
 
+    this.currentEditorKind = editorInfo.kind;
     const editor = editorInfo.provider.createNewEditor();
     this.currentEditor = editor;
     await editor.startup(this.element, this.makeContext());
@@ -379,8 +381,11 @@ export class EditorsModule /* implements Module */ {
     this.logging.info("save as");
     if (!this.currentEditor || !this.currentDocument) return true;
 
+    const editorInfo = this.editorKinds[this.currentEditorKind];
+
     const newPath = await this.fs.dialogSave({
       // initialPath: dir,
+      extensions: editorInfo.saveAsExtensions,
     });
 
     this.logging.info("new path", newPath);
@@ -425,8 +430,11 @@ export class EditorsModule /* implements Module */ {
       }
     }
 
-    this.currentDocument.saved = true;
-    this.events.emit("docSavedChanged", this.currentDocument);
+    this.setCurrentDocument({
+      ...this.currentDocument,
+      saved: true,
+    });
+
     return true;
   }
 
@@ -494,8 +502,10 @@ export class EditorsModule /* implements Module */ {
     return {
       updateEdited: () => {
         if (this.currentDocument) {
-          this.currentDocument.saved = false;
-          this.events.emit("docSavedChanged", this.currentDocument);
+          this.setCurrentDocument({
+            ...this.currentDocument,
+            saved: false,
+          });
         }
       },
       getDocument: () => this.currentDocument,
@@ -515,14 +525,17 @@ export class EditorsModule /* implements Module */ {
     this.clear();
 
     let selectedEditor: Editor;
+    let selectedEditorKind: string;
 
     // last added runs first, assuming it's more selective
     // as the plaintext (which accepts all) is first
     for (let i = this.editors.length - 1; i > -1; i--) {
+      const kind = this.editors[i].kind;
       const provider = this.editors[i].provider;
       const editor = provider.tryGetEditor(path);
       if (editor) {
         selectedEditor = editor;
+        selectedEditorKind = kind;
         break;
       }
     }
@@ -534,6 +547,7 @@ export class EditorsModule /* implements Module */ {
         path,
       });
 
+      this.currentEditorKind = selectedEditorKind;
       this.currentEditor = selectedEditor;
       this.element.innerHTML = "";
       await selectedEditor.startup(this.element, this.makeContext()); //todo: handle err
