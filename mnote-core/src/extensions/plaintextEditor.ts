@@ -92,7 +92,7 @@ export class PlaintextExtension implements Extension {
 
   startup() {
     (this.app.modules.editors as EditorsModule).registerEditor({
-      kind: "plaintext",
+      kind: "Plaintext",
       provider: new PlaintextEditorProvider(this.app),
     });
   }
