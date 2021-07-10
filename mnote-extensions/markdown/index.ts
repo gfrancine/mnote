@@ -13,7 +13,6 @@ import { el } from "mnote-util/elbuilder";
 import "./markdown.scss";
 
 import { micromark } from "micromark";
-import _ from "./pen/markdown";
 import Pen from "./pen";
 
 // an editor extension contains:
@@ -97,7 +96,7 @@ class MarkdownEditorProvider implements EditorProvider {
   }
 
   tryGetEditor(path: string) {
-    if (getPathExtension(path) === ".md") {
+    if (getPathExtension(path) === "md") {
       return new MarkdownEditor(this.app);
     }
   }

@@ -1,4 +1,4 @@
-const EXTENSION_REGEX = /(\.[^.]+)[\\/]?$/;
+const EXTENSION_REGEX = /(\.([^.\\/]+))[\\/]?$/;
 const NAME_REGEX = /([^\\/]+)[\\/]?$/;
 const PARENT_REGEX = /(.+)[\\/][^\\/]+[\\/]?$/;
 
@@ -9,10 +9,10 @@ export function getPathName(path: string): string {
   return path;
 }
 
-/** includes the leading ".", returns a blank string if not found */
+/** without the leading ".", returns a blank string if not found */
 export function getPathExtension(path: string): string {
   const matches = path.match(EXTENSION_REGEX);
-  if (matches) return matches[1];
+  if (matches) return matches[2];
   return "";
 }
 
