@@ -386,13 +386,20 @@ export class EditorsModule /* implements Module */ {
     this.logging.info("new path", newPath);
     if (!newPath) return false;
 
+    const newPathName = getPathName(newPath);
+    this.setCurrentDocument({
+      path: newPath,
+      name: newPathName,
+      saved: false,
+    });
+
     const success = await this.trySaveEditor();
     this.logging.info("save editor success", success);
     if (!success) return false;
 
     this.setCurrentDocument({
       path: newPath,
-      name: getPathName(newPath),
+      name: newPathName,
       saved: true,
     });
 
@@ -431,20 +438,7 @@ export class EditorsModule /* implements Module */ {
     if (!this.currentEditor || !this.currentDocument) return true;
     this.logging.info("close: has editor and document");
 
-    if (!this.currentDocument.path) {
-      this.logging.info("close: doc has no path");
-      // no path, therefore unsaved
-      // popup save as
-      // if cancelled, abort
-      if (await this.save()) {
-        this.logging.info("close: saved");
-        await this.cleanup();
-        return true;
-      } else {
-        this.logging.info("close: unsaved");
-        return false;
-      }
-    } else if (!this.currentDocument.saved) {
+    if (!this.currentDocument.saved) {
       this.logging.info("close: doc has path, but not saved");
       // has path, but unsaved
       // would you like to save?
