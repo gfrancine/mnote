@@ -1,13 +1,13 @@
 import { FileItemWithChildren, FsInteropModule } from "mnote-core";
 
 export class FS implements FsInteropModule {
-  writeTextFile(path: string, contents: string): Promise<void> {
+  writeTextFile(_path: string, _contents: string): Promise<void> {
     return Promise.resolve();
   }
-  readTextFile(path: string): Promise<string> {
+  readTextFile(_path: string): Promise<string> {
     return Promise.resolve("lorem ipsum");
   }
-  readDir(path: string): Promise<FileItemWithChildren> {
+  readDir(_path: string): Promise<FileItemWithChildren> {
     const tree = {
       path: "dir-a",
       children: [
@@ -26,27 +26,27 @@ export class FS implements FsInteropModule {
 
     return Promise.resolve(tree);
   }
-  isFile(path: string): Promise<boolean> {
+  isFile(_path: string): Promise<boolean> {
     return Promise.resolve(true);
   }
-  isDir(path: string): Promise<boolean> {
+  isDir(_path: string): Promise<boolean> {
     return Promise.resolve(true);
   }
-  dialogOpen(opts: {
+  dialogOpen(_opts: {
     initialPath?: string;
     extensions?: string[];
     directory: boolean;
   }): Promise<string | void> {
     return Promise.resolve("");
   }
-  dialogOpenMultiple(opts: {
+  dialogOpenMultiple(_opts: {
     initialPath?: string;
     extensions?: string[];
     directory: boolean;
   }): Promise<string[] | void> {
     return Promise.resolve([]);
   }
-  dialogSave(opts: {
+  dialogSave(_opts: {
     initialPath?: string;
     extensions?: string[];
   }): Promise<string | void> {
@@ -62,9 +62,9 @@ export class FS implements FsInteropModule {
     return items.join("/");
   }
 
-  watchInit(path: string): Promise<void> {
+  watchInit(_path: string): Promise<void> {
     return Promise.resolve();
   }
 
-  onWatchEvent(handler: () => void | Promise<void>): void {}
+  onWatchEvent(_handler: () => void | Promise<void>): void {}
 }

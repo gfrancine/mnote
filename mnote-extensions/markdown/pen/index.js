@@ -1,3 +1,5 @@
+// deno-lint-ignore-file
+
 /*! Licensed under MIT, https://github.com/sofish/pen */
 (function (root, doc) {
   var Pen, debugMode, selection, utils = {};

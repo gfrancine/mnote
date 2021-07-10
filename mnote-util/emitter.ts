@@ -1,3 +1,5 @@
+// deno-lint-ignore-file ban-types no-explicit-any
+
 type Arguments<T> = [T] extends [(...args: infer U) => any] ? U
   : [T] extends [void] ? []
   : [T];

@@ -1,3 +1,5 @@
+// deno-lint-ignore-file
+
 // The programming goals of Split.js are to deliver readable, understandable and
 // maintainable code, while at the same time manually optimizing for tiny minified file size,
 // browser compatibility without additional requirements

@@ -1,4 +1,4 @@
-deno fmt^
+deno lint^
   mnote-core/src^
   mnote-extensions/markdown^
   mnote-app/src^

@@ -66,8 +66,7 @@ export class Modal {
       buttonEls.forEach((element) => {
         const command = element.getAttribute("modal-command");
 
-        let listener: () => void;
-        listener = () => {
+        const listener = () => {
           for (const [k, v] of listeners.entries()) {
             k.removeEventListener("click", v);
           }

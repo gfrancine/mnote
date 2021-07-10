@@ -1,11 +1,6 @@
 import { Mnote } from "../common/types";
 import { EditorsModule } from "../modules/editors";
-import {
-  DocInfo,
-  EditorContext,
-  EditorProvider,
-  Extension,
-} from "../modules/types";
+import { EditorContext, EditorProvider, Extension } from "../modules/types";
 import { Editor } from "../modules/types";
 import { el } from "mnote-util/elbuilder";
 import { FSModule } from "../modules/fs";
@@ -22,7 +17,7 @@ class PlaintextEditor implements Editor {
   container?: HTMLElement;
   fs: FSModule;
 
-  contents: string = "";
+  contents = "";
 
   constructor(app: Mnote) {
     this.app = app;

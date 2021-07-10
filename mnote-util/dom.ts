@@ -11,7 +11,7 @@ export function toHtml(s: string): HTMLElement {
 
 // body freezing
 
-let frozen: boolean = false;
+let frozen = false;
 
 export function freeze() {
   frozen = true;

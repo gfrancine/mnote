@@ -1,4 +1,4 @@
-import { FileItem, FileItemWithChildren, FsInteropModule } from "mnote-core";
+import { FileItemWithChildren, FsInteropModule } from "mnote-core";
 import { invoke } from "@tauri-apps/api/tauri";
 import { emit, listen } from "@tauri-apps/api/event";
 import { Emitter } from "mnote-util/emitter";
@@ -9,7 +9,7 @@ import * as dialog from "@tauri-apps/api/dialog";
 export class FS implements FsInteropModule {
   protected watcher = new Watcher(); // at the bottom of the file
 
-  protected USES_BACKSLASH: boolean = false;
+  protected USES_BACKSLASH = false;
 
   async init() {
     this.USES_BACKSLASH = await invoke("is_windows");
@@ -18,14 +18,14 @@ export class FS implements FsInteropModule {
   }
 
   async writeTextFile(path: string, contents: string): Promise<void> {
-    return fs.writeFile({
+    return await fs.writeFile({
       path,
       contents,
     });
   }
 
   async readTextFile(path: string): Promise<string> {
-    return fs.readTextFile(path);
+    return await fs.readTextFile(path);
   }
 
   async readDir(path: string): Promise<FileItemWithChildren> {
@@ -111,7 +111,7 @@ export class FS implements FsInteropModule {
         ? [{ name: "extensions", extensions: opts.extensions }]
         : undefined;
 
-      return dialog.save({
+      return await dialog.save({
         filters,
       });
     } catch {
@@ -120,11 +120,11 @@ export class FS implements FsInteropModule {
   }
 
   async getConfigDir(): Promise<string> {
-    return path.configDir();
+    return await path.configDir();
   }
 
   async getCurrentDir(): Promise<string> {
-    return path.currentDir();
+    return await path.currentDir();
   }
 
   joinPath(items: string[]) {
@@ -165,7 +165,7 @@ export class FS implements FsInteropModule {
 }
 
 export class Watcher {
-  protected initialized: boolean = false;
+  protected initialized = false;
   protected emitter = new Emitter<{
     event: () => void | Promise<void>;
   }>();
@@ -176,10 +176,10 @@ export class Watcher {
 
   async init(path: string) {
     this.initialized = true;
-    listen("watcher_event", () => {
+    await listen("watcher_event", () => {
       this.emitter.emit("event");
     });
-    emit("watcher_init", path);
+    await emit("watcher_init", path);
   }
 
   onEvent(handler: () => void | Promise<void>) {

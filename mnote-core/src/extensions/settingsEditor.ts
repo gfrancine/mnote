@@ -1,11 +1,6 @@
 import { MenuItem, Mnote } from "../common/types";
 import { EditorsModule } from "../modules/editors";
-import {
-  DocInfo,
-  EditorContext,
-  EditorProvider,
-  Extension,
-} from "../modules/types";
+import { EditorContext, EditorProvider, Extension } from "../modules/types";
 import { Editor } from "../modules/types";
 import { el } from "mnote-util/elbuilder";
 import { MenubarModule, SettingsModule } from "../modules";
@@ -25,7 +20,7 @@ class SettingsEditor implements Editor {
   container?: HTMLElement;
   settings: SettingsModule;
 
-  contents: string = "";
+  contents = "";
 
   constructor(app: Mnote) {
     this.app = app;
@@ -66,7 +61,7 @@ class SettingsEditor implements Editor {
     containter.appendChild(this.element);
   }
 
-  async load(_path: string) {
+  load(_path: string) {
     this.textarea.value = JSON.stringify(
       this.settings.getSettings(),
       undefined,
@@ -78,7 +73,7 @@ class SettingsEditor implements Editor {
     this.container.removeChild(this.element);
   }
 
-  async save(path: string) {
+  async save(_path: string) {
     const parsed = JSON.parse(this.contents);
     if (!this.settings.isValidSettings(parsed)) {
       // throw when error so the editor module
