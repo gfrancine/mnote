@@ -58,7 +58,6 @@ export class FS implements FsInteropModule {
   }
 
   async dialogOpen(opts: {
-    initialPath?: string;
     extensions?: string[];
     directory: boolean;
   }): Promise<string | void> {
@@ -68,7 +67,6 @@ export class FS implements FsInteropModule {
         : undefined;
 
       const result = await dialog.open({
-        defaultPath: opts.initialPath,
         directory: opts.directory,
         multiple: false,
         filters,
@@ -81,7 +79,6 @@ export class FS implements FsInteropModule {
   }
 
   async dialogOpenMultiple(opts: {
-    initialPath?: string;
     extensions?: string[];
     directory: boolean;
   }): Promise<string[] | void> {
@@ -91,7 +88,6 @@ export class FS implements FsInteropModule {
         : undefined;
 
       const result = await dialog.open({
-        defaultPath: opts.initialPath,
         directory: opts.directory,
         multiple: true,
         filters,
@@ -108,7 +104,6 @@ export class FS implements FsInteropModule {
   }
 
   async dialogSave(opts: {
-    initialPath?: string;
     extensions?: string[];
   }): Promise<string | void> {
     try {
@@ -117,7 +112,6 @@ export class FS implements FsInteropModule {
         : undefined;
 
       return dialog.save({
-        defaultPath: opts.initialPath,
         filters,
       });
     } catch {

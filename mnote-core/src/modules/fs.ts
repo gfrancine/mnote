@@ -55,7 +55,6 @@ export class FSModule implements FsInteropModule {
   }
 
   async dialogOpen(opts: {
-    initialPath?: string;
     extensions?: string[];
     directory: boolean;
   }): Promise<string | void> {
@@ -65,7 +64,6 @@ export class FSModule implements FsInteropModule {
   }
 
   async dialogOpenMultiple(opts: {
-    initialPath?: string;
     extensions?: string[];
     directory: boolean;
   }): Promise<string[] | void> {
@@ -75,7 +73,6 @@ export class FSModule implements FsInteropModule {
   }
 
   async dialogSave(opts: {
-    initialPath?: string;
     extensions?: string[];
   }): Promise<string | void> {
     if (this.fs) {
