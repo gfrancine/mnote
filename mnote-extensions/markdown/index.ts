@@ -11,38 +11,42 @@ import {
   Mnote,
 } from "mnote-core";
 
+import * as HyperMD from "hypermd";
+import { Editor as CMEditor } from "codemirror";
+
 import { getPathExtension } from "mnote-util/path";
 import { el } from "mnote-util/elbuilder";
 import "./markdown.scss";
-
-import { micromark } from "micromark";
-import Pen from "./pen";
 
 // an editor extension contains:
 // - the editor
 // - the provider
 // - the extension itself
 
-function wordCount(text: string): number {
+HyperMD.fromTextArea;
+
+function countWords(text: string): number {
   return text.split(/\s+/g).length;
 }
 
 class MarkdownEditor implements Editor {
   app: Mnote;
-  editor: HTMLElement;
+  editorContainer: HTMLTextAreaElement;
   statsbar: HTMLElement;
   element: HTMLElement;
   container?: HTMLElement;
-  pen: Pen;
   fs: FSModule;
+
+  hyper: CMEditor;
 
   constructor(app: Mnote) {
     this.app = app;
     this.fs = (app.modules.fs as FSModule);
 
-    this.editor = el("div")
+    this.editorContainer = el("textarea")
       .class("pen")
-      .element;
+      .attr("spellcheck", "false")
+      .element as HTMLTextAreaElement;
 
     this.statsbar = el("div")
       .class("statsbar")
@@ -51,7 +55,7 @@ class MarkdownEditor implements Editor {
     this.element = el("div")
       .class("md-extension")
       .children(
-        this.editor,
+        this.editorContainer,
         this.statsbar,
       )
       .element;
@@ -61,55 +65,36 @@ class MarkdownEditor implements Editor {
     this.container = containter;
     this.container.appendChild(this.element);
 
-    this.pen = new Pen({
-      editor: this.editor,
-      debug: true,
-      list: [
-        "insertimage",
-        "blockquote",
-        "h2",
-        "h3",
-        "p",
-        "code",
-        "insertorderedlist",
-        "insertunorderedlist",
-        "inserthorizontalrule",
-        "indent",
-        "outdent",
-        "bold",
-        "italic",
-        "underline",
-        "createlink",
-      ],
-      linksInNewWindow: true,
-    });
-
-    this.editor.setAttribute("spellcheck", "false");
-
-    this.editor.addEventListener("input", () => {
+    const onUpdate = () => {
       ctx.updateEdited();
       this.updateStats();
-    });
+    };
+
+    this.hyper = HyperMD.fromTextArea(this.editorContainer, {});
+
+    this.hyper.on("change", onUpdate);
   }
 
   protected updateStats() {
-    this.statsbar.innerHTML = "W " + wordCount(this.editor.innerText);
+    const wordCount = countWords(this.hyper.getValue());
+    this.statsbar.innerHTML = "W " + wordCount;
   }
 
   async load(path: string) {
     const contents = await this.fs.readTextFile(path);
-    this.pen.setContent(micromark(contents));
+    this.hyper.setValue(contents);
     this.updateStats();
   }
 
   cleanup() {
     this.container.removeChild(this.element);
-    this.pen.destroy();
+    delete this.hyper;
     this.element.innerHTML = "";
   }
 
   async save(path: string) {
-    await this.fs.writeTextFile(path, this.pen.toMd());
+    const contents = this.hyper.getValue();
+    await this.fs.writeTextFile(path, contents);
   }
 }
 

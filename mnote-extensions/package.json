@@ -2,8 +2,13 @@
   "name": "mnote-extensions",
   "version": "0.1.0",
   "dependencies": {
-    "micromark": "^3.0.0",
+    "codemirror": "^5.62.0",
+    "hypermd": "^v0.3.11",
     "mnote-core": "file:../mnote-core",
+    "mnote-deps": "file:../mnote-deps",
     "mnote-util": "file:../mnote-util"
+  },
+  "devDependencies": {
+    "@types/codemirror": "^5.60.2"
   }
 }
