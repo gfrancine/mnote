@@ -1,10 +1,6 @@
 import { FileItemWithChildren, FsInteropModule } from "mnote-core";
 import { getPathExtension } from "../../mnote-util/path";
-
-const contents = {
-  md: `# lorem ipsum`,
-  excalidraw: `{}`,
-};
+import { contents, tree } from "./mocks";
 
 export class FS implements FsInteropModule {
   writeTextFile(_path: string, _contents: string): Promise<void> {
@@ -17,23 +13,6 @@ export class FS implements FsInteropModule {
     );
   }
   readDir(_path: string): Promise<FileItemWithChildren> {
-    const tree = {
-      path: "dir-a",
-      children: [
-        { path: "file-b" },
-        { path: "file-c" },
-        {
-          path: "dir-d",
-          children: [
-            { path: "file-e" },
-            { path: "file-f" },
-            { path: "file-g.md" },
-            { path: "file-h.excalidraw" },
-          ],
-        },
-      ],
-    } as FileItemWithChildren;
-
     return Promise.resolve(tree);
   }
   isFile(_path: string): Promise<boolean> {

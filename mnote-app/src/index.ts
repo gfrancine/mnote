@@ -2,8 +2,10 @@ import { ExtensionsModule, Mnote } from "mnote-core";
 import { FS } from "./fs";
 import { System } from "./system";
 import { invoke } from "@tauri-apps/api/tauri";
-import { MarkdownExtension } from "mnote-extensions/markdown";
 import "../styles.scss";
+
+import { MarkdownExtension } from "mnote-extensions/markdown";
+import { ExcalidrawExtension } from "mnote-extensions/excalidraw";
 
 (async () => {
   const args = await invoke("get_args");
@@ -18,5 +20,6 @@ import "../styles.scss";
   await app.startup();
 
   (app.modules.extensions as ExtensionsModule)
-    .add(new MarkdownExtension(app));
+    .add(new MarkdownExtension(app))
+    .add(new ExcalidrawExtension(app));
 })();

@@ -2,6 +2,14 @@ Split.js (https://github.com/nathancahill/split)
 Copyright (c) 2020 Nathan Cahill
 MIT License
 
-Ionicons (https://www.svgrepo.com/collection/ionicons-outline-interface-icons/)
+Ionicons (https://www.svgrepo.com/collection/ionicons-outline-interface-icons)
 Copyright (c) Ionicons
+MIT License
+
+Milkdown (https://github.com/Saul-Mirone/milkdown)
+Copyright (c) 2020-present Mirone
+MIT License
+
+Excalidraw (https://github.com/excalidraw/excalidraw)
+Copyright (c) 2020 Excalidraw
 MIT License

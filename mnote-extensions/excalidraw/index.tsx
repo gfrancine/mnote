@@ -25,7 +25,7 @@ import "./styles.scss";
 // - the extension itself
 
 type ExcalidrawData = {
-  elements?: ExcalidrawElement[];
+  readonly elements?: ExcalidrawElement[];
   appState?: ExcalidrawAppState;
 };
 
@@ -34,11 +34,33 @@ type EventBus = Emitter<{
 }>;
 
 function Wrapper(
-  { emitter, initialData }: { emitter: EventBus; initialData: ExcalidrawData },
+  props: {
+    emitter: EventBus;
+    initialData: ExcalidrawData;
+  },
 ) {
+  // select only a few elements from the appstate
+
+  const initialData = {
+    elements: props.initialData.elements,
+    appState: {
+      theme: props.initialData.appState?.theme,
+    },
+  };
+
   return <>
     <Excalidraw
-      onChange={(data: ExcalidrawData) => emitter.emit("change", data)}
+      onChange={(elements, appState) =>
+        props.emitter.emit("change", { elements, appState } as ExcalidrawData)}
+      UIOptions={{
+        canvasActions: {
+          changeViewBackgroundColor: false,
+          export: false,
+          loadScene: false,
+          saveToActiveFile: false,
+          saveAsImage: true,
+        },
+      }}
       initialData={initialData}
     />
   </>;
@@ -48,8 +70,9 @@ class ExcalidrawEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
   container?: HTMLElement;
+  ctx: EditorContext;
   fs: FSModule;
-  emitter: EventBus = new Emitter();
+  emitter: EventBus;
 
   data: ExcalidrawData = {};
 
@@ -59,28 +82,37 @@ class ExcalidrawEditor implements Editor {
     this.element = el("div")
       .class("excdraw-extension")
       .element;
-
-    // hook to event bus here
-
-    this.emitter.on("change", (data) => {
-      this.data = data;
-    });
   }
 
   startup(containter: HTMLElement, ctx: EditorContext) {
+    this.ctx = ctx;
     this.container = containter;
     containter.appendChild(this.element);
+
+    this.emitter = new Emitter();
+    this.emitter.on("change", this.onChange);
+
     render(
       <Wrapper initialData={this.data} emitter={this.emitter} />,
       this.element,
     );
   }
 
+  protected onChange(data) {
+    this.data = data;
+    this.ctx.updateEdited();
+  }
+
   async load(path: string) {
+    delete this.emitter;
+    render(null, this.element);
+
     const contents = await this.fs.readTextFile(path);
     const data: ExcalidrawData = JSON.parse(contents);
     this.data = data;
+    console.log("excalidata", data);
 
+    this.emitter = new Emitter();
     render(<Wrapper initialData={data} emitter={this.emitter} />, this.element);
   }
 
@@ -90,6 +122,7 @@ class ExcalidrawEditor implements Editor {
   }
 
   async save(path: string) {
+    console.log("excalidata", this.data);
     await this.fs.writeTextFile(path, JSON.stringify(this.data));
   }
 }
