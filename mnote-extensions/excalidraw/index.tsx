@@ -66,6 +66,12 @@ function Wrapper(
   </>;
 }
 
+const makeCallback = (self: ExcalidrawEditor) =>
+  (data: ExcalidrawData) => {
+    self.data = data;
+    self.ctx.updateEdited();
+  };
+
 class ExcalidrawEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
@@ -90,17 +96,12 @@ class ExcalidrawEditor implements Editor {
     containter.appendChild(this.element);
 
     this.emitter = new Emitter();
-    this.emitter.on("change", this.onChange);
+    this.emitter.on("change", makeCallback(this));
 
     render(
       <Wrapper initialData={this.data} emitter={this.emitter} />,
       this.element,
     );
-  }
-
-  protected onChange(data) {
-    this.data = data;
-    this.ctx.updateEdited();
   }
 
   async load(path: string) {
@@ -110,9 +111,10 @@ class ExcalidrawEditor implements Editor {
     const contents = await this.fs.readTextFile(path);
     const data: ExcalidrawData = JSON.parse(contents);
     this.data = data;
-    console.log("excalidata", data);
 
     this.emitter = new Emitter();
+    this.emitter.on("change", makeCallback(this));
+
     render(<Wrapper initialData={data} emitter={this.emitter} />, this.element);
   }
 
@@ -122,7 +124,6 @@ class ExcalidrawEditor implements Editor {
   }
 
   async save(path: string) {
-    console.log("excalidata", this.data);
     await this.fs.writeTextFile(path, JSON.stringify(this.data));
   }
 }
@@ -141,6 +142,7 @@ class ExcalidrawEditorProvider implements EditorProvider {
       return new ExcalidrawEditor(this.app);
     }
   }
+
   createNewEditor() {
     return new ExcalidrawEditor(this.app);
   }
