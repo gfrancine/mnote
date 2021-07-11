@@ -2,6 +2,7 @@
   "name": "mnote-extensions",
   "version": "0.1.0",
   "dependencies": {
+    "@excalidraw/excalidraw": "^0.9.0",
     "@milkdown/core": "^4.5.0",
     "@milkdown/preset-commonmark": "^4.5.0",
     "mnote-core": "file:../mnote-core",

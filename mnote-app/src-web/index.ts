@@ -3,6 +3,7 @@ import { FS } from "./fs";
 import "../styles.scss";
 
 import { MarkdownExtension } from "mnote-extensions/markdown";
+import { ExcalidrawExtension } from "mnote-extensions/excalidraw";
 
 // web build
 // for quick visual debugging
@@ -16,5 +17,6 @@ import { MarkdownExtension } from "mnote-extensions/markdown";
   await app.startup();
 
   (app.modules.extensions as ExtensionsModule)
-    .add(new MarkdownExtension(app));
+    .add(new MarkdownExtension(app))
+    .add(new ExcalidrawExtension(app));
 })();

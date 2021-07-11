@@ -377,6 +377,7 @@ export class EditorsModule /* implements Module */ {
       return true;
     } catch (e) {
       this.notifyError(`An error occurred while saving: ${e}`);
+      console.error(e);
       return false;
     }
   }
@@ -561,6 +562,7 @@ export class EditorsModule /* implements Module */ {
         await selectedEditor.load(this.currentDocument.path);
       } catch (e) {
         this.notifyError(`An error occurred while loading: ${e}`);
+        console.error(e);
         await this.cleanup();
       }
     }

@@ -3,6 +3,7 @@ import { getPathExtension } from "../../mnote-util/path";
 
 const contents = {
   md: `# lorem ipsum`,
+  excalidraw: `{}`,
 };
 
 export class FS implements FsInteropModule {
@@ -27,6 +28,7 @@ export class FS implements FsInteropModule {
             { path: "file-e" },
             { path: "file-f" },
             { path: "file-g.md" },
+            { path: "file-h.excalidraw" },
           ],
         },
       ],

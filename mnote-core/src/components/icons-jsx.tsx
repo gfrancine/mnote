@@ -1,6 +1,8 @@
-import { h } from "preact";
+import React from "react";
 
 type SVGProps = { fillClass: string; strokeClass: string };
+
+// https://transform.tools/css-to-js
 
 export function BlankFile({ strokeClass }: SVGProps) {
   return (
@@ -8,12 +10,17 @@ export function BlankFile({ strokeClass }: SVGProps) {
       <path
         d="M416,221.25V416a48,48,0,0,1-48,48H144a48,48,0,0,1-48-48V96a48,48,0,0,1,48-48h98.75a32,32,0,0,1,22.62,9.37L406.63,198.63A32,32,0,0,1,416,221.25Z"
         className={strokeClass}
-        style="fill:none;stroke-linejoin:round;stroke-width:32px"
+        style={{ fill: "none", strokeLinejoin: "round", strokeWidth: "32px" }}
       />
       <path
         d="M256,56V176a32,32,0,0,0,32,32H408"
         className={strokeClass}
-        style="fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+        style={{
+          fill: "none",
+          strokeLinecap: "round",
+          strokeLinejoin: "round",
+          strokeWidth: "32px",
+        }}
       />
     </svg>
   );

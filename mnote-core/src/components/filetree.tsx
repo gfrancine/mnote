@@ -1,5 +1,4 @@
-import { h } from "preact";
-import { useMemo, useState } from "preact/hooks";
+import React, { useMemo, useState } from "react";
 import { BlankFile, ClosedFolder, OpenedFolder } from "./icons-jsx";
 import { getPathName } from "mnote-util/path";
 import {

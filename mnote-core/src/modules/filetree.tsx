@@ -7,7 +7,8 @@ import { LayoutModule } from "./layout";
 import { CtxmenuModule } from "./ctxmenu";
 import { LoggingModule } from "./logging";
 
-import { h, render } from "preact";
+import { render } from "react-dom";
+import React from "react";
 import FileTree from "../components/filetree";
 
 export class FiletreeModule {
