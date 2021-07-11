@@ -28,18 +28,6 @@ const nothingHere = el("div")
   .inner("...")
   .element;
 
-function notifyError(message: string) {
-  new Modal({
-    container: this.element,
-    message: message,
-    buttons: [{
-      kind: "emphasis",
-      text: "OK",
-      command: "",
-    }],
-  }).prompt();
-}
-
 // editors keep the contents in their stae
 // this module communicates between all the other parts of the app, so
 // no other component can ever access the editor object without going
@@ -59,6 +47,8 @@ export class EditorsModule {
   currentDocument?: DocInfo;
 
   constructor(app: Mnote)
+
+  notifyError(message: string) {
 
   protected hookToSidebarMenu() {
   protected hookToMenubar() {
@@ -136,6 +126,18 @@ export class EditorsModule /* implements Module */ {
     this.hookToMenubar();
     this.hookToInputs();
     this.hookToFiletree();
+  }
+
+  notifyError(message: string) {
+    new Modal({
+      container: this.app.element,
+      message: message,
+      buttons: [{
+        kind: "emphasis",
+        text: "OK",
+        command: "",
+      }],
+    }).prompt();
   }
 
   protected hookToSidebarMenu() {
@@ -374,7 +376,7 @@ export class EditorsModule /* implements Module */ {
       await this.currentEditor.save(this.currentDocument.path);
       return true;
     } catch (e) {
-      notifyError(`An error occurred while saving: ${e}`);
+      this.notifyError(`An error occurred while saving: ${e}`);
       return false;
     }
   }
@@ -558,7 +560,7 @@ export class EditorsModule /* implements Module */ {
         await selectedEditor.startup(this.element, this.makeContext()); //todo: handle err
         await selectedEditor.load(this.currentDocument.path);
       } catch (e) {
-        notifyError(`An error occurred while loading: ${e}`);
+        this.notifyError(`An error occurred while loading: ${e}`);
         await this.cleanup();
       }
     }
