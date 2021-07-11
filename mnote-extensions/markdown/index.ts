@@ -46,7 +46,7 @@ class MarkdownEditor implements Editor {
     this.editorContainer = el("div")
       .class("md-container")
       .attr("spellcheck", "false")
-      .element as HTMLElement;
+      .element;
 
     this.statsbar = el("div")
       .class("md-statsbar")
@@ -65,6 +65,20 @@ class MarkdownEditor implements Editor {
     this.ctx = ctx;
     this.container = containter;
     this.container.appendChild(this.element);
+
+    this.milkdown = new MilkdownEditor({
+      root: this.editorContainer,
+      defaultValue: "",
+      listener: {
+        markdown: [(getMarkdown) => {
+          this.contents = getMarkdown();
+          this.onUpdate();
+        }],
+      },
+    })
+      .use(commonmark);
+
+    this.milkdown.create();
   }
 
   protected updateStats() {
@@ -72,13 +86,15 @@ class MarkdownEditor implements Editor {
     this.statsbar.innerHTML = "W " + wordCount;
   }
 
+  protected onUpdate() {
+    this.ctx.updateEdited();
+    this.updateStats();
+  }
+
   async load(path: string) {
     const contents = await this.fs.readTextFile(path);
 
-    const onUpdate = () => {
-      this.ctx.updateEdited();
-      this.updateStats();
-    };
+    this.editorContainer.innerHTML = "";
 
     this.milkdown = new MilkdownEditor({
       root: this.editorContainer,
@@ -86,7 +102,7 @@ class MarkdownEditor implements Editor {
       listener: {
         markdown: [(getMarkdown) => {
           this.contents = getMarkdown();
-          onUpdate();
+          this.onUpdate();
         }],
       },
     })
@@ -100,7 +116,9 @@ class MarkdownEditor implements Editor {
   cleanup() {
     this.container.removeChild(this.element);
     delete this.milkdown;
+    delete this.editorContainer;
     this.element.innerHTML = "";
+    delete this.element;
   }
 
   async save(path: string) {
