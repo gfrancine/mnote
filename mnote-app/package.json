@@ -2,19 +2,21 @@
   "name": "mnote-app",
   "version": "0.1.0",
   "scripts": {
-    "bump": "cd .. && bump",
-    "build-web": "rmdir dist /s /q && mkdir dist && Xcopy public dist /i /s /e /y && node build-web.js",
-    "serve": "npm run build-web && serve dist --no-clipboard",
-    "build": "rmdir dist /s /q && mkdir dist && Xcopy public dist /i /s /e /y && node build.js",
-    "start": "npm run build && npm run tauri dev && run",
-    "tauri": "tauri"
+  	"build": "rmdir dist /s /q && mkdir dist && Xcopy public dist /i /s /e /y && node build.js",
+  	"build-web": "rmdir dist /s /q mkdir dist && Xcopy public dist /i /s /e /y && node build-web.js",
+  	"release": "npm run xbuild && npm run tauri",
+  	"serve": "npm run build-web && serve dist --no-clipboard",
+  	"start": "npm run build && npm run tauri dev && run",
+  	"tauri": "tauri",
+  	"xbuild": "shx rm -rf dist && mkdir dist && shx cp -r public dist && node build.js"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.0-beta.5",
     "esbuild": "^0.12.7",
     "esbuild-plugin-alias": "^0.1.2",
     "esbuild-sass-plugin": "^1.4.4",
-    "serve": "^12.0.0"
+    "serve": "^12.0.0",
+    "shx": "^0.3.3"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.0.0-beta.4",
