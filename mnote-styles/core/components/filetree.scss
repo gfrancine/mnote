@@ -9,9 +9,7 @@
     height: 100%;
     overflow-y: auto;
 
-    @include scrollbar.scrollbar(
-      map.get($theme, "sidebar-bg-hover")
-    );
+    @include scrollbar.scrollbar(map.get($theme, "sidebar-bg-hover"));
   }
 
   .filetree-main {
@@ -30,8 +28,8 @@
       cursor: pointer;
       font-size: 13px;
       display: flex;
-      flex-direction:row;
-      padding: .5em;
+      flex-direction: row;
+      padding: 0.5em;
       margin: 0 0 0.2em 0;
       border-radius: 5px;
 
@@ -47,14 +45,14 @@
 
     .filetree-dir-children {
       box-sizing: border-box;
-      padding-left: .8em;
+      padding-left: 0.8em;
     }
 
     .filetree-item-icon {
       width: 14px;
       height: 14px;
       min-width: 14px;
-      margin: auto .5em auto 0;
+      margin: auto 0.5em auto 0;
 
       .fill {
         fill: map.get($theme, "sidebar-fg-secondary");

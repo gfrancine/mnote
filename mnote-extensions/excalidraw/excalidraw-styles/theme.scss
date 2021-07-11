@@ -14,51 +14,54 @@
       theme-filter: none,
       button-destructive-bg-color: #{$oc-red-1},
       button-destructive-color: #{$oc-red-9},
-      button-gray-1: map-get($theme, "bg-secondary"), // normal
-      button-gray-2: map-get($theme, "bg-dim"), // hover
-      button-gray-3: map-get($theme, "bg-dim"), // pressed
+      button-gray-1: map-get($theme, "bg-secondary"),
+      // normal
+      button-gray-2: map-get($theme, "bg-dim"),
+      // hover
+      button-gray-3: map-get($theme, "bg-dim"),
+      // pressed
       button-special-active-bg-color: #{$oc-green-0},
       dialog-border-color: map-get($theme, "border-main"),
-      dropdown-icon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="292.4" height="292.4" viewBox="0 0 292 292"><path d="M287 197L159 69c-4-3-8-5-13-5s-9 2-13 5L5 197c-3 4-5 8-5 13s2 9 5 13c4 4 8 5 13 5h256c5 0 9-1 13-5s5-8 5-13-1-9-5-13z"/></svg>') ,
-      focus-highlight-color: #{$oc-blue-2} ,
-      icon-fill-color: map-get($theme, "fg-main") ,
-      icon-green-fill-color: #{$oc-green-9} ,
-      default-bg-color: map-get($theme, "bg-main") ,
-      input-bg-color: map-get($theme, "bg-main") ,
-      input-border-color: #{$oc-gray-3} ,
-      input-hover-bg-color: #{$oc-gray-1} ,
-      input-label-color: #{$oc-gray-7} ,
-      island-bg-color: map-get($theme, "bg-main") ,
-      keybinding-color: map-get($theme, "bg-dim") ,
-      link-color: #{$oc-blue-7} ,
-      overlay-bg-color: map-get($theme, "overlay") ,
-      popup-bg-color: map-get($theme, "bg-main") ,
-      popup-secondary-bg-color: map-get($theme, "bg-secondary") ,
-      popup-text-color: map-get($theme, "fg-main") ,
-      popup-text-inverted-color: map-get($theme, "bg-main") ,
-      sab: env(safe-area-inset-bottom) ,
-      sal: env(safe-area-inset-left) ,
-      sar: env(safe-area-inset-right) ,
-      sat: env(safe-area-inset-top) ,
-      select-highlight-color: #{$oc-blue-5} ,
-      shadow-island: map-get($theme, "shadow") ,
-      space-factor: 0.25rem ,
-      text-primary-color: map-get($theme, "fg-main") ,
+      dropdown-icon:
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="292.4" height="292.4" viewBox="0 0 292 292"><path d="M287 197L159 69c-4-3-8-5-13-5s-9 2-13 5L5 197c-3 4-5 8-5 13s2 9 5 13c4 4 8 5 13 5h256c5 0 9-1 13-5s5-8 5-13-1-9-5-13z"/></svg>'),
+      focus-highlight-color: #{$oc-blue-2},
+      icon-fill-color: map-get($theme, "fg-main"),
+      icon-green-fill-color: #{$oc-green-9},
+      default-bg-color: map-get($theme, "bg-main"),
+      input-bg-color: map-get($theme, "bg-main"),
+      input-border-color: #{$oc-gray-3},
+      input-hover-bg-color: #{$oc-gray-1},
+      input-label-color: #{$oc-gray-7},
+      island-bg-color: map-get($theme, "bg-main"),
+      keybinding-color: map-get($theme, "bg-dim"),
+      link-color: #{$oc-blue-7},
+      overlay-bg-color: map-get($theme, "overlay"),
+      popup-bg-color: map-get($theme, "bg-main"),
+      popup-secondary-bg-color: map-get($theme, "bg-secondary"),
+      popup-text-color: map-get($theme, "fg-main"),
+      popup-text-inverted-color: map-get($theme, "bg-main"),
+      sab: env(safe-area-inset-bottom),
+      sal: env(safe-area-inset-left),
+      sar: env(safe-area-inset-right),
+      sat: env(safe-area-inset-top),
+      select-highlight-color: #{$oc-blue-5},
+      shadow-island: map-get($theme, "shadow"),
+      space-factor: 0.25rem,
+      text-primary-color: map-get($theme, "fg-main"),
     );
 
     @each $k, $v in $vars {
       --#{$k}: #{$v};
     }
-  
-    
+
     &.theme--dark {
       // background: $oc-black ,
-  
+
       &.theme--dark-background-none {
         background: none;
       }
     }
-  
+
     &.theme--dark {
       /* theme-filter: #{$theme-filter} ,
       button-destructive-bg-color: #5a0000 ,

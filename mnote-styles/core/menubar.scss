@@ -9,7 +9,7 @@
     color: map.get($theme, "fg-dim");
     font-family: map.get($theme, "font-main");
     display: flex;
-    padding: 0 .5em;
+    padding: 0 0.5em;
     flex-direction: row;
     font-size: 12px;
 
@@ -31,20 +31,22 @@
     .menubar-menu-toggle {
       height: 14px;
       width: 14px;
-      
+
       .menubar-icon {
         height: 100%;
         width: 100%;
-  
+
         .fill {
           fill: map.get($theme, "fg-dim");
         }
         .stroke {
-          stroke: map.get($theme, "fg-dim")
+          stroke: map.get($theme, "fg-dim");
         }
-  
+
         svg {
-          transform: translateY(-8px); // no clue why the svg is slightly offsetted
+          transform: translateY(
+            -8px
+          ); // no clue why the svg is slightly offsetted
         }
       }
     }

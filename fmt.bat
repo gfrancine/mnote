@@ -1,3 +1,4 @@
+prettier -w **.scss && ^
 deno fmt^
   mnote-core/src^
   mnote-extensions/markdown^

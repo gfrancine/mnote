@@ -42,7 +42,6 @@
     padding: 0 0.2rem;
   }
 
-  
   .code-fence {
     border-radius: 5px;
     font-size: 0.85rem;
@@ -61,7 +60,7 @@
       max-width: 30ch;
       margin: 1em;
       display: grid;
-      grid-template-areas: 'select';
+      grid-template-areas: "select";
       align-items: center;
       cursor: pointer;
       background-color: map.get($theme, "bg-secondary");

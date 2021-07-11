@@ -7,9 +7,12 @@
 @function from($keys) {
   $vars: ();
   @each $k, $_v in $keys {
-    $vars: map-merge($vars, (
-      $k: var(#{"--mnote-" + $k})
-    ));
+    $vars: map-merge(
+      $vars,
+      (
+        $k: var(#{"--mnote-" + $k}),
+      )
+    );
   }
   @return $vars;
 }

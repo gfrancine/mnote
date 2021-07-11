@@ -19,9 +19,12 @@
       #{"--mnote-" + $k}: $v;
 
       // insert into the variable map
-      $vars: map-merge($vars, (
-        $k: var(#{"--mnote-" + $k})
-      ));
+      $vars: map-merge(
+        $vars,
+        (
+          $k: var(#{"--mnote-" + $k}),
+        )
+      );
     }
   }
 

@@ -6,8 +6,8 @@
     height: 100vh;
     background: map.get($theme, "overlay");
     position: fixed;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     z-index: 20;
   }
 
@@ -18,35 +18,35 @@
     transform: translateX(-50%);
     background: map.get($theme, "bg-main");
     color: map.get($theme, "fg-main");
-    padding: .8em;
+    padding: 0.8em;
     margin-top: 2em;
     border-radius: 5px;
     box-sizing: border-box;
     width: min-content;
     min-width: 360px;
-  
+
     .modal-buttons {
       width: 100%;
       text-align: right;
-  
+
       .modal-button {
         font-family: "Lato";
         font-size: 13px;
-        display:inline-block;
-        flex-direction:row;
+        display: inline-block;
+        flex-direction: row;
         color: map.get($theme, "fg-main");
-        padding: .8em;
-        margin-left: .5em;
+        padding: 0.8em;
+        margin-left: 0.5em;
         border-radius: 5px;
         cursor: pointer;
-    
+
         &.normal {
           background: map.get($theme, "btn-main-bg");
           color: map.get($theme, "btn-main-fg");
 
           &:hover {
             background: map.get($theme, "btn-main-bg-hover");
-            color: map.get($theme, "btn-main-fg-hover")
+            color: map.get($theme, "btn-main-fg-hover");
           }
         }
 
@@ -56,7 +56,7 @@
 
           &:hover {
             background: map.get($theme, "btn-emphasis-bg-hover");
-            color: map.get($theme, "btn-emphasis-fg-hover")
+            color: map.get($theme, "btn-emphasis-fg-hover");
           }
         }
       }
