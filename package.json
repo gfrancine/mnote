@@ -2,6 +2,7 @@
   "name": "mnote",
   "version": "0.1.0",
   "dependencies": {
+    "open-color": "^1.8.0",
     "preact": "^10.5.14"
   }
 }
