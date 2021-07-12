@@ -1,0 +1,29 @@
+name: "test-artifact"
+on: [workflow_dispatch]
+
+jobs:
+  publish-tauri:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: setup node
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+
+    - name: install dependencies
+      shell: pwsh
+      run: .\install.ps1
+
+    - run: cd mnote-app && npm run xbuild
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: my-artifact
+        path: ./dist
