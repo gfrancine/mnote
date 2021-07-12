@@ -24,6 +24,11 @@
     }
   }
 
+  [contenteditable] {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
   .md-statsbar {
     position: absolute;
     right: 1em;
