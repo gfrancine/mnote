@@ -36,10 +36,11 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tagName: mnote-__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-        releaseName: "Mnote __VERSION__"
+        tagName: mnote-debug-__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+        releaseName: "[DEBUG] Mnote __VERSION__"
         body: "See the assets to download this version and install."
         draft: true
         prerelease: false
         projectPath: "./mnote-app"
         npmScript: "release"
+        includeDebug: true
