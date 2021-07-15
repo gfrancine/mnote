@@ -37,11 +37,11 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.platform }}
-        path: ./mnote-app/src-tauri/target/debug/bundle
+        path: ./mnote-app/src-tauri/target/release/bundle
 
     - name: upload (macos)
       if: matrix.platform == 'macos-latest'
       uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.platform }}
-        path: ./mnote-app/src-tauri/target/debug/bundle
+        path: ./mnote-app/src-tauri/target/release/bundle
