@@ -8,7 +8,9 @@
     "serve": "npm run build-web && serve dist --no-clipboard",
     "start": "npm run build && npm run tauri dev && run",
     "tauri": "tauri",
-    "xbuild": "shx rm -rf dist && shx cp -r public dist && node build.js"
+    "xbuild": "shx rm -rf dist && shx cp -r public dist && node build.js",
+    "xbuild-web": "shx rm -rf dist && shx cp -r public dist && node build-web.js",
+    "xserve": "npm run xbuild-web && serve dist --no-clipboard"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.0-beta.5",
