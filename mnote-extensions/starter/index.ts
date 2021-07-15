@@ -1,12 +1,12 @@
 import {
-  Mnote,
-  EditorsModule,
+  Editor,
   EditorContext,
   EditorProvider,
+  EditorsModule,
   Extension,
   FSModule,
-  Editor,
-} from "mnote-core"
+  Mnote,
+} from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 
 // an editor extension contains:
@@ -14,25 +14,28 @@ import { el } from "mnote-util/elbuilder";
 // - the provider
 // - the extension itself
 
-class PlaintextEditor implements Editor {
+class StarterEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
   container?: HTMLElement;
   fs: FSModule;
 
-  contents: string = "";
+  contents = "";
 
   constructor(app: Mnote) {
     this.app = app;
     this.fs = (app.modules.fs as FSModule);
+    this.element = el("div")
+      .class("starter-extension")
+      .element;
   }
 
-  startup(containter: HTMLElement, ctx: EditorContext) {
+  startup(containter: HTMLElement, _ctx: EditorContext) {
     this.container = containter;
   }
 
   async load(path: string) {
-    const contents = await this.fs.readTextFile(path);
+    const _contents = await this.fs.readTextFile(path);
   }
 
   cleanup() {
@@ -46,7 +49,7 @@ class PlaintextEditor implements Editor {
 
 // provider
 
-class PlaintextEditorProvider implements EditorProvider {
+class StarterEditorProvider implements EditorProvider {
   app: Mnote;
 
   constructor(app: Mnote) {
@@ -54,16 +57,16 @@ class PlaintextEditorProvider implements EditorProvider {
   }
 
   tryGetEditor(_path: string) {
-    return new PlaintextEditor(this.app);
+    return new StarterEditor(this.app);
   }
   createNewEditor() {
-    return new PlaintextEditor(this.app);
+    return new StarterEditor(this.app);
   }
 }
 
 // extension
 
-export class PlaintextExtension implements Extension {
+export class StarterExtension implements Extension {
   app: Mnote;
 
   constructor(app: Mnote) {
@@ -72,8 +75,8 @@ export class PlaintextExtension implements Extension {
 
   startup() {
     (this.app.modules.editors as EditorsModule).registerEditor({
-      kind: "plaintext",
-      provider: new PlaintextEditorProvider(this.app),
+      kind: "Starter",
+      provider: new StarterEditorProvider(this.app),
     });
   }
 
