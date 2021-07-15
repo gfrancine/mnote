@@ -13,3 +13,7 @@ MIT License
 Excalidraw (https://github.com/excalidraw/excalidraw)
 Copyright (c) 2020 Excalidraw
 MIT License
+
+react-trello (https://github.com/rcdexta/react-trello)
+Copyright (c) 2017 RC
+MIT License

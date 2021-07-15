@@ -1,3 +1,5 @@
+import nodefill from "../nodefill";
+
 import { ExtensionsModule, Mnote } from "mnote-core";
 import { FS } from "./fs";
 import { System } from "./system";
@@ -6,6 +8,10 @@ import "../styles.scss";
 
 import { MarkdownExtension } from "mnote-extensions/markdown";
 import { ExcalidrawExtension } from "mnote-extensions/excalidraw";
+import { KanbanExtension } from "mnote-extensions/kanban";
+
+// run this so it gets bundled
+console.log(nodefill);
 
 (async () => {
   const args = await invoke("get_args");
@@ -21,5 +27,6 @@ import { ExcalidrawExtension } from "mnote-extensions/excalidraw";
 
   (app.modules.extensions as ExtensionsModule)
     .add(new MarkdownExtension(app))
-    .add(new ExcalidrawExtension(app));
+    .add(new ExcalidrawExtension(app))
+    .add(new KanbanExtension(app));
 })();

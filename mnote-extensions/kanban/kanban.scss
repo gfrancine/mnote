@@ -1,0 +1,160 @@
+@use "sass:map";
+@use "~mnote-styles/mnote-styles" as mn;
+
+// react-trello's classes were
+
+$aliases: (
+  "btn-add-lane": ".sc-hHEiqL.sc-dlMDgC.ccTnQh.kpPvTx",
+  "placeholder-add-lane": ".sc-iCoGMd.kMthTr",
+  "placeholder-add-card": ".sc-crzoAE.DykGo",
+  "btn-add": ".sc-cBoqAE.lRfdj",
+  // the green button
+  "btn-cancel": ".sc-ciSkZP.bwSYJA",
+  // the gray button
+  "menu-lane-actions": ".sc-gtsrHT.sc-eCApnc.kzWtze.cDtiGC",
+);
+
+.kanban-extension {
+  width: 100%;
+  height: 100%;
+
+  *,
+  textarea {
+    font-family: map.get(mn.$vars, "font-main");
+    font-size: 13px;
+  }
+
+  .react-trello-board {
+    @include mn.scrollbar(map.get(mn.$vars, "bg-secondary"));
+  }
+
+  &:first-child div {
+    border: 0;
+    background-color: map.get(mn.$vars, "bg-main");
+  }
+
+  .react-trello-lane {
+    border: 0;
+    background-color: map.get(mn.$vars, "bg-secondary");
+    color: map.get(mn.$vars, "fg-main");
+
+    textarea,
+    header,
+    button {
+      color: map.get(mn.$vars, "fg-main");
+      outline: none;
+    }
+
+    textarea {
+      box-shadow: none;
+    }
+
+    a {
+      background-color: map.get(mn.$vars, "bg-secondary");
+    }
+  }
+
+  .react-trello-card {
+    border: 0;
+    background-color: map.get(mn.$vars, "bg-main");
+    color: map.get(mn.$vars, "fg-main");
+
+    &:hover {
+      background-color: map.get(mn.$vars, "bg-secondary");
+    }
+
+    textarea,
+    header,
+    button {
+      color: map.get(mn.$vars, "fg-main");
+      outline: none;
+    }
+
+    textarea {
+      box-shadow: none;
+    }
+
+    header {
+      border-bottom: 1px solid map.get(mn.$vars, "border-main");
+    }
+  }
+
+  #{map.get($aliases, "btn-add-lane")} {
+    background-color: map.get(mn.$vars, "btn-main-bg");
+    color: map.get(mn.$vars, "btn-main-fg");
+
+    button {
+      background-color: inherit;
+      color: inherit;
+    }
+
+    &:hover {
+      background-color: map.get(mn.$vars, "btn-main-bg-hover");
+      color: map.get(mn.$vars, "btn-main-fg-hover");
+    }
+  }
+
+  #{map.get($aliases, "placeholder-add-lane")} {
+    background-color: map.get(mn.$vars, "bg-secondary");
+    color: map.get(mn.$vars, "fg-main");
+
+    textarea,
+    div {
+      background-color: inherit;
+      color: inherit;
+      outline: none;
+    }
+
+    textarea {
+      box-shadow: none;
+    }
+  }
+
+  #{map.get($aliases, "menu-lane-actions")} {
+    background-color: map.get(mn.$vars, "bg-secondary");
+    color: map.get(mn.$vars, "fg-main");
+  }
+
+  #{map.get($aliases, "placeholder-add-card")} {
+    background-color: map.get(mn.$vars, "bg-main");
+    color: map.get(mn.$vars, "fg-main");
+
+    textarea,
+    div {
+      background-color: inherit;
+      color: inherit;
+      outline: none;
+      box-shadow: none;
+    }
+
+    header {
+      border-bottom: 1px solid map.get(mn.$vars, "border-main");
+    }
+  }
+
+  #{map.get($aliases, "btn-add")} {
+    outline: none;
+    border: none;
+    background-color: map.get(mn.$vars, "btn-emphasis-bg");
+    color: map.get(mn.$vars, "btn-emphasis-fg");
+
+    &:hover {
+      background-color: map.get(mn.$vars, "btn-emphasis-bg-hover");
+      color: map.get(mn.$vars, "btn-emphasis-fg-hover");
+    }
+
+    margin-right: 5px;
+  }
+
+  #{map.get($aliases, "btn-cancel")} {
+    outline: none;
+    border: none;
+    background-color: map.get(mn.$vars, "btn-main-bg");
+    color: map.get(mn.$vars, "btn-main-fg");
+
+    &:hover {
+      background-color: map.get(mn.$vars, "btn-main-bg-hover");
+      color: map.get(mn.$vars, "btn-main-fg-hover");
+    }
+  }
+}

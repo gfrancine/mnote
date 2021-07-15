@@ -10,10 +10,11 @@ export const tree = {
       children: [
         { path: "file-e" },
         { path: "file-f" },
-        { path: "file-g.md" },
-        { path: "file-h.excalidraw" },
       ],
     },
+    { path: "file-g.md" },
+    { path: "file-h.excalidraw" },
+    { path: "file-i.mnkanban" },
   ],
 };
 
@@ -21,6 +22,7 @@ export const tree = {
 
 export const contents = {
   md: `# lorem ipsum`,
+  mnkanban: `{"lanes":[]}`,
   excalidraw: `{"elements":[{"id":"H_6ROOV6mTGcLrQqWBi4v","type":"rectangle",
   "x":336.5,"y":298,"width":158,"height":241,"angle":0,"strokeColor":"#000000",
   "backgroundColor":"transparent","fillStyle":"hachure","strokeWidth":1,
