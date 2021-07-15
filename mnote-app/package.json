@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "build": "rmdir dist /s /q && mkdir dist && Xcopy public dist /i /s /e /y && node build.js",
-    "build-web": "rmdir dist /s /q mkdir dist && Xcopy public dist /i /s /e /y && node build-web.js",
+    "build-web": "rmdir dist /s /q && mkdir dist && Xcopy public dist /i /s /e /y && node build-web.js",
     "release": "npm run xbuild && npm run tauri",
     "serve": "npm run build-web && serve dist --no-clipboard",
     "start": "npm run build && npm run tauri dev && run",
