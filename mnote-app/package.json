@@ -2,15 +2,12 @@
   "name": "mnote-app",
   "version": "0.1.0",
   "scripts": {
-    "build": "rmdir dist /s /q && mkdir dist && Xcopy public dist /i /s /e /y && node build.js",
-    "build-web": "rmdir dist /s /q && mkdir dist && Xcopy public dist /i /s /e /y && node build-web.js",
-    "release": "npm run xbuild && npm run tauri",
+    "build": "shx rm -rf dist && shx cp -r public dist && node build.js",
+    "build-web": "shx rm -rf dist && shx cp -r public dist && node build-web.js",
     "serve": "npm run build-web && serve dist --no-clipboard",
-    "start": "npm run build && npm run tauri dev && run",
     "tauri": "tauri",
-    "xbuild": "shx rm -rf dist && shx cp -r public dist && node build.js",
-    "xbuild-web": "shx rm -rf dist && shx cp -r public dist && node build-web.js",
-    "xserve": "npm run xbuild-web && serve dist --no-clipboard"
+    "start": "npm run build && npm run tauri dev && run",
+    "release": "npm run build && npm run tauri"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.0-beta.5",
