@@ -27,7 +27,7 @@ jobs:
       run: .\install.ps1
 
     - name: bundle
-      run: cd mnote-app && npm run xbuild
+      run: cd mnote-app && npm run build
 
     - name: build release
       run: cd mnote-app && npm run tauri build
