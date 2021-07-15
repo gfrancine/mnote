@@ -22,6 +22,8 @@ $aliases: (
   textarea {
     font-family: map.get(mn.$vars, "font-main");
     font-size: 13px;
+    -webkit-user-select: text;
+    user-select: text;
   }
 
   .react-trello-board {
