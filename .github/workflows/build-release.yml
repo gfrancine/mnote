@@ -1,8 +1,8 @@
-name: "debug"
+name: "build-release"
 on: [workflow_dispatch]
 
 jobs:
-  publish-tauri:
+  build-release:
     strategy:
       fail-fast: false
       matrix:
@@ -25,19 +25,19 @@ jobs:
     - name: install dependencies
       shell: pwsh
       run: .\install.ps1
-    
+
     - name: bundle
       run: cd mnote-app && npm run xbuild
-      
-    - name: build debug
-      run: cd mnote-app && npm run tauri -- build --debug
+
+    - name: build release
+      run: cd mnote-app && npm run tauri build
 
     - name: upload (windows)
       if: matrix.platform == 'windows-latest'
       uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.platform }}
-        path: ./mnote-app/src-tauri/target/debug/Mnote.exe
+        path: ./mnote-app/src-tauri/target/debug/bundle
 
     - name: upload (macos)
       if: matrix.platform == 'macos-latest'

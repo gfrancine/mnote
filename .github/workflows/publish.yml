@@ -2,7 +2,7 @@ name: "publish"
 on: [workflow_dispatch]
 
 jobs:
-  publish-tauri:
+  publish:
     strategy:
       fail-fast: false
       matrix:
