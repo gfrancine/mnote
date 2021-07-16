@@ -22,7 +22,22 @@ export const tree = {
 
 export const contents = {
   md: `# lorem ipsum`,
-  mnkanban: `{"lanes":[]}`,
+  mnkanban: `{"lanes":[{"cards":[{"id":"76418ea0-e61d-11eb-95dd-f373e7778efd",
+  "title":"Do something exciting","description":"Look it up","laneId":
+  "6379aa50-e61d-11eb-95dd-f373e7778efd","label":"15 min"}],"id":
+  "6379aa50-e61d-11eb-95dd-f373e7778efd","title":"Lane","currentPage":1},{"cards":
+  [{"id":"68765e40-e61d-11eb-95dd-f373e7778efd","title":"","laneId":
+  "67404f40-e61d-11eb-95dd-f373e7778efd"},{"id":"692cb5f0-e61d-11eb-95dd-f373e7778efd",
+  "title":"","laneId":"67404f40-e61d-11eb-95dd-f373e7778efd"},{"id":
+  "6a28f040-e61d-11eb-95dd-f373e7778efd","title":"","laneId":
+  "67404f40-e61d-11eb-95dd-f373e7778efd"},{"id":"6ad1b360-e61d-11eb-95dd-f373e7778efd",
+  "title":"","laneId":"67404f40-e61d-11eb-95dd-f373e7778efd"},{"id":
+  "6b779050-e61d-11eb-95dd-f373e7778efd","title":"","laneId":"67404f40-e61d-11eb-95dd-f373e7778efd"
+  },{"id":"6c3ab940-e61d-11eb-95dd-f373e7778efd","title":"","laneId":
+  "67404f40-e61d-11eb-95dd-f373e7778efd"},{"id":"6d446110-e61d-11eb-95dd-f373e7778efd",
+  "title":"","laneId":"67404f40-e61d-11eb-95dd-f373e7778efd"},{"id":
+  "6f1acec0-e61d-11eb-95dd-f373e7778efd","title":"","laneId":"67404f40-e61d-11eb-95dd-f373e7778efd"
+  }],"id":"67404f40-e61d-11eb-95dd-f373e7778efd","title":"Long list","currentPage":1}]}`,
   excalidraw: `{"elements":[{"id":"H_6ROOV6mTGcLrQqWBi4v","type":"rectangle",
   "x":336.5,"y":298,"width":158,"height":241,"angle":0,"strokeColor":"#000000",
   "backgroundColor":"transparent","fillStyle":"hachure","strokeWidth":1,
