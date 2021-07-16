@@ -48,6 +48,15 @@
             -8px
           ); // no clue why the svg is slightly offsetted
         }
+
+        &:hover {
+          .fill {
+            fill: map.get($theme, "fg-secondary");
+          }
+          .stroke {
+            stroke: map.get($theme, "fg-secondary");
+          }
+        }
       }
     }
   }

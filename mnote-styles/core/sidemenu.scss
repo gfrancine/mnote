@@ -15,20 +15,22 @@
     width: 24px;
     height: 24px; // see layout styles
 
-    &:hover {
-      cursor: pointer;
-    }
-
     .fill {
       fill: map.get($theme, "fg-secondary");
-      &:hover {
-        fill: map.get($theme, "fg-main");
-      }
     }
 
     .stroke {
       stroke: map.get($theme, "fg-secondary");
-      &:hover {
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      .fill {
+        fill: map.get($theme, "fg-main");
+      }
+
+      .stroke {
         stroke: map.get($theme, "fg-main");
       }
     }
