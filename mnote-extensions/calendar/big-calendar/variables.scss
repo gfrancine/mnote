@@ -1,5 +1,4 @@
 @use "sass:math";
-@use "~mnote-styles/mnote-styles" as mn; // todo
 
 $out-of-range-color: lighten(#333, 40%) !default;
 $out-of-range-bg-color: lighten(#333, 70%) !default;
