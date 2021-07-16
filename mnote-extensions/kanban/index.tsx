@@ -23,39 +23,39 @@ import "./kanban.scss";
 // - the extension itself
 
 type Card = {
-  id: string, 
-  title: string,
-  description: string,
-  label: string,
-  draggable?: boolean,
+  id: string;
+  title: string;
+  description: string;
+  label: string;
+  draggable?: boolean;
   metadata?: {
-    sha: string
-  }
-}
+    sha: string;
+  };
+};
 
 type Lane = {
-  id: string,
-  title: string,
-  label: string,
-  cards: Card[],
-}
+  id: string;
+  title: string;
+  label: string;
+  cards: Card[];
+};
 
 type Board = {
-  lanes: Lane[],
-}
+  lanes: Lane[];
+};
 
 function Wrapper(props: {
-  initialData?: Board,
-  onChange?: (newBoard: Board) => void,
+  initialData?: Board;
+  onChange?: (newBoard: Board) => void;
 }) {
   return <Board
     data={props.initialData || { lanes: [] }}
-    onDataChange={ props.onChange || (() => {}) }
+    onDataChange={props.onChange || (() => {})}
     editable
     draggable
     canAddLanes
     editLaneTitle
-  />
+  />;
 }
 
 function makeCallback(editor: KanbanEditor) {
@@ -69,7 +69,7 @@ class KanbanEditor implements Editor {
   element: HTMLElement;
   container?: HTMLElement;
   fs: FSModule;
-  ctx: EditorContext
+  ctx: EditorContext;
 
   board: Board = { lanes: [] };
 
@@ -85,10 +85,13 @@ class KanbanEditor implements Editor {
     this.ctx = ctx;
     this.container = containter;
     this.container.appendChild(this.element);
-    render(<Wrapper
-      initialData={this.board}
-      onChange={makeCallback(this)}
-    />, this.element);
+    render(
+      <Wrapper
+        initialData={this.board}
+        onChange={makeCallback(this)}
+      />,
+      this.element,
+    );
   }
 
   async load(path: string) {
@@ -96,10 +99,13 @@ class KanbanEditor implements Editor {
     const contents = await this.fs.readTextFile(path);
     const data: Board = JSON.parse(contents);
     this.board = data;
-    render(<Wrapper
-      initialData={this.board}
-      onChange={makeCallback(this)}
-    />, this.element);
+    render(
+      <Wrapper
+        initialData={this.board}
+        onChange={makeCallback(this)}
+      />,
+      this.element,
+    );
   }
 
   cleanup() {
@@ -117,7 +123,7 @@ class KanbanEditor implements Editor {
     this.ctx.updateEdited();
   }
 }
- 
+
 // provider
 
 class KanbanEditorProvider implements EditorProvider {
