@@ -49,7 +49,7 @@ export const contents = {
   {"H_6ROOV6mTGcLrQqWBi4v":true},"selectedGroupIds":{},"selectionElement":null,
   "shouldCacheIgnoreZoom":false,"showHelpDialog":false,"showStats":false,
   "startBoundElement":null,"suggestedBindings":[],"toastMessage":null,
-  "viewBackgroundColor":"#ffffff","zenModeEnabled":false,"zoom":{"value":1,
+  "viewBackgroundColor":"#ffffff","zenModeEnabled":true,"zoom":{"value":0.8,
   "translation":{"x":0,"y":0}},"viewModeEnabled":false,"offsetLeft":242.5,
   "offsetTop":36,"width":957.5,"height":764}}`,
 };

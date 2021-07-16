@@ -41,10 +41,17 @@ function Wrapper(
 ) {
   // select only a few elements from the appstate
 
+  const appState = props.initialData.appState;
+
   const initialData = {
     elements: props.initialData.elements,
     appState: {
-      theme: props.initialData.appState?.theme,
+      theme: appState?.theme,
+      gridSize: appState?.gridSize,
+      zenModeEnabled: appState?.zenModeEnabled,
+      scrollX: appState?.scrollX,
+      scrollY: appState?.scrollY,
+      zoom: appState?.zoom,
     },
   };
 
