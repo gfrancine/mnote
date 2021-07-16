@@ -75,11 +75,11 @@ export class FiletreeModule {
       this.directory = await this.fs.getCurrentDir();
     }
 
-    if (startFile) this.selectedFile = startFile;
     this.fs.onWatchEvent(() => this.refreshTree());
     this.fs.watchInit(this.directory);
     this.refreshTree();
 
+    if (startFile) this.setSelectedFile(startFile);
     return this;
   }
 
