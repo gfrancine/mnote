@@ -2,8 +2,8 @@ Split.js (https://github.com/nathancahill/split)
 Copyright (c) 2020 Nathan Cahill
 MIT License
 
-Ionicons (https://www.svgrepo.com/collection/ionicons-outline-interface-icons)
-Copyright (c) Ionicons
+Ionicons (https://github.com/ionic-team/ionicons)
+Copyright (c) 2015-present Ionic (http://ionic.io/)
 MIT License
 
 Milkdown (https://github.com/Saul-Mirone/milkdown)
@@ -14,6 +14,10 @@ Excalidraw (https://github.com/excalidraw/excalidraw)
 Copyright (c) 2020 Excalidraw
 MIT License
 
-react-trello (https://github.com/rcdexta/react-trello)
+React Trello (https://github.com/rcdexta/react-trello)
 Copyright (c) 2017 RC
+MIT License
+
+react-big-calendar (https://github.com/jquense/react-big-calendar)
+Copyright (c) 2015-present Jason Quense
 MIT License
