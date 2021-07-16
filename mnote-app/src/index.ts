@@ -9,6 +9,7 @@ import "../styles.scss";
 import { MarkdownExtension } from "mnote-extensions/markdown";
 import { ExcalidrawExtension } from "mnote-extensions/excalidraw";
 import { KanbanExtension } from "mnote-extensions/kanban";
+import { CalendarExtension } from "mnote-extensions/calendar";
 
 // run this so it gets bundled
 console.log(nodefill);
@@ -28,5 +29,6 @@ console.log(nodefill);
   (app.modules.extensions as ExtensionsModule)
     .add(new MarkdownExtension(app))
     .add(new ExcalidrawExtension(app))
-    .add(new KanbanExtension(app));
+    .add(new KanbanExtension(app))
+    .add(new CalendarExtension(app));
 })();
