@@ -9,8 +9,6 @@ export type Mnote = {
 
   element: Element;
 
-  directory: string;
-
   modules: Record<string, Module>;
 
   addModule: (name: string, module: Module) => Mnote;

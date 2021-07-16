@@ -1,7 +1,7 @@
 import { FileTreeNodeWithChildren, Mnote } from "../common/types";
 import { Emitter } from "mnote-util/emitter";
 import { el } from "mnote-util/elbuilder";
-import { Context } from "./types";
+import { Context, ModalButton } from "./types";
 import { FSModule } from "./fs";
 import { LayoutModule } from "./layout";
 import { CtxmenuModule } from "./ctxmenu";
@@ -10,6 +10,9 @@ import { LoggingModule } from "./logging";
 import { render } from "react-dom";
 import React from "react";
 import FileTree from "../components/filetree";
+import { Modal } from "../components/modal";
+import { strings } from "../common/strings";
+import { getPathParent } from "../../../mnote-util/path";
 
 export class FiletreeModule {
   element: HTMLElement;
@@ -23,8 +26,9 @@ export class FiletreeModule {
   selectedFile?: string;
   tree?: FileTreeNodeWithChildren;
   app: Mnote;
+  directory = "";
 
-  constructor(app: Mnote, startFile?: string) {
+  constructor(app: Mnote) {
     this.app = app;
 
     this.element = el("div")
@@ -36,28 +40,58 @@ export class FiletreeModule {
     this.ctxmenu = app.modules.ctxmenu as CtxmenuModule;
     this.logging = app.modules.logging as LoggingModule;
 
-    const ctxmenuReducer = (ctx: Context) => {};
-
+    const ctxmenuReducer = (_ctx: Context) => {}; // todo?
     this.ctxmenu.addSectionReducer(ctxmenuReducer);
 
     this.layout.mountToFiletree(this.element);
+  }
+
+  async init() {
+    // initialize with the startpath option
+    const startPath = this.app.options.startPath;
+    let startFile: string | undefined;
+
+    if (startPath) {
+      if (await this.fs.isDir(startPath)) {
+        this.directory = startPath;
+      } else if (await this.fs.isFile(startPath)) {
+        startFile = startPath;
+        const dir = getPathParent(startPath);
+        this.directory = dir;
+      } else {
+        this.directory = await this.fs.getCurrentDir();
+        const button: ModalButton = {
+          text: "OK",
+          command: "",
+          kind: "emphasis",
+        };
+        new Modal({
+          container: this.element,
+          message: strings.noStartPath(startPath),
+          buttons: [button],
+        }).prompt();
+      }
+    } else {
+      this.directory = await this.fs.getCurrentDir();
+    }
 
     if (startFile) this.selectedFile = startFile;
-
     this.fs.onWatchEvent(() => this.refreshTree());
-
+    this.fs.watchInit(this.directory);
     this.refreshTree();
+
+    return this;
   }
 
   async refreshTree() {
-    const tree = await this.fs.readDir(this.app.directory); // replace with watcher?
+    const tree = await this.fs.readDir(this.directory); // replace with watcher?
 
     if (tree.children) {
       this.setFileTree(tree as FileTreeNodeWithChildren);
     } else {
       this.logging.err(
         "filetree read directory - no children, Dir:",
-        this.app.directory,
+        this.directory,
       );
     }
   }
