@@ -5,7 +5,7 @@ import OpenColor from "open-color";
 const gray = OpenColor.gray;
 
 export const light = {
-  "font-main": "Lato",
+  "font-main": "Open Sans",
   "font-monospace": "Fira Mono",
 
   "fg-main": gray[9],
@@ -41,7 +41,7 @@ export const light = {
 // dark theme from my UI prototype
 
 export const dark = {
-  "font-main": "Lato",
+  "font-main": "Open Sans",
   "font-monospace": "Fira Mono",
 
   "fg-main": "#B0B6BB",
@@ -50,7 +50,7 @@ export const dark = {
 
   "bg-main": "#2B2D2E",
   "bg-secondary": "#242627",
-  "bg-dim": "#5A6164",
+  "bg-dim": "#404345",
 
   "shadow": "0px 2px 5px " + "#111",
   "overlay": "#11111132",

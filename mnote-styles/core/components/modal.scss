@@ -30,7 +30,7 @@
       text-align: right;
 
       .modal-button {
-        font-family: "Lato";
+        font-family: map.get($theme, "font-main");
         font-size: 13px;
         display: inline-block;
         flex-direction: row;
@@ -65,6 +65,7 @@
     .modal-text {
       font-family: map.get($theme, "font-main");
       margin-bottom: 1em;
+      font-size: 13px;
     }
   }
 }
