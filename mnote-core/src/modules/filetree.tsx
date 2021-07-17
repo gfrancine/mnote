@@ -44,9 +44,11 @@ export class FiletreeModule {
     this.ctxmenu.addSectionReducer(ctxmenuReducer);
 
     this.layout.mountToFiletree(this.element);
+
+    this.app.hooks.on("startup", async () => await this.startup());
   }
 
-  async init() {
+  async startup() {
     // initialize with the startpath option
     const startPath = this.app.options.startPath;
     let startFile: string | undefined;
@@ -80,7 +82,6 @@ export class FiletreeModule {
     this.refreshTree();
 
     if (startFile) this.setSelectedFile(startFile);
-    return this;
   }
 
   async refreshTree() {

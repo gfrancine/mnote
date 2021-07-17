@@ -1,6 +1,7 @@
 // common types used by the files
 // has no dependencies, except for standalone
 // utilities like Emitter
+import { Emitter } from "mnote-util/emitter";
 
 export type Module = unknown;
 
@@ -8,6 +9,12 @@ export type Mnote = {
   options: MnoteOptions;
 
   element: Element;
+
+  container: Element;
+
+  hooks: Emitter<{
+    startup: () => Promise<void> | void;
+  }>;
 
   modules: Record<string, Module>;
 

@@ -1,6 +1,7 @@
 // The implementation of the Mnote type in ./types
 
 import { Mnote as Type, MnoteOptions, Module } from "./common/types";
+import { Emitter } from "mnote-util/emitter";
 
 import {
   CtxmenuModule,
@@ -26,9 +27,15 @@ import { el } from "mnote-util/elbuilder";
 export class Mnote implements Type {
   options: MnoteOptions;
 
+  container: Element;
+
   element: Element;
 
   modules: Record<string, Module> = {};
+
+  hooks: Emitter<{
+    startup: () => Promise<void> | void;
+  }> = new Emitter();
 
   constructor(selector: string, options: MnoteOptions) {
     this.options = options;
@@ -38,13 +45,14 @@ export class Mnote implements Type {
       throw new Error(`No element with selector "${selector}"!`);
     }
 
+    this.container = element;
+
     this.element = el("div")
       .class("mnote")
-      .parent(element)
       .element;
   }
 
-  async startup() {
+  async init() {
     // register the modules
     this
       .addModule("logging", new LoggingModule(this))
@@ -56,7 +64,7 @@ export class Mnote implements Type {
       .addModule("layout", new LayoutModule(this))
       .addModule("ctxmenu", new CtxmenuModule(this))
       .addModule("sidemenu", new SidemenuModule(this))
-      .addModule("filetree", await new FiletreeModule(this).init())
+      .addModule("filetree", new FiletreeModule(this))
       .addModule("menubar", new MenubarModule(this))
       .addModule("editors", new EditorsModule(this))
       .addModule("themes", await new ThemesModule(this).init());
@@ -65,6 +73,11 @@ export class Mnote implements Type {
     (this.modules.extensions as ExtensionsModule)
       .add(new PlaintextExtension(this))
       .add(new SettingsExtension(this));
+  }
+
+  async startup() {
+    await this.hooks.emitAsync("startup");
+    this.container.appendChild(this.element);
   }
 
   addModule(name: string, module: Module): Mnote {

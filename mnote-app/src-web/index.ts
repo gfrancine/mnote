@@ -21,11 +21,13 @@ console.log(nodefill);
     fs: new FS(),
   });
 
-  await app.startup();
+  await app.init();
 
   (app.modules.extensions as ExtensionsModule)
     .add(new MarkdownExtension(app))
     .add(new ExcalidrawExtension(app))
     .add(new KanbanExtension(app))
     .add(new CalendarExtension(app));
+
+  await app.startup();
 })();

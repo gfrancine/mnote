@@ -43,4 +43,13 @@ export class Emitter<E extends Record<string, Function>> {
 
     listeners.forEach((listener) => listener(...args));
   }
+
+  async emitAsync<K extends keyof E>(event: K, ...args: Arguments<E[K]>) {
+    const listeners = this.events[event];
+    if (!listeners) return;
+
+    for (const listener of listeners) {
+      await listener(...args);
+    }
+  }
 }
