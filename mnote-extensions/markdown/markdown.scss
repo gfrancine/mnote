@@ -10,6 +10,7 @@
 
   .md-container {
     width: 80%;
+    max-width: 740px;
     height: 100%;
     margin: 0 auto;
     box-sizing: border-box;
@@ -19,7 +20,7 @@
     .editor {
       box-sizing: border-box;
       line-height: 1.35;
-      padding: 20px 0;
+      padding: 2em 0;
       outline: none;
     }
   }
