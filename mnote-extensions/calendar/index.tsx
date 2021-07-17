@@ -9,7 +9,7 @@ import {
 } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 import React, { useState } from "react";
-import { render } from "react-dom";
+import { render, unmountComponentAtNode } from "react-dom";
 import { getPathExtension } from "../../mnote-util/path";
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
@@ -225,7 +225,7 @@ class CalendarEditor implements Editor {
   }
 
   async load(path: string) {
-    render(null, this.element);
+    unmountComponentAtNode(this.element);
     const contents = await this.fs.readTextFile(path);
     const data = deserializeData(contents);
     this.data = data;
@@ -243,7 +243,7 @@ class CalendarEditor implements Editor {
 
   cleanup() {
     delete this.data;
-    render(null, this.element);
+    unmountComponentAtNode(this.element);
     this.container.removeChild(this.element);
   }
 

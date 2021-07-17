@@ -10,7 +10,7 @@ import {
 import { el } from "mnote-util/elbuilder";
 import { Emitter } from "mnote-util/emitter";
 import { getPathExtension } from "mnote-util/path";
-import { render } from "react-dom";
+import { render, unmountComponentAtNode } from "react-dom";
 import React from "react";
 
 import Excalidraw from "@excalidraw/excalidraw";
@@ -113,7 +113,7 @@ class ExcalidrawEditor implements Editor {
 
   async load(path: string) {
     delete this.emitter;
-    render(null, this.element);
+    unmountComponentAtNode(this.element);
 
     const contents = await this.fs.readTextFile(path);
     const data: ExcalidrawData = JSON.parse(contents);
@@ -127,7 +127,7 @@ class ExcalidrawEditor implements Editor {
 
   cleanup() {
     this.container.removeChild(this.element);
-    render(null, this.element);
+    unmountComponentAtNode(this.element);
   }
 
   async save(path: string) {

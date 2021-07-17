@@ -9,7 +9,7 @@ import {
 } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 import React from "react";
-import { render } from "react-dom";
+import { render, unmountComponentAtNode } from "react-dom";
 import Board from "react-trello";
 import { getPathExtension } from "../../mnote-util/path";
 
@@ -95,7 +95,7 @@ class KanbanEditor implements Editor {
   }
 
   async load(path: string) {
-    render(null, this.element);
+    unmountComponentAtNode(this.element);
     const contents = await this.fs.readTextFile(path);
     const data: Board = JSON.parse(contents);
     this.board = data;
@@ -110,7 +110,7 @@ class KanbanEditor implements Editor {
 
   cleanup() {
     delete this.board;
-    render(null, this.element);
+    unmountComponentAtNode(this.element);
     this.container.removeChild(this.element);
   }
 
