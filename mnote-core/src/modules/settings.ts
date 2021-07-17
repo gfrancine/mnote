@@ -17,7 +17,7 @@ export class SettingsModule {
   logging: LoggingModule;
 
   SETTINGS_NAME = ".mnotesettings";
-  protected settingsPath: string;
+  protected settingsPath = ""; // initialized in init()
   protected settings: Settings = this.defaultSettings();
 
   // see the bottom of the file

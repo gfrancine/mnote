@@ -5,7 +5,7 @@ export class SystemModule implements SystemInteropModule {
 
   USES_CMD: boolean;
 
-  constructor(system: SystemInteropModule) {
+  constructor(system?: SystemInteropModule) {
     this.system = system;
     this.USES_CMD = system ? system.USES_CMD : false; // todo: can we use a browser api?
   }

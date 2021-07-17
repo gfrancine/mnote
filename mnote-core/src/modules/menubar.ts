@@ -93,9 +93,10 @@ export class MenubarModule /* implements Module */ {
 
     this.hideMenu();
 
-    const buttons = this.menuReducers.map((reducer) => {
+    const buttons: MenuItem[][] = [];
+    this.menuReducers.forEach((reducer) => {
       const section = reducer();
-      if (section) return section;
+      if (section) buttons.push(section);
     });
 
     if (buttons.length === 0) return;

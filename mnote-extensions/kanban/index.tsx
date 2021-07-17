@@ -40,13 +40,13 @@ type Lane = {
   cards: Card[];
 };
 
-type Board = {
+type BoardData = {
   lanes: Lane[];
 };
 
 function Wrapper(props: {
-  initialData?: Board;
-  onChange?: (newBoard: Board) => void;
+  initialData?: BoardData;
+  onChange?: (newBoard: BoardData) => void;
 }) {
   return <Board
     data={props.initialData || { lanes: [] }}
@@ -59,7 +59,7 @@ function Wrapper(props: {
 }
 
 function makeCallback(editor: KanbanEditor) {
-  return (newBoard: Board) => {
+  return (newBoard: BoardData) => {
     editor.handleChange(newBoard);
   };
 }
@@ -69,9 +69,9 @@ class KanbanEditor implements Editor {
   element: HTMLElement;
   container?: HTMLElement;
   fs: FSModule;
-  ctx: EditorContext;
+  ctx?: EditorContext;
 
-  board: Board = { lanes: [] };
+  board: BoardData = { lanes: [] };
 
   constructor(app: Mnote) {
     this.app = app;
@@ -97,7 +97,7 @@ class KanbanEditor implements Editor {
   async load(path: string) {
     unmountComponentAtNode(this.element);
     const contents = await this.fs.readTextFile(path);
-    const data: Board = JSON.parse(contents);
+    const data: BoardData = JSON.parse(contents);
     this.board = data;
     render(
       <Wrapper
@@ -109,18 +109,17 @@ class KanbanEditor implements Editor {
   }
 
   cleanup() {
-    delete this.board;
     unmountComponentAtNode(this.element);
-    this.container.removeChild(this.element);
+    this.container?.removeChild(this.element);
   }
 
   async save(path: string) {
     await this.fs.writeTextFile(path, JSON.stringify(this.board));
   }
 
-  handleChange(board: Board) {
+  handleChange(board: BoardData) {
     this.board = board;
-    this.ctx.updateEdited();
+    this.ctx?.updateEdited();
   }
 }
 

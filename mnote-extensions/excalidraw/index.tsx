@@ -76,14 +76,14 @@ function Wrapper(
 const makeCallback = (self: ExcalidrawEditor) =>
   (data: ExcalidrawData) => {
     self.data = data;
-    self.ctx.updateEdited();
+    self.ctx?.updateEdited();
   };
 
 class ExcalidrawEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
   container?: HTMLElement;
-  ctx: EditorContext;
+  ctx?: EditorContext;
   fs: FSModule;
   emitter: EventBus;
 
@@ -95,6 +95,8 @@ class ExcalidrawEditor implements Editor {
     this.element = el("div")
       .class("excdraw-extension")
       .element;
+
+    this.emitter = new Emitter();
   }
 
   startup(containter: HTMLElement, ctx: EditorContext) {
@@ -102,7 +104,6 @@ class ExcalidrawEditor implements Editor {
     this.container = containter;
     containter.appendChild(this.element);
 
-    this.emitter = new Emitter();
     this.emitter.on("change", makeCallback(this));
 
     render(
@@ -112,7 +113,6 @@ class ExcalidrawEditor implements Editor {
   }
 
   async load(path: string) {
-    delete this.emitter;
     unmountComponentAtNode(this.element);
 
     const contents = await this.fs.readTextFile(path);
@@ -126,7 +126,7 @@ class ExcalidrawEditor implements Editor {
   }
 
   cleanup() {
-    this.container.removeChild(this.element);
+    this.container?.removeChild(this.element);
     unmountComponentAtNode(this.element);
   }
 

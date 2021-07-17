@@ -1,8 +1,16 @@
+// this exists only for linting
+
 {
   "compilerOptions": {
     "jsx": "react",
     "target": "es6",
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true, /* Enable all strict type-checking options. */
+    "alwaysStrict": true, /* Parse in strict mode and emit "use strict" for each source file. */
+    "esModuleInterop": true, /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+    "skipLibCheck": true, /* Skip type checking of declaration files. */
+    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
   }
 }

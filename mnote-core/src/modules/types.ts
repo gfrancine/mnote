@@ -44,7 +44,7 @@ export type EditorInfo = {
 export type Context = {
   pageX: number;
   pageY: number;
-  element: Element;
+  elements: Element[];
 };
 
 export type ModalButton = {

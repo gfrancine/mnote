@@ -80,7 +80,7 @@ export class EditorsModule /* implements Module */ {
   filetree: FiletreeModule;
 
   events: Emitter<{
-    docSet: (doc: DocInfo) => void; // menubar *Untitled text
+    docSet: (doc?: DocInfo) => void; // menubar *Untitled text
   }> = new Emitter();
 
   confirmCloseModal: Modal;
@@ -152,7 +152,7 @@ export class EditorsModule /* implements Module */ {
       }
     };
 
-    const getSections: () => MenuItem[] | undefined = () => {
+    const getSection: () => MenuItem[] | undefined = () => {
       const result: MenuItem[] = [];
       for (const i in this.editors) {
         const editorInfo = this.editors[i];
@@ -166,7 +166,8 @@ export class EditorsModule /* implements Module */ {
           });
         }
       }
-      return result.length > 0 && result;
+
+      if (result.length > 0) return result;
     };
 
     const showMenu = () => {
@@ -174,10 +175,13 @@ export class EditorsModule /* implements Module */ {
 
       const buttonRect = button.getBoundingClientRect();
 
+      const section = getSection();
+      const sections = section ? [section] : [];
+
       menu = new Menu(
         { x: buttonRect.right, y: buttonRect.top },
         () => ({ top: false, left: false }),
-        [getSections()],
+        sections,
       );
 
       menu.show(this.app.element);
@@ -331,14 +335,15 @@ export class EditorsModule /* implements Module */ {
       return;
     }
 
-    if (!path) {
+    if (path) {
+      await this.load(path);
+    } else {
       const maybePath = await this.fs.dialogOpen({
         directory: false,
       });
       if (!maybePath) return;
+      await this.load(maybePath);
     }
-
-    await this.load(path);
   }
 
   // create new button
@@ -371,9 +376,13 @@ export class EditorsModule /* implements Module */ {
   }
 
   // DRY for saving with a modal on error
-  protected async trySaveEditor(): Promise<boolean> {
+  protected async trySaveEditor(
+    currentDocument: Required<DocInfo>,
+  ): Promise<boolean> {
+    if ((!this.currentEditor) || (!this.currentDocument)) return true;
+
     try {
-      await this.currentEditor.save(this.currentDocument.path);
+      await this.currentEditor.save(currentDocument.path);
       return true;
     } catch (e) {
       this.notifyError(`An error occurred while saving: ${e}`);
@@ -386,7 +395,13 @@ export class EditorsModule /* implements Module */ {
   // returns a success boolean (whether the user cancelled)
   async saveAs(): Promise<boolean> {
     this.logging.info("save as");
-    if (!this.currentEditor || !this.currentDocument) return true;
+    if (
+      !this.currentEditor ||
+      !this.currentDocument ||
+      !this.currentEditorKind // just for strict mode
+    ) {
+      return true;
+    }
 
     const editorInfo = this.editorKinds[this.currentEditorKind];
 
@@ -398,13 +413,15 @@ export class EditorsModule /* implements Module */ {
     if (!newPath) return false;
 
     const newPathName = getPathName(newPath);
-    this.setCurrentDocument({
+    const newDoc = {
       path: newPath,
       name: newPathName,
       saved: false,
-    });
+    };
 
-    const success = await this.trySaveEditor();
+    this.setCurrentDocument(newDoc);
+
+    const success = await this.trySaveEditor(newDoc);
     this.logging.info("save editor success", success);
     if (!success) return false;
 
@@ -424,7 +441,9 @@ export class EditorsModule /* implements Module */ {
     if (!this.currentEditor || !this.currentDocument) return true;
 
     if (this.currentDocument.path) {
-      const success = await this.trySaveEditor();
+      const success = await this.trySaveEditor(
+        this.currentDocument as Required<DocInfo>,
+      );
       if (!success) {
         return false;
       }
@@ -474,12 +493,12 @@ export class EditorsModule /* implements Module */ {
           await this.cleanup();
           return true;
       }
-    } else {
-      this.logging.info("close: doc has path, is saved");
-      // has path, saved
-      await this.cleanup();
-      return true;
     }
+
+    this.logging.info("close: doc has path, is saved");
+    // has path, saved
+    await this.cleanup();
+    return true;
   }
 
   // cleanup the current document, the current editor,
@@ -530,8 +549,8 @@ export class EditorsModule /* implements Module */ {
     await this.cleanup();
     this.clear();
 
-    let selectedEditor: Editor;
-    let selectedEditorKind: string;
+    let selectedEditor: Editor | undefined;
+    let selectedEditorKind: string | undefined;
 
     // last added runs first, assuming it's more selective
     // as the plaintext (which accepts all) is first
@@ -547,11 +566,13 @@ export class EditorsModule /* implements Module */ {
     }
 
     if (selectedEditor) {
-      this.setCurrentDocument({
+      const newDoc = {
         name: getPathName(path),
         saved: true,
         path,
-      });
+      };
+
+      this.setCurrentDocument(newDoc);
 
       this.currentEditorKind = selectedEditorKind;
       this.currentEditor = selectedEditor;
@@ -559,7 +580,7 @@ export class EditorsModule /* implements Module */ {
 
       try {
         await selectedEditor.startup(this.element, this.makeContext()); //todo: handle err
-        await selectedEditor.load(this.currentDocument.path);
+        await selectedEditor.load(newDoc.path);
       } catch (e) {
         this.notifyError(`An error occurred while loading: ${e}`);
         console.error(e);

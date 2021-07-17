@@ -70,7 +70,9 @@ class SettingsEditor implements Editor {
   }
 
   cleanup() {
-    this.container.removeChild(this.element);
+    if (this.container) {
+      this.container.removeChild(this.element);
+    }
   }
 
   async save(_path: string) {

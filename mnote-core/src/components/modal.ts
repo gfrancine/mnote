@@ -71,9 +71,12 @@ export class Modal {
             k.removeEventListener("click", v);
           }
 
-          overlay.parentNode.removeChild(overlay);
+          // types can be cast safely as long as no one messes
+          // with it manually
+
+          (overlay.parentNode as HTMLElement).removeChild(overlay);
           unfreeze();
-          resolve(command);
+          resolve(command as string);
         };
 
         listeners.set(element, listener);

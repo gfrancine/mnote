@@ -64,7 +64,7 @@ export class Elbuilder {
   }
 
   style(key: string, value: string) {
-    this.element.style[key] = value;
+    this.element.style.setProperty(key, value);
     return this;
   }
 

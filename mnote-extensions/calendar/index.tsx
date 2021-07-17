@@ -110,7 +110,7 @@ function Wrapper(props: {
     props.onChange(newData);
   };
 
-  const onNewEvent = (event) => {
+  const onNewEvent = (event: Event) => {
     const title = window.prompt("New event name");
 
     // todo: make modal support prompts too
@@ -138,7 +138,9 @@ function Wrapper(props: {
     props.onChange(newData);
   };
 
-  const onMove = ({ event, start, end }) => {
+  const onMove = (
+    { event, start, end }: { event: Event; start: Date; end: Date },
+  ) => {
     const { events } = data;
 
     const nextEvents = events.map((existingEvent) => {
@@ -156,7 +158,9 @@ function Wrapper(props: {
     props.onChange(newData);
   };
 
-  const onResize = ({ event, start, end }) => {
+  const onResize = (
+    { event, start, end }: { event: Event; start: Date; end: Date },
+  ) => {
     const { events } = data;
 
     const nextEvents = events.map((existingEvent) => {
@@ -200,7 +204,7 @@ class CalendarEditor implements Editor {
   element: HTMLElement;
   container?: HTMLElement;
   fs: FSModule;
-  ctx: EditorContext;
+  ctx?: EditorContext;
 
   data: Data = {
     events: [],
@@ -238,13 +242,12 @@ class CalendarEditor implements Editor {
 
   handleChange(data: Data) {
     this.data = { events: data.events };
-    this.ctx.updateEdited();
+    this.ctx?.updateEdited();
   }
 
   cleanup() {
-    delete this.data;
     unmountComponentAtNode(this.element);
-    this.container.removeChild(this.element);
+    this.container?.removeChild(this.element);
   }
 
   async save(path: string) {

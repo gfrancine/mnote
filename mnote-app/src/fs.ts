@@ -62,7 +62,7 @@ export class FS implements FsInteropModule {
     directory: boolean;
   }): Promise<string | void> {
     try {
-      const filters: dialog.DialogFilter[] = opts.extensions
+      const filters: dialog.DialogFilter[] | undefined = opts.extensions
         ? [{ name: "extensions", extensions: opts.extensions }]
         : undefined;
 
@@ -83,7 +83,7 @@ export class FS implements FsInteropModule {
     directory: boolean;
   }): Promise<string[] | void> {
     try {
-      const filters: dialog.DialogFilter[] = opts.extensions
+      const filters: dialog.DialogFilter[] | undefined = opts.extensions
         ? [{ name: "extensions", extensions: opts.extensions }]
         : undefined;
 
@@ -107,7 +107,7 @@ export class FS implements FsInteropModule {
     extensions?: string[];
   }): Promise<string | void> {
     try {
-      const filters: dialog.DialogFilter[] = opts.extensions
+      const filters: dialog.DialogFilter[] | undefined = opts.extensions
         ? [{ name: "extensions", extensions: opts.extensions }]
         : undefined;
 

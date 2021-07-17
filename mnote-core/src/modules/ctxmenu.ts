@@ -20,7 +20,7 @@ export class CtxmenuModule {
     this.app = app;
 
     const getSections = (ctx: Context) => {
-      const sections = [];
+      const sections: MenuItem[][] = [];
       this.reducers.forEach((reducer) => {
         const section = reducer(ctx);
         if (section) sections.push(section);
@@ -66,7 +66,7 @@ export class ContextMenu {
       const context: Context = {
         pageX: e.pageX,
         pageY: e.pageY,
-        element: document.elementFromPoint(e.pageX, e.pageY),
+        elements: document.elementsFromPoint(e.pageX, e.pageY),
       };
 
       const sections = getSections(context);

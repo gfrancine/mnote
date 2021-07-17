@@ -39,7 +39,7 @@ class StarterEditor implements Editor {
   }
 
   cleanup() {
-    this.container.removeChild(this.element);
+    this.container?.removeChild(this.element);
   }
 
   async save(path: string) {

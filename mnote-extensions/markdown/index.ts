@@ -34,7 +34,7 @@ class MarkdownEditor implements Editor {
   element: HTMLElement;
   container?: HTMLElement;
   fs: FSModule;
-  ctx: EditorContext;
+  ctx?: EditorContext;
 
   milkdown: MilkdownEditor;
   contents = "";
@@ -59,12 +59,6 @@ class MarkdownEditor implements Editor {
         this.statsbar,
       )
       .element;
-  }
-
-  startup(containter: HTMLElement, ctx: EditorContext) {
-    this.ctx = ctx;
-    this.container = containter;
-    this.container.appendChild(this.element);
 
     this.milkdown = new MilkdownEditor({
       root: this.editorContainer,
@@ -77,6 +71,12 @@ class MarkdownEditor implements Editor {
       },
     })
       .use(commonmark);
+  }
+
+  startup(containter: HTMLElement, ctx: EditorContext) {
+    this.ctx = ctx;
+    this.container = containter;
+    this.container.appendChild(this.element);
 
     this.milkdown.create();
   }
@@ -87,7 +87,7 @@ class MarkdownEditor implements Editor {
   }
 
   protected onUpdate() {
-    this.ctx.updateEdited();
+    this.ctx?.updateEdited();
     this.updateStats();
   }
 
@@ -114,11 +114,8 @@ class MarkdownEditor implements Editor {
   }
 
   cleanup() {
-    this.container.removeChild(this.element);
-    delete this.milkdown;
-    delete this.editorContainer;
+    if (this.container) this.container.removeChild(this.element);
     this.element.innerHTML = "";
-    delete this.element;
   }
 
   async save(path: string) {

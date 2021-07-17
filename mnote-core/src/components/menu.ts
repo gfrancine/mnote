@@ -112,7 +112,9 @@ export class Menu {
 
   cleanup() {
     console.log("menu: cleanup", this.element, this.element.parentNode);
-    this.element = this.element.parentNode.removeChild(this.element);
+    if (this.element.parentNode) {
+      this.element = this.element.parentNode.removeChild(this.element);
+    }
     this.events = new Emitter();
   }
 }

@@ -15,7 +15,7 @@ import { CalendarExtension } from "mnote-extensions/calendar";
 console.log(nodefill);
 
 (async () => {
-  const args = await invoke("get_args");
+  const args = await invoke("get_args") as string[];
   const startPath = args[1];
 
   const app = new Mnote("#root", {

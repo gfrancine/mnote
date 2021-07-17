@@ -21,7 +21,7 @@ export const tree = {
 
 // extensions and their test data
 
-export const contents = {
+export const contents: Record<string, string> = {
   md: `# lorem ipsum`,
   mncalendar: `{"events":[{"start":"2021-07-11T19:00:00.000Z","end":
   "2021-07-11T21:30:00.000Z","title":"a","allDay":false,"id":null}]}`,

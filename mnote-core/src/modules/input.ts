@@ -1,5 +1,5 @@
-import Mousetrap from "mousetrap";
 import { Mnote } from "../common/types";
+const Mousetrap = require("mousetrap");
 
 export class InputModule {
   constructor(_: Mnote) {}
