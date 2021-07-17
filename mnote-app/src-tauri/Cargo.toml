@@ -1,11 +1,11 @@
 [package]
-name = "app"
+name = "mnote"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+description = ""
+authors = ["gfrancine"]
 license = ""
 repository = ""
-default-run = "app"
+default-run = "mnote"
 edition = "2018"
 build = "src/build.rs"
 
@@ -17,14 +17,8 @@ tauri-build = { version = "1.0.0-beta.2" }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.0.0-beta.4", features = ["api-all"] }
+tauri = { version = "1.0.0-beta.5", features = ["api-all"] }
 notify = "4.0.17"
-send_wrapper = "0.5.0"
-
-# from the tauri discord
-
-[patch.crates-io]
-wry = { git = "https://github.com/tauri-apps/wry", rev = "923d3461ce93846af8dd548d4e43ebd0fd6111a3" }
 
 [features]
 default = [ "custom-protocol" ]
