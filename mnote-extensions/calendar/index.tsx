@@ -51,6 +51,7 @@ type Data = {
   displayDragItemInCell?: boolean;
   dayLayoutAlgorithm?: string;
   draggedEvent?: Event;
+  view?: string; // 'month'|'week'|'work_week'|'day'|'agenda'
 };
 
 type UnparsedData = {
@@ -178,6 +179,16 @@ function Wrapper(props: {
     props.onChange(newData);
   };
 
+  const onView = (view: string) => {
+    const newData = {
+      ...data,
+      view,
+    };
+
+    setData(newData);
+    props.onChange(newData);
+  };
+
   return <DndCalendar
     selectable
     resizable
@@ -187,8 +198,10 @@ function Wrapper(props: {
     onEventResize={onResize}
     onSelectSlot={onNewEvent}
     onDragStart={onDragStart}
+    onView={onView}
     localizer={localizer} // ?
     events={data.events}
+    view={data.view}
     defaultView={Views.WEEK}
   />;
 }
@@ -241,7 +254,8 @@ class CalendarEditor implements Editor {
   }
 
   handleChange(data: Data) {
-    this.data = { events: data.events };
+    console.log("calendar data ", data);
+    this.data = { events: data.events, view: data.view };
     this.ctx?.updateEdited();
   }
 

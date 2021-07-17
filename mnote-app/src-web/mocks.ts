@@ -24,7 +24,8 @@ export const tree = {
 export const contents: Record<string, string> = {
   md: `# lorem ipsum`,
   mncalendar: `{"events":[{"start":"2021-07-11T19:00:00.000Z","end":
-  "2021-07-11T21:30:00.000Z","title":"a","allDay":false,"id":null}]}`,
+  "2021-07-11T21:30:00.000Z","title":"a","allDay":false,"id":null}],
+  "view":"month"}`,
   mnkanban: `{"lanes":[{"cards":[{"id":"76418ea0-e61d-11eb-95dd-f373e7778efd",
   "title":"Do something exciting","description":"Look it up","laneId":
   "6379aa50-e61d-11eb-95dd-f373e7778efd","label":"15 min"}],"id":
