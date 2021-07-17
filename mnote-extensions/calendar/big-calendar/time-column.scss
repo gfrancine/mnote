@@ -75,7 +75,7 @@
   }
 
   .rbc-time-slot {
-    border-top: 1px solid lighten($cell-border, 10%);
+    border-top: 1px solid $cell-border;
   }
 }
 
@@ -122,6 +122,8 @@
 }
 
 .rbc-time-slot {
+  padding: 0.1em;
+  font-size: 12px;
   flex: 1 0 0;
 
   &.rbc-now {

@@ -1,33 +1,34 @@
 @use "sass:math";
+@import "~mnote-styles/mnote-styles"; // @use throws
 
-$out-of-range-color: lighten(#333, 40%) !default;
-$out-of-range-bg-color: lighten(#333, 70%) !default;
+$out-of-range-color: map-get($vars, fg-dim);
+$out-of-range-bg-color: map-get($vars, bg-secondary);
 
-$calendar-border: #ddd !default;
-$cell-border: #ddd !default;
+$calendar-border: map-get($vars, border-main);
+$cell-border: map-get($vars, border-main);
 
-$border-color: #ccc !default;
+$border-color: map-get($vars, border-main);
 
-$segment-width: percentage(math.div(1, 7)) !default;
+$segment-width: percentage(math.div(1, 7));
 
-$time-selection-color: white !default;
-$time-selection-bg-color: rgba(0, 0, 0, 0.5) !default;
-$date-selection-bg-color: rgba(0, 0, 0, 0.1) !default;
+$time-selection-color: map-get($vars, fg-secondary);
+$time-selection-bg-color: map-get($vars, bg-dim);
+$date-selection-bg-color: map-get($vars, bg-dim);
 
-$event-bg: #3174ad !default;
-$event-border: darken(#3174ad, 10%) !default;
-$event-outline: #3b99fc !default;
-$event-color: #fff !default;
-$event-border-radius: 5px !default;
-$event-padding: 2px 5px !default;
-$event-zindex: 4 !default;
+$event-bg: map-get($vars, btn-emphasis-bg);
+$event-border: #00000000;
+$event-outline: #00000000;
+$event-color: map-get($vars, btn-emphasis-fg);
+$event-border-radius: 5px;
+$event-padding: 2px 5px;
+$event-zindex: 4;
 
-$btn-color: #373a3c !default;
-$btn-bg: #fff !default;
-$btn-border: #ccc !default;
+$btn-color: map-get($vars, fg-secondary);
+$btn-bg: map-get($vars, bg-main);
+$btn-border: #00000000;
 
-$current-time-color: #74ad31 !default;
+$current-time-color: #f66;
 
-$rbc-css-prefix: rbc-i !default;
+$rbc-css-prefix: rbc-i;
 
-$today-highlight-bg: #eaf6ff !default;
+$today-highlight-bg: map-get($vars, btn-main-bg);

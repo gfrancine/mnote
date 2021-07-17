@@ -56,6 +56,10 @@
   min-height: 0;
   border-bottom: 1px solid $cell-border;
 
+  font-size: 12px;
+  padding: 0.5em;
+  text-align: left;
+
   & + & {
     border-left: 1px solid $cell-border;
   }

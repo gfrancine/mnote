@@ -1,7 +1,8 @@
 @import "./variables";
+@import "~mnote-styles/mnote-styles";
 
-$active-background: darken($btn-bg, 10%);
-$active-border: darken($btn-border, 12%);
+$active-background: map-get($vars, bg-secondary);
+$active-border: $btn-border;
 
 .rbc-toolbar {
   display: flex;
@@ -18,7 +19,8 @@ $active-border: darken($btn-border, 12%);
   }
 
   & button {
-    color: $btn-color;
+    color: map-get($vars, fg-secondary);
+    font-size: 14px;
     display: inline-block;
     margin: 0;
     text-align: center;
@@ -34,15 +36,14 @@ $active-border: darken($btn-border, 12%);
     &:active,
     &.rbc-active {
       background-image: none;
-      box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
       background-color: $active-background;
       border-color: $active-border;
 
       &:hover,
       &:focus {
         color: $btn-color;
-        background-color: darken($btn-bg, 17%);
-        border-color: darken($btn-border, 25%);
+        background-color: $btn-bg;
+        border-color: $btn-border;
       }
     }
 
