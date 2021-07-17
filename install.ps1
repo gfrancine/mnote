@@ -1,4 +1,6 @@
 npm --version
+Get-ChildItem -Path "." "package-lock.json" -Recurse | foreach { Remove-Item -Path $_.FullName }
+
 npm i
 cd mnote-util
 npm i
