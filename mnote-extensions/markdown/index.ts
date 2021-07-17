@@ -24,7 +24,8 @@ import "./markdown.scss";
 // - the extension itself
 
 function countWords(text: string): number {
-  return text.split(/\s+/g).length;
+  const matches = text.match(/\w+/g);
+  return matches ? matches.length : 0;
 }
 
 class MarkdownEditor implements Editor {
