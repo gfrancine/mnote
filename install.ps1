@@ -1,3 +1,4 @@
+npm --version
 npm i
 cd mnote-util
 npm i
