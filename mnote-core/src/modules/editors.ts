@@ -54,6 +54,7 @@ export class EditorsModule {
   protected hookToMenubar() {
   protected hookToInputs() {
   protected hookToFiletree() {
+  protected hookToSystem() {
 
   registerEditor(kind: string, provider: EditorProvider) {
   protected setCurrentDocument(doc?: DocInfo) {
@@ -126,6 +127,7 @@ export class EditorsModule /* implements Module */ {
     this.hookToMenubar();
     this.hookToInputs();
     this.hookToFiletree();
+    this.hookToSystem();
   }
 
   notifyError(message: string) {
@@ -309,6 +311,14 @@ export class EditorsModule /* implements Module */ {
       this.open(path).then(() => {
         this.logging.info("editors: loaded path", path);
       });
+    });
+  }
+
+  protected hookToSystem() {
+    this.system.hookToQuit((cancel) => cancel());
+    this.system.hookToQuit(async (cancel) => {
+      const willClose = await this.close();
+      if (!willClose) cancel();
     });
   }
 

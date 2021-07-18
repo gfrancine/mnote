@@ -94,4 +94,7 @@ export type MenuItem = {
 
 export interface SystemInteropModule {
   USES_CMD: boolean;
+  hookToQuit: (hook: SystemCancelQuitHook) => void;
 }
+
+export type SystemCancelQuitHook = (cancel: () => void) => void | Promise<void>;
