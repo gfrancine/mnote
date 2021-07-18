@@ -118,12 +118,17 @@ $aliases: (
     header {
       border-bottom: none;
       margin-bottom: 0;
+      font-size: 13px;
     }
 
     div {
-      textarea {
+      textarea,
+      [contenteditable] {
         padding: 0;
         color: map.get(mn.$vars, "fg-secondary");
+        font-size: 12px;
+
+        @include mn.scrollbar(map.get(mn.$vars, "bg-secondary"));
       }
     }
 
@@ -133,6 +138,7 @@ $aliases: (
       width: 30%;
       padding-right: 0;
       margin-left: 0.5em;
+      font-size: 12px;
     }
   }
 
