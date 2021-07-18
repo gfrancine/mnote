@@ -8,10 +8,10 @@
   box-sizing: border-box;
   padding: 1em 2.5em 2.5em 2.5em;
 
-  .rbc-day-slot.rbc-time-column.rbc-now.rbc-today,
+  /* .rbc-day-slot.rbc-time-column.rbc-now.rbc-today,
   .rbc-day-bg.rbc-today {
     background: map-get(mn.$vars, bg-main);
-  }
+  } */
 
   .rbc-date-cell {
     padding-right: 0.5em;
@@ -27,6 +27,10 @@
     margin-right: 5px !important; // scroll bar width
   }
 
+  .rbc-time-header {
+    background-color: var(--mnote-bg-secondary);
+  }
+
   .rbc-toolbar {
     font-size: 14px;
   }
@@ -35,5 +39,14 @@
     top: 50%;
     position: absolute;
     left: 50%;
+  }
+
+  .rbc-event-content,
+  .rbc-event-label {
+    font-size: 13px;
+  }
+
+  .rbc-agenda-table {
+    font-size: 13px;
   }
 }
