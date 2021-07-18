@@ -1,7 +1,7 @@
 import { FileTreeNodeWithChildren, Mnote } from "../common/types";
 import { Emitter } from "mnote-util/emitter";
 import { el } from "mnote-util/elbuilder";
-import { Context, PromptButton } from "./types";
+import { Context } from "./types";
 import { FSModule } from "./fs";
 import { LayoutModule } from "./layout";
 import { CtxmenuModule } from "./ctxmenu";
@@ -10,9 +10,9 @@ import { LoggingModule } from "./logging";
 import { render } from "react-dom";
 import React from "react";
 import FileTree from "../components/filetree";
-import { Prompt } from "../components/prompt";
 import { strings } from "../common/strings";
 import { getPathParent } from "../../../mnote-util/path";
+import { PromptsModule } from "./prompts";
 
 export class FiletreeModule {
   element: HTMLElement;
@@ -20,6 +20,7 @@ export class FiletreeModule {
   layout: LayoutModule;
   ctxmenu: CtxmenuModule;
   logging: LoggingModule;
+  prompts: PromptsModule;
   events: Emitter<{
     selected: (path: string) => void;
   }> = new Emitter();
@@ -39,6 +40,7 @@ export class FiletreeModule {
     this.layout = app.modules.layout as LayoutModule;
     this.ctxmenu = app.modules.ctxmenu as CtxmenuModule;
     this.logging = app.modules.logging as LoggingModule;
+    this.prompts = app.modules.prompts as PromptsModule;
 
     const ctxmenuReducer = (_ctx: Context) => {}; // todo?
     this.ctxmenu.addSectionReducer(ctxmenuReducer);
@@ -62,16 +64,7 @@ export class FiletreeModule {
         this.directory = dir;
       } else {
         this.directory = await this.fs.getCurrentDir();
-        const button: PromptButton = {
-          text: "OK",
-          command: "",
-          kind: "emphasis",
-        };
-        new Prompt({
-          container: this.element,
-          message: strings.noStartPath(startPath),
-          buttons: [button],
-        }).prompt();
+        this.prompts.notify(strings.noStartPath(startPath));
       }
     } else {
       this.directory = await this.fs.getCurrentDir();

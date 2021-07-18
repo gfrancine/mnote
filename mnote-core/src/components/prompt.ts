@@ -9,15 +9,21 @@ export class Prompt {
   container: Element;
   message: string;
   buttons: PromptButton[];
+  insertedElements: HTMLElement[] = [];
 
   constructor(opts: {
     container: Element;
     message: string;
     buttons: PromptButton[];
+    insertedElements?: HTMLElement[];
   }) {
     this.message = opts.message;
     this.container = opts.container;
     this.buttons = opts.buttons;
+
+    if (opts.insertedElements) {
+      this.insertedElements = opts.insertedElements;
+    }
   }
 
   prompt(): Promise<string> {
@@ -44,10 +50,15 @@ export class Prompt {
       .inner(this.message)
       .element;
 
+    const insertedContainer = el("div")
+      .children(...this.insertedElements)
+      .element;
+
     const menu = el("div")
       .class("prompt")
       .children(
         text,
+        insertedContainer,
         buttons,
       )
       .element;

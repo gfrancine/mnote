@@ -67,5 +67,19 @@
       margin-bottom: 1em;
       font-size: 13px;
     }
+
+    .prompt-input {
+      resize: none;
+      width: 100%;
+      box-sizing: border-box;
+      outline: none;
+      border: none;
+      border-radius: 5px;
+      background: map.get($theme, "bg-secondary");
+      margin-bottom: 1em;
+      padding: 0.8em;
+      font-family: map.get($theme, "font-main");
+      font-size: 13px;
+    }
   }
 }

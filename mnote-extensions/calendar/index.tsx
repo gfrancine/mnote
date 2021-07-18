@@ -6,6 +6,7 @@ import {
   Extension,
   FSModule,
   Mnote,
+  PromptsModule,
 } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 import React, { useState } from "react";
@@ -94,6 +95,7 @@ const localizer = momentLocalizer(moment);
 function Wrapper(props: {
   initialData: Data;
   onChange: (data: Data) => void;
+  prompt: (message: string) => Promise<string | undefined>;
 }) {
   const [data, setData] = useState<Data>({
     ...props.initialData,
@@ -111,8 +113,8 @@ function Wrapper(props: {
     props.onChange(newData);
   };
 
-  const onNewEvent = (event: Event) => {
-    const title = window.prompt("New event name");
+  const onNewEvent = async (event: Event) => {
+    const title = await props.prompt("New event name");
 
     // todo: make modal support prompts too
     // prompt module? see catetan
@@ -125,7 +127,7 @@ function Wrapper(props: {
     const newEvent = {
       start: event.start as Date,
       end: event.end as Date,
-      title,
+      title: title,
       allDay: false,
       id: newId,
     };
@@ -217,6 +219,7 @@ class CalendarEditor implements Editor {
   element: HTMLElement;
   container?: HTMLElement;
   fs: FSModule;
+  prompts: PromptsModule;
   ctx?: EditorContext;
 
   data: Data = {
@@ -226,6 +229,7 @@ class CalendarEditor implements Editor {
   constructor(app: Mnote) {
     this.app = app;
     this.fs = (app.modules.fs as FSModule);
+    this.prompts = app.modules.prompts as PromptsModule;
     this.element = el("div")
       .class("calendar-extension")
       .element;
@@ -235,10 +239,7 @@ class CalendarEditor implements Editor {
     this.ctx = ctx;
     this.container = containter;
     this.container.appendChild(this.element);
-    render(
-      <Wrapper initialData={this.data} onChange={makeCallback(this)} />,
-      this.element,
-    );
+    this.renderWrapper();
   }
 
   async load(path: string) {
@@ -246,9 +247,17 @@ class CalendarEditor implements Editor {
     const contents = await this.fs.readTextFile(path);
     const data = deserializeData(contents);
     this.data = data;
+    this.renderWrapper();
+  }
 
+  // DRY
+  protected renderWrapper() {
     render(
-      <Wrapper initialData={this.data} onChange={makeCallback(this)} />,
+      <Wrapper
+        initialData={this.data}
+        onChange={makeCallback(this)}
+        prompt={(message) => this.prompts.promptTextInput(message)}
+      />,
       this.element,
     );
   }

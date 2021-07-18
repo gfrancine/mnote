@@ -11,7 +11,6 @@ import {
 import { MenubarModule } from "./menubar";
 import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
-import { Prompt } from "../components/prompt";
 import { FiletreeModule } from "./filetree";
 import { Emitter } from "mnote-util/emitter";
 import { getPathName } from "mnote-util/path";
@@ -20,6 +19,7 @@ import { strings } from "../common/strings";
 import { Menu } from "../components/menu";
 import { SidemenuModule } from "./sidemenu";
 import { InputModule } from "./input";
+import { PromptsModule } from "./prompts";
 
 // https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor-api-basics
 
@@ -79,12 +79,11 @@ export class EditorsModule /* implements Module */ {
   logging: LoggingModule;
   sidemenu: SidemenuModule;
   filetree: FiletreeModule;
+  prompts: PromptsModule;
 
   events: Emitter<{
     docSet: (doc?: DocInfo) => void; // menubar *Untitled text
   }> = new Emitter();
-
-  confirmClosePrompt: Prompt;
 
   // collection of editors, thier providers and their configurations
   // providers return an editor if it should open a path
@@ -106,12 +105,7 @@ export class EditorsModule /* implements Module */ {
     this.logging = app.modules.logging as LoggingModule;
     this.sidemenu = app.modules.sidemenu as SidemenuModule;
     this.filetree = app.modules.filetree as FiletreeModule;
-
-    this.confirmClosePrompt = new Prompt({
-      container: this.app.element,
-      message: strings.confirmSaveBeforeClose(),
-      buttons: confirmClosePromptButtons, // at the bottom of this file to avoid clutter
-    });
+    this.prompts = app.modules.prompts as PromptsModule;
 
     this.element = el("div")
       .class("editor-container")
@@ -128,18 +122,6 @@ export class EditorsModule /* implements Module */ {
     this.hookToInputs();
     this.hookToFiletree();
     this.hookToSystem();
-  }
-
-  notifyError(message: string) {
-    new Prompt({
-      container: this.app.element,
-      message: message,
-      buttons: [{
-        kind: "emphasis",
-        text: "OK",
-        command: "",
-      }],
-    }).prompt();
   }
 
   protected hookToSidebarMenu() {
@@ -395,7 +377,7 @@ export class EditorsModule /* implements Module */ {
       await this.currentEditor.save(currentDocument.path);
       return true;
     } catch (e) {
-      this.notifyError(`An error occurred while saving: ${e}`);
+      this.prompts.notify(`An error occurred while saving: ${e}`);
       console.error(e);
       return false;
     }
@@ -486,7 +468,12 @@ export class EditorsModule /* implements Module */ {
       // has path, but unsaved
       // would you like to save?
 
-      switch (await this.confirmClosePrompt.prompt()) {
+      const action = await this.prompts.promptButtons(
+        strings.confirmSaveBeforeClose(),
+        confirmClosePromptButtons, // see bottom of file
+      );
+
+      switch (action) {
         case "save":
           this.logging.info("close prompt: save");
           if (await this.save()) {
@@ -592,7 +579,7 @@ export class EditorsModule /* implements Module */ {
         await selectedEditor.startup(this.element, this.makeContext()); //todo: handle err
         await selectedEditor.load(newDoc.path);
       } catch (e) {
-        this.notifyError(`An error occurred while loading: ${e}`);
+        this.prompts.notify(`An error occurred while loading: ${e}`);
         console.error(e);
         await this.cleanup();
       }
