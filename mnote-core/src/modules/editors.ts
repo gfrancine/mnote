@@ -6,12 +6,12 @@ import {
   Editor,
   EditorContext,
   EditorInfo,
-  ModalButton,
+  PromptButton,
 } from "./types";
 import { MenubarModule } from "./menubar";
 import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
-import { Modal } from "../components/modal";
+import { Prompt } from "../components/prompt";
 import { FiletreeModule } from "./filetree";
 import { Emitter } from "mnote-util/emitter";
 import { getPathName } from "mnote-util/path";
@@ -38,7 +38,7 @@ const nothingHere = el("div")
 export class EditorsModule {
   element: HTMLElement;
   events: Emitter<
-  confirmCloseModal: Modal;
+  confirmClosePrompt: Prompt;
 
   editors: EditorInfo[] = [];
   editorKinds: Record<string, EditorInfo> = {};
@@ -83,7 +83,7 @@ export class EditorsModule /* implements Module */ {
     docSet: (doc?: DocInfo) => void; // menubar *Untitled text
   }> = new Emitter();
 
-  confirmCloseModal: Modal;
+  confirmClosePrompt: Prompt;
 
   // collection of editors, thier providers and their configurations
   // providers return an editor if it should open a path
@@ -106,10 +106,10 @@ export class EditorsModule /* implements Module */ {
     this.sidemenu = app.modules.sidemenu as SidemenuModule;
     this.filetree = app.modules.filetree as FiletreeModule;
 
-    this.confirmCloseModal = new Modal({
+    this.confirmClosePrompt = new Prompt({
       container: this.app.element,
       message: strings.confirmSaveBeforeClose(),
-      buttons: confirmCloseModalButtons, // at the bottom of this file to avoid clutter
+      buttons: confirmClosePromptButtons, // at the bottom of this file to avoid clutter
     });
 
     this.element = el("div")
@@ -129,7 +129,7 @@ export class EditorsModule /* implements Module */ {
   }
 
   notifyError(message: string) {
-    new Modal({
+    new Prompt({
       container: this.app.element,
       message: message,
       buttons: [{
@@ -375,7 +375,7 @@ export class EditorsModule /* implements Module */ {
     await editor.startup(this.element, this.makeContext());
   }
 
-  // DRY for saving with a modal on error
+  // DRY for saving with a prompt on error
   protected async trySaveEditor(
     currentDocument: Required<DocInfo>,
   ): Promise<boolean> {
@@ -476,9 +476,9 @@ export class EditorsModule /* implements Module */ {
       // has path, but unsaved
       // would you like to save?
 
-      switch (await this.confirmCloseModal.prompt()) {
+      switch (await this.confirmClosePrompt.prompt()) {
         case "save":
-          this.logging.info("close modal: save");
+          this.logging.info("close prompt: save");
           if (await this.save()) {
             await this.cleanup();
             return true;
@@ -486,10 +486,10 @@ export class EditorsModule /* implements Module */ {
             return false;
           }
         case "cancel":
-          this.logging.info("close modal: cancel");
+          this.logging.info("close prompt: cancel");
           return false;
         case "dontsave":
-          this.logging.info("close modal: donstave");
+          this.logging.info("close prompt: donstave");
           await this.cleanup();
           return true;
       }
@@ -590,7 +590,7 @@ export class EditorsModule /* implements Module */ {
   }
 }
 
-const confirmCloseModalButtons: ModalButton[] = [
+const confirmClosePromptButtons: PromptButton[] = [
   {
     kind: "normal",
     text: "Cancel",

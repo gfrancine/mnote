@@ -1,7 +1,7 @@
 import { FileTreeNodeWithChildren, Mnote } from "../common/types";
 import { Emitter } from "mnote-util/emitter";
 import { el } from "mnote-util/elbuilder";
-import { Context, ModalButton } from "./types";
+import { Context, PromptButton } from "./types";
 import { FSModule } from "./fs";
 import { LayoutModule } from "./layout";
 import { CtxmenuModule } from "./ctxmenu";
@@ -10,7 +10,7 @@ import { LoggingModule } from "./logging";
 import { render } from "react-dom";
 import React from "react";
 import FileTree from "../components/filetree";
-import { Modal } from "../components/modal";
+import { Prompt } from "../components/prompt";
 import { strings } from "../common/strings";
 import { getPathParent } from "../../../mnote-util/path";
 
@@ -62,12 +62,12 @@ export class FiletreeModule {
         this.directory = dir;
       } else {
         this.directory = await this.fs.getCurrentDir();
-        const button: ModalButton = {
+        const button: PromptButton = {
           text: "OK",
           command: "",
           kind: "emphasis",
         };
-        new Modal({
+        new Prompt({
           container: this.element,
           message: strings.noStartPath(startPath),
           buttons: [button],

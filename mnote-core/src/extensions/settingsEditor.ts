@@ -79,7 +79,7 @@ class SettingsEditor implements Editor {
     const parsed = JSON.parse(this.contents);
     if (!this.settings.isValidSettings(parsed)) {
       // throw when error so the editor module
-      // can catch it with a modal
+      // can catch it with a prompt
       throw new Error("invalid settings");
     }
 

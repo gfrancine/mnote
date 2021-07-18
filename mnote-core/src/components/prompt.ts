@@ -1,19 +1,19 @@
 // https://code.visualstudio.com/api/references/vscode-api#window.showInformationMessage
-// https://vercel.com/design/modal
+// https://vercel.com/design/prompt
 
 import { el } from "mnote-util/elbuilder";
 import { freeze, unfreeze } from "mnote-util/dom";
-import { ModalButton } from "../modules/types";
+import { PromptButton } from "../modules/types";
 
-export class Modal {
+export class Prompt {
   container: Element;
   message: string;
-  buttons: ModalButton[];
+  buttons: PromptButton[];
 
   constructor(opts: {
     container: Element;
     message: string;
-    buttons: ModalButton[];
+    buttons: PromptButton[];
   }) {
     this.message = opts.message;
     this.container = opts.container;
@@ -25,27 +25,27 @@ export class Modal {
 
     this.buttons.forEach((buttonData) => {
       const button = el("div")
-        .class("modal-button")
+        .class("prompt-button")
         .class(buttonData.kind)
         .inner(buttonData.text)
-        .attr("modal-command", buttonData.command)
+        .attr("prompt-command", buttonData.command)
         .element;
 
       buttonEls.push(button);
     });
 
     const buttons = el("div")
-      .class("modal-buttons")
+      .class("prompt-buttons")
       .children(...buttonEls)
       .element;
 
     const text = el("div")
-      .class("modal-text")
+      .class("prompt-text")
       .inner(this.message)
       .element;
 
     const menu = el("div")
-      .class("modal")
+      .class("prompt")
       .children(
         text,
         buttons,
@@ -53,7 +53,7 @@ export class Modal {
       .element;
 
     const overlay = el("div")
-      .class("modal-overlay")
+      .class("prompt-overlay")
       .children(menu)
       .element;
 
@@ -64,7 +64,7 @@ export class Modal {
       const listeners: Map<HTMLElement, () => void> = new Map();
 
       buttonEls.forEach((element) => {
-        const command = element.getAttribute("modal-command");
+        const command = element.getAttribute("prompt-command");
 
         const listener = () => {
           for (const [k, v] of listeners.entries()) {

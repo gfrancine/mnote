@@ -47,7 +47,7 @@ export type Context = {
   elements: Element[];
 };
 
-export type ModalButton = {
+export type PromptButton = {
   text: string;
   command: string;
   kind: "emphasis" | "normal";

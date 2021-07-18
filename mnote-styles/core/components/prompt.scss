@@ -1,7 +1,7 @@
 @use "sass:map";
 
-@mixin modal($theme) {
-  .modal-overlay {
+@mixin prompt($theme) {
+  .prompt-overlay {
     width: 100vw;
     height: 100vh;
     background: map.get($theme, "overlay");
@@ -11,7 +11,7 @@
     z-index: 20;
   }
 
-  .modal {
+  .prompt {
     z-index: 21;
     position: absolute;
     left: 50%;
@@ -25,11 +25,11 @@
     width: min-content;
     min-width: 360px;
 
-    .modal-buttons {
+    .prompt-buttons {
       width: 100%;
       text-align: right;
 
-      .modal-button {
+      .prompt-button {
         font-family: map.get($theme, "font-main");
         font-size: 13px;
         display: inline-block;
@@ -62,7 +62,7 @@
       }
     }
 
-    .modal-text {
+    .prompt-text {
       font-family: map.get($theme, "font-main");
       margin-bottom: 1em;
       font-size: 13px;
