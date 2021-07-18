@@ -9,7 +9,7 @@ export const light = {
   "font-monospace": "Fira Mono",
 
   "fg-main": gray[9],
-  "fg-secondary": gray[7],
+  "fg-secondary": gray[6],
   "fg-dim": gray[5],
 
   "bg-main": "#fff",
@@ -25,7 +25,7 @@ export const light = {
   "sidebar-bg-main": gray[1],
   "sidebar-bg-hover": gray[3],
   "sidebar-fg-main": gray[9],
-  "sidebar-fg-secondary": gray[9],
+  "sidebar-fg-secondary": gray[6],
 
   "btn-main-fg": gray[9], // buttons, assuming background is bg-main
   "btn-main-fg-hover": gray[9],
