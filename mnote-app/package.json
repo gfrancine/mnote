@@ -18,7 +18,7 @@
     "shx": "^0.3.3"
   },
   "dependencies": {
-    "@tauri-apps/api": "^1.0.0-beta.4",
+    "@tauri-apps/api": "^1.0.0-beta.5",
     "mnote-core": "file:../mnote-core",
     "mnote-extensions": "file:../mnote-extensions",
     "mnote-styles": "file:../mnote-styles",
