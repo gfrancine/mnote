@@ -21,6 +21,11 @@ function FileNode(props: {
       (props.focusedNode === props.node.path ? " focused" : "") +
       (props.visible ? "" : " hidden")}
     onClick={onClick}
+    draggable
+    onDragStart={(e) => {
+      e.dataTransfer.setData("path", props.node.path);
+      e.dataTransfer.setData("kind", "file");
+    }}
     //@ts-ignore
     mn-file-path={props.node.path}
   >
@@ -48,8 +53,10 @@ function DirNode(props: {
 
   return <div className="filetree-dir">
     <div
-      className={"filetree-item" + (props.visible && expanded ? "" : " hidden")}
+      className={"filetree-item" /* + (props.visible && expanded ? "" : " hidden") */}
       onClick={onClick}
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={(e) => console.log(e.dataTransfer.getData("path"))}
       //@ts-ignore
       mn-dir-path={props.node.path}
     >
