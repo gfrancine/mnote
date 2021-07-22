@@ -36,6 +36,7 @@ export class PromptsModule {
   async promptTextInput(message: string): Promise<string | undefined> {
     const input = el("input")
       .class("prompt-input")
+      .attr("spellcheck", "false")
       .element as HTMLInputElement;
 
     const action = await new Prompt({
@@ -43,13 +44,13 @@ export class PromptsModule {
       message: message,
       insertedElements: [input],
       buttons: [{
-        kind: "emphasis",
-        text: "Confirm",
-        command: "confirm",
-      }, {
         kind: "normal",
         text: "Cancel",
         command: "cancel",
+      }, {
+        kind: "emphasis",
+        text: "Confirm",
+        command: "confirm",
       }],
     }).prompt();
 
