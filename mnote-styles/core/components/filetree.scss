@@ -20,7 +20,7 @@
     font-family: map.get($theme, "font-main");
 
     .hidden {
-      display: none;
+      display: none !important;
     }
 
     .filetree-item {

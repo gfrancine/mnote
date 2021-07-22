@@ -1,4 +1,4 @@
-import { FileTreeNodeWithChildren, Mnote } from "../common/types";
+import { FileTreeNodeWithChildren, MenuItem, Mnote } from "../common/types";
 import { Emitter } from "mnote-util/emitter";
 import { el } from "mnote-util/elbuilder";
 import { Context } from "./types";
@@ -42,7 +42,42 @@ export class FiletreeModule {
     this.logging = app.modules.logging as LoggingModule;
     this.prompts = app.modules.prompts as PromptsModule;
 
-    const ctxmenuReducer = (_ctx: Context) => {}; // todo?
+    const ctxmenuReducer = (ctx: Context) => {
+      let fileTreeItem: Element | undefined;
+
+      for (const el of ctx.elements) {
+        if (el.classList.contains("filetree-item")) {
+          fileTreeItem = el;
+          break;
+        }
+      }
+
+      if (fileTreeItem) {
+        const section: MenuItem[] = [];
+
+        const filePath = fileTreeItem.getAttribute("mn-file-path");
+        if (filePath) {
+          section.push({
+            name: "Open file",
+            click: () => {
+              this.setSelectedFile(filePath);
+            },
+          });
+        } else {
+          const dirPath = fileTreeItem.getAttribute("mn-dir-path");
+          if (dirPath) {
+            /* section.push({
+              name: "",
+              click: () => {}
+            }) */
+          }
+        }
+
+        this.logging.info("file tree section", section);
+        return section;
+      }
+    };
+
     this.ctxmenu.addSectionReducer(ctxmenuReducer);
 
     this.layout.mountToFiletree(this.element);

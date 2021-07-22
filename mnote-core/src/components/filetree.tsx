@@ -21,6 +21,8 @@ function FileNode(props: {
       (props.focusedNode === props.node.path ? " focused" : "") +
       (props.visible ? "" : " hidden")}
     onClick={onClick}
+    //@ts-ignore
+    mn-file-path={props.node.path}
   >
     <div className="filetree-item-icon">
       <BlankFile fillClass="fill" strokeClass="stroke" />
@@ -48,6 +50,8 @@ function DirNode(props: {
     <div
       className={"filetree-item" + (props.visible && expanded ? "" : " hidden")}
       onClick={onClick}
+      //@ts-ignore
+      mn-dir-path={props.node.path}
     >
       <div className="filetree-item-icon">
         {expanded
