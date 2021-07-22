@@ -43,6 +43,7 @@ export class FiletreeModule {
     this.prompts = app.modules.prompts as PromptsModule;
 
     const ctxmenuReducer = (ctx: Context) => {
+      // find a file tree item
       let fileTreeItem: Element | undefined;
 
       for (const el of ctx.elements) {
@@ -53,28 +54,26 @@ export class FiletreeModule {
       }
 
       if (fileTreeItem) {
-        const section: MenuItem[] = [];
-
         const filePath = fileTreeItem.getAttribute("mn-file-path");
         if (filePath) {
-          section.push({
+          return [{
             name: "Open file",
             click: () => {
               this.setSelectedFile(filePath);
             },
-          });
+          }];
         } else {
+          // todo: add ability to hook on to new file? hook to file
+          // right click? hookTo("fileContextMenu")
+          // addFileContextMenuReducer, addDirContextMenuReducer
           const dirPath = fileTreeItem.getAttribute("mn-dir-path");
           if (dirPath) {
             /* section.push({
-              name: "",
+              name: "New file",
               click: () => {}
             }) */
           }
         }
-
-        this.logging.info("file tree section", section);
-        return section;
       }
     };
 
