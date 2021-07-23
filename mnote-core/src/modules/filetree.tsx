@@ -18,6 +18,7 @@ import FileTree from "../components/filetree";
 import { PromptsModule } from "./prompts";
 import { MenubarModule } from "./menubar";
 import { SystemModule } from "./system";
+import { getPathName } from "../../../mnote-util/path";
 
 export class FiletreeModule {
   app: Mnote;
@@ -106,6 +107,11 @@ export class FiletreeModule {
             click: () => {
               this.setSelectedFile(filePath);
             },
+          }, {
+            name: "Delete file",
+            click: () => {
+              this.fs.removeFile(filePath);
+            },
           }];
         } else {
           // todo: add ability to hook on to new file? hook to file
@@ -113,12 +119,25 @@ export class FiletreeModule {
           // addFileContextMenuReducer, addDirContextMenuReducer
           const dirPath = fileTreeItem.getAttribute("mn-dir-path");
           if (dirPath) {
-            /* section.push({
-              name: "New file",
-              click: () => {}
-            }) */
+            return [{
+              name: "Delete folder",
+              click: () => {
+                this.fs.removeDir(dirPath);
+              },
+            }, {
+              name: "New folder",
+              click: async () => {
+                const name = await this.prompts.promptTextInput(
+                  "Create new folder",
+                );
+                if (!name) return;
+                const path = this.fs.joinPath([dirPath, name]);
+                // todo
+              },
+            }];
           }
         }
+      } else {
       }
     };
 
@@ -201,8 +220,14 @@ export class FiletreeModule {
         this.setSelectedFile(path);
       },
       fileDroppedOnDir: (targetDir: string, droppedFile: string) => {
-        this.logging.info("file dropped on dir", droppedFile, targetDir);
-        // todo
+        const newPath = this.fs.joinPath([targetDir, getPathName(droppedFile)]);
+        this.logging.info(
+          "file dropped on dir",
+          droppedFile,
+          targetDir,
+          newPath,
+        );
+        this.fs.renameFile(droppedFile, newPath);
       },
     };
 

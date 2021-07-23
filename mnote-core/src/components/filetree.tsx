@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { createRef, useEffect, useMemo, useRef, useState } from "react";
 import { BlankFile, ClosedFolder, OpenedFolder } from "./icons-jsx";
 import { getPathName } from "mnote-util/path";
 import {
@@ -24,8 +24,8 @@ function FileNode(props: {
     onClick={onClick}
     draggable
     onDragStart={(e) => {
-      e.dataTransfer.setData("path", props.node.path);
-      e.dataTransfer.setData("kind", "file");
+      console.log("dragstart");
+      e.dataTransfer.setData("text/plain", props.node.path);
     }}
     //@ts-ignore
     mn-file-path={props.node.path}
@@ -56,14 +56,14 @@ function DirNode(props: {
     <div
       className={"filetree-item" /* + (props.visible && expanded ? "" : " hidden") */}
       onClick={onClick}
-      onDragOver={(e) => e.preventDefault()}
+      onDragOver={(e) => {
+        console.log("dragover");
+        e.preventDefault();
+      }}
       onDrop={(e) => {
-        const path = e.dataTransfer.getData("path");
-        const kind = e.dataTransfer.getData("path");
-        console.log("dropped on dir", kind, path);
-        if (kind === "file") {
-          props.hooks?.fileDroppedOnDir?.(props.node.path, path);
-        }
+        const path = e.dataTransfer.getData("text/plain");
+        console.log("dropped on dir", path);
+        props.hooks?.fileDroppedOnDir?.(props.node.path, path);
       }}
       //@ts-ignore
       mn-dir-path={props.node.path}

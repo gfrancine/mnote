@@ -54,10 +54,11 @@
     "windows": [
       {
         "title": "Mnote",
-        "width": 1200,
+        "width": 1400,
         "height": 800,
         "resizable": true,
-        "fullscreen": false
+        "fullscreen": false,
+        "fileDropEnabled": false
       }
     ],
     "security": {
