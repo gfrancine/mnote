@@ -1,6 +1,6 @@
 import { FileItemWithChildren, FsInteropModule } from "mnote-core";
 import { invoke } from "@tauri-apps/api/tauri";
-import { emit, listen } from "@tauri-apps/api/event";
+import { listen } from "@tauri-apps/api/event";
 import { Emitter } from "mnote-util/emitter";
 import * as fs from "@tauri-apps/api/fs";
 import * as path from "@tauri-apps/api/path";
@@ -193,7 +193,7 @@ export class Watcher {
     await listen("watcher_event", () => {
       this.emitter.emit("event");
     });
-    await emit("watcher_init", path);
+    invoke("watcher_init", { path }); // do NOT await
   }
 
   onEvent(handler: () => void | Promise<void>) {
