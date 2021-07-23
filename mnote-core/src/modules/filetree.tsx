@@ -99,6 +99,22 @@ export class FiletreeModule {
         }
       }
 
+      const makeNewFolderButton = (dir: string) => {
+        return {
+          name: "New folder",
+          click: async () => {
+            const name = await this.prompts.promptTextInput(
+              "Create new folder",
+            );
+            if (!name) return;
+            const path = this.fs.joinPath([dir, name]);
+            console.log("new dir", path);
+            // todo
+            await this.fs.createDir(path);
+          },
+        };
+      };
+
       if (fileTreeItem) {
         const filePath = fileTreeItem.getAttribute("mn-file-path");
         if (filePath) {
@@ -119,25 +135,20 @@ export class FiletreeModule {
           // addFileContextMenuReducer, addDirContextMenuReducer
           const dirPath = fileTreeItem.getAttribute("mn-dir-path");
           if (dirPath) {
-            return [{
-              name: "Delete folder",
-              click: () => {
-                this.fs.removeDir(dirPath);
+            return [
+              {
+                name: "Delete folder",
+                click: () => {
+                  this.fs.removeDir(dirPath);
+                },
               },
-            }, {
-              name: "New folder",
-              click: async () => {
-                const name = await this.prompts.promptTextInput(
-                  "Create new folder",
-                );
-                if (!name) return;
-                const path = this.fs.joinPath([dirPath, name]);
-                // todo
-              },
-            }];
+              makeNewFolderButton(dirPath),
+            ];
           }
         }
-      } else {
+      } else if (ctx.elements.includes(this.element) && this.directory) {
+        // right clicked directly on the file tree
+        return [makeNewFolderButton(this.directory as string)];
       }
     };
 

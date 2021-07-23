@@ -53,6 +53,10 @@ export class FS implements FsInteropModule {
     });
   }
 
+  async createDir(path: string): Promise<void> {
+    await fs.createDir(path);
+  }
+
   async isFile(path: string): Promise<boolean> {
     try {
       await fs.readTextFile(path);

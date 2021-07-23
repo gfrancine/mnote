@@ -78,6 +78,7 @@
       background: map.get($theme, "bg-secondary");
       margin-bottom: 1em;
       padding: 0.8em;
+      color: map.get($theme, "fg-main");
       font-family: map.get($theme, "font-main");
       font-size: 13px;
       line-height: initial;

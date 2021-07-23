@@ -24,6 +24,9 @@ export class FS implements FsInteropModule {
   removeDir(_path: string): Promise<void> {
     return Promise.resolve();
   }
+  createDir(_path: string): Promise<void> {
+    return Promise.resolve();
+  }
   isFile(_path: string): Promise<boolean> {
     return Promise.resolve(true);
   }
