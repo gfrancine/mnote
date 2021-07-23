@@ -3,10 +3,13 @@
 @use "~mnote-styles/mnote-styles" as mn;
 
 .md-extension {
+  @include milkdown.milkdown(mn.$vars);
+
+  --md-font-size: 1em;
+
   width: 100%;
   height: 100%;
-
-  @include milkdown.milkdown(mn.$vars);
+  font-size: var(--md-font-size);
 
   .md-container {
     width: 80%;

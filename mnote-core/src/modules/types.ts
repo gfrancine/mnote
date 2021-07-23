@@ -56,6 +56,6 @@ export type PromptButton = {
 // themes
 // use an object for easier validation
 
-export type Settings = {
+export type Settings = Record<string, unknown> & {
   theme?: string;
 };

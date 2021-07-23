@@ -9,6 +9,7 @@ import {
   Extension,
   FSModule,
   Mnote,
+  SettingsModule,
 } from "mnote-core";
 
 import { Editor as MilkdownEditor } from "@milkdown/core";
@@ -34,6 +35,7 @@ class MarkdownEditor implements Editor {
   statsbar: HTMLElement;
   element: HTMLElement;
   container?: HTMLElement;
+  settings: SettingsModule;
   fs: FSModule;
   ctx?: EditorContext;
 
@@ -43,6 +45,7 @@ class MarkdownEditor implements Editor {
   constructor(app: Mnote) {
     this.app = app;
     this.fs = (app.modules.fs as FSModule);
+    this.settings = (app.modules.settings as SettingsModule);
 
     this.editorContainer = el("div")
       .class("md-container")
@@ -55,6 +58,12 @@ class MarkdownEditor implements Editor {
 
     this.element = el("div")
       .class("md-extension")
+      .hook((e) => {
+        e.element.style.setProperty(
+          "--md-font-size",
+          "" + this.settings.getKey("md.font-size"),
+        );
+      })
       .children(
         this.editorContainer,
         this.statsbar,
@@ -149,17 +158,26 @@ class MarkdownEditorProvider implements EditorProvider {
 
 export class MarkdownExtension implements Extension {
   app: Mnote;
+  settings: SettingsModule;
+  editors: EditorsModule;
 
   constructor(app: Mnote) {
     this.app = app;
+    this.settings = app.modules.settings as SettingsModule;
+    this.editors = app.modules.editors as EditorsModule;
   }
 
   startup() {
-    (this.app.modules.editors as EditorsModule).registerEditor({
+    this.editors.registerEditor({
       kind: "Markdown",
       provider: new MarkdownEditorProvider(this.app),
       saveAsExtensions: ["md"],
     });
+
+    const fontSize = this.settings.getKey("md.font-size");
+    if (typeof fontSize !== "string") {
+      this.settings.setKey("md.font-size", "1em");
+    }
   }
 
   cleanup() {}

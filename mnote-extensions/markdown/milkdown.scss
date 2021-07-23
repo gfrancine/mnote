@@ -28,7 +28,7 @@
     margin: 0;
     * {
       font-size: 1em;
-      line-height: 1.5rem;
+      line-height: 1.5em;
     }
   }
 
@@ -39,13 +39,13 @@
     border-radius: var(--radius);
     font-weight: 500;
     font-family: var(--font-code);
-    padding: 0 0.2rem;
+    padding: 0 0.2em;
   }
 
   .code-fence {
     border-radius: 5px;
-    font-size: 0.85rem;
-    padding: 0 0.4rem 1.4rem;
+    font-size: 0.85em;
+    padding: 0 0.4em 1.4em;
     overflow: hidden;
     background-color: map.get($theme, "bg-secondary");
 
@@ -78,7 +78,7 @@
         line-height: 1.5;
         color: map.get($theme, "fg-dim");
         grid-area: select;
-        font-size: 0.85rem;
+        font-size: 0.85em;
         outline: none;
         appearance: none;
         width: 100%;
