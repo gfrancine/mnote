@@ -39,6 +39,20 @@ export class FS implements FsInteropModule {
     };
   }
 
+  async renameFile(path: string, newPath: string): Promise<void> {
+    await fs.renameFile(path, newPath);
+  }
+
+  async removeFile(path: string): Promise<void> {
+    await fs.removeFile(path);
+  }
+
+  async removeDir(path: string): Promise<void> {
+    await fs.removeDir(path, {
+      recursive: true,
+    });
+  }
+
   async isFile(path: string): Promise<boolean> {
     try {
       await fs.readTextFile(path);

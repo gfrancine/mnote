@@ -15,6 +15,15 @@ export class FS implements FsInteropModule {
   readDir(_path: string): Promise<FileItemWithChildren> {
     return Promise.resolve(tree);
   }
+  renameFile(_path: string, _newPath: string): Promise<void> {
+    return Promise.resolve();
+  }
+  removeFile(_path: string): Promise<void> {
+    return Promise.resolve();
+  }
+  removeDir(_path: string): Promise<void> {
+    return Promise.resolve();
+  }
   isFile(_path: string): Promise<boolean> {
     return Promise.resolve(true);
   }

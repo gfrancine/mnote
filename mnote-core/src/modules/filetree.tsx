@@ -161,7 +161,7 @@ export class FiletreeModule {
       fileDroppedOnDir: (targetDir: string, droppedFile: string) => {
         this.logging.info("file dropped on dir", droppedFile, targetDir);
         // todo
-      }
+      },
     };
 
     render(

@@ -34,6 +34,18 @@ export class FSModule implements FsInteropModule {
     };
   }
 
+  async renameFile(path: string, newPath: string): Promise<void> {
+    await this.fs?.renameFile(path, newPath);
+  }
+
+  async removeFile(path: string): Promise<void> {
+    await this.fs?.removeFile(path);
+  }
+
+  async removeDir(path: string): Promise<void> {
+    await this.fs?.removeDir(path);
+  }
+
   async isFile(path: string): Promise<boolean> {
     if (this.fs) {
       return await this.fs.isFile(path);
@@ -52,26 +64,20 @@ export class FSModule implements FsInteropModule {
     extensions?: string[];
     directory: boolean;
   }): Promise<string | void> {
-    if (this.fs) {
-      return await this.fs.dialogOpen(opts);
-    }
+    return await this.fs?.dialogOpen(opts);
   }
 
   async dialogOpenMultiple(opts: {
     extensions?: string[];
     directory: boolean;
   }): Promise<string[] | void> {
-    if (this.fs) {
-      return await this.fs.dialogOpenMultiple(opts);
-    }
+    await this.fs?.dialogOpenMultiple(opts);
   }
 
   async dialogSave(opts: {
     extensions?: string[];
   }): Promise<string | void> {
-    if (this.fs) {
-      return await this.fs.dialogSave(opts);
-    }
+    return await this.fs?.dialogSave(opts);
   }
 
   async getConfigDir(): Promise<string> {
@@ -96,14 +102,10 @@ export class FSModule implements FsInteropModule {
   }
 
   async watchInit(path: string) {
-    if (this.fs) {
-      return await this.fs.watchInit(path);
-    }
+    await this.fs?.watchInit(path);
   }
 
   onWatchEvent(handler: () => void | Promise<void>) {
-    if (this.fs) {
-      return this.fs.onWatchEvent(handler);
-    }
+    this.fs?.onWatchEvent(handler);
   }
 }

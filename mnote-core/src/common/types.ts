@@ -39,6 +39,9 @@ export interface FsInteropModule {
   writeTextFile(path: string, contents: string): Promise<void>;
   readTextFile(path: string): Promise<string>;
   readDir(path: string): Promise<FileItemWithChildren>;
+  renameFile(path: string, newPath: string): Promise<void>;
+  removeFile(path: string): Promise<void>;
+  removeDir(path: string): Promise<void>;
   isFile(path: string): Promise<boolean>;
   isDir(path: string): Promise<boolean>;
   dialogOpen(opts: {
