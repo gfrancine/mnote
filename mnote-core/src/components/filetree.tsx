@@ -85,12 +85,14 @@ function DirNode(props: {
             visible={expanded}
             key={node.path}
             node={node as NodeWithChildren}
+            hooks={props.hooks}
             focusedNode={props.focusedNode}
           />
           : <FileNode
             visible={expanded}
             node={node}
             key={node.path}
+            hooks={props.hooks}
             focusedNode={props.focusedNode}
           />
       )}
@@ -111,6 +113,7 @@ export default function (props: {
     {props.node
       ? <DirNode
         visible={true}
+        hooks={props.hooks}
         key={props.node.path}
         initExpanded={true}
         node={props.node}
