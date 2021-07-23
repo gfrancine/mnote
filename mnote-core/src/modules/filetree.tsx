@@ -16,6 +16,8 @@ import { render } from "react-dom";
 import React from "react";
 import FileTree from "../components/filetree";
 import { PromptsModule } from "./prompts";
+import { MenubarModule } from "./menubar";
+import { SystemModule } from "./system";
 
 export class FiletreeModule {
   app: Mnote;
@@ -24,10 +26,12 @@ export class FiletreeModule {
   layout: LayoutModule;
   ctxmenu: CtxmenuModule;
   logging: LoggingModule;
+  menubar: MenubarModule;
   prompts: PromptsModule;
+  system: SystemModule;
 
   events: Emitter<{
-    selected: (path: string) => void;
+    fileSelected: (path: string) => void;
   }> = new Emitter();
 
   selectedFile?: string;
@@ -42,10 +46,46 @@ export class FiletreeModule {
       .element;
 
     this.fs = app.modules.fs as FSModule;
+    this.system = app.modules.system as SystemModule;
     this.layout = app.modules.layout as LayoutModule;
     this.ctxmenu = app.modules.ctxmenu as CtxmenuModule;
     this.logging = app.modules.logging as LoggingModule;
     this.prompts = app.modules.prompts as PromptsModule;
+    this.menubar = app.modules.menubar as MenubarModule;
+
+    const cmdOrCtrl = this.system.USES_CMD ? "Cmd" : "Ctrl";
+
+    const menubarReducer = () => {
+      const buttons = [];
+
+      buttons.push({
+        name: "Open File",
+        shortcut: cmdOrCtrl + "+O",
+        click: async () => {
+          const maybePath = await this.fs.dialogOpen({
+            directory: false,
+          });
+          if (!maybePath) return;
+          this.setSelectedFile(maybePath);
+        },
+      });
+
+      if (!this.directory) {
+        buttons.push({
+          name: "Open Folder",
+          shortcut: cmdOrCtrl + "+O",
+          click: async () => {
+            const maybePath = await this.fs.dialogOpen({
+              directory: true,
+            });
+            if (!maybePath) return;
+            this.setDirectory(maybePath);
+          },
+        });
+      }
+
+      return buttons;
+    };
 
     const ctxmenuReducer = (ctx: Context) => {
       // find a file tree item
@@ -82,8 +122,8 @@ export class FiletreeModule {
       }
     };
 
+    this.menubar.addSectionReducer(menubarReducer);
     this.ctxmenu.addSectionReducer(ctxmenuReducer);
-
     this.layout.mountToFiletree(this.element);
 
     this.app.hooks.on("startup", async () => await this.startup());
@@ -136,7 +176,7 @@ export class FiletreeModule {
   setSelectedFile(path: string) {
     this.logging.info("setSelectedFile", path);
     this.selectedFile = path;
-    this.events.emitSync("selected", path);
+    this.events.emitSync("fileSelected", path);
     this.updateDisplay();
   }
 
@@ -146,8 +186,10 @@ export class FiletreeModule {
     // todo: close the existing watcher
     //
     this.directory = path;
-    this.fs.watchInit(path)
-      .then(() => this.refreshTree());
+    console.log("watch init");
+    this.fs.watchInit(path);
+    console.log("finished watch init");
+    this.refreshTree();
   }
 
   protected updateDisplay() {

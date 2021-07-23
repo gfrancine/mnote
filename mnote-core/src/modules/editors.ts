@@ -201,17 +201,8 @@ export class EditorsModule /* implements Module */ {
 
     // menubar reducer
     const menubarReducer = () => {
-      const buttons = [];
-
-      buttons.push({
-        name: "Open",
-        shortcut: cmdOrCtrl + "+O",
-        click: () => {
-          this.open();
-        },
-      });
-
       if (this.currentDocument) {
+        const buttons = [];
         buttons.push({
           name: "Save",
           shortcut: cmdOrCtrl + "+S",
@@ -235,9 +226,9 @@ export class EditorsModule /* implements Module */ {
             this.close();
           },
         });
-      }
 
-      return buttons;
+        return buttons;
+      }
     };
 
     this.menubar.addSectionReducer(menubarReducer);
@@ -245,11 +236,11 @@ export class EditorsModule /* implements Module */ {
 
   protected hookToInputs() {
     // hotkeys
-    this.input.registerShortcut(["command+o", "ctrl+o"], (e) => {
+    /* this.input.registerShortcut(["command+o", "ctrl+o"], (e) => {
       this.logging.info("editor keys: ctrl o");
       e.preventDefault();
       this.open();
-    });
+    }); */
 
     this.input.registerShortcut(["command+s", "ctrl+s"], (e) => {
       this.logging.info("editor keys: ctrl s");
@@ -288,7 +279,7 @@ export class EditorsModule /* implements Module */ {
     }
 
     // when a filetree file gets selected
-    this.filetree.events.on("selected", (path: string) => {
+    this.filetree.events.on("fileSelected", (path: string) => {
       this.logging.info("editors: load path", path);
       this.open(path).then(() => {
         this.logging.info("editors: loaded path", path);
@@ -320,22 +311,14 @@ export class EditorsModule /* implements Module */ {
   }
 
   // open button
-  async open(path?: string) {
-    // use fs.dialogOpen
+  // hooked to file tree's selectedfile event
+  async open(path: string) {
     const willClose = await this.close();
     if (!willClose) {
       return;
     }
 
-    if (path) {
-      await this.load(path);
-    } else {
-      const maybePath = await this.fs.dialogOpen({
-        directory: false,
-      });
-      if (!maybePath) return;
-      await this.load(maybePath);
-    }
+    await this.load(path);
   }
 
   // create new button

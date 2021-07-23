@@ -7,7 +7,7 @@ import { createIcon } from "../components/icons";
 
 // https://quilljs.com/docs/modules/toolbar/
 
-type SectionReducer = () => MenuItem[];
+type SectionReducer = () => MenuItem[] | void;
 
 export class MenubarModule /* implements Module */ {
   layout: LayoutModule;
