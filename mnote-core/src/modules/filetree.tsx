@@ -10,24 +10,24 @@ import { LoggingModule } from "./logging";
 import { render } from "react-dom";
 import React from "react";
 import FileTree from "../components/filetree";
-import { strings } from "../common/strings";
-import { getPathParent } from "../../../mnote-util/path";
 import { PromptsModule } from "./prompts";
 
 export class FiletreeModule {
+  app: Mnote;
   element: HTMLElement;
   fs: FSModule;
   layout: LayoutModule;
   ctxmenu: CtxmenuModule;
   logging: LoggingModule;
   prompts: PromptsModule;
+
   events: Emitter<{
     selected: (path: string) => void;
   }> = new Emitter();
+
   selectedFile?: string;
+  directory?: string;
   tree?: FileTreeNodeWithChildren;
-  app: Mnote;
-  directory = "";
 
   constructor(app: Mnote) {
     this.app = app;
@@ -88,31 +88,29 @@ export class FiletreeModule {
     // initialize with the startpath option
     const startPath = this.app.options.startPath;
     let startFile: string | undefined;
+    let startDirectory: string | undefined;
 
     if (startPath) {
       if (await this.fs.isDir(startPath)) {
-        this.directory = startPath;
+        startDirectory = startPath;
       } else if (await this.fs.isFile(startPath)) {
         startFile = startPath;
-        const dir = getPathParent(startPath);
-        this.directory = dir;
-      } else {
-        this.directory = await this.fs.getCurrentDir();
-        this.prompts.notify(strings.noStartPath(startPath));
       }
-    } else {
-      this.directory = await this.fs.getCurrentDir();
     }
 
     this.fs.onWatchEvent(() => this.refreshTree());
-    this.fs.watchInit(this.directory);
-    this.refreshTree();
 
+    if (startDirectory) this.setDirectory(startDirectory);
     if (startFile) this.setSelectedFile(startFile);
   }
 
   async refreshTree() {
-    const tree = await this.fs.readDir(this.directory); // replace with watcher?
+    if (!this.directory) {
+      this.logging.warn("refreshed empty directory");
+      return;
+    }
+
+    const tree = await this.fs.readDir(this.directory);
 
     if (tree.children) {
       this.setFileTree(tree as FileTreeNodeWithChildren);
@@ -137,12 +135,22 @@ export class FiletreeModule {
     this.updateDisplay();
   }
 
+  setDirectory(path: string) {
+    this.logging.info("setDirectory", path);
+    //
+    // todo: close the existing watcher
+    //
+    this.directory = path;
+    this.fs.watchInit(path)
+      .then(() => this.refreshTree());
+  }
+
   protected updateDisplay() {
     this.logging.info("filetree updateDisplay", this.tree, this.selectedFile);
 
     render(
       <FileTree
-        node={this.tree as FileTreeNodeWithChildren}
+        node={this.tree}
         handleFocus={(path: string) => {
           this.logging.info("path focused", path);
           this.setSelectedFile(path);

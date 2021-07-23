@@ -95,20 +95,22 @@ function DirNode(props: {
 // file tree component
 // not meant to be used with another react component
 export default function (props: {
-  node: NodeWithChildren;
+  node?: NodeWithChildren;
   initFocusedNode?: string; // path of the focused node
   handleFocus: (path: string) => void;
 }) {
   // console.log("filetree component", props);
 
   return <div className="filetree-main">
-    <DirNode
-      visible={true}
-      key={props.node.path}
-      initExpanded={true}
-      node={props.node}
-      focusedNode={props.initFocusedNode}
-      handleFocus={props.handleFocus}
-    />
+    {props.node
+      ? <DirNode
+        visible={true}
+        key={props.node.path}
+        initExpanded={true}
+        node={props.node}
+        focusedNode={props.initFocusedNode}
+        handleFocus={props.handleFocus}
+      />
+      : <></>}
   </div>;
 }
