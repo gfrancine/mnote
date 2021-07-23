@@ -82,6 +82,14 @@ export type FileTreeNodeWithChildren = {
   children: FileTreeNode[]; // if none, it's a file node
 };
 
+export type FileTreeHooks = {
+  fileFocused?: (path: string) => void | Promise<void>;
+  fileDroppedOnDir?: (
+    targetDir: string,
+    droppedFile: string,
+  ) => void | Promise<void>;
+};
+
 // (context) menu
 
 export type MenuItem = {

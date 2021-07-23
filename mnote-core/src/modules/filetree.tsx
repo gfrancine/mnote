@@ -1,4 +1,9 @@
-import { FileTreeNodeWithChildren, MenuItem, Mnote } from "../common/types";
+import {
+  FileTreeHooks,
+  FileTreeNodeWithChildren,
+  MenuItem,
+  Mnote,
+} from "../common/types";
 import { Emitter } from "mnote-util/emitter";
 import { el } from "mnote-util/elbuilder";
 import { Context } from "./types";
@@ -148,13 +153,21 @@ export class FiletreeModule {
   protected updateDisplay() {
     this.logging.info("filetree updateDisplay", this.tree, this.selectedFile);
 
+    const hooks: FileTreeHooks = {
+      fileFocused: (path: string) => {
+        this.logging.info("file focused", path);
+        this.setSelectedFile(path);
+      },
+      fileDroppedOnDir: (targetDir: string, droppedFile: string) => {
+        this.logging.info("file dropped on dir", droppedFile, targetDir);
+        // todo
+      }
+    };
+
     render(
       <FileTree
         node={this.tree}
-        handleFocus={(path: string) => {
-          this.logging.info("path focused", path);
-          this.setSelectedFile(path);
-        }}
+        hooks={hooks}
         initFocusedNode={this.selectedFile}
       />,
       this.element,

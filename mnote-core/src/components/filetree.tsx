@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { BlankFile, ClosedFolder, OpenedFolder } from "./icons-jsx";
 import { getPathName } from "mnote-util/path";
 import {
+  FileTreeHooks,
   FileTreeNode as Node,
   FileTreeNodeWithChildren as NodeWithChildren,
 } from "../common/types";
@@ -10,11 +11,11 @@ function FileNode(props: {
   visible?: boolean;
   node: Node;
   focusedNode?: string; // path of the focused node
-  handleFocus: (path: string) => void;
+  hooks?: FileTreeHooks;
 }) {
   const name = useMemo(() => getPathName(props.node.path), [props.node.path]);
 
-  const onClick = () => props.handleFocus(props.node.path);
+  const onClick = () => props.hooks?.fileFocused?.(props.node.path);
 
   return <div
     className={"filetree-item file" +
@@ -41,7 +42,7 @@ function DirNode(props: {
   node: NodeWithChildren;
   initExpanded?: boolean; // is the dir open at initialization?
   focusedNode?: string; // path of the focused node
-  handleFocus: (path: string) => void;
+  hooks?: FileTreeHooks;
 }) {
   const name = useMemo(() => getPathName(props.node.path), [props.node.path]);
 
@@ -56,7 +57,14 @@ function DirNode(props: {
       className={"filetree-item" /* + (props.visible && expanded ? "" : " hidden") */}
       onClick={onClick}
       onDragOver={(e) => e.preventDefault()}
-      onDrop={(e) => console.log(e.dataTransfer.getData("path"))}
+      onDrop={(e) => {
+        const path = e.dataTransfer.getData("path");
+        const kind = e.dataTransfer.getData("path");
+        console.log("dropped on dir", kind, path);
+        if (kind === "file") {
+          props.hooks?.fileDroppedOnDir?.(props.node.path, path);
+        }
+      }}
       //@ts-ignore
       mn-dir-path={props.node.path}
     >
@@ -78,14 +86,12 @@ function DirNode(props: {
             key={node.path}
             node={node as NodeWithChildren}
             focusedNode={props.focusedNode}
-            handleFocus={props.handleFocus}
           />
           : <FileNode
             visible={expanded}
             node={node}
             key={node.path}
             focusedNode={props.focusedNode}
-            handleFocus={props.handleFocus}
           />
       )}
     </div>
@@ -97,7 +103,7 @@ function DirNode(props: {
 export default function (props: {
   node?: NodeWithChildren;
   initFocusedNode?: string; // path of the focused node
-  handleFocus: (path: string) => void;
+  hooks?: FileTreeHooks;
 }) {
   // console.log("filetree component", props);
 
@@ -109,7 +115,6 @@ export default function (props: {
         initExpanded={true}
         node={props.node}
         focusedNode={props.initFocusedNode}
-        handleFocus={props.handleFocus}
       />
       : <></>}
   </div>;
