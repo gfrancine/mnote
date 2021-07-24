@@ -19,6 +19,10 @@
   color: map-get(mn.$vars, "fg-main");
   font-family: map-get(mn.$vars, "font-main");
 
+  .board {
+    @include mn.scrollbar(map-get(mn.$vars, "bg-dim"));
+  }
+
   // @import "./styles/AddList.css";
 
   .add-list-editor {
@@ -95,7 +99,9 @@
   .list {
     background: map-get(mn.$vars, "bg-secondary");
     border: none;
+  }
 
+  .lists-cards {
     @include mn.scrollbar(map-get(mn.$vars, "bg-dim"));
   }
 

@@ -102,26 +102,26 @@ export default class List extends Component {
                     ))}
 
                   {provided.placeholder}
-
-                  {addingCard
-                    ? (
-                      <CardEditor
-                        onSave={this.addCard}
-                        onCancel={this.toggleAddingCard}
-                        adding
-                      />
-                    )
-                    : (
-                      <div
-                        className="toggle-add-card"
-                        onClick={this.toggleAddingCard}
-                      >
-                        <ion-icon name="add" /> Add a card
-                      </div>
-                    )}
                 </div>
               )}
             </Droppable>
+
+            {addingCard
+              ? (
+                <CardEditor
+                  onSave={this.addCard}
+                  onCancel={this.toggleAddingCard}
+                  adding
+                />
+              )
+              : (
+                <div
+                  className="toggle-add-card"
+                  onClick={this.toggleAddingCard}
+                >
+                  <ion-icon name="add" /> Add a card
+                </div>
+              )}
           </div>
         )}
       </Draggable>
