@@ -1,4 +1,8 @@
 {
   "name": "mnote-deps",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "dependencies": {
+    "lodash.throttle": "^4.1.1",
+    "shortid": "^2.2.14"
+  }
 }

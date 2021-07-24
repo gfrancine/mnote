@@ -1,0 +1,38 @@
+.list {
+  background: #dfe3e6;
+  flex-shrink: 0;
+  width: 272px;
+  height: fit-content;
+  margin: 10px;
+  margin-right: 0;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.list-title {
+  cursor: pointer;
+  padding: 10px;
+  overflow-wrap: break-word;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-add-card {
+  cursor: pointer;
+  padding: 5px;
+  margin: 5px;
+  color: #6b808c;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-add-card:hover {
+  background-color: rgba(9, 45, 66, 0.13);
+  color: #17394d;
+  text-decoration: underline;
+}
+
+.toggle-add-card ion-icon {
+  margin-right: 2px;
+}
