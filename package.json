@@ -2,14 +2,13 @@
   "name": "mnote",
   "version": "0.1.0",
   "dependencies": {
+    "@excalidraw/excalidraw": "^0.9.0",
     "open-color": "^1.8.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-big-calendar": "^0.33.5",
-    "react-trello": "^2.2.11",
-    "react-textarea-autosize": "^8.3.3",
     "react-beautiful-dnd": "^13.1.0",
-    "@excalidraw/excalidraw": "^0.9.0"
+    "react-big-calendar": "^0.33.5",
+    "react-dom": "^17.0.2",
+    "react-textarea-autosize": "^8.3.3"
   },
   "devDependencies": {
     "@types/node": "^16.3.3",
