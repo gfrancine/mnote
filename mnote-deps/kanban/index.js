@@ -5,3 +5,4 @@
 
 import KanbanBoard from "./components/StatefulBoard";
 export default KanbanBoard;
+export { defaultValue } from "./components/util";

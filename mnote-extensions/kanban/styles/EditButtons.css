@@ -1,17 +1,19 @@
 .edit-buttons {
   display: flex;
+  margin: 8px;
 }
 
-.edit-button {
+.edit-button.save {
   cursor: pointer;
   box-shadow: 0 1px 0 0 #3f6f21;
   width: fit-content;
-  margin: 0 5px 10px;
+  margin: 0 8px 8px;
   padding: 6px 12px;
   border-radius: 5px;
   color: white;
   font-weight: 700;
   outline: none;
+  background: rgb(90, 172, 68);
 }
 
 .edit-button:hover {

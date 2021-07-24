@@ -1,18 +1,23 @@
 .list-title-edit {
   display: flex;
   align-items: center;
+  margin: 8px;
 }
 
-.list-title-edit ion-icon {
+.list-title-edit .icon-wrapper {
   cursor: pointer;
   padding: 2px;
   margin: 1px 3px;
   font-size: 1.5em;
   border-radius: 5px;
-  color: rgba(0, 0, 0, 0.5);
 }
 
-.list-title-edit ion-icon:hover {
+.list-title-edit .icon-class {
+  fill: rgba(0, 0, 0, 0.5);
+  stroke: rgba(0, 0, 0, 0.5);
+}
+
+.list-title-edit .icon-wrapper:hover {
   background: rgba(211, 211, 211, 1);
 }
 
@@ -21,11 +26,12 @@
   border-radius: 3px;
   border: none;
   resize: none;
+  padding: .5em;
   outline: none;
   font-size: inherit;
   font-family: inherit;
   color: inherit;
-  padding: 5px;
+  padding: .5em;
 }
 
 .list-title-textarea::-webkit-scrollbar {

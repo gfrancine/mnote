@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Droppable, Draggable } from "react-beautiful-dnd";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 
 import Card from "./Card";
 import CardEditor from "./CardEditor";
@@ -13,7 +12,7 @@ export default class List extends Component {
   state = {
     editingTitle: false,
     title: this.props.list.title,
-    addingCard: false
+    addingCard: false,
   };
 
   toggleAddingCard = () =>
@@ -28,7 +27,7 @@ export default class List extends Component {
 
     dispatch({
       type: "ADD_CARD",
-      payload: { cardTitle, cardText, cardId, listId }
+      payload: { cardTitle, cardText, cardId, listId },
     });
   };
 
@@ -45,7 +44,7 @@ export default class List extends Component {
 
     dispatch({
       type: "CHANGE_LIST_TITLE",
-      payload: { listId, listTitle: title }
+      payload: { listId, listTitle: title },
     });
   };
 
@@ -53,7 +52,7 @@ export default class List extends Component {
     const { listId, list, dispatch } = this.props;
     dispatch({
       type: "DELETE_LIST",
-      payload: { listId, cards: list.cards }
+      payload: { listId, cards: list.cards },
     });
   };
 
@@ -70,20 +69,22 @@ export default class List extends Component {
             {...provided.dragHandleProps}
             className="list"
           >
-            {editingTitle ? (
-              <ListEditor
-                list={list}
-                title={title}
-                handleChangeTitle={this.handleChangeTitle}
-                saveList={this.editListTitle}
-                onClickOutside={this.editListTitle}
-                deleteList={this.deleteList}
-              />
-            ) : (
-              <div className="list-title" onClick={this.toggleEditingTitle}>
-                {list.title}
-              </div>
-            )}
+            {editingTitle
+              ? (
+                <ListEditor
+                  list={list}
+                  title={title}
+                  handleChangeTitle={this.handleChangeTitle}
+                  saveList={this.editListTitle}
+                  onClickOutside={this.editListTitle}
+                  deleteList={this.deleteList}
+                />
+              )
+              : (
+                <div className="list-title" onClick={this.toggleEditingTitle}>
+                  {list.title}
+                </div>
+              )}
 
             <Droppable droppableId={list._id}>
               {(provided, _snapshot) => (
@@ -102,20 +103,22 @@ export default class List extends Component {
 
                   {provided.placeholder}
 
-                  {addingCard ? (
-                    <CardEditor
-                      onSave={this.addCard}
-                      onCancel={this.toggleAddingCard}
-                      adding
-                    />
-                  ) : (
-                    <div
-                      className="toggle-add-card"
-                      onClick={this.toggleAddingCard}
-                    >
-                      <ion-icon name="add" /> Add a card
-                    </div>
-                  )}
+                  {addingCard
+                    ? (
+                      <CardEditor
+                        onSave={this.addCard}
+                        onCancel={this.toggleAddingCard}
+                        adding
+                      />
+                    )
+                    : (
+                      <div
+                        className="toggle-add-card"
+                        onClick={this.toggleAddingCard}
+                      >
+                        <ion-icon name="add" /> Add a card
+                      </div>
+                    )}
                 </div>
               )}
             </Droppable>

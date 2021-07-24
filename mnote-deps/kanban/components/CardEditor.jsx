@@ -5,7 +5,7 @@ import EditButtons from "./EditButtons";
 class CardEditor extends Component {
   state = {
     title: this.props.card?.title || "",
-    text: this.props.card?.text || ""
+    text: this.props.card?.text || "",
   };
 
   elRef = React.createRef(null);
@@ -52,16 +52,18 @@ class CardEditor extends Component {
           />
         </div>
 
-        {this.props.hideEditButtons ? (
-          <></>
-        ) : (
-          <EditButtons
-            handleSave={() => onSave(title, text)}
-            saveLabel={adding ? "Add card" : "Save"}
-            handleDelete={onDelete}
-            handleCancel={onCancel}
-          />
-        )}
+        {this.props.hideEditButtons
+          ? (
+            <></>
+          )
+          : (
+            <EditButtons
+              handleSave={() => onSave(title, text)}
+              saveLabel={adding ? "Add card" : "Save"}
+              handleDelete={onDelete}
+              handleCancel={onCancel}
+            />
+          )}
       </div>
     );
   }

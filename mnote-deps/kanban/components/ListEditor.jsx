@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import TextareaAutosize from "react-textarea-autosize";
+import { TrashIcon } from "./icons";
 
 class ListEditor extends Component {
   ref = React.createRef();
@@ -12,12 +13,10 @@ class ListEditor extends Component {
   };
 
   handleClick = (e) => {
-    const node = this.ref.current;
-
-    if (node.contains(e.target)) {
-      return;
-    }
-
+    if (!this.ref.current) return;
+    const elements = document.elementsFromPoint(e.pageX, e.pageY);
+    const addListContainer = this.ref.current.parentNode.parentNode;
+    if (elements.includes(addListContainer)) return;
     this.props.onClickOutside();
   };
 
@@ -43,7 +42,8 @@ class ListEditor extends Component {
           onKeyDown={this.onEnter}
           style={{ width: deleteList ? 220 : 245 }}
         />
-        {deleteList && <ion-icon name="trash" onClick={deleteList} />}
+        {deleteList &&
+          <TrashIcon iconClass="icon-class" onClick={deleteList} />}
       </div>
     );
   }

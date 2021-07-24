@@ -22,3 +22,5 @@ declare function KanbanBoard(props: {
 });
 
 export default KanbanBoard;
+
+export declare function defaultValue(): KanbanState;

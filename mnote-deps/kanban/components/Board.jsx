@@ -7,11 +7,13 @@ import AddList from "./AddList";
 // takes an app state board and a dispatch
 export default class Board extends Component {
   state = {
-    addingList: false
+    addingList: false,
   };
 
-  toggleAddingList = () =>
-    this.setState({ addingList: !this.state.addingList });
+  setAddingList = (boolean) => {
+    console.log("set adding list", boolean);
+    this.setState({ addingList: boolean });
+  };
 
   handleDragEnd = ({ source, destination, type }) => {
     // dropped outside the allowed zones
@@ -27,8 +29,8 @@ export default class Board extends Component {
           type: "MOVE_LIST",
           payload: {
             oldListIndex: source.index,
-            newListIndex: destination.index
-          }
+            newListIndex: destination.index,
+          },
         });
       }
       return;
@@ -45,8 +47,8 @@ export default class Board extends Component {
           sourceListId: source.droppableId,
           destListId: destination.droppableId,
           oldCardIndex: source.index,
-          newCardIndex: destination.index
-        }
+          newCardIndex: destination.index,
+        },
       });
     }
   };
@@ -76,19 +78,24 @@ export default class Board extends Component {
               {provided.placeholder}
 
               <div className="add-list">
-                {addingList ? (
-                  <AddList
-                    dispatch={dispatch}
-                    toggleAddingList={this.toggleAddingList}
-                  />
-                ) : (
-                  <div
-                    onClick={this.toggleAddingList}
-                    className="add-list-button"
-                  >
-                    <ion-icon name="add" /> Add a list
-                  </div>
-                )}
+                {addingList
+                  ? (
+                    <AddList
+                      dispatch={dispatch}
+                      setAddingList={this.setAddingList}
+                    />
+                  )
+                  : (
+                    <div
+                      onClick={() => {
+                        console.log("add list button");
+                        this.setAddingList(true);
+                      }}
+                      className="add-list-button"
+                    >
+                      <ion-icon name="add" /> Add a list
+                    </div>
+                  )}
               </div>
             </div>
           )}

@@ -1,18 +1,14 @@
 @use "sass:map";
 @use "~mnote-styles/mnote-styles" as mn;
 
-// react-trello's classes were
-
-$aliases: (
-  "btn-add-lane": ".sc-hHEiqL.sc-dlMDgC.ccTnQh.kpPvTx",
-  "placeholder-add-lane": ".sc-iCoGMd.kMthTr",
-  "placeholder-add-card": ".sc-crzoAE.DykGo",
-  "btn-add": ".sc-cBoqAE.lRfdj",
-  // the green button
-  "btn-cancel": ".sc-ciSkZP.bwSYJA",
-  // the gray button
-  "menu-lane-actions": ".sc-gtsrHT.sc-eCApnc.kzWtze.cDtiGC",
-);
+@import "./styles/AddList.css";
+@import "./styles/Board.css";
+@import "./styles/Card.css";
+@import "./styles/CardEditor.css";
+@import "./styles/EditButtons.css";
+@import "./styles/List.css";
+@import "./styles/ListEditor.css";
+@import "./styles/icons.css";
 
 .kanban-extension {
   width: 100%;
@@ -20,192 +16,114 @@ $aliases: (
   padding: 0 1em;
   box-sizing: border-box;
 
-  *,
-  textarea {
-    font-family: map.get(mn.$vars, "font-main");
-    font-size: 13px;
-    -webkit-user-select: text;
-    user-select: text;
+  color: map-get(mn.$vars, "fg-main");
+  font-family: map-get(mn.$vars, "font-main");
+
+  // @import "./styles/AddList.css";
+
+  .add-list-editor {
+    background: map-get(mn.$vars, "bg-secondary");
   }
 
-  .react-trello-board {
-    @include mn.scrollbar(map.get(mn.$vars, "bg-secondary"));
+  // @import "./styles/Board.css";
 
-    padding: 0;
-  }
-
-  &:first-child div {
-    border: 0;
-    background-color: map.get(mn.$vars, "bg-main");
-  }
-
-  .react-trello-lane {
-    border: 0;
-    background-color: map.get(mn.$vars, "bg-secondary");
-    color: map.get(mn.$vars, "fg-main");
-
-    textarea,
-    header,
-    button {
-      color: map.get(mn.$vars, "fg-main");
-      outline: none;
-    }
-
-    textarea {
-      box-shadow: none;
-    }
-
-    a {
-      background-color: map.get(mn.$vars, "bg-secondary");
-    }
-
-    // div that contains the cards
-    .dJdFwe {
-      @include mn.scrollbar(map.get(mn.$vars, "bg-dim"));
-
-      // Click to add card
-      a {
-        color: map.get(mn.$vars, "fg-dim");
-
-        &:hover {
-          color: map.get(mn.$vars, "fg-secondary");
-          cursor: pointer;
-        }
-      }
-    }
-  }
-
-  .react-trello-card {
-    border: 0;
-    background-color: map.get(mn.$vars, "bg-main");
-    box-shadow: map.get(mn.$vars, "shadow");
-    color: map.get(mn.$vars, "fg-main");
+  .add-list-button {
+    background-color: map-get(mn.$vars, "bg-dim");
+    color: map-get(mn.$vars, "fg-secondary");
+    opacity: 0.8;
 
     &:hover {
-      background-color: map.get(mn.$vars, "bg-secondary");
+      opacity: 1;
     }
+  }
 
-    textarea,
-    header,
-    button {
-      color: map.get(mn.$vars, "fg-main");
-      outline: none;
-    }
+  // @import "./styles/Card.css";
+
+  .card {
+    box-shadow: map-get(mn.$vars, "shadow");
+    background: map-get(mn.$vars, "bg-main");
+    border: 0;
 
     textarea {
-      box-shadow: none;
+      background: map-get(mn.$vars, "bg-main");
     }
   }
 
-  #{map.get($aliases, "placeholder-add-card")} {
-    background-color: map.get(mn.$vars, "bg-main");
-    color: map.get(mn.$vars, "fg-main");
-    border-bottom: 1px solid map.get(mn.$vars, "border-main");
-
-    textarea,
-    div {
-      background-color: inherit;
-      color: inherit;
-      outline: none;
-      box-shadow: none;
-    }
+  .card:hover {
+    background: map-get(mn.$vars, "bg-main");
   }
 
-  .react-trello-card,
-  #{map.get($aliases, "placeholder-add-card")} {
-    padding: 1em;
-
-    header {
-      border-bottom: none;
-      margin-bottom: 0;
-      font-size: 13px;
-    }
-
-    div {
-      textarea,
-      [contenteditable] {
-        padding: 0;
-        color: map.get(mn.$vars, "fg-secondary");
-        font-size: 12px;
-
-        @include mn.scrollbar(map.get(mn.$vars, "bg-secondary"));
-      }
-    }
-
-    // label
-    .jibPFy {
-      color: map.get(mn.$vars, "fg-dim");
-      width: 30%;
-      padding-right: 0;
-      margin-left: 0.5em;
-      font-size: 12px;
-    }
+  .card-icon {
+    background: none;
   }
 
-  // editable textareas
-  .cxbVTh {
-    padding: 0;
+  .icon-class {
+    fill: map-get(mn.$vars, "fg-secondary");
+    stroke: map-get(mn.$vars, "fg-secondary");
   }
 
-  #{map.get($aliases, "btn-add-lane")} {
-    background-color: map.get(mn.$vars, "btn-main-bg");
-    color: map.get(mn.$vars, "btn-main-fg");
+  .card-icon:hover {
+    background: map-get(mn.$vars, "bg-dim");
+  }
 
-    button {
-      background-color: inherit;
-      color: inherit;
-    }
+  .card-text {
+    color: map-get(mn.$vars, "fg-secondary");
+  }
+
+  // import "./styles/CardEditor.css";
+
+  .edit-card .card:hover {
+    background: map-get(mn.$vars, "bg-main");
+  }
+
+  // @import "./styles/EditButtons.css";
+
+  .edit-button.save {
+    box-shadow: none;
+    background: map-get(mn.$vars, "btn-emphasis-bg");
+    color: map-get(mn.$vars, "btn-emphasis-fg");
 
     &:hover {
-      background-color: map.get(mn.$vars, "btn-main-bg-hover");
-      color: map.get(mn.$vars, "btn-main-fg-hover");
+      background: map-get(mn.$vars, "btn-emphasis-bg-hover");
+      color: map-get(mn.$vars, "btn-emphasis-fg-hover");
     }
   }
 
-  #{map.get($aliases, "placeholder-add-lane")} {
-    background-color: map.get(mn.$vars, "bg-secondary");
-    color: map.get(mn.$vars, "fg-main");
+  // @import "./styles/icons.css";
+  // @import "./styles/List.css";
 
-    textarea,
-    div {
-      background-color: inherit;
-      color: inherit;
-      outline: none;
-    }
-
-    textarea {
-      box-shadow: none;
-    }
-  }
-
-  #{map.get($aliases, "menu-lane-actions")} {
-    background-color: map.get(mn.$vars, "bg-secondary");
-    color: map.get(mn.$vars, "fg-main");
-  }
-
-  #{map.get($aliases, "btn-add")} {
-    outline: none;
+  .list {
+    background: map-get(mn.$vars, "bg-secondary");
     border: none;
-    background-color: map.get(mn.$vars, "btn-emphasis-bg");
-    color: map.get(mn.$vars, "btn-emphasis-fg");
 
-    &:hover {
-      background-color: map.get(mn.$vars, "btn-emphasis-bg-hover");
-      color: map.get(mn.$vars, "btn-emphasis-fg-hover");
-    }
-
-    margin-right: 5px;
+    @include mn.scrollbar(map-get(mn.$vars, "bg-dim"));
   }
 
-  #{map.get($aliases, "btn-cancel")} {
-    outline: none;
-    border: none;
-    background-color: map.get(mn.$vars, "btn-main-bg");
-    color: map.get(mn.$vars, "btn-main-fg");
+  .toggle-add-card {
+    color: map-get(mn.$vars, "fg-secondary");
+  }
 
-    &:hover {
-      background-color: map.get(mn.$vars, "btn-main-bg-hover");
-      color: map.get(mn.$vars, "btn-main-fg-hover");
-    }
+  .toggle-add-card:hover {
+    background-color: map-get(mn.$vars, "bg-dim");
+    color: map-get(mn.$vars, "fg-secondary");
+  }
+
+  // @import "./styles/ListEditor.css";
+
+  .list-title-edit .icon-class {
+    fill: map-get(mn.$vars, "fg-secondary");
+    stroke: map-get(mn.$vars, "fg-secondary");
+  }
+
+  .list-title-edit .icon-wrapper:hover {
+    background: map-get(mn.$vars, "bg-dim");
+  }
+
+  .list-title-textarea {
+    background: map-get(mn.$vars, "bg-main");
+  }
+
+  .list-title-textarea:focus {
+    box-shadow: inset 0 0 0 2px map-get(mn.$vars, "border-main");
   }
 }

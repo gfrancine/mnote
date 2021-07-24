@@ -8,4 +8,5 @@ deno fmt^
   mnote-extensions/starter^
   mnote-app/src^
   mnote-app/src-web^
-  mnote-util
+  mnote-util^
+  mnote-deps/kanban

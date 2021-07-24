@@ -1,5 +1,6 @@
 import React, { useReducer, useState } from "react";
 import Board from "./Board";
+import { defaultValue } from "./util";
 
 function combine(map) {
   return (state, action) => {
@@ -16,12 +17,8 @@ function combine(map) {
 // so I moved it to a wrapper component with useReducer
 
 export default function StatefulBoard({
-  initialState = {
-    board: { lists: [] },
-    listsById: {},
-    cardsById: {}
-  },
-  onChange
+  initialState = defaultValue(),
+  onChange,
 }) {
   const boardReducer = (state = { lists: [] }, action) => {
     switch (action.type) {
@@ -53,14 +50,14 @@ export default function StatefulBoard({
         const { listId, listTitle } = action.payload;
         return {
           ...state,
-          [listId]: { _id: listId, title: listTitle, cards: [] }
+          [listId]: { _id: listId, title: listTitle, cards: [] },
         };
       }
       case "CHANGE_LIST_TITLE": {
         const { listId, listTitle } = action.payload;
         return {
           ...state,
-          [listId]: { ...state[listId], title: listTitle }
+          [listId]: { ...state[listId], title: listTitle },
         };
       }
       case "DELETE_LIST": {
@@ -74,8 +71,8 @@ export default function StatefulBoard({
           ...state,
           [listId]: {
             ...state[listId],
-            cards: [...state[listId].cards, cardId]
-          }
+            cards: [...state[listId].cards, cardId],
+          },
         };
       }
       case "MOVE_CARD": {
@@ -83,7 +80,7 @@ export default function StatefulBoard({
           oldCardIndex,
           newCardIndex,
           sourceListId,
-          destListId
+          destListId,
         } = action.payload;
         // Move within the same list
         if (sourceListId === destListId) {
@@ -92,7 +89,7 @@ export default function StatefulBoard({
           newCards.splice(newCardIndex, 0, removedCard);
           return {
             ...state,
-            [sourceListId]: { ...state[sourceListId], cards: newCards }
+            [sourceListId]: { ...state[sourceListId], cards: newCards },
           };
         }
         // Move card from one list to another
@@ -103,7 +100,7 @@ export default function StatefulBoard({
         return {
           ...state,
           [sourceListId]: { ...state[sourceListId], cards: sourceCards },
-          [destListId]: { ...state[destListId], cards: destinationCards }
+          [destListId]: { ...state[destListId], cards: destinationCards },
         };
       }
       case "DELETE_CARD": {
@@ -113,8 +110,8 @@ export default function StatefulBoard({
           ...state,
           [listId]: {
             ...state[listId],
-            cards: state[listId].cards.filter(filterDeleted)
-          }
+            cards: state[listId].cards.filter(filterDeleted),
+          },
         };
       }
       default:
@@ -128,14 +125,14 @@ export default function StatefulBoard({
         const { cardTitle = "", cardText = "", cardId } = action.payload;
         return {
           ...state,
-          [cardId]: { title: cardTitle, text: cardText, _id: cardId }
+          [cardId]: { title: cardTitle, text: cardText, _id: cardId },
         };
       }
       case "CHANGE_CARD_TEXT": {
         const { cardTitle, cardText, cardId } = action.payload;
         return {
           ...state,
-          [cardId]: { ...state[cardId], title: cardTitle, text: cardText }
+          [cardId]: { ...state[cardId], title: cardTitle, text: cardText },
         };
       }
       case "DELETE_CARD": {
@@ -150,7 +147,7 @@ export default function StatefulBoard({
           .filter((cardId) => !cardIds.includes(cardId))
           .reduce(
             (newState, cardId) => ({ ...newState, [cardId]: state[cardId] }),
-            {}
+            {},
           );
       }
       default:
@@ -161,7 +158,7 @@ export default function StatefulBoard({
   const reducer = combine({
     board: boardReducer,
     listsById: listsByIdReducer,
-    cardsById: cardsByIdReducer
+    cardsById: cardsByIdReducer,
   });
 
   const [state, dispatch] = useReducer(reducer, initialState);

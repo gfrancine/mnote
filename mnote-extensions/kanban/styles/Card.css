@@ -2,7 +2,7 @@
   position: relative;
   cursor: pointer;
   background: white;
-  margin: 5px;
+  margin: 8px;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid rgba(0, 0, 0, 0.12);
@@ -35,9 +35,13 @@
   justify-content: center;
   border-radius: 5px;
   margin: 1px;
-  color: rgba(0, 0, 0, 0.5);
   background: #f5f6f7;
   opacity: 0.9;
+}
+
+.icon-class {
+  fill: rgba(0, 0, 0, 0.5);
+  stroke: rgba(0, 0, 0, 0.5);
 }
 
 .card-icon:hover {
@@ -47,8 +51,10 @@
 
 .card-title {
   font-weight: bold;
-  margin-block-end: 0.2em;
-  font-size: 1.2em !important;
+  margin-block-end: .5em;
+  font-size: 1.1em!important;
 }
 
-/* .card-text {} */
+.card-text {
+  font-size: .9em !important;
+}

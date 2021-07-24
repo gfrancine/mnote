@@ -6,7 +6,7 @@ import EditButtons from "./EditButtons";
 // takes dispatch
 export default class AddList extends Component {
   state = {
-    title: ""
+    title: "",
   };
 
   handleChangeTitle = (e) => this.setState({ title: e.target.value });
@@ -15,16 +15,17 @@ export default class AddList extends Component {
     const { title } = this.state;
     const { dispatch } = this.props;
 
-    this.props.toggleAddingList();
+    console.log("create list");
+    this.props.setAddingList(false);
 
     dispatch({
       type: "ADD_LIST",
-      payload: { listId: shortid.generate(), listTitle: title }
+      payload: { listId: shortid.generate(), listTitle: title },
     });
   };
 
   render() {
-    const { toggleAddingList } = this.props;
+    const { setAddingList } = this.props;
     const { title } = this.state;
 
     return (
@@ -32,14 +33,20 @@ export default class AddList extends Component {
         <ListEditor
           title={title}
           handleChangeTitle={this.handleChangeTitle}
-          onClickOutside={toggleAddingList}
+          onClickOutside={() => {
+            console.log("listEditor click outside");
+            setAddingList(false);
+          }}
           saveList={this.createList}
         />
 
         <EditButtons
           handleSave={this.createList}
           saveLabel={"Add list"}
-          handleCancel={toggleAddingList}
+          handleCancel={() => {
+            console.log("EditButtons cancel");
+            setAddingList(false);
+          }}
         />
       </div>
     );

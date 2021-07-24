@@ -10,7 +10,7 @@ import {
 import { el } from "mnote-util/elbuilder";
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import Board, { defaultValue, KanbanState } from "mnote-deps/kanban";
+import Board from "react-trello";
 import { getPathExtension } from "../../mnote-util/path";
 
 import "./kanban.scss";
@@ -22,18 +22,44 @@ import "./kanban.scss";
 // - the provider
 // - the extension itself
 
+type Card = {
+  id: string;
+  title: string;
+  description: string;
+  label: string;
+  draggable?: boolean;
+  metadata?: {
+    sha: string;
+  };
+};
+
+type Lane = {
+  id: string;
+  title: string;
+  label: string;
+  cards: Card[];
+};
+
+type BoardData = {
+  lanes: Lane[];
+};
+
 function Wrapper(props: {
-  initialData?: KanbanState;
-  onChange?: (newBoard: KanbanState) => void;
+  initialData?: BoardData;
+  onChange?: (newBoard: BoardData) => void;
 }) {
   return <Board
-    initialState={props.initialData || defaultValue()}
-    onChange={props.onChange}
+    data={props.initialData || { lanes: [] }}
+    onDataChange={props.onChange || (() => {})}
+    editable
+    draggable
+    canAddLanes
+    editLaneTitle
   />;
 }
 
 function makeCallback(editor: KanbanEditor) {
-  return (newBoard: KanbanState) => {
+  return (newBoard: BoardData) => {
     editor.handleChange(newBoard);
   };
 }
@@ -45,7 +71,7 @@ class KanbanEditor implements Editor {
   fs: FSModule;
   ctx?: EditorContext;
 
-  board: KanbanState = defaultValue();
+  board: BoardData = { lanes: [] };
 
   constructor(app: Mnote) {
     this.app = app;
@@ -71,7 +97,7 @@ class KanbanEditor implements Editor {
   async load(path: string) {
     unmountComponentAtNode(this.element);
     const contents = await this.fs.readTextFile(path);
-    const data: KanbanState = JSON.parse(contents);
+    const data: BoardData = JSON.parse(contents);
     this.board = data;
     render(
       <Wrapper
@@ -91,7 +117,7 @@ class KanbanEditor implements Editor {
     await this.fs.writeTextFile(path, JSON.stringify(this.board));
   }
 
-  handleChange(board: KanbanState) {
+  handleChange(board: BoardData) {
     this.board = board;
     this.ctx?.updateEdited();
   }

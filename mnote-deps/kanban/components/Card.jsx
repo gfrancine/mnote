@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import { Draggable } from "react-beautiful-dnd";
 
 import CardEditor from "./CardEditor";
+import { TrashIcon } from "./icons";
 
 // takes dispatch and its card
 export default class Card extends Component {
   state = {
     hover: false,
-    editing: false
+    editing: false,
   };
 
   startHover = () => this.setState({ hover: true });
@@ -16,7 +17,7 @@ export default class Card extends Component {
   startEditing = () =>
     this.setState({
       hover: false,
-      editing: true
+      editing: true,
     });
 
   endEditing = () => this.setState({ hover: false, editing: false });
@@ -28,7 +29,7 @@ export default class Card extends Component {
 
     dispatch({
       type: "CHANGE_CARD_TEXT",
-      payload: { cardId: card._id, cardTitle: title, cardText: text }
+      payload: { cardId: card._id, cardTitle: title, cardText: text },
     });
   };
 
@@ -37,7 +38,7 @@ export default class Card extends Component {
 
     dispatch({
       type: "DELETE_CARD",
-      payload: { cardId: card._id, listId }
+      payload: { cardId: card._id, listId },
     });
   };
 
@@ -61,7 +62,7 @@ export default class Card extends Component {
               {hover && (
                 <div className="card-icons">
                   <div className="card-icon" onClick={this.deleteCard}>
-                    <ion-icon name="trash" />
+                    <TrashIcon iconClass="icon-class" />
                   </div>
                 </div>
               )}
