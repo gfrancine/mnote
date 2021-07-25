@@ -12,7 +12,13 @@ import {
   SettingsModule,
 } from "mnote-core";
 
-import { Editor as MilkdownEditor } from "@milkdown/core";
+import {
+  Configure as MilkdownConfigure,
+  defaultValueCtx,
+  Editor as MilkdownEditor,
+  rootCtx,
+} from "@milkdown/core";
+import { listener, listenerCtx } from "@milkdown/plugin-listener";
 import { commonmark } from "@milkdown/preset-commonmark";
 
 import { getPathExtension } from "mnote-util/path";
@@ -70,25 +76,35 @@ class MarkdownEditor implements Editor {
       )
       .element;
 
-    this.milkdown = new MilkdownEditor({
-      root: this.editorContainer,
-      defaultValue: "",
-      listener: {
+    console.log("instatiate constructor");
+    this.milkdown = this.createMilkdown({ contents: "" });
+  }
+
+  createMilkdown(opts: { contents: string }): MilkdownEditor {
+    const config: MilkdownConfigure = (ctx) => {
+      ctx.set(rootCtx, this.editorContainer);
+      ctx.set(defaultValueCtx, opts.contents);
+      ctx.set(listenerCtx, {
         markdown: [(getMarkdown) => {
           this.contents = getMarkdown();
           this.onUpdate();
         }],
-      },
-    })
-      .use(commonmark);
+      });
+    };
+
+    return new MilkdownEditor()
+      .config(config)
+      .use(commonmark)
+      .use(listener);
   }
 
-  startup(containter: HTMLElement, ctx: EditorContext) {
+  async startup(containter: HTMLElement, ctx: EditorContext) {
     this.ctx = ctx;
     this.container = containter;
     this.container.appendChild(this.element);
 
-    this.milkdown.create();
+    console.log("create startup");
+    await this.milkdown.create();
   }
 
   protected updateStats() {
@@ -103,23 +119,9 @@ class MarkdownEditor implements Editor {
 
   async load(path: string) {
     const contents = await this.fs.readTextFile(path);
-
     this.editorContainer.innerHTML = "";
-
-    this.milkdown = new MilkdownEditor({
-      root: this.editorContainer,
-      defaultValue: contents,
-      listener: {
-        markdown: [(getMarkdown) => {
-          this.contents = getMarkdown();
-          this.onUpdate();
-        }],
-      },
-    })
-      .use(commonmark);
-
-    this.milkdown.create();
-
+    this.milkdown = this.createMilkdown({ contents });
+    await this.milkdown.create();
     this.updateStats();
   }
 

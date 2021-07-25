@@ -3,15 +3,11 @@
   "version": "0.1.0",
   "dependencies": {
     "@milkdown/core": "^4.5.0",
+    "@milkdown/plugin-listener": "^4.6.7",
     "@milkdown/preset-commonmark": "^4.5.0",
     "mnote-core": "file:../mnote-core",
     "mnote-deps": "file:../mnote-deps",
     "mnote-util": "file:../mnote-util",
     "moment": "^2.29.1"
-  },
-  "peerDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-big-calendar": "^0.33.5"
   }
 }
