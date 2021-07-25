@@ -18,14 +18,14 @@ export class FS implements FsInteropModule {
   }
 
   async writeTextFile(path: string, contents: string): Promise<void> {
-    return await fs.writeFile({
+    return fs.writeFile({
       path,
       contents,
     });
   }
 
   async readTextFile(path: string): Promise<string> {
-    return await fs.readTextFile(path);
+    return fs.readTextFile(path);
   }
 
   async readDir(path: string): Promise<FileItemWithChildren> {
@@ -138,11 +138,11 @@ export class FS implements FsInteropModule {
   }
 
   async getConfigDir(): Promise<string> {
-    return await path.configDir();
+    return path.configDir();
   }
 
   async getCurrentDir(): Promise<string> {
-    return await path.currentDir();
+    return path.currentDir();
   }
 
   joinPath(items: string[]) {

@@ -156,7 +156,7 @@ export class FiletreeModule {
     this.ctxmenu.addSectionReducer(ctxmenuReducer);
     this.layout.mountToFiletree(this.element);
 
-    this.app.hooks.on("startup", async () => await this.startup());
+    this.app.hooks.on("startup", async () => this.startup());
   }
 
   async startup() {
