@@ -1,4 +1,4 @@
-import { FileItemWithChildren, FsInteropModule } from "../common/types";
+import { DialogFileType, FileItemWithChildren, FsInteropModule } from "../common/types";
 
 // the interop module
 // todo: mock
@@ -71,15 +71,8 @@ export class FSModule implements FsInteropModule {
     return this.fs?.dialogOpen(opts);
   }
 
-  async dialogOpenMultiple(opts: {
-    extensions?: string[];
-    directory: boolean;
-  }): Promise<string[] | void> {
-    await this.fs?.dialogOpenMultiple(opts);
-  }
-
   async dialogSave(opts: {
-    extensions?: string[];
+    fileTypes?: DialogFileType[];
   }): Promise<string | void> {
     return this.fs?.dialogSave(opts);
   }

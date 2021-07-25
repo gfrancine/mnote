@@ -1,4 +1,4 @@
-import { FileItemWithChildren, FsInteropModule } from "mnote-core";
+import { DialogFileType, FileItemWithChildren, FsInteropModule } from "mnote-core";
 import { getPathExtension } from "../../mnote-util/path";
 import { contents, tree } from "./mocks";
 
@@ -40,16 +40,8 @@ export class FS implements FsInteropModule {
   }): Promise<string | void> {
     return Promise.resolve("");
   }
-  dialogOpenMultiple(_opts: {
-    initialPath?: string;
-    extensions?: string[];
-    directory: boolean;
-  }): Promise<string[] | void> {
-    return Promise.resolve([]);
-  }
   dialogSave(_opts: {
-    initialPath?: string;
-    extensions?: string[];
+    fileTypes?: DialogFileType[];
   }): Promise<string | void> {
     return Promise.resolve("");
   }

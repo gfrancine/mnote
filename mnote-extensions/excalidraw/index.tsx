@@ -168,6 +168,10 @@ export class ExcalidrawExtension implements Extension {
     (this.app.modules.editors as EditorsModule).registerEditor({
       kind: "Excalidraw",
       provider: new ExcalidrawEditorProvider(this.app),
+      saveAsFileTypes: [{
+        name: "Excalidraw",
+        extensions: ["excalidraw"],
+      }],
     });
   }
 

@@ -129,6 +129,10 @@ export class KanbanExtension implements Extension {
     (this.app.modules.editors as EditorsModule).registerEditor({
       kind: "Kanban",
       provider: new KanbanEditorProvider(this.app),
+      saveAsFileTypes: [{
+        name: "Mnote Kanban",
+        extensions: ["mnkanban"],
+      }],
     });
   }
 

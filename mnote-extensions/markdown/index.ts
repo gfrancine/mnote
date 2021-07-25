@@ -173,7 +173,10 @@ export class MarkdownExtension implements Extension {
     this.editors.registerEditor({
       kind: "Markdown",
       provider: new MarkdownEditorProvider(this.app),
-      saveAsExtensions: ["md"],
+      saveAsFileTypes: [{
+        name: "Markdown",
+        extensions: ["md"],
+      }],
     });
 
     const fontSize = this.settings.getKey("md.font-size");

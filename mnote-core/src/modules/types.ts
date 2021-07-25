@@ -1,3 +1,5 @@
+import { DialogFileType } from "../common/types";
+
 // used by the extension module
 export interface Extension {
   startup(): void;
@@ -37,7 +39,7 @@ export type EditorInfo = {
   kind: string;
   provider: EditorProvider;
   hideFromNewMenu?: boolean;
-  saveAsExtensions?: string[];
+  saveAsFileTypes?: DialogFileType[];
 };
 
 // right click context menu context

@@ -34,6 +34,8 @@ export type MnoteOptions = {
   isProduction?: boolean;
 };
 
+export type DialogFileType = {name: string, extensions: string[]};
+
 export interface FsInteropModule {
   //todo
   writeTextFile(path: string, contents: string): Promise<void>;
@@ -49,12 +51,8 @@ export interface FsInteropModule {
     extensions?: string[];
     directory: boolean;
   }): Promise<string | void>;
-  dialogOpenMultiple(opts: {
-    extensions?: string[];
-    directory: boolean;
-  }): Promise<string[] | void>;
   dialogSave(opts: {
-    extensions?: string[];
+    fileTypes?: DialogFileType[];
   }): Promise<string | void>;
   getConfigDir(): Promise<string>;
   getCurrentDir(): Promise<string>;

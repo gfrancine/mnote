@@ -1,4 +1,4 @@
-import { FileItemWithChildren, FsInteropModule } from "mnote-core";
+import { DialogFileType, FileItemWithChildren, FsInteropModule } from "mnote-core";
 import { invoke } from "@tauri-apps/api/tauri";
 import { listen } from "@tauri-apps/api/event";
 import { Emitter } from "mnote-util/emitter";
@@ -96,41 +96,12 @@ export class FS implements FsInteropModule {
     }
   }
 
-  async dialogOpenMultiple(opts: {
-    extensions?: string[];
-    directory: boolean;
-  }): Promise<string[] | void> {
-    try {
-      const filters: dialog.DialogFilter[] | undefined = opts.extensions
-        ? [{ name: "extensions", extensions: opts.extensions }]
-        : undefined;
-
-      const result = await dialog.open({
-        directory: opts.directory,
-        multiple: true,
-        filters,
-      });
-
-      if (typeof result === "string") {
-        return [result];
-      } else {
-        return result;
-      }
-    } catch {
-      return;
-    }
-  }
-
   async dialogSave(opts: {
-    extensions?: string[];
+    fileTypes?: DialogFileType[];
   }): Promise<string | void> {
     try {
-      const filters: dialog.DialogFilter[] | undefined = opts.extensions
-        ? [{ name: "extensions", extensions: opts.extensions }]
-        : undefined;
-
       return dialog.save({
-        filters,
+        filters: opts.fileTypes
       });
     } catch {
       return;

@@ -310,6 +310,10 @@ export class CalendarExtension implements Extension {
     (this.app.modules.editors as EditorsModule).registerEditor({
       kind: "Calendar",
       provider: new CalendarEditorProvider(this.app),
+      saveAsFileTypes: [{
+        name: "Mnote Calendar",
+        extensions: ["mncalendar"],
+      }],
     });
   }
 

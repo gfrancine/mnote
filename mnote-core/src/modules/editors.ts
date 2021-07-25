@@ -381,7 +381,7 @@ export class EditorsModule /* implements Module */ {
     const editorInfo = this.editorKinds[this.currentEditorKind];
 
     const newPath = await this.fs.dialogSave({
-      extensions: editorInfo.saveAsExtensions,
+      fileTypes: editorInfo.saveAsFileTypes,
     });
 
     this.logging.info("new path", newPath);
