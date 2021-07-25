@@ -16,7 +16,7 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: 14
-  
+
     - name: install Rust stable
       uses: actions-rs/toolchain@v1
       with:
@@ -25,10 +25,10 @@ jobs:
     - name: install dependencies
       shell: pwsh
       run: .\install.ps1
-    
+
     - name: bundle
       run: cd mnote-app && npm run build
-      
+
     - name: build debug
       run: cd mnote-app && npm run tauri -- build --debug
 

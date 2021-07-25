@@ -17,15 +17,15 @@ export class FS implements FsInteropModule {
     return this;
   }
 
-  async writeTextFile(path: string, contents: string): Promise<void> {
-    return await fs.writeFile({
+  writeTextFile(path: string, contents: string): Promise<void> {
+    return fs.writeFile({
       path,
       contents,
     });
   }
 
-  async readTextFile(path: string): Promise<string> {
-    return await fs.readTextFile(path);
+  readTextFile(path: string): Promise<string> {
+    return fs.readTextFile(path);
   }
 
   async readDir(path: string): Promise<FileItemWithChildren> {
@@ -129,7 +129,7 @@ export class FS implements FsInteropModule {
         ? [{ name: "extensions", extensions: opts.extensions }]
         : undefined;
 
-      return await dialog.save({
+      return dialog.save({
         filters,
       });
     } catch {
@@ -137,12 +137,12 @@ export class FS implements FsInteropModule {
     }
   }
 
-  async getConfigDir(): Promise<string> {
-    return await path.configDir();
+  getConfigDir(): Promise<string> {
+    return path.configDir();
   }
 
-  async getCurrentDir(): Promise<string> {
-    return await path.currentDir();
+  getCurrentDir(): Promise<string> {
+    return path.currentDir();
   }
 
   joinPath(items: string[]) {

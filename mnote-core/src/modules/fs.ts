@@ -19,14 +19,14 @@ export class FSModule implements FsInteropModule {
 
   async readTextFile(path: string): Promise<string> {
     if (this.fs) {
-      return await this.fs.readTextFile(path);
+      return this.fs.readTextFile(path);
     }
     return ".";
   }
 
   async readDir(path: string): Promise<FileItemWithChildren> {
     if (this.fs) {
-      return await this.fs.readDir(path);
+      return this.fs.readDir(path);
     }
     return {
       path: "TEMP",
@@ -52,14 +52,14 @@ export class FSModule implements FsInteropModule {
 
   async isFile(path: string): Promise<boolean> {
     if (this.fs) {
-      return await this.fs.isFile(path);
+      return this.fs.isFile(path);
     }
     return false;
   }
 
   async isDir(path: string): Promise<boolean> {
     if (this.fs) {
-      return await this.fs.isDir(path);
+      return this.fs.isDir(path);
     }
     return false;
   }
@@ -68,7 +68,7 @@ export class FSModule implements FsInteropModule {
     extensions?: string[];
     directory: boolean;
   }): Promise<string | void> {
-    return await this.fs?.dialogOpen(opts);
+    return this.fs?.dialogOpen(opts);
   }
 
   async dialogOpenMultiple(opts: {
@@ -81,19 +81,19 @@ export class FSModule implements FsInteropModule {
   async dialogSave(opts: {
     extensions?: string[];
   }): Promise<string | void> {
-    return await this.fs?.dialogSave(opts);
+    return this.fs?.dialogSave(opts);
   }
 
   async getConfigDir(): Promise<string> {
     if (this.fs) {
-      return await this.fs.getConfigDir();
+      return this.fs.getConfigDir();
     }
     return ".";
   }
 
   async getCurrentDir(): Promise<string> {
     if (this.fs) {
-      return await this.fs.getCurrentDir();
+      return this.fs.getCurrentDir();
     }
     return ".";
   }
