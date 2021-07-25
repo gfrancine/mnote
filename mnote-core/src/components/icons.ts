@@ -42,9 +42,9 @@ const icons = {
       <g id="add-outline-svgrepo-com" transform="translate(16 16)">
         <path d="M0 0L512 0L512 512L0 512L0 0Z" id="Background" fill="none" fill-rule="evenodd" stroke="none" />
         <g clip-path="url(#mask_1)">
-          <path d="M1 0L1 288" transform="translate(255 112)" 
+          <path d="M1 0L1 288" transform="translate(255 112)"
             class="${strokeClass}" id="Line" fill="none" fill-rule="evenodd" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M288 1L0 1" transform="translate(112 255)" 
+          <path d="M288 1L0 1" transform="translate(112 255)"
             class="${strokeClass}" id="Line" fill="none" fill-rule="evenodd" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" />
         </g>
       </g>

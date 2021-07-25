@@ -13,7 +13,7 @@ export class FSModule implements FsInteropModule {
 
   async writeTextFile(path: string, contents: string): Promise<void> {
     if (this.fs) {
-      return await this.fs.writeTextFile(path, contents);
+      return this.fs.writeTextFile(path, contents);
     }
   }
 
