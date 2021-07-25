@@ -47,4 +47,5 @@
   flex: 1 1 auto;
   overflow-y: auto;
   overflow-x: hidden;
+  min-height: 1em; /* allow some drop spave */
 }

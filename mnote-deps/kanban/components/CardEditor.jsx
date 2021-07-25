@@ -38,6 +38,7 @@ class CardEditor extends Component {
         <div className="card">
           <TextareaAutosize
             autoFocus={title.length < 1}
+            spellCheck={false}
             className="card-title edit-card-textarea"
             placeholder="Title"
             value={title}
@@ -45,6 +46,7 @@ class CardEditor extends Component {
           />
           <TextareaAutosize
             autoFocus={title.length > 0}
+            spellCheck={false}
             className="card-text edit-card-textarea"
             placeholder="Text"
             value={text}

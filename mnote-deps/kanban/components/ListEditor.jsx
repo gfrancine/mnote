@@ -35,6 +35,7 @@ class ListEditor extends Component {
       <div className="list-title-edit" ref={this.ref}>
         <TextareaAutosize
           autoFocus
+          spellCheck={false}
           className="list-title-textarea"
           placeholder="Enter list title..."
           value={title}

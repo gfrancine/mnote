@@ -1,6 +1,5 @@
 .edit-card .card {
-  padding-left: 8px;
-  padding-right: 15px;
+  padding: 1em;
 }
 
 .edit-card .card:hover {
@@ -8,8 +7,6 @@
 }
 
 .edit-card-textarea {
-  padding-top: 0;
-  padding-bottom: 0;
   width: 100%;
   border: none;
   resize: none;
@@ -17,6 +14,7 @@
   font-size: inherit;
   font-family: inherit;
   color: inherit;
+  padding: 0;
 }
 
 .edit-card-textarea::-webkit-scrollbar {
