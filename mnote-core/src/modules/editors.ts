@@ -138,8 +138,7 @@ export class EditorsModule /* implements Module */ {
 
     const getSection: () => MenuItem[] | undefined = () => {
       const result: MenuItem[] = [];
-      for (const i in this.editors) {
-        const editorInfo = this.editors[i];
+      for (const editorInfo of this.editors) {
         if (!editorInfo.hideFromNewMenu) {
           result.push({
             name: editorInfo.kind,

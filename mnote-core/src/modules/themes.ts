@@ -52,7 +52,7 @@ export class ThemesModule {
 
   protected rawSetTheme(theme: string) {
     const colors = this.themes[theme];
-    for (const k in colors) {
+    for (const k of Object.keys(colors)) {
       setVar(k, colors[k]);
     }
   }
