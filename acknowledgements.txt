@@ -14,10 +14,10 @@ Excalidraw (https://github.com/excalidraw/excalidraw)
 Copyright (c) 2020 Excalidraw
 MIT License
 
-React Trello (https://github.com/rcdexta/react-trello)
-Copyright (c) 2017 RC
-MIT License
-
 react-big-calendar (https://github.com/jquense/react-big-calendar)
 Copyright (c) 2015-present Jason Quense
+MIT License
+
+trello-clone (https://github.com/marconunnari/trello-clone)
+Copyright (c) Marco Nunnari
 MIT License
