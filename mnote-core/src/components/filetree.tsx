@@ -27,7 +27,7 @@ function FileNode(props: {
       console.log("dragstart");
       e.dataTransfer.setData("text/plain", props.node.path);
     }}
-    //@ts-ignore
+    //@ts-ignore: custom dom attribute
     mn-file-path={props.node.path}
   >
     <div className="filetree-item-icon">
@@ -65,7 +65,7 @@ function DirNode(props: {
         console.log("dropped on dir", path);
         props.hooks?.fileDroppedOnDir?.(props.node.path, path);
       }}
-      //@ts-ignore
+      //@ts-ignore: custom dom attribute
       mn-dir-path={props.node.path}
     >
       <div className="filetree-item-icon">
