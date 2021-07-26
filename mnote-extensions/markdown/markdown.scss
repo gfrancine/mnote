@@ -39,5 +39,6 @@
     font-size: 12px;
     bottom: 1em;
     color: map.get(mn.$vars, "fg-dim");
+    cursor: pointer;
   }
 }

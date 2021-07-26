@@ -35,6 +35,11 @@ function countWords(text: string): number {
   return matches ? matches.length : 0;
 }
 
+function countChars(text: string): number {
+  const matches = text.match(/\w/g);
+  return matches ? matches.length : 0;
+}
+
 class MarkdownEditor implements Editor {
   app: Mnote;
   editorContainer: HTMLElement;
@@ -47,6 +52,7 @@ class MarkdownEditor implements Editor {
 
   milkdown: MilkdownEditor;
   contents = "";
+  countMode: "words" | "characters" = "words";
 
   constructor(app: Mnote) {
     this.app = app;
@@ -60,6 +66,10 @@ class MarkdownEditor implements Editor {
 
     this.statsbar = el("div")
       .class("md-statsbar")
+      .on("click", () => {
+        this.countMode = this.countMode === "words" ? "characters" : "words";
+        this.updateStats();
+      })
       .element;
 
     this.element = el("div")
@@ -108,8 +118,16 @@ class MarkdownEditor implements Editor {
   }
 
   protected updateStats() {
-    const wordCount = countWords(this.contents);
-    this.statsbar.innerHTML = "W " + wordCount;
+    switch (this.countMode) {
+      case "words":
+        const wordCount = countWords(this.contents);
+        this.statsbar.innerHTML = "W " + wordCount;
+        return;
+      case "characters":
+        const charCount = countChars(this.contents);
+        this.statsbar.innerHTML = "C " + charCount;
+        return;
+    }
   }
 
   protected onUpdate() {
