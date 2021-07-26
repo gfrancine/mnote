@@ -16,26 +16,24 @@ export class FSModule implements FsInteropModule {
   }
 
   async writeTextFile(path: string, contents: string): Promise<void> {
-    if (this.fs) {
-      return this.fs.writeTextFile(path, contents);
-    }
+    return this.fs?.writeTextFile(path, contents);
   }
 
-  async readTextFile(path: string): Promise<string> {
+  readTextFile(path: string): Promise<string> {
     if (this.fs) {
       return this.fs.readTextFile(path);
     }
-    return ".";
+    return Promise.resolve("");
   }
 
-  async readDir(path: string): Promise<FileItemWithChildren> {
+  readDir(path: string): Promise<FileItemWithChildren> {
     if (this.fs) {
       return this.fs.readDir(path);
     }
-    return {
+    return Promise.resolve({
       path: "TEMP",
       children: [],
-    };
+    });
   }
 
   async renameFile(path: string, newPath: string): Promise<void> {
@@ -54,18 +52,18 @@ export class FSModule implements FsInteropModule {
     await this.fs?.createDir(path);
   }
 
-  async isFile(path: string): Promise<boolean> {
+  isFile(path: string): Promise<boolean> {
     if (this.fs) {
       return this.fs.isFile(path);
     }
-    return false;
+    return Promise.resolve(false);
   }
 
-  async isDir(path: string): Promise<boolean> {
+  isDir(path: string): Promise<boolean> {
     if (this.fs) {
       return this.fs.isDir(path);
     }
-    return false;
+    return Promise.resolve(false);
   }
 
   async dialogOpen(opts: {
@@ -81,18 +79,18 @@ export class FSModule implements FsInteropModule {
     return this.fs?.dialogSave(opts);
   }
 
-  async getConfigDir(): Promise<string> {
+  getConfigDir(): Promise<string> {
     if (this.fs) {
       return this.fs.getConfigDir();
     }
-    return ".";
+    return Promise.resolve(".");
   }
 
-  async getCurrentDir(): Promise<string> {
+  getCurrentDir(): Promise<string> {
     if (this.fs) {
       return this.fs.getCurrentDir();
     }
-    return ".";
+    return Promise.resolve(".");
   }
 
   joinPath(items: string[]): string {

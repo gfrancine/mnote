@@ -100,7 +100,7 @@ export class FS implements FsInteropModule {
     }
   }
 
-  async dialogSave(opts: {
+  dialogSave(opts: {
     fileTypes?: DialogFileType[];
   }): Promise<string | void> {
     try {
@@ -108,7 +108,7 @@ export class FS implements FsInteropModule {
         filters: opts.fileTypes,
       });
     } catch {
-      return;
+      return Promise.resolve();
     }
   }
 
