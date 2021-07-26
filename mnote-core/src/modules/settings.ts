@@ -4,9 +4,6 @@ import { LoggingModule } from "./logging";
 import { Settings } from "./types";
 import { Emitter } from "mnote-util/emitter";
 
-/** rule to check if a value is a valid settings object */
-type ValidSettingsRule = (value: Record<string, unknown>) => boolean;
-
 // the file is only read once at initialization. as long as the
 // app is running state is kept here and persisted based on the
 // data in this module
@@ -19,11 +16,6 @@ export class SettingsModule {
   SETTINGS_NAME = ".mnotesettings";
   protected settingsPath = ""; // initialized in init()
   protected settings: Settings = this.defaultSettings();
-
-  // see the bottom of the file
-  protected settingsRules: ValidSettingsRule[] = [
-    hasValidTheme,
-  ];
 
   events: Emitter<{
     change: (settings: Settings) => void | Promise<void>;
@@ -44,6 +36,11 @@ export class SettingsModule {
     try {
       const contents = await this.fs.readTextFile(this.settingsPath);
       const maybeSettings = JSON.parse(contents);
+      console.log(
+        "valid settings?",
+        maybeSettings,
+        this.isValidSettings(maybeSettings),
+      );
       if (this.isValidSettings(maybeSettings)) {
         this.settings = maybeSettings;
       } else {
@@ -75,11 +72,8 @@ export class SettingsModule {
   }
 
   isValidSettings(value: unknown): value is Settings {
-    if (typeof value !== "object") return false;
+    if (typeof value !== "object" || value === null) return false;
     if (value instanceof Array) return false;
-    for (const rule of this.settingsRules) {
-      if (!rule(value as Record<string, unknown>)) return false;
-    }
     return true;
   }
 
@@ -109,7 +103,3 @@ export class SettingsModule {
       .then(() => this.events.emit("change", this.settings));
   }
 }
-
-const hasValidTheme: ValidSettingsRule = (value) => {
-  return value.theme === undefined || typeof value.theme === "string";
-};

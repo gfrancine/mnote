@@ -184,6 +184,7 @@ export class EditorsModule /* implements Module */ {
   protected hookToMenubar() {
     // update the menubar title
     const updateMenubarTitle = (doc?: DocInfo) => {
+      console.log(doc);
       if (doc) {
         this.menubar.setMenubarText(
           (doc.saved ? "" : "*") + doc.name,

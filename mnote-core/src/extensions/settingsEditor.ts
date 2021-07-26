@@ -42,7 +42,7 @@ class SettingsEditor implements Editor {
   startup(containter: HTMLElement, ctx: EditorContext) {
     ctx.setDocument({
       name: "Settings",
-      path: "donotpromptsaveas",
+      path: "thishsouldnow",
       saved: true,
     });
 

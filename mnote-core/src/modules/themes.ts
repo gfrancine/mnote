@@ -42,15 +42,16 @@ export class ThemesModule {
 
   // load from settings
   async init() {
-    const settings = this.settings.getSettings();
-    if (settings.theme) {
-      this.rawSetTheme(settings.theme);
+    const theme = this.settings.getKey("theme");
+    if (typeof theme === "string" && this.hasTheme(theme)) {
+      this.rawSetTheme(theme);
     } else {
       await this.setTheme("light");
     }
   }
 
   protected rawSetTheme(theme: string) {
+    if (!this.hasTheme(theme)) theme = "light";
     const colors = this.themes[theme];
     for (const k of Object.keys(colors)) {
       setVar(k, colors[k]);
