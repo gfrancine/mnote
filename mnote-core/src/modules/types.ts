@@ -38,8 +38,12 @@ export interface EditorProvider {
 export type EditorInfo = {
   kind: string;
   provider: EditorProvider;
+  /** Hide the editor from the "+" (new) menu */
   hideFromNewMenu?: boolean;
+  /** What file types (name, extension) to save as */
   saveAsFileTypes?: DialogFileType[];
+  /** Disable the save as dialog. Useful for non-file system editors */
+  disableSaveAs?: boolean;
 };
 
 // right click context menu context

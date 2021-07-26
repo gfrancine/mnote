@@ -200,7 +200,9 @@ export class EditorsModule /* implements Module */ {
 
     // menubar reducer
     const menubarReducer = () => {
-      if (this.currentDocument) {
+      if (this.currentEditorKind) {
+        const editorInfo = this.editorKinds[this.currentEditorKind];
+
         const buttons = [];
         buttons.push({
           name: "Save",
@@ -210,13 +212,15 @@ export class EditorsModule /* implements Module */ {
           },
         });
 
-        buttons.push({
-          name: "Save As",
-          shortcut: cmdOrCtrl + "+Shift+S",
-          click: () => {
-            this.saveAs();
-          },
-        });
+        if (!editorInfo.disableSaveAs) {
+          buttons.push({
+            name: "Save As",
+            shortcut: cmdOrCtrl + "+Shift+S",
+            click: () => {
+              this.saveAs();
+            },
+          });
+        }
 
         buttons.push({
           name: "Close",
@@ -379,9 +383,11 @@ export class EditorsModule /* implements Module */ {
 
     const editorInfo = this.editorKinds[this.currentEditorKind];
 
-    const newPath = await this.fs.dialogSave({
-      fileTypes: editorInfo.saveAsFileTypes,
-    });
+    const newPath = editorInfo.disableSaveAs 
+      ? this.currentDocument.path
+      : await this.fs.dialogSave({
+        fileTypes: editorInfo.saveAsFileTypes,
+      });
 
     this.logging.info("new path", newPath);
     if (!newPath) return false;
@@ -412,7 +418,13 @@ export class EditorsModule /* implements Module */ {
   // returns a success boolean (whether the user cancelled)
   async save(): Promise<boolean> {
     this.logging.info("save");
-    if (!this.currentEditor || !this.currentDocument) return true;
+    if (
+      !this.currentEditor || 
+      !this.currentDocument ||
+      !this.currentEditorKind
+    ) {
+      return true;
+    }
 
     if (this.currentDocument.path) {
       const success = await this.trySaveEditor(

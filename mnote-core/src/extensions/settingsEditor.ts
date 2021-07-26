@@ -132,6 +132,7 @@ export class SettingsExtension implements Extension {
       kind: "Settings",
       provider: new SettingsEditorProvider(this.app),
       hideFromNewMenu: true,
+      disableSaveAs: true,
     });
   }
 
