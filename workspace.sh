@@ -16,5 +16,8 @@ export PATH="$DENO_INSTALL/bin:$PATH"
 cd mnote
 npm i -g npm@7
 npm --version
+npm i -g prettier
 pwsh .\\install.ps1
 git reset --hard
+
+pwsh

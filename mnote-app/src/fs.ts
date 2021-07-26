@@ -1,4 +1,8 @@
-import { DialogFileType, FileItemWithChildren, FsInteropModule } from "mnote-core";
+import {
+  DialogFileType,
+  FileItemWithChildren,
+  FsInteropModule,
+} from "mnote-core";
 import { invoke } from "@tauri-apps/api/tauri";
 import { listen } from "@tauri-apps/api/event";
 import { Emitter } from "mnote-util/emitter";
@@ -101,7 +105,7 @@ export class FS implements FsInteropModule {
   }): Promise<string | void> {
     try {
       return dialog.save({
-        filters: opts.fileTypes
+        filters: opts.fileTypes,
       });
     } catch {
       return;

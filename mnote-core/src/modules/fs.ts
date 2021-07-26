@@ -1,4 +1,8 @@
-import { DialogFileType, FileItemWithChildren, FsInteropModule } from "../common/types";
+import {
+  DialogFileType,
+  FileItemWithChildren,
+  FsInteropModule,
+} from "../common/types";
 
 // the interop module
 // todo: mock

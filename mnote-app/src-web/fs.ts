@@ -1,4 +1,8 @@
-import { DialogFileType, FileItemWithChildren, FsInteropModule } from "mnote-core";
+import {
+  DialogFileType,
+  FileItemWithChildren,
+  FsInteropModule,
+} from "mnote-core";
 import { getPathExtension } from "../../mnote-util/path";
 import { contents, tree } from "./mocks";
 

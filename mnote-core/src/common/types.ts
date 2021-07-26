@@ -34,7 +34,7 @@ export type MnoteOptions = {
   isProduction?: boolean;
 };
 
-export type DialogFileType = {name: string, extensions: string[]};
+export type DialogFileType = { name: string; extensions: string[] };
 
 export interface FsInteropModule {
   //todo

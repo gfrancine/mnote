@@ -383,7 +383,7 @@ export class EditorsModule /* implements Module */ {
 
     const editorInfo = this.editorKinds[this.currentEditorKind];
 
-    const newPath = editorInfo.disableSaveAs 
+    const newPath = editorInfo.disableSaveAs
       ? this.currentDocument.path
       : await this.fs.dialogSave({
         fileTypes: editorInfo.saveAsFileTypes,
@@ -419,7 +419,7 @@ export class EditorsModule /* implements Module */ {
   async save(): Promise<boolean> {
     this.logging.info("save");
     if (
-      !this.currentEditor || 
+      !this.currentEditor ||
       !this.currentDocument ||
       !this.currentEditorKind
     ) {
