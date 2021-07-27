@@ -116,7 +116,7 @@ export class SettingsExtension implements Extension {
 
   startup() {
     const openSettings = () => {
-      (this.app.modules.editors as EditorsModule).newEditor("Settings");
+      (this.app.modules.editors as EditorsModule).newTab("Settings");
     };
 
     (this.app.modules.menubar as MenubarModule).addSectionReducer(() => {
