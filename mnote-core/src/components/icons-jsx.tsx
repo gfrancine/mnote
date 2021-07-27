@@ -26,6 +26,40 @@ export function BlankFile({ strokeClass }: SVGProps) {
   );
 }
 
+export function ChevronRight({ strokeClass }: SVGProps) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <polyline
+        points="184 112 328 256 184 400"
+        className={strokeClass}
+        style={{
+          fill: "none",
+          strokeLinecap: "round",
+          strokeLinejoin: "round",
+          strokeWidth: "36px",
+        }}
+      />
+    </svg>
+  );
+}
+
+export function ChevronDown({ strokeClass }: SVGProps) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <polyline
+        points="112 184 256 328 400 184"
+        className={strokeClass}
+        style={{
+          fill: "none",
+          strokeLinecap: "round",
+          strokeLinejoin: "round",
+          strokeWidth: "36px",
+        }}
+      />
+    </svg>
+  );
+}
+
 export function ClosedFolder({ fillClass }: SVGProps) {
   return (
     <svg

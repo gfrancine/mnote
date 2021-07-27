@@ -1,5 +1,11 @@
 import React, { createRef, useEffect, useMemo, useRef, useState } from "react";
-import { BlankFile, ClosedFolder, OpenedFolder } from "./icons-jsx";
+import {
+  BlankFile,
+  ChevronDown,
+  ChevronRight,
+  ClosedFolder,
+  OpenedFolder,
+} from "./icons-jsx";
 import { getPathName } from "mnote-util/path";
 import {
   FileTreeHooks,
@@ -70,8 +76,8 @@ function DirNode(props: {
     >
       <div className="filetree-item-icon">
         {expanded
-          ? <OpenedFolder fillClass="fill" strokeClass="stroke" />
-          : <ClosedFolder fillClass="fill" strokeClass="stroke" />}
+          ? <ChevronDown fillClass="fill" strokeClass="stroke" />
+          : <ChevronRight fillClass="fill" strokeClass="stroke" />}
       </div>
       {name}
     </div>
