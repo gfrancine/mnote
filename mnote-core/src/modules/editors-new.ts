@@ -93,6 +93,204 @@ export class EditorsModule /* implements Module */ {
     this.hookToSystem();
   }
 
+  /** Register an editor provider */
+  registerEditor(opts: EditorInfo) {
+    if (this.editorKinds[opts.kind]) {
+      throw new Error(`Editor of kind "${opts.kind}" already exists!`);
+    }
+    this.editorKinds[opts.kind] = opts;
+    this.editors.push(opts);
+  }
+
+  private createContainer() {
+    return el("div")
+      .class("editor-container")
+      .element;
+  }
+
+  // todo?:
+  // tigger events on setters
+  // maybe once we implement a tabbed menu
+  protected setCurrentTab(tab: Tab | null) {
+    if (this.currentTab) {
+      this.element.removeChild(this.currentTab.info.container);
+    }
+    if (tab) {
+      this.currentTab = tab;
+      this.element.appendChild(tab.info.container);
+    } else {
+      delete this.currentTab;
+    }
+  }
+
+  protected addActiveTab(tab: Tab) {
+    this.activeTabs.push(tab);
+  }
+
+  protected removeActiveTab(index: number) {
+    this.activeTabs.splice(index, 1);
+  }
+
+  private makeTabContext(info: TabInfo): TabContext {
+    return {
+      getTabInfo: () => info,
+      setDocument: (doc: DocInfo) => {
+        info.document = doc;
+        this.events.emit("docSet", doc);
+      },
+    };
+  }
+
+  // DRY for cfeating a manager, try starting it up with a prompt on
+  // error, and adding to the active tabs
+  // used by open() and newTab()
+  private async trySetupTab(info: TabInfo) {
+    const manager = new TabManager(this.app, this.makeTabContext(info));
+
+    try {
+      await manager.startup();
+    } catch (e) {
+      this.prompts.notify(strings.loadError(e));
+      console.error(e);
+      return;
+    }
+
+    const tab = {
+      manager,
+      info,
+    };
+
+    this.addActiveTab(tab);
+    this.setCurrentTab(tab);
+  }
+
+  // open button
+  // hooked to file tree's selectedfile event
+  async open(path: string) {
+    for (const tab of this.activeTabs) {
+      if (tab.info.document.path === path) {
+        this.setCurrentTab(tab);
+        return;
+      }
+    }
+
+    let selectedEditor: Editor | undefined;
+    let selectedEditorKind: string | undefined;
+
+    // last added runs first, assuming it's more selective
+    // as the plaintext (which accepts all) is first
+    for (let i = this.editors.length - 1; i > -1; i--) {
+      const kind = this.editors[i].kind;
+      const provider = this.editors[i].provider;
+      const editor = provider.tryGetEditor(path);
+      if (editor) {
+        selectedEditor = editor;
+        selectedEditorKind = kind;
+        break;
+      }
+    }
+
+    // this should not happen because we have a plaintext editor
+    // but it's good to have this
+    if (!selectedEditor || !selectedEditorKind) {
+      this.prompts.notify(strings.openErrorUnsupported(path));
+      return;
+    }
+
+    const document = {
+      name: getPathName(path),
+      saved: true,
+      path,
+    };
+
+    const info: TabInfo = {
+      editor: selectedEditor,
+      document,
+      editorKind: selectedEditorKind,
+      editorInfo: this.editorKinds[selectedEditorKind],
+      container: this.createContainer(),
+    };
+
+    await this.trySetupTab(info);
+  }
+
+  // create new button
+  async newTab(editorKind: string) {
+    const editorInfo = this.editorKinds[editorKind];
+    if (!editorInfo) {
+      throw new Error(strings.editorDoesNotExist(editorKind));
+    }
+
+    const editor = editorInfo.provider.createNewEditor();
+    const document = {
+      name: "Untitled",
+      // no path
+      saved: false,
+    };
+
+    const info: TabInfo = {
+      editor,
+      document,
+      editorKind,
+      editorInfo,
+      container: this.createContainer(),
+    };
+
+    await this.trySetupTab(info);
+
+    const manager = new TabManager(this.app, this.makeTabContext(info));
+
+    try {
+      await manager.startup();
+    } catch (e) {
+      this.prompts.notify(strings.loadError(e));
+      console.error(e);
+      return;
+    }
+
+    const tab = {
+      manager,
+      info,
+    };
+
+    this.addActiveTab(tab);
+    this.setCurrentTab(tab);
+  }
+
+  // prompt a save dialog
+  // returns a success boolean (whether the user cancelled)
+  async saveAs(tab: Tab): Promise<boolean> {
+    return tab.manager.saveAs();
+  }
+
+  // directly save the current document, or prompt if it doesn't have a path
+  // returns a success boolean (whether the user cancelled)
+  async save(tab: Tab): Promise<boolean> {
+    return tab.manager.save();
+  }
+
+  // close button
+  // returns a boolean whether it;s confirmed and anyone pending can
+  // continue
+  async close(tab: Tab): Promise<boolean> {
+    const managerWillClose = await tab.manager.close();
+    if (!managerWillClose) return false;
+
+    if (tab === this.currentTab) {
+      const index = this.activeTabs.indexOf(tab); // guaranteed > -1
+      const nextTab = this.activeTabs[index - 1] || this.activeTabs[index + 1]; // Tab | undefined
+      this.removeActiveTab(index);
+
+      this.setCurrentTab(nextTab || null);
+    }
+
+    return true;
+  }
+
+  //
+  // Hook methods
+  //
+
   protected hookToSidebarMenu() {
     // the "New File" button and menu
     const button = this.sidemenu.createButton("add");
@@ -264,164 +462,6 @@ export class EditorsModule /* implements Module */ {
         if (!willClose) cancel();
       }
     });
-  }
-
-  /** Register an editor provider */
-  registerEditor(opts: EditorInfo) {
-    if (this.editorKinds[opts.kind]) {
-      throw new Error(`Editor of kind "${opts.kind}" already exists!`);
-    }
-    this.editorKinds[opts.kind] = opts;
-    this.editors.push(opts);
-  }
-
-  private createContainer() {
-    return el("div")
-      .class("editor-container")
-      .element;
-  }
-
-  // todo:
-  // tigger events on setters
-  protected setCurrentTab(tab: Tab | undefined) {
-  }
-
-  protected addActiveTab(tab: Tab) {
-  }
-
-  protected removeActiveTab(index: number) {
-    this.activeTabs.splice(index, 1);
-  }
-
-  private makeTabContext(info: TabInfo): TabContext {
-    return {
-      getTabInfo: () => info,
-      setDocument: (doc: DocInfo) => {
-        info.document = doc;
-        this.events.emit("docSet", doc);
-      },
-    };
-  }
-
-  // open button
-  // hooked to file tree's selectedfile event
-  async open(path: string) {
-    for (const tab of this.activeTabs) {
-      if (tab.info.document.path === path) {
-        this.setCurrentTab(tab);
-        return;
-      }
-    }
-
-    let selectedEditor: Editor | undefined;
-    let selectedEditorKind: string | undefined;
-
-    // last added runs first, assuming it's more selective
-    // as the plaintext (which accepts all) is first
-    for (let i = this.editors.length - 1; i > -1; i--) {
-      const kind = this.editors[i].kind;
-      const provider = this.editors[i].provider;
-      const editor = provider.tryGetEditor(path);
-      if (editor) {
-        selectedEditor = editor;
-        selectedEditorKind = kind;
-        break;
-      }
-    }
-
-    // this should not happen because we have a plaintext editor
-    // but it's good to have this
-    if (!selectedEditor || !selectedEditorKind) {
-      this.prompts.notify(
-        `Cannot open file ${path} because its document type is not supported.`,
-      );
-      return;
-    }
-
-    const document = {
-      name: getPathName(path),
-      saved: true,
-      path,
-    };
-
-    const info: TabInfo = {
-      editor: selectedEditor,
-      document,
-      editorKind: selectedEditorKind,
-      editorInfo: this.editorKinds[selectedEditorKind],
-      container: this.createContainer(),
-    };
-
-    const manager = new TabManager(this.app, this.makeTabContext(info));
-    const tab = {
-      manager,
-      info,
-    };
-
-    this.addActiveTab(tab);
-    this.setCurrentTab(tab);
-  }
-
-  // create new button
-  async newTab(editorKind: string) {
-    const editorInfo = this.editorKinds[editorKind];
-    if (!editorInfo) {
-      throw new Error(`Editor of kind "${editorKind}" does not exist!`);
-    }
-
-    const editor = editorInfo.provider.createNewEditor();
-    const document = {
-      name: "Untitled",
-      // no path
-      saved: false,
-    };
-
-    const info: TabInfo = {
-      editor,
-      document,
-      editorKind,
-      editorInfo,
-      container: this.createContainer(),
-    };
-
-    const manager = new TabManager(this.app, this.makeTabContext(info));
-    const tab = {
-      manager,
-      info,
-    };
-
-    this.addActiveTab(tab);
-    this.setCurrentTab(tab);
-  }
-
-  // prompt a save dialog
-  // returns a success boolean (whether the user cancelled)
-  async saveAs(tab: Tab): Promise<boolean> {
-    return tab.manager.saveAs();
-  }
-
-  // directly save the current document, or prompt if it doesn't have a path
-  // returns a success boolean (whether the user cancelled)
-  async save(tab: Tab): Promise<boolean> {
-    return tab.manager.save();
-  }
-
-  // close button
-  // returns a boolean whether it;s confirmed and anyone pending can
-  // continue
-  async close(tab: Tab): Promise<boolean> {
-    const managerWillClose = await tab.manager.close();
-    if (!managerWillClose) return false;
-
-    if (tab === this.currentTab) {
-      const index = this.activeTabs.indexOf(tab); // guaranteed > -1
-      const nextTab = this.activeTabs[index - 1] || this.activeTabs[index + 1]; // Tab | undefined
-      this.removeActiveTab(index);
-
-      this.setCurrentTab(nextTab);
-    }
-
-    return true;
   }
 }
 

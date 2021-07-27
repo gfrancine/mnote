@@ -51,7 +51,7 @@ export type TabInfo = {
   editorInfo: EditorInfo;
   editor: Editor;
   document: DocInfo;
-  container: Element;
+  container: HTMLElement;
 };
 
 export type TabContext = {

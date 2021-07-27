@@ -1,7 +1,15 @@
+import { getPathName } from "../../../mnote-util/path";
+import { strings } from "../common/strings";
 import { Mnote } from "../common/types";
 import { FSModule } from "./fs";
 import { PromptsModule } from "./prompts";
-import { TabContext } from "./types";
+import {
+  DocInfo,
+  Editor,
+  EditorContext,
+  PromptButton,
+  TabContext,
+} from "./types";
 
 // TODO
 export class TabManager {
@@ -19,11 +27,131 @@ export class TabManager {
     this.prompts = app.modules.prompts as PromptsModule;
   }
 
-  private makeContext() {}
+  async startup() {
+    const { document, container, editor } = this.ctx.getTabInfo();
+    await editor.startup(container, this.makeContext());
+    if (document.path) await editor.load(document.path);
+    return this;
+  }
 
-  async save(): Promise<boolean> {}
+  private makeContext(): EditorContext {
+    return {
+      updateEdited: () => {},
+      getDocument: () => this.ctx.getTabInfo().document,
+      setDocument: (doc: DocInfo) => this.ctx.setDocument(doc),
+    };
+  }
 
-  async saveAs(): Promise<boolean> {}
+  // DRY for saving with a prompt on error
+  private async trySaveEditor(
+    editor: Editor,
+    document: Required<DocInfo>,
+  ): Promise<boolean> {
+    try {
+      await editor.save(document.path);
+      return true;
+    } catch (e) {
+      this.prompts.notify(`An error occurred while saving: ${e}`);
+      console.error(e);
+      return false;
+    }
+  }
 
-  async close(): Promise<boolean> {}
+  async save(): Promise<boolean> {
+    const { document, editor } = this.ctx.getTabInfo();
+
+    if (document.path) {
+      const success = await this.trySaveEditor(
+        editor,
+        document as Required<DocInfo>,
+      );
+      if (!success) return false;
+    } else {
+      const success = await this.saveAs();
+      if (!success) return false;
+    }
+
+    this.ctx.setDocument({
+      ...document,
+      saved: true,
+    });
+
+    return true;
+  }
+
+  async saveAs(): Promise<boolean> {
+    const { editor, editorInfo, document } = this.ctx.getTabInfo();
+    const newPath = editorInfo.disableSaveAs
+      ? document.path
+      : await this.fs.dialogSave({
+        fileTypes: editorInfo.saveAsFileTypes,
+      });
+
+    console.log("new path", newPath);
+    if (!newPath) return false;
+
+    const newPathName = getPathName(newPath);
+    const newDoc = {
+      path: newPath,
+      name: newPathName,
+      saved: false,
+    };
+    this.ctx.setDocument(newDoc);
+
+    const success = await this.trySaveEditor(editor, newDoc);
+    if (!success) return false;
+    this.ctx.setDocument({
+      ...newDoc,
+      saved: true,
+    });
+
+    return true;
+  }
+
+  async close(): Promise<boolean> {
+    const { editor, document } = this.ctx.getTabInfo();
+
+    if (document.saved) {
+      await editor.cleanup();
+      return true;
+    } else {
+      const action = await this.prompts.promptButtons(
+        strings.confirmSaveBeforeClose(),
+        confirmCloseButtons, // see bottom of file
+      );
+
+      switch (action as "cancel" | "save" | "dontsave") {
+        case "save":
+          if (await this.save()) {
+            await editor.cleanup();
+            return true;
+          } else {
+            return false;
+          }
+        case "cancel":
+          return false;
+        case "dontsave":
+          await editor.cleanup();
+          return true;
+      }
+    }
+  }
 }
+
+const confirmCloseButtons: PromptButton[] = [
+  {
+    kind: "normal",
+    text: "Cancel",
+    command: "cancel",
+  },
+  {
+    kind: "normal",
+    text: "Don't save",
+    command: "dontsave",
+  },
+  {
+    kind: "emphasis",
+    text: "Save",
+    command: "save",
+  },
+];

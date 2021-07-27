@@ -3,4 +3,9 @@ export const strings = {
     `Oops - we couldn't find the path "${startPath}". Try relaunching the app.`,
   confirmSaveBeforeClose: () =>
     "Would you like to save the current document before closing?",
+  loadError: (err: unknown) => `An error occurred while loading: ${err}`,
+  openErrorUnsupported: (path: string) =>
+    `Cannot open file ${path} because its document type is not supported.`,
+  editorDoesNotExist: (kind: string) =>
+    `Editor of kind "${kind}" does not exist!`,
 };
