@@ -1,27 +1,20 @@
-import { MenuItem, Mnote /* , Module */ } from "../common/types";
-import { el } from "mnote-util/elbuilder";
+import { MenuItem, Mnote } from "../common/types";
+import { DocInfo, Editor, EditorInfo, TabContext, TabInfo } from "./types";
 import { LayoutModule } from "./layout";
-import {
-  DocInfo,
-  Editor,
-  EditorContext,
-  EditorInfo,
-  PromptButton,
-} from "./types";
 import { MenubarModule } from "./menubar";
 import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
 import { FiletreeModule } from "./filetree";
-import { Emitter } from "mnote-util/emitter";
-import { getPathName } from "mnote-util/path";
-import { SystemModule } from "./system";
-import { strings } from "../common/strings";
-import { Menu } from "../components/menu";
 import { SidemenuModule } from "./sidemenu";
 import { InputModule } from "./input";
 import { PromptsModule } from "./prompts";
-
-// https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor-api-basics
+import { SystemModule } from "./system";
+import { el } from "mnote-util/elbuilder";
+import { Emitter } from "mnote-util/emitter";
+import { getPathName } from "mnote-util/path";
+import { strings } from "../common/strings";
+import { Menu } from "../components/menu";
+import { TabManager } from "./editors-tab";
 
 // todo: a nicer placeholder
 const nothingHere = el("div")
@@ -33,43 +26,12 @@ const nothingHere = el("div")
 // no other component can ever access the editor object without going
 // here
 
-/* outline ( annotations can be found in the actual code )
+type Tab = {
+  info: TabInfo;
+  manager: TabManager;
+};
 
 export class EditorsModule {
-  element: HTMLElement;
-  events: Emitter<
-  confirmClosePrompt: Prompt;
-
-  editors: EditorInfo[] = [];
-  editorKinds: Record<string, EditorInfo> = {};
-
-  currentEditor?: Editor;
-  currentDocument?: DocInfo;
-
-  constructor(app: Mnote)
-
-  notifyError(message: string) {
-
-  protected hookToSidebarMenu() {
-  protected hookToMenubar() {
-  protected hookToInputs() {
-  protected hookToFiletree() {
-  protected hookToSystem() {
-
-  registerEditor(kind: string, provider: EditorProvider) {
-  protected setCurrentDocument(doc?: DocInfo) {
-  async open(path?: string) {
-  async newEditor(kind: string) {d)
-  async saveAs(): Promise<boolean> {
-  async save(): Promise<boolean> {
-  async close(): Promise<boolean> {
-  protected async cleanup() {
-  protected clear() {
-  protected makeContext(): EditorContext {
-  protected async load(path: string) {
-} */
-
-export class EditorsModule /* implements Module */ {
   element: HTMLElement;
   app: Mnote;
   menubar: MenubarModule;
@@ -82,7 +44,7 @@ export class EditorsModule /* implements Module */ {
   prompts: PromptsModule;
 
   events: Emitter<{
-    docSet: (doc?: DocInfo) => void; // menubar *Untitled text
+    currentTabSet: (tab?: Tab) => void; // menubar *Untitled text
   }> = new Emitter();
 
   // collection of editors, thier providers and their configurations
@@ -92,9 +54,8 @@ export class EditorsModule /* implements Module */ {
   editors: EditorInfo[] = [];
   editorKinds: Record<string, EditorInfo> = {};
 
-  currentEditorKind?: string;
-  currentEditor?: Editor;
-  currentDocument?: DocInfo;
+  activeTabs: Tab[] = [];
+  currentTab?: Tab;
 
   constructor(app: Mnote) {
     this.app = app;
@@ -108,7 +69,7 @@ export class EditorsModule /* implements Module */ {
     this.prompts = app.modules.prompts as PromptsModule;
 
     this.element = el("div")
-      .class("editor-container")
+      .class("editor-main")
       .element;
 
     (app.modules.layout as LayoutModule).mountToContents(this.element);
@@ -116,13 +77,204 @@ export class EditorsModule /* implements Module */ {
     this.element.appendChild(nothingHere);
 
     // hook methods to the rest of the app
-
     this.hookToSidebarMenu();
     this.hookToMenubar();
     this.hookToInputs();
     this.hookToFiletree();
     this.hookToSystem();
   }
+
+  /** Register an editor provider */
+  registerEditor(opts: EditorInfo) {
+    if (this.editorKinds[opts.kind]) {
+      throw new Error(strings.editorAlreadyExists(opts.kind));
+    }
+    this.editorKinds[opts.kind] = opts;
+    this.editors.push(opts);
+  }
+
+  private createContainer() {
+    return el("div")
+      .class("editor-container")
+      .element;
+  }
+
+  // todo?:
+  // tigger events on setters
+  // maybe once we implement a tabbed menu
+  protected changeCurrentTab(tab: Tab | undefined) {
+    if (this.currentTab) {
+      this.element.removeChild(this.currentTab.info.container);
+    }
+
+    this.element.innerHTML = ""; // just to make sure
+
+    if (tab) {
+      this.element.appendChild(tab.info.container);
+    } else {
+      delete this.currentTab;
+      this.element.appendChild(nothingHere);
+    }
+
+    this.setCurrentTab(tab);
+  }
+
+  // this is used to update the existing tab's state
+  protected setCurrentTab(tab?: Tab) {
+    this.currentTab = tab;
+    this.events.emit("currentTabSet", tab);
+  }
+
+  protected addActiveTab(tab: Tab) {
+    this.activeTabs.push(tab);
+  }
+
+  protected removeActiveTab(index: number) {
+    this.activeTabs.splice(index, 1);
+  }
+
+  private makeTabContext(info: TabInfo): TabContext {
+    return {
+      getTabInfo: () => info,
+      setDocument: (doc: DocInfo) => {
+        info.document = doc;
+        if (this.currentTab && this.currentTab.info === info) {
+          this.setCurrentTab(this.currentTab); // trigger an update
+        }
+      },
+    };
+  }
+
+  // DRY for cfeating a manager, try starting it up with a prompt on
+  // error, and adding to the active tabs
+  // used by open() and newTab()
+  private async trySetupTab(info: TabInfo) {
+    const manager = new TabManager(this.app, this.makeTabContext(info));
+
+    try {
+      await manager.startup();
+    } catch (e) {
+      this.prompts.notify(strings.loadError(e));
+      console.error(e);
+      return;
+    }
+
+    const tab = {
+      manager,
+      info,
+    };
+
+    this.addActiveTab(tab);
+    this.changeCurrentTab(tab);
+  }
+
+  // open button
+  // hooked to file tree's selectedfile event
+  async open(path: string) {
+    for (const tab of this.activeTabs) {
+      if (tab.info.document.path === path) {
+        this.changeCurrentTab(tab);
+        return;
+      }
+    }
+
+    let selectedEditor: Editor | undefined;
+    let selectedEditorKind: string | undefined;
+
+    // last added runs first, assuming it's more selective
+    // as the plaintext (which accepts all) is first
+    for (let i = this.editors.length - 1; i > -1; i--) {
+      const kind = this.editors[i].kind;
+      const provider = this.editors[i].provider;
+      const editor = provider.tryGetEditor(path);
+      if (editor) {
+        selectedEditor = editor;
+        selectedEditorKind = kind;
+        break;
+      }
+    }
+
+    // this should not happen because we have a plaintext editor
+    // but it's good to have this
+    if (!selectedEditor || !selectedEditorKind) {
+      this.prompts.notify(strings.openErrorUnsupported(path));
+      return;
+    }
+
+    const document = {
+      name: getPathName(path),
+      saved: true,
+      path,
+    };
+
+    const info: TabInfo = {
+      editor: selectedEditor,
+      document,
+      editorKind: selectedEditorKind,
+      editorInfo: this.editorKinds[selectedEditorKind],
+      container: this.createContainer(),
+    };
+
+    await this.trySetupTab(info);
+  }
+
+  // create new button
+  async newTab(editorKind: string) {
+    const editorInfo = this.editorKinds[editorKind];
+    if (!editorInfo) {
+      throw new Error(strings.editorDoesNotExist(editorKind));
+    }
+
+    const editor = editorInfo.provider.createNewEditor();
+    const document = {
+      name: "Untitled",
+      // no path
+      saved: false,
+    };
+
+    const info: TabInfo = {
+      editor,
+      document,
+      editorKind,
+      editorInfo,
+      container: this.createContainer(),
+    };
+
+    await this.trySetupTab(info);
+  }
+
+  // prompt a save dialog
+  // returns a success boolean (whether the user cancelled)
+  async saveAs(tab: Tab): Promise<boolean> {
+    return tab.manager.saveAs();
+  }
+
+  // directly save the current document, or prompt if it doesn't have a path
+  // returns a success boolean (whether the user cancelled)
+  async save(tab: Tab): Promise<boolean> {
+    return tab.manager.save();
+  }
+
+  // close button
+  // returns a boolean whether it;s confirmed and anyone pending can
+  // continue
+  async close(tab: Tab): Promise<boolean> {
+    const managerWillClose = await tab.manager.close();
+    if (!managerWillClose) return false;
+
+    if (tab === this.currentTab) {
+      const index = this.activeTabs.indexOf(tab); // guaranteed > -1
+      const nextTab = this.activeTabs[index - 1] || this.activeTabs[index + 1]; // Tab | undefined
+      this.removeActiveTab(index);
+      this.changeCurrentTab(nextTab);
+    }
+
+    return true;
+  }
+
+  //
+  // Bind the module to the rest of the app
+  //
 
   protected hookToSidebarMenu() {
     // the "New File" button and menu
@@ -143,7 +295,7 @@ export class EditorsModule /* implements Module */ {
           result.push({
             name: editorInfo.kind,
             click: () => {
-              this.newEditor(editorInfo.kind);
+              this.newTab(editorInfo.kind);
               hideMenu();
             },
           });
@@ -183,33 +335,35 @@ export class EditorsModule /* implements Module */ {
 
   protected hookToMenubar() {
     // update the menubar title
-    const updateMenubarTitle = (doc?: DocInfo) => {
-      console.log(doc);
-      if (doc) {
+    const updateMenubarTitle = (tab?: Tab) => {
+      if (tab) {
         this.menubar.setMenubarText(
-          (doc.saved ? "" : "*") + doc.name,
+          (tab.info.document.saved ? "" : "*") + tab.info.document.name,
         );
       } else {
         this.menubar.setMenubarText("");
       }
     };
 
-    this.events.on("docSet", updateMenubarTitle);
+    this.events.on("currentTabSet", updateMenubarTitle);
 
     const cmdOrCtrl = this.system.USES_CMD ? "Cmd" : "Ctrl";
     this.logging.info("command or ctrl?", cmdOrCtrl);
 
     // menubar reducer
     const menubarReducer = () => {
-      if (this.currentEditorKind) {
-        const editorInfo = this.editorKinds[this.currentEditorKind];
+      // use this value only to determine
+      // whether to display the buttons
+      const tab = this.currentTab;
+      if (tab) {
+        const editorInfo = this.editorKinds[tab.info.editorKind];
 
         const buttons = [];
         buttons.push({
           name: "Save",
           shortcut: cmdOrCtrl + "+S",
           click: () => {
-            this.save();
+            if (this.currentTab) this.save(this.currentTab);
           },
         });
 
@@ -218,7 +372,7 @@ export class EditorsModule /* implements Module */ {
             name: "Save As",
             shortcut: cmdOrCtrl + "+Shift+S",
             click: () => {
-              this.saveAs();
+              if (this.currentTab) this.saveAs(this.currentTab);
             },
           });
         }
@@ -227,7 +381,7 @@ export class EditorsModule /* implements Module */ {
           name: "Close",
           shortcut: cmdOrCtrl + "+W",
           click: () => {
-            this.close();
+            if (this.currentTab) this.close(this.currentTab);
           },
         });
 
@@ -239,34 +393,27 @@ export class EditorsModule /* implements Module */ {
   }
 
   protected hookToInputs() {
-    // hotkeys
-    /* this.input.registerShortcut(["command+o", "ctrl+o"], (e) => {
-      this.logging.info("editor keys: ctrl o");
-      e.preventDefault();
-      this.open();
-    }); */
-
     this.input.registerShortcut(["command+s", "ctrl+s"], (e) => {
       this.logging.info("editor keys: ctrl s");
-      if (this.currentDocument) {
+      if (this.currentTab) {
         e.preventDefault();
-        this.save();
+        this.save(this.currentTab);
       }
     });
 
     this.input.registerShortcut(["command+shift+s", "ctrl+shift+s"], (e) => {
       this.logging.info("editor keys: ctrl shift s");
-      if (this.currentDocument) {
+      if (this.currentTab) {
         e.preventDefault();
-        this.saveAs();
+        this.saveAs(this.currentTab);
       }
     });
 
     this.input.registerShortcut(["command+w", "ctrl+w"], (e) => {
       this.logging.info("editor keys: ctrl w");
-      if (this.currentDocument) {
+      if (this.currentTab) {
         e.preventDefault();
-        this.close();
+        this.close(this.currentTab);
       }
     });
   }
@@ -294,308 +441,10 @@ export class EditorsModule /* implements Module */ {
   protected hookToSystem() {
     this.system.hookToQuit((cancel) => cancel());
     this.system.hookToQuit(async (cancel) => {
-      const willClose = await this.close();
-      if (!willClose) cancel();
+      if (this.currentTab) {
+        const willClose = await this.close(this.currentTab);
+        if (!willClose) cancel();
+      }
     });
-  }
-
-  /** Register an editor provider */
-  registerEditor(opts: EditorInfo) {
-    if (this.editorKinds[opts.kind]) {
-      throw new Error(`Editor of kind "${opts.kind}" already exists!`);
-    }
-    this.editorKinds[opts.kind] = opts;
-    this.editors.push(opts);
-  }
-
-  // wrapper so that we can hook events
-  protected setCurrentDocument(doc?: DocInfo) {
-    this.currentDocument = doc;
-    this.events.emit("docSet", doc);
-  }
-
-  // open button
-  // hooked to file tree's selectedfile event
-  async open(path: string) {
-    const willClose = await this.close();
-    if (!willClose) {
-      return;
-    }
-
-    await this.load(path);
-  }
-
-  // create new button
-  async newEditor(kind: string) {
-    this.logging.info("new editor");
-
-    const editorInfo = this.editorKinds[kind];
-    if (!editorInfo) {
-      throw new Error(`Editor of kind "${kind}" does not exist!`);
-    }
-
-    const willClose = await this.close();
-    this.logging.info("will close?", willClose);
-    if (!willClose) {
-      return;
-    }
-
-    this.clear();
-
-    this.setCurrentDocument({
-      name: "Untitled",
-      // no path
-      saved: false,
-    });
-
-    this.currentEditorKind = editorInfo.kind;
-    const editor = editorInfo.provider.createNewEditor();
-    this.currentEditor = editor;
-    await editor.startup(this.element, this.makeContext());
-  }
-
-  // DRY for saving with a prompt on error
-  protected async trySaveEditor(
-    currentDocument: Required<DocInfo>,
-  ): Promise<boolean> {
-    if ((!this.currentEditor) || (!this.currentDocument)) return true;
-
-    try {
-      await this.currentEditor.save(currentDocument.path);
-      return true;
-    } catch (e) {
-      this.prompts.notify(`An error occurred while saving: ${e}`);
-      console.error(e);
-      return false;
-    }
-  }
-
-  // prompt a save dialog
-  // returns a success boolean (whether the user cancelled)
-  async saveAs(): Promise<boolean> {
-    this.logging.info("save as");
-    if (
-      !this.currentEditor ||
-      !this.currentDocument ||
-      !this.currentEditorKind // just for strict mode
-    ) {
-      return true;
-    }
-
-    const editorInfo = this.editorKinds[this.currentEditorKind];
-
-    const newPath = editorInfo.disableSaveAs
-      ? this.currentDocument.path
-      : await this.fs.dialogSave({
-        fileTypes: editorInfo.saveAsFileTypes,
-      });
-
-    this.logging.info("new path", newPath);
-    if (!newPath) return false;
-
-    const newPathName = getPathName(newPath);
-    const newDoc = {
-      path: newPath,
-      name: newPathName,
-      saved: false,
-    };
-
-    this.setCurrentDocument(newDoc);
-
-    const success = await this.trySaveEditor(newDoc);
-    this.logging.info("save editor success", success);
-    if (!success) return false;
-
-    this.setCurrentDocument({
-      path: newPath,
-      name: newPathName,
-      saved: true,
-    });
-
-    return true;
-  }
-
-  // directly save the current document, or prompt if it doesn't have a path
-  // returns a success boolean (whether the user cancelled)
-  async save(): Promise<boolean> {
-    this.logging.info("save");
-    if (
-      !this.currentEditor ||
-      !this.currentDocument ||
-      !this.currentEditorKind
-    ) {
-      return true;
-    }
-
-    if (this.currentDocument.path) {
-      const success = await this.trySaveEditor(
-        this.currentDocument as Required<DocInfo>,
-      );
-      if (!success) {
-        return false;
-      }
-    } else {
-      // prompt save
-      const success = await this.saveAs();
-      if (!success) {
-        return false;
-      }
-    }
-
-    this.setCurrentDocument({
-      ...this.currentDocument,
-      saved: true,
-    });
-
-    return true;
-  }
-
-  // close button
-  // returns a boolean whether it;s confirmed and anyone pending can
-  // continue
-  async close(): Promise<boolean> {
-    this.logging.info("close", this.currentDocument, this.currentEditor);
-    if (!this.currentEditor || !this.currentDocument) return true;
-    this.logging.info("close: has editor and document");
-
-    if (!this.currentDocument.saved) {
-      this.logging.info("close: doc has path, but not saved");
-      // has path, but unsaved
-      // would you like to save?
-
-      const action = await this.prompts.promptButtons(
-        strings.confirmSaveBeforeClose(),
-        confirmClosePromptButtons, // see bottom of file
-      );
-
-      switch (action) {
-        case "save":
-          this.logging.info("close prompt: save");
-          if (await this.save()) {
-            await this.cleanup();
-            return true;
-          } else {
-            return false;
-          }
-        case "cancel":
-          this.logging.info("close prompt: cancel");
-          return false;
-        case "dontsave":
-          this.logging.info("close prompt: donstave");
-          await this.cleanup();
-          return true;
-      }
-    }
-
-    this.logging.info("close: doc has path, is saved");
-    // has path, saved
-    await this.cleanup();
-    return true;
-  }
-
-  // cleanup the current document, the current editor,
-  // and the container element, append an empty placeholder
-  protected async cleanup() {
-    this.logging.info("cleanup");
-    if (this.currentEditor) {
-      await this.currentEditor.cleanup();
-      delete this.currentEditor;
-    }
-    this.clear();
-    this.element.appendChild(nothingHere);
-    if (this.currentDocument) {
-      this.setCurrentDocument(undefined);
-    }
-  }
-
-  // force clear element
-  protected clear() {
-    this.element.innerHTML = "";
-  }
-
-  // make the api publicly available to
-  // editors
-  protected makeContext(): EditorContext {
-    return {
-      updateEdited: () => {
-        if (this.currentDocument) {
-          this.setCurrentDocument({
-            ...this.currentDocument,
-            saved: false,
-          });
-        }
-      },
-      getDocument: () => this.currentDocument,
-      setDocument: (doc: DocInfo) => {
-        this.setCurrentDocument(doc);
-      },
-    };
-  }
-
-  // try and find an editor that will open a path and start it up
-  // will always find an editor, defaults to plaintext
-  // takes a path, but doesn't read , only passes it to the editor
-  protected async load(path: string) {
-    // patj guaranteed exists
-
-    await this.cleanup();
-    this.clear();
-
-    let selectedEditor: Editor | undefined;
-    let selectedEditorKind: string | undefined;
-
-    // last added runs first, assuming it's more selective
-    // as the plaintext (which accepts all) is first
-    for (let i = this.editors.length - 1; i > -1; i--) {
-      const kind = this.editors[i].kind;
-      const provider = this.editors[i].provider;
-      const editor = provider.tryGetEditor(path);
-      if (editor) {
-        selectedEditor = editor;
-        selectedEditorKind = kind;
-        break;
-      }
-    }
-
-    if (selectedEditor) {
-      const newDoc = {
-        name: getPathName(path),
-        saved: true,
-        path,
-      };
-
-      this.setCurrentDocument(newDoc);
-
-      this.currentEditorKind = selectedEditorKind;
-      this.currentEditor = selectedEditor;
-      this.element.innerHTML = "";
-
-      try {
-        await selectedEditor.startup(this.element, this.makeContext()); //todo: handle err
-        await selectedEditor.load(newDoc.path);
-      } catch (e) {
-        this.prompts.notify(`An error occurred while loading: ${e}`);
-        console.error(e);
-        await this.cleanup();
-      }
-    }
   }
 }
-
-const confirmClosePromptButtons: PromptButton[] = [
-  {
-    kind: "normal",
-    text: "Cancel",
-    command: "cancel",
-  },
-  {
-    kind: "normal",
-    text: "Don't save",
-    command: "dontsave",
-  },
-  {
-    kind: "emphasis",
-    text: "Save",
-    command: "save",
-  },
-];

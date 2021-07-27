@@ -11,7 +11,6 @@ import {
   TabContext,
 } from "./types";
 
-// TODO
 export class TabManager {
   ctx: TabContext;
   app: Mnote;
@@ -36,7 +35,11 @@ export class TabManager {
 
   private makeContext(): EditorContext {
     return {
-      updateEdited: () => {},
+      updateEdited: () => {
+        const doc = this.ctx.getTabInfo().document;
+        doc.saved = false;
+        this.ctx.setDocument(doc);
+      },
       getDocument: () => this.ctx.getTabInfo().document,
       setDocument: (doc: DocInfo) => this.ctx.setDocument(doc),
     };
@@ -51,7 +54,7 @@ export class TabManager {
       await editor.save(document.path);
       return true;
     } catch (e) {
-      this.prompts.notify(`An error occurred while saving: ${e}`);
+      this.prompts.notify(strings.saveError(e));
       console.error(e);
       return false;
     }
