@@ -18,7 +18,8 @@ import { TabManager } from "./editors-tab";
 
 // todo: a nicer placeholder
 const nothingHere = el("div")
-  .inner("...")
+  .inner("No opened file... yet.")
+  .class("placeholder-nothing")
   .element;
 
 // editors keep the contents in their stae

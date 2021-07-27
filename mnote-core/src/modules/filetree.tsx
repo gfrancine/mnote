@@ -20,6 +20,11 @@ import { MenubarModule } from "./menubar";
 import { SystemModule } from "./system";
 import { getPathName } from "../../../mnote-util/path";
 
+const nothingHere = el("div")
+  .inner("No opened directory")
+  .class("placeholder-nothing")
+  .element;
+
 export class FiletreeModule {
   app: Mnote;
   element: HTMLElement;
@@ -44,6 +49,7 @@ export class FiletreeModule {
 
     this.element = el("div")
       .class("filetree-container")
+      .children(nothingHere)
       .element;
 
     this.fs = app.modules.fs as FSModule;
