@@ -46,6 +46,19 @@ export type EditorInfo = {
   disableSaveAs?: boolean;
 };
 
+export type TabInfo = {
+  editorKind: string;
+  editorInfo: EditorInfo;
+  editor: Editor;
+  document: DocInfo;
+  container: Element;
+};
+
+export type TabContext = {
+  getTabInfo: () => TabInfo;
+  setDocument: (doc: DocInfo) => void;
+};
+
 // right click context menu context
 export type Context = {
   pageX: number;

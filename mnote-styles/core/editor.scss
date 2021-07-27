@@ -2,6 +2,7 @@
 @use "sass:map";
 
 @mixin editor($theme) {
+  .editor-main,
   .editor-container {
     width: 100%;
     height: 100%;
