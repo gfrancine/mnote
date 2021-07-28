@@ -11,13 +11,4 @@
 
     @include scrollbar.scrollbar(map.get($theme, "bg-secondary"));
   }
-
-  .placeholder-nothing {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--mnote-fg-dim);
-  }
 }

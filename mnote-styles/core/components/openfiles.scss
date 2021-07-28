@@ -1,0 +1,34 @@
+@use "sass:map";
+@use "../util/scrollbar.scss";
+
+// styles for the filetree component (components/jsx)
+
+@mixin openfiles($theme) {
+  .openfiles-main {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    font-family: map.get($theme, "font-main");
+  }
+
+  .tree-item {
+    .openfiles-close {
+      display: none;
+      margin-left: auto;
+      margin-right: 0;
+
+      &:hover .fill {
+        fill: map.get($theme, "fg-main");
+      }
+      &:hover .stroke {
+        stroke: map.get($theme, "fg-main");
+      }
+    }
+
+    &:hover {
+      .openfiles-close {
+        display: flex;
+      }
+    }
+  }
+}

@@ -18,7 +18,7 @@ function omit<
   return omitted as Omit<T, typeof keys[number]>;
 }
 
-export function ItemHead(
+export function TreeItem(
   props: DivProps & {
     text: string;
     icon: JSX.Element;
@@ -29,17 +29,29 @@ export function ItemHead(
 ) {
   return (
     <div
-      className={"filetree-item" +
-        (props.focused ? " focused" : "") +
-        (props.hidden ? " hidden" : "") +
+      className={"tree-item" +
+        (props.focused ? " tree-focused" : "") +
+        (props.hidden ? " tree-hidden" : "") +
         (props.className ? " " + props.className : "")}
       {...omit(props, "text", "icon", "children", "focused", "className")}
     >
-      <div className="filetree-item-icon">
+      <div className="tree-item-icon">
         {props.icon}
       </div>
       {props.text}
       {props.children}
     </div>
   );
+}
+
+export function TreeChildren(props: {
+  hidden?: boolean;
+  children?: JSX.Element[];
+}) {
+  return props.hidden ? <></> : <div
+    className={"tree-children" +
+      (props.hidden ? "tree-hidden" : "")}
+  >
+    {props.children}
+  </div>;
 }

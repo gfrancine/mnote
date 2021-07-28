@@ -1,0 +1,47 @@
+@use "sass:map";
+@use "../util/scrollbar.scss";
+
+// styles for the filetree component (components/jsx)
+
+@mixin tree($theme) {
+  .tree-hidden {
+    display: none !important;
+  }
+
+  .tree-item {
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    flex-direction: row;
+    padding: 0.5em;
+    margin: 0 0 0.2em;
+    border-radius: 5px;
+    word-break: break-all;
+
+    &.tree-focused,
+    &:hover {
+      background: map.get($theme, "sidebar-bg-hover");
+    }
+  }
+
+  .tree-children {
+    box-sizing: border-box;
+    padding-left: 0.8em;
+  }
+
+  .tree-item-icon {
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    margin: auto 0.5em auto 0;
+
+    .fill {
+      fill: map.get($theme, "sidebar-fg-secondary");
+    }
+
+    .stroke {
+      stroke: map.get($theme, "sidebar-fg-secondary");
+    }
+  }
+}

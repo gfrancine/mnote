@@ -13,7 +13,7 @@ import {
   FileTreeNode as Node,
   FileTreeNodeWithChildren as NodeWithChildren,
 } from "../common/types";
-import { ItemHead } from "./item-head";
+import { TreeChildren, TreeItem } from "./tree";
 
 function FileNode(props: {
   visible?: boolean;
@@ -25,7 +25,7 @@ function FileNode(props: {
 
   const onClick = () => props.hooks?.fileFocused?.(props.node.path);
 
-  return <ItemHead
+  return <TreeItem
     text={name}
     icon={<BlankFile fillClass="fill" strokeClass="stroke" />}
     hidden={!props.visible}
@@ -57,7 +57,7 @@ function DirNode(props: {
   const onClick = expanded ? () => setExpanded(false) : () => setExpanded(true);
 
   return <div className="filetree-dir">
-    <ItemHead
+    <TreeItem
       text={name}
       icon={expanded
         ? <ChevronDown fillClass="fill" strokeClass="stroke" />
@@ -75,10 +75,7 @@ function DirNode(props: {
       //@ts-ignore: custom dom attribute
       mn-dir-path={props.node.path}
     />
-    <div
-      className={"filetree-dir-children" +
-        (props.visible && expanded ? "" : " hidden")}
-    >
+    <TreeChildren hidden={!(props.visible && expanded)}>
       {props.node.children.map((node) =>
         node.children
           ? <DirNode
@@ -96,7 +93,7 @@ function DirNode(props: {
             focusedNode={props.focusedNode}
           />
       )}
-    </div>
+    </TreeChildren>
   </div>;
 }
 
