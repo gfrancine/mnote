@@ -1,4 +1,4 @@
-import { MenuItem, Mnote } from "../common/types";
+import { MenuItem, Mnote, OpenFile } from "../common/types";
 import { DocInfo, Editor, EditorInfo, TabContext, TabInfo } from "./types";
 import { LayoutModule } from "./layout";
 import { MenubarModule } from "./menubar";
@@ -15,6 +15,7 @@ import { getPathName } from "mnote-util/path";
 import { strings } from "../common/strings";
 import { Menu } from "../components/menu";
 import { TabManager } from "./editors-tab";
+import { OpenFilesModule } from "./openfiles";
 
 // todo: a nicer placeholder
 const nothingHere = el("div")
@@ -42,10 +43,12 @@ export class EditorsModule {
   logging: LoggingModule;
   sidemenu: SidemenuModule;
   filetree: FiletreeModule;
+  openfiles: OpenFilesModule;
   prompts: PromptsModule;
 
   events: Emitter<{
     currentTabSet: (tab?: Tab) => void; // menubar *Untitled text
+    activeTabsChanged: () => void;
   }> = new Emitter();
 
   // collection of editors, thier providers and their configurations
@@ -67,6 +70,7 @@ export class EditorsModule {
     this.logging = app.modules.logging as LoggingModule;
     this.sidemenu = app.modules.sidemenu as SidemenuModule;
     this.filetree = app.modules.filetree as FiletreeModule;
+    this.openfiles = app.modules.openfiles as OpenFilesModule;
     this.prompts = app.modules.prompts as PromptsModule;
 
     this.element = el("div")
@@ -83,6 +87,7 @@ export class EditorsModule {
     this.hookToInputs();
     this.hookToFiletree();
     this.hookToSystem();
+    this.hookToOpenFiles();
   }
 
   /** Register an editor provider */
@@ -98,6 +103,21 @@ export class EditorsModule {
     return el("div")
       .class("editor-container")
       .element;
+  }
+
+  private tabsToOpenFiles(tabs: Tab[]): OpenFile[] {
+    return tabs.map((tab, index) => ({
+      name: tab.info.document.name,
+      index,
+      path: tab.info.document.path,
+      saved: tab.info.document.saved,
+      onClose: () => {
+        this.close(tab);
+      },
+      onOpen: () => {
+        this.changeCurrentTab(tab);
+      },
+    }));
   }
 
   // todo?:
@@ -128,10 +148,12 @@ export class EditorsModule {
 
   protected addActiveTab(tab: Tab) {
     this.activeTabs.push(tab);
+    this.events.emit("activeTabsChanged");
   }
 
   protected removeActiveTab(index: number) {
     this.activeTabs.splice(index, 1);
+    this.events.emit("activeTabsChanged");
   }
 
   private makeTabContext(info: TabInfo): TabContext {
@@ -436,6 +458,29 @@ export class EditorsModule {
       this.open(path).then(() => {
         this.logging.info("editors: loaded path", path);
       });
+    });
+  }
+
+  protected hookToOpenFiles() {
+    this.events.on("currentTabSet", (tab) => {
+      if (tab) {
+        this.openfiles.setOpenFiles(
+          this.tabsToOpenFiles(this.activeTabs),
+          this.activeTabs.indexOf(tab),
+        );
+      } else {
+        this.openfiles.setOpenFiles(this.tabsToOpenFiles(this.activeTabs));
+      }
+    });
+
+    this.events.on("activeTabsChanged", () => {
+      const newIndex = this.currentTab
+        ? this.activeTabs.indexOf(this.currentTab)
+        : undefined;
+      this.openfiles.setOpenFiles(
+        this.tabsToOpenFiles(this.activeTabs),
+        newIndex,
+      );
     });
   }
 

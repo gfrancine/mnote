@@ -1,7 +1,4 @@
 {
   "name": "mnote-styles",
-  "version": "0.1.0",
-  "peerDependencies": {
-    "open-color": "^1.8.0"
-  }
+  "version": "0.1.0"
 }

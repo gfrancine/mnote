@@ -2,6 +2,7 @@
 // using split.js
 
 @use "sass:map";
+@use "./util/scrollbar.scss";
 
 @mixin layout($theme) {
   .layout {
@@ -28,18 +29,29 @@
       color: map.get($theme, "sidebar-fg-main");
       display: flex;
       flex-direction: column;
-      padding: 20px 15px 20px 20px;
+      // padding: 20px 15px 20px 20px;
+      padding: 20px 0;
       box-sizing: border-box;
 
-      .sidebar-filetree {
+      .sidebar-contents {
         box-sizing: border-box;
         height: 100%;
+        overflow-y: auto;
+        padding: 0 15px 0 20px;
+
+        @include scrollbar.scrollbar(map.get($theme, "sidebar-bg-hover"));
+      }
+
+      .sidebar-filetree,
+      .sidebar-contents {
+        box-sizing: border-box;
       }
 
       // the menu in the bottom of the sidebar
       .sidebar-menu {
         height: 24px;
         min-height: 24px;
+        padding: 0 15px 0 20px;
         box-sizing: border-box;
       }
     }

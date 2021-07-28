@@ -92,6 +92,16 @@ export type FileTreeHooks = {
   ) => void | Promise<void>;
 };
 
+// data needed by the Open Files list
+export type OpenFile = {
+  name: string;
+  saved: boolean;
+  index: number; // instead of the path, this is the primary key
+  path?: string;
+  onOpen: (file: OpenFile) => void | Promise<void>;
+  onClose: (file: OpenFile) => void | Promise<void>;
+};
+
 // (context) menu
 
 export type MenuItem = {

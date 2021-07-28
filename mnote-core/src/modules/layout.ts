@@ -19,6 +19,7 @@ export class LayoutModule /* implements Module */ {
   menubar: HTMLElement;
   sidebar: HTMLElement;
   filetree: HTMLElement;
+  openFiles: HTMLElement;
   sidebarMenu: HTMLElement;
   contents: HTMLElement;
 
@@ -34,6 +35,18 @@ export class LayoutModule /* implements Module */ {
         .class("sidebar-filetree")
         .element;
 
+      this.openFiles = el("div")
+        .class("sidebar-openfiles")
+        .element;
+
+      const contents = el("div")
+        .class("sidebar-contents")
+        .children(
+          this.openFiles,
+          this.filetree,
+        )
+        .element;
+
       this.sidebarMenu = el("div")
         .class("sidebar-menu")
         .element;
@@ -41,7 +54,7 @@ export class LayoutModule /* implements Module */ {
       return el("div")
         .class("layout-sidebar")
         .children(
-          this.filetree,
+          contents,
           this.sidebarMenu,
         )
         .element;
@@ -85,6 +98,11 @@ export class LayoutModule /* implements Module */ {
   mountToFiletree(e: HTMLElement) {
     this.filetree.innerHTML = "";
     this.filetree.appendChild(e);
+  }
+
+  mountToOpenFiles(e: HTMLElement) {
+    this.openFiles.innerHTML = "";
+    this.openFiles.appendChild(e);
   }
 
   mountToContents(e: HTMLElement) {

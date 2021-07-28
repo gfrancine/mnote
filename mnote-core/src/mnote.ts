@@ -24,6 +24,7 @@ import { PlaintextExtension } from "./extensions/plaintextEditor";
 import { SettingsExtension } from "./extensions/settingsEditor";
 
 import { el } from "mnote-util/elbuilder";
+import { OpenFilesModule } from "./modules/openfiles";
 
 export class Mnote implements Type {
   options: MnoteOptions;
@@ -68,6 +69,7 @@ export class Mnote implements Type {
       .addModule("sidemenu", new SidemenuModule(this))
       .addModule("menubar", new MenubarModule(this))
       .addModule("filetree", new FiletreeModule(this))
+      .addModule("openfiles", new OpenFilesModule(this))
       .addModule("editors", new EditorsModule(this))
       .addModule("themes", await new ThemesModule(this).init());
 

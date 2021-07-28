@@ -54,6 +54,7 @@ export type TabInfo = {
   container: HTMLElement;
 };
 
+// context provided to editor tab managers
 export type TabContext = {
   getTabInfo: () => TabInfo;
   setDocument: (doc: DocInfo) => void;

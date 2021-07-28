@@ -4,6 +4,7 @@ import {
   ChevronDown,
   ChevronRight,
   ClosedFolder,
+  Nothing,
   OpenedFolder,
 } from "./icons-jsx";
 import { getPathName } from "mnote-util/path";
@@ -12,6 +13,7 @@ import {
   FileTreeNode as Node,
   FileTreeNodeWithChildren as NodeWithChildren,
 } from "../common/types";
+import { ItemHead } from "./item-head";
 
 function FileNode(props: {
   visible?: boolean;
@@ -23,10 +25,11 @@ function FileNode(props: {
 
   const onClick = () => props.hooks?.fileFocused?.(props.node.path);
 
-  return <div
-    className={"filetree-item file" +
-      (props.focusedNode === props.node.path ? " focused" : "") +
-      (props.visible ? "" : " hidden")}
+  return <ItemHead
+    text={name}
+    icon={<BlankFile fillClass="fill" strokeClass="stroke" />}
+    hidden={!props.visible}
+    focused={props.focusedNode === props.node.path}
     onClick={onClick}
     draggable
     onDragStart={(e) => {
@@ -35,12 +38,7 @@ function FileNode(props: {
     }}
     //@ts-ignore: custom dom attribute
     mn-file-path={props.node.path}
-  >
-    <div className="filetree-item-icon">
-      <BlankFile fillClass="fill" strokeClass="stroke" />
-    </div>
-    {name}
-  </div>;
+  />;
 }
 
 function DirNode(props: {
@@ -59,8 +57,11 @@ function DirNode(props: {
   const onClick = expanded ? () => setExpanded(false) : () => setExpanded(true);
 
   return <div className="filetree-dir">
-    <div
-      className={"filetree-item" /* + (props.visible && expanded ? "" : " hidden") */}
+    <ItemHead
+      text={name}
+      icon={expanded
+        ? <ChevronDown fillClass="fill" strokeClass="stroke" />
+        : <ChevronRight fillClass="fill" strokeClass="stroke" />}
       onClick={onClick}
       onDragOver={(e) => {
         console.log("dragover");
@@ -73,14 +74,7 @@ function DirNode(props: {
       }}
       //@ts-ignore: custom dom attribute
       mn-dir-path={props.node.path}
-    >
-      <div className="filetree-item-icon">
-        {expanded
-          ? <ChevronDown fillClass="fill" strokeClass="stroke" />
-          : <ChevronRight fillClass="fill" strokeClass="stroke" />}
-      </div>
-      {name}
-    </div>
+    />
     <div
       className={"filetree-dir-children" +
         (props.visible && expanded ? "" : " hidden")}
