@@ -15,8 +15,8 @@ export class FSModule implements FsInteropModule {
     if (fs) this.fs = fs;
   }
 
-  async writeTextFile(path: string, contents: string): Promise<void> {
-    return this.fs?.writeTextFile(path, contents);
+  writeTextFile(path: string, contents: string): Promise<void> {
+    return this.fs ? this.fs.writeTextFile(path, contents) : Promise.resolve();
   }
 
   readTextFile(path: string): Promise<string> {
@@ -66,17 +66,17 @@ export class FSModule implements FsInteropModule {
     return Promise.resolve(false);
   }
 
-  async dialogOpen(opts: {
+  dialogOpen(opts: {
     extensions?: string[];
     directory: boolean;
   }): Promise<string | void> {
-    return this.fs?.dialogOpen(opts);
+    return this.fs ? this.fs.dialogOpen(opts) : Promise.resolve();
   }
 
-  async dialogSave(opts: {
+  dialogSave(opts: {
     fileTypes?: DialogFileType[];
   }): Promise<string | void> {
-    return this.fs?.dialogSave(opts);
+    return this.fs ? this.fs.dialogSave(opts) : Promise.resolve();
   }
 
   getConfigDir(): Promise<string> {

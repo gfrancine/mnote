@@ -119,14 +119,16 @@ class MarkdownEditor implements Editor {
 
   protected updateStats() {
     switch (this.countMode) {
-      case "words":
+      case "words": {
         const wordCount = countWords(this.contents);
         this.statsbar.innerHTML = "W " + wordCount;
         return;
-      case "characters":
+      }
+      case "characters": {
         const charCount = countChars(this.contents);
         this.statsbar.innerHTML = "C " + charCount;
         return;
+      }
     }
   }
 

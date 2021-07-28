@@ -268,13 +268,13 @@ export class EditorsModule {
 
   // prompt a save dialog
   // returns a success boolean (whether the user cancelled)
-  async saveAs(tab: Tab): Promise<boolean> {
+  saveAs(tab: Tab): Promise<boolean> {
     return tab.manager.saveAs();
   }
 
   // directly save the current document, or prompt if it doesn't have a path
   // returns a success boolean (whether the user cancelled)
-  async save(tab: Tab): Promise<boolean> {
+  save(tab: Tab): Promise<boolean> {
     return tab.manager.save();
   }
 
