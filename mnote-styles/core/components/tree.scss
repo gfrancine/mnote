@@ -35,6 +35,7 @@
     height: 14px;
     min-width: 14px;
     margin: auto 0.5em auto 0;
+    box-sizing: border-box;
 
     .fill {
       fill: map.get($theme, "sidebar-fg-secondary");
@@ -42,6 +43,12 @@
 
     .stroke {
       stroke: map.get($theme, "sidebar-fg-secondary");
+    }
+
+    svg {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
     }
   }
 }
