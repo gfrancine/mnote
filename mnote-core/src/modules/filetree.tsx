@@ -12,7 +12,7 @@ import { LayoutModule } from "./layout";
 import { CtxmenuModule } from "./ctxmenu";
 import { LoggingModule } from "./logging";
 
-import { render } from "react-dom";
+import { render, unmountComponentAtNode } from "react-dom";
 import React from "react";
 import FileTree from "../components/filetree";
 import { PromptsModule } from "./prompts";
@@ -248,13 +248,18 @@ export class FiletreeModule {
       },
     };
 
-    render(
-      <FileTree
-        node={this.tree}
-        hooks={hooks}
-        initFocusedNode={this.selectedFile}
-      />,
-      this.element,
-    );
+    if (this.tree) {
+      render(
+        <FileTree
+          node={this.tree}
+          hooks={hooks}
+          initFocusedNode={this.selectedFile}
+        />,
+        this.element,
+      );
+    } else {
+      unmountComponentAtNode(this.element);
+      this.element.appendChild(nothingHere);
+    }
   }
 }
