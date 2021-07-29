@@ -72,10 +72,3 @@ export type PromptButton = {
   command: string;
   kind: "emphasis" | "normal";
 };
-
-// themes
-// use an object for easier validation
-
-export type Settings = Record<string, unknown> & {
-  theme?: string;
-};
