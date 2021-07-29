@@ -1,5 +1,5 @@
 @use "sass:map";
-@use "~mnote-styles/mnote-styles" as mn;
+@use "~mnote-styles/mnote-vars" as mn;
 @use "./big-calendar/variables.scss" as bc;
 
 .calendar-extension {
