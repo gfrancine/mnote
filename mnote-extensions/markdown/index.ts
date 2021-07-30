@@ -20,6 +20,8 @@ import {
 } from "@milkdown/core";
 import { listener, listenerCtx } from "@milkdown/plugin-listener";
 import { commonmark } from "@milkdown/preset-commonmark";
+import { history } from "@milkdown/plugin-history";
+import { clipboard } from "@milkdown/plugin-clipboard";
 
 import { getPathExtension } from "mnote-util/path";
 import { el } from "mnote-util/elbuilder";
@@ -105,7 +107,9 @@ class MarkdownEditor implements Editor {
     return new MilkdownEditor()
       .config(config)
       .use(commonmark)
-      .use(listener);
+      .use(listener)
+      .use(clipboard)
+      .use(history);
   }
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
