@@ -7,7 +7,7 @@ type Anchor = {
   left: boolean;
 };
 
-type Position = {
+type Point = {
   x: number;
   y: number;
 };
@@ -17,17 +17,21 @@ export class Menu {
   events: Emitter<{
     click(): void;
   }> = new Emitter();
+
   sections: MenuItem[][];
-  position: Position;
-  getAnchor: (rect: DOMRect, pos: Position) => Anchor;
+  getPosition: (rect: DOMRect) => {
+    point: Point;
+    anchor: Anchor;
+  };
 
   constructor(
-    position: Position,
-    getAnchor: (rect: DOMRect, pos: Position) => Anchor,
+    getPosition: (rect: DOMRect) => {
+      point: Point;
+      anchor: Anchor;
+    },
     sections: MenuItem[][],
   ) {
-    this.getAnchor = getAnchor;
-    this.position = position;
+    this.getPosition = getPosition;
     this.sections = sections;
 
     const element = el("div")
@@ -91,22 +95,22 @@ export class Menu {
     const builder = new Elbuilder(this.element);
 
     const rect = this.element.getBoundingClientRect();
-    const anchor = this.getAnchor(rect, this.position);
+    const position = this.getPosition(rect);
 
-    if (anchor.top) {
+    if (position.anchor.top) {
       builder
-        .style("top", this.position.y + "px");
+        .style("top", position.point.y + "px");
     } else {
       builder
-        .style("top", (this.position.y - rect.height) + "px");
+        .style("top", (position.point.y - rect.height) + "px");
     }
 
-    if (anchor.left) {
+    if (position.anchor.left) {
       builder
-        .style("left", this.position.x + "px");
+        .style("left", position.point.x + "px");
     } else {
       builder
-        .style("left", (this.position.x - rect.width) + "px");
+        .style("left", (position.point.x - rect.width) + "px");
     }
   }
 

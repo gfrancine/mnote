@@ -82,16 +82,16 @@ export class ContextMenu {
       }
 
       this.activeMenu = new Menu(
-        {
-          x: e.pageX,
-          y: e.pageY,
-        },
-        (rect: DOMRect /*, pos */) => {
-          return {
+        (rect: DOMRect) => ({
+          point: {
+            x: e.pageX,
+            y: e.pageY,
+          },
+          anchor: {
             top: e.pageY + rect.height < innerHeight,
             left: e.pageX + rect.width < innerWidth,
-          };
-        },
+          },
+        }),
         sections,
       );
 

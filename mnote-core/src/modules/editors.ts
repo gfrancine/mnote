@@ -337,8 +337,17 @@ export class EditorsModule {
       const sections = section ? [section] : [];
 
       menu = new Menu(
-        { x: buttonRect.right, y: buttonRect.top },
-        () => ({ top: false, left: false }),
+        (menuRect) => {
+          return buttonRect.left - menuRect.width < 0
+            ? {
+              point: { x: buttonRect.left, y: buttonRect.top },
+              anchor: { top: false, left: true },
+            }
+            : {
+              point: { x: buttonRect.right, y: buttonRect.top },
+              anchor: { top: false, left: false },
+            };
+        },
         sections,
       );
 

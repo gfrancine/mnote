@@ -101,12 +101,16 @@ export class MenubarModule /* implements Module */ {
 
     if (buttons.length === 0) return;
 
-    const menu = new Menu({
-      x: this.menuToggle.getBoundingClientRect().right,
-      y: this.element.getBoundingClientRect().bottom,
-    }, () => {
-      return { top: true, left: false };
-    }, buttons);
+    const menu = new Menu(
+      () => ({
+        point: {
+          x: this.menuToggle.getBoundingClientRect().right,
+          y: this.element.getBoundingClientRect().bottom,
+        },
+        anchor: { top: true, left: false },
+      }),
+      buttons,
+    );
 
     this.menuCurrent = menu;
 
