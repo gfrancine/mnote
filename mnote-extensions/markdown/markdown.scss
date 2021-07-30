@@ -41,4 +41,8 @@
     color: map.get(mn.$vars, "fg-dim");
     cursor: pointer;
   }
+
+  ul.bullet-list {
+    padding-inline-start: 1.2em;
+  }
 }
