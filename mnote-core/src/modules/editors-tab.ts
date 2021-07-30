@@ -69,15 +69,14 @@ export class TabManager {
         document as Required<DocInfo>,
       );
       if (!success) return false;
+      this.ctx.setDocument({
+        ...document,
+        saved: true,
+      });
     } else {
       const success = await this.saveAs();
       if (!success) return false;
     }
-
-    this.ctx.setDocument({
-      ...document,
-      saved: true,
-    });
 
     return true;
   }

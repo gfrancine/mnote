@@ -1,12 +1,13 @@
 import { Mnote } from "../common/types";
 import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
-import { Settings } from "./types";
 import { Emitter } from "mnote-util/emitter";
 
 // the file is only read once at initialization. as long as the
 // app is running state is kept here and persisted based on the
 // data in this module
+
+type Settings = Record<string, unknown>;
 
 export class SettingsModule {
   app: Mnote;
@@ -77,17 +78,31 @@ export class SettingsModule {
     return true;
   }
 
-  getKey<K extends keyof Settings>(key: K): Settings[K] {
+  getKey(key: string): unknown {
     return this.settings[key];
   }
 
-  setKey<K extends keyof Settings>(key: K, value: Settings[K]): Promise<void> {
+  setKey(key: string, value: unknown): Promise<void> {
     this.settings[key] = value;
     return this.persistSettings()
       .then(() => this.events.emit("change", this.settings));
   }
 
-  getSettings(): Settings {
+  async getKeyWithDefault<T>(
+    key: string,
+    default_: T,
+    isValid: (value: unknown) => boolean, /* value is T */
+  ): Promise<T> {
+    const value = this.getKey(key);
+    if (isValid(value)) {
+      return value as T;
+    } else {
+      await this.setKey(key, default_);
+      return default_;
+    }
+  }
+
+  getSettings() {
     return this.settings;
   }
 

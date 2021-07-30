@@ -1,5 +1,5 @@
 @import "./variables";
-@import "~mnote-styles/mnote-styles";
+@import "~mnote-styles/mnote-vars";
 
 $active-background: map-get($vars, bg-secondary);
 $active-border: $btn-border;

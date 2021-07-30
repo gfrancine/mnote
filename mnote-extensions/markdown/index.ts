@@ -189,7 +189,13 @@ export class MarkdownExtension implements Extension {
     this.editors = app.modules.editors as EditorsModule;
   }
 
-  startup() {
+  async startup() {
+    await this.settings.getKeyWithDefault(
+      "md.font-size",
+      "1em",
+      (v) => typeof v === "string",
+    );
+
     this.editors.registerEditor({
       kind: "Markdown",
       provider: new MarkdownEditorProvider(this.app),
@@ -198,11 +204,6 @@ export class MarkdownExtension implements Extension {
         extensions: ["md"],
       }],
     });
-
-    const fontSize = this.settings.getKey("md.font-size");
-    if (typeof fontSize !== "string") {
-      this.settings.setKey("md.font-size", "1em");
-    }
   }
 
   cleanup() {}

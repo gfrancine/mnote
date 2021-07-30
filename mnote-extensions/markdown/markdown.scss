@@ -1,6 +1,6 @@
 @use "milkdown";
 @use "sass:map";
-@use "~mnote-styles/mnote-styles" as mn;
+@use "~mnote-styles/mnote-vars" as mn;
 
 .md-extension {
   @include milkdown.milkdown(mn.$vars);

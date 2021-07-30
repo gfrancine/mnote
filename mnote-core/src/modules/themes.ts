@@ -42,12 +42,13 @@ export class ThemesModule {
 
   // load from settings
   async init() {
-    const theme = this.settings.getKey("theme");
-    if (typeof theme === "string" && this.hasTheme(theme)) {
-      this.rawSetTheme(theme);
-    } else {
-      await this.setTheme("light");
-    }
+    const theme = await this.settings.getKeyWithDefault(
+      "theme",
+      "light",
+      (v) => typeof v === "string" && this.hasTheme(v),
+    );
+
+    this.rawSetTheme(theme);
   }
 
   protected rawSetTheme(theme: string) {

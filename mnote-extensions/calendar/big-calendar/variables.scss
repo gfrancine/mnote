@@ -1,5 +1,5 @@
 @use "sass:math";
-@import "~mnote-styles/mnote-styles"; // @use throws
+@import "~mnote-styles/mnote-vars"; // @use throws
 
 $out-of-range-color: map-get($vars, fg-dim);
 $out-of-range-bg-color: map-get($vars, bg-secondary);

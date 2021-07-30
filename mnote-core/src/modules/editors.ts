@@ -494,10 +494,9 @@ export class EditorsModule {
   }
 
   protected hookToSystem() {
-    this.system.hookToQuit((cancel) => cancel());
     this.system.hookToQuit(async (cancel) => {
-      if (this.currentTab) {
-        const willClose = await this.close(this.currentTab);
+      for (const tab of this.activeTabs) {
+        const willClose = await this.close(tab);
         if (!willClose) cancel();
       }
     });
