@@ -14,3 +14,4 @@ export { SettingsModule } from "./settings";
 export { ThemesModule } from "./themes";
 export { InputModule } from "./input";
 export { PromptsModule } from "./prompts";
+export { OpenFilesModule } from "./openfiles";

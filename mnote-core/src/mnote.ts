@@ -2,6 +2,7 @@
 
 import { Mnote as Type, MnoteOptions, Module } from "./common/types";
 import { Emitter } from "mnote-util/emitter";
+import { el } from "mnote-util/elbuilder";
 
 import {
   CtxmenuModule,
@@ -18,13 +19,11 @@ import {
   SidemenuModule,
   SystemModule,
   ThemesModule,
+  OpenFilesModule,
 } from "./modules";
 
 import { PlaintextExtension } from "./extensions/plaintextEditor";
 import { SettingsExtension } from "./extensions/settingsEditor";
-
-import { el } from "mnote-util/elbuilder";
-import { OpenFilesModule } from "./modules/openfiles";
 
 export class Mnote implements Type {
   options: MnoteOptions;
