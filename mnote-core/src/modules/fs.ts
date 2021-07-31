@@ -2,6 +2,7 @@ import {
   DialogFileType,
   FileItemWithChildren,
   FsInteropModule,
+  FsReadDirOptions,
 } from "../common/types";
 
 // the interop module
@@ -26,9 +27,12 @@ export class FSModule implements FsInteropModule {
     return Promise.resolve("");
   }
 
-  readDir(path: string): Promise<FileItemWithChildren> {
+  readDir(
+    path: string,
+    opts: FsReadDirOptions = { recursive: true },
+  ): Promise<FileItemWithChildren> {
     if (this.fs) {
-      return this.fs.readDir(path);
+      return this.fs.readDir(path, opts);
     }
     return Promise.resolve({
       path: "TEMP",

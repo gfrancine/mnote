@@ -2,6 +2,7 @@ import {
   DialogFileType,
   FileItemWithChildren,
   FsInteropModule,
+  FsReadDirOptions,
 } from "mnote-core";
 import { getPathExtension } from "../../mnote-util/path";
 import { contents, tree } from "./mocks";
@@ -16,7 +17,10 @@ export class FS implements FsInteropModule {
         "lorem ipsum",
     );
   }
-  readDir(_path: string): Promise<FileItemWithChildren> {
+  readDir(
+    _path: string,
+    _opts: FsReadDirOptions,
+  ): Promise<FileItemWithChildren> {
     return Promise.resolve(tree);
   }
   renameFile(_path: string, _newPath: string): Promise<void> {

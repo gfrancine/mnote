@@ -40,7 +40,10 @@ export interface FsInteropModule {
   //todo
   writeTextFile(path: string, contents: string): Promise<void>;
   readTextFile(path: string): Promise<string>;
-  readDir(path: string): Promise<FileItemWithChildren>;
+  readDir(
+    path: string,
+    options?: FsReadDirOptions,
+  ): Promise<FileItemWithChildren>;
   renameFile(path: string, newPath: string): Promise<void>;
   renameDir(path: string, newPath: string): Promise<void>;
   removeFile(path: string): Promise<void>;
@@ -71,6 +74,10 @@ export type FileItem = {
 export type FileItemWithChildren = {
   path: string;
   children: FileItem[];
+};
+
+export type FsReadDirOptions = {
+  recursive?: boolean;
 };
 
 // file tree

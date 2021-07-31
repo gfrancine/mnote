@@ -2,6 +2,7 @@ import {
   DialogFileType,
   FileItemWithChildren,
   FsInteropModule,
+  FsReadDirOptions,
 } from "mnote-core";
 import { invoke } from "@tauri-apps/api/tauri";
 import { listen } from "@tauri-apps/api/event";
@@ -32,11 +33,11 @@ export class FS implements FsInteropModule {
     return fs.readTextFile(path);
   }
 
-  async readDir(path: string): Promise<FileItemWithChildren> {
-    const entries = await fs.readDir(path, {
-      recursive: true,
-    });
-
+  async readDir(
+    path: string,
+    opts?: FsReadDirOptions,
+  ): Promise<FileItemWithChildren> {
+    const entries = await fs.readDir(path, opts);
     return {
       path,
       children: entries,
