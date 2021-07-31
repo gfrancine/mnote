@@ -258,6 +258,16 @@ export class FiletreeModule {
         );
         this.fs.renameFile(droppedFile, newPath);
       },
+      dirDroppedOnDir: (targetDir: string, droppedDir: string) => {
+        const newPath = this.fs.joinPath([targetDir, getPathName(droppedDir)]);
+        this.logging.info(
+          "dir dropped on dir",
+          droppedDir,
+          targetDir,
+          newPath,
+        );
+        this.fs.renameDir(droppedDir, newPath);
+      },
     };
 
     if (this.tree) {

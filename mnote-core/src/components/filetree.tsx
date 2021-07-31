@@ -1,12 +1,5 @@
-import React, { createRef, useEffect, useMemo, useRef, useState } from "react";
-import {
-  BlankFile,
-  ChevronDown,
-  ChevronRight,
-  ClosedFolder,
-  Nothing,
-  OpenedFolder,
-} from "./icons-jsx";
+import React, { useMemo, useState } from "react";
+import { BlankFile, ChevronDown, ChevronRight } from "./icons-jsx";
 import { getPathName } from "mnote-util/path";
 import {
   FileTreeHooks,
@@ -14,6 +7,13 @@ import {
   FileTreeNodeWithChildren as NodeWithChildren,
 } from "../common/types";
 import { TreeChildren, TreeItem } from "./tree";
+
+const DRAG_DATA_TYPE = "mn-filetree-drag-data";
+
+type FileTreeDragData = {
+  kind: "file" | "dir";
+  path: string;
+};
 
 function FileNode(props: {
   visible?: boolean;
@@ -34,7 +34,13 @@ function FileNode(props: {
     draggable
     onDragStart={(e) => {
       console.log("dragstart");
-      e.dataTransfer.setData("text/plain", props.node.path);
+      e.dataTransfer.setData(
+        DRAG_DATA_TYPE,
+        JSON.stringify({
+          path: props.node.path,
+          kind: "file",
+        }),
+      );
     }}
     //@ts-ignore: custom dom attribute
     mn-file-path={props.node.path}
@@ -44,6 +50,7 @@ function FileNode(props: {
 function DirNode(props: {
   visible?: boolean; // dir is only shown if state is expanded and this boolean
   node: NodeWithChildren;
+  draggable?: boolean;
   initExpanded?: boolean; // is the dir open at initialization?
   focusedNode?: string; // path of the focused node
   hooks?: FileTreeHooks;
@@ -68,9 +75,29 @@ function DirNode(props: {
         e.preventDefault();
       }}
       onDrop={(e) => {
-        const path = e.dataTransfer.getData("text/plain");
-        console.log("dropped on dir", path);
-        props.hooks?.fileDroppedOnDir?.(props.node.path, path);
+        const data = e.dataTransfer.getData(DRAG_DATA_TYPE);
+        try {
+          const dragData: FileTreeDragData = JSON.parse(data);
+          console.log("dropped on dir", dragData);
+          if (dragData.kind === "file") {
+            props.hooks?.fileDroppedOnDir?.(props.node.path, dragData.path);
+          } else {
+            props.hooks?.dirDroppedOnDir?.(props.node.path, dragData.path);
+          }
+        } catch (err) {
+          console.log("drag failure", err, data);
+        }
+      }}
+      draggable
+      onDragStart={(e) => {
+        console.log("dragstart");
+        e.dataTransfer.setData(
+          DRAG_DATA_TYPE,
+          JSON.stringify({
+            path: props.node.path,
+            kind: "dir",
+          }),
+        );
       }}
       //@ts-ignore: custom dom attribute
       mn-dir-path={props.node.path}
@@ -109,10 +136,11 @@ export default function (props: {
   return <div className="filetree-main">
     {props.node
       ? <DirNode
-        visible={true}
+        visible
         hooks={props.hooks}
         key={props.node.path}
-        initExpanded={true}
+        initExpanded
+        draggable={false}
         node={props.node}
         focusedNode={props.initFocusedNode}
       />

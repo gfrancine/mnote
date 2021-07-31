@@ -14,12 +14,12 @@ import {
   LayoutModule,
   LoggingModule,
   MenubarModule,
+  OpenFilesModule,
   PromptsModule,
   SettingsModule,
   SidemenuModule,
   SystemModule,
   ThemesModule,
-  OpenFilesModule,
 } from "./modules";
 
 import { PlaintextExtension } from "./extensions/plaintextEditor";

@@ -42,6 +42,7 @@ export interface FsInteropModule {
   readTextFile(path: string): Promise<string>;
   readDir(path: string): Promise<FileItemWithChildren>;
   renameFile(path: string, newPath: string): Promise<void>;
+  renameDir(path: string, newPath: string): Promise<void>;
   removeFile(path: string): Promise<void>;
   removeDir(path: string): Promise<void>;
   createDir(path: string): Promise<void>;
@@ -89,6 +90,10 @@ export type FileTreeHooks = {
   fileDroppedOnDir?: (
     targetDir: string,
     droppedFile: string,
+  ) => void | Promise<void>;
+  dirDroppedOnDir?: (
+    targetDir: string,
+    droppedDir: string,
   ) => void | Promise<void>;
 };
 

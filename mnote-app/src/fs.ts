@@ -47,6 +47,13 @@ export class FS implements FsInteropModule {
     await fs.renameFile(path, newPath);
   }
 
+  async renameDir(path: string, newPath: string): Promise<void> {
+    await invoke("fs_rename", {
+      from: path,
+      to: newPath,
+    });
+  }
+
   async removeFile(path: string): Promise<void> {
     await fs.removeFile(path);
   }

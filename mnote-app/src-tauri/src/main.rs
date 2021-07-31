@@ -18,6 +18,16 @@ fn is_windows() -> bool {
   cfg!(windows)
 }
 
+use std::fs;
+
+#[tauri::command]
+fn fs_rename(from: String, to: String) -> Result<(), String> {
+  if let Err(err) = fs::rename(from, to) {
+    return Err(err.to_string());
+  }
+  Ok(())
+}
+
 use notify::{watcher, RecursiveMode, Watcher};
 use std::sync::mpsc::channel;
 use std::time::Duration;
@@ -65,7 +75,13 @@ fn make_menu() -> Menu {
 
 fn main() {
   let builder = tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![get_args, is_mac, is_windows, watcher_init]);
+    .invoke_handler(tauri::generate_handler![
+      get_args, 
+      is_mac, 
+      is_windows, 
+      watcher_init, 
+      fs_rename
+    ]);
 
   let builder = if cfg!(target_os = "macos") {
     builder

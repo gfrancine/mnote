@@ -40,6 +40,10 @@ export class FSModule implements FsInteropModule {
     await this.fs?.renameFile(path, newPath);
   }
 
+  async renameDir(path: string, newPath: string): Promise<void> {
+    await this.fs?.renameDir(path, newPath);
+  }
+
   async removeFile(path: string): Promise<void> {
     await this.fs?.removeFile(path);
   }
