@@ -1,4 +1,5 @@
 import { DialogFileType } from "../common/types";
+import type { TabManager } from "./editors-tab";
 
 // used by the extension module
 export interface Extension {
@@ -52,6 +53,11 @@ export type TabInfo = {
   editor: Editor;
   document: DocInfo;
   container: HTMLElement;
+};
+
+export type Tab = {
+  info: TabInfo;
+  manager: TabManager;
 };
 
 // context provided to editor tab managers

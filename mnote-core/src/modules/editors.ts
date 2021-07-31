@@ -1,10 +1,9 @@
-import { MenuItem, Mnote, OpenFile } from "../common/types";
-import { DocInfo, Editor, EditorInfo, TabContext, TabInfo } from "./types";
+import { MenuItem, Mnote } from "../common/types";
+import { DocInfo, Editor, EditorInfo, Tab, TabContext, TabInfo } from "./types";
 import { LayoutModule } from "./layout";
 import { MenubarModule } from "./menubar";
 import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
-import { FiletreeModule } from "./filetree";
 import { SidemenuModule } from "./sidemenu";
 import { InputModule } from "./input";
 import { PromptsModule } from "./prompts";
@@ -15,7 +14,7 @@ import { getPathName } from "mnote-util/path";
 import { strings } from "../common/strings";
 import { Menu } from "../components/menu";
 import { TabManager } from "./editors-tab";
-import { OpenFilesModule } from "./openfiles";
+import { FiletreeModule } from "./filetree";
 
 // todo: a nicer placeholder
 const nothingHere = el("div")
@@ -28,22 +27,16 @@ const nothingHere = el("div")
 // no other component can ever access the editor object without going
 // here
 
-type Tab = {
-  info: TabInfo;
-  manager: TabManager;
-};
-
 export class EditorsModule {
   element: HTMLElement;
   app: Mnote;
   menubar: MenubarModule;
+  filetree: FiletreeModule;
   fs: FSModule;
   system: SystemModule;
   input: InputModule;
   logging: LoggingModule;
   sidemenu: SidemenuModule;
-  filetree: FiletreeModule;
-  openfiles: OpenFilesModule;
   prompts: PromptsModule;
 
   events: Emitter<{
@@ -64,13 +57,12 @@ export class EditorsModule {
   constructor(app: Mnote) {
     this.app = app;
     this.menubar = app.modules.menubar as MenubarModule;
+    this.filetree = app.modules.filetree as FiletreeModule;
     this.fs = app.modules.fs as FSModule;
     this.system = app.modules.system as SystemModule;
     this.input = app.modules.input as InputModule;
     this.logging = app.modules.logging as LoggingModule;
     this.sidemenu = app.modules.sidemenu as SidemenuModule;
-    this.filetree = app.modules.filetree as FiletreeModule;
-    this.openfiles = app.modules.openfiles as OpenFilesModule;
     this.prompts = app.modules.prompts as PromptsModule;
 
     this.element = el("div")
@@ -85,9 +77,7 @@ export class EditorsModule {
     this.hookToSidebarMenu();
     this.hookToMenubar();
     this.hookToInputs();
-    this.hookToFiletree();
     this.hookToSystem();
-    this.hookToOpenFiles();
   }
 
   /** Register an editor provider */
@@ -105,25 +95,10 @@ export class EditorsModule {
       .element;
   }
 
-  private tabsToOpenFiles(tabs: Tab[]): OpenFile[] {
-    return tabs.map((tab, index) => ({
-      name: tab.info.document.name,
-      index,
-      path: tab.info.document.path,
-      saved: tab.info.document.saved,
-      onClose: () => {
-        this.close(tab);
-      },
-      onOpen: () => {
-        this.changeCurrentTab(tab);
-      },
-    }));
-  }
-
   // todo?:
   // tigger events on setters
   // maybe once we implement a tabbed menu
-  protected changeCurrentTab(tab: Tab | undefined) {
+  changeCurrentTab(tab: Tab | undefined) {
     if (this.currentTab) {
       this.element.removeChild(this.currentTab.info.container);
     }
@@ -447,49 +422,6 @@ export class EditorsModule {
         e.preventDefault();
         this.close(this.currentTab);
       }
-    });
-  }
-
-  protected hookToFiletree() {
-    // when filetree selects from startPath
-    if (this.filetree.selectedFile) {
-      this.open(this.filetree.selectedFile).then(() => {
-        this.logging.info(
-          "editors: loaded start file path from filetree",
-          this.filetree.selectedFile,
-        );
-      });
-    }
-
-    // when a filetree file gets selected
-    this.filetree.events.on("fileSelected", (path: string) => {
-      this.logging.info("editors: load path", path);
-      this.open(path).then(() => {
-        this.logging.info("editors: loaded path", path);
-      });
-    });
-  }
-
-  protected hookToOpenFiles() {
-    this.events.on("currentTabSet", (tab) => {
-      if (tab) {
-        this.openfiles.setOpenFiles(
-          this.tabsToOpenFiles(this.activeTabs),
-          this.activeTabs.indexOf(tab),
-        );
-      } else {
-        this.openfiles.setOpenFiles(this.tabsToOpenFiles(this.activeTabs));
-      }
-    });
-
-    this.events.on("activeTabsChanged", () => {
-      const newIndex = this.currentTab
-        ? this.activeTabs.indexOf(this.currentTab)
-        : undefined;
-      this.openfiles.setOpenFiles(
-        this.tabsToOpenFiles(this.activeTabs),
-        newIndex,
-      );
     });
   }
 

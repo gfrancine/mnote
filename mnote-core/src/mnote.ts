@@ -68,9 +68,9 @@ export class Mnote implements Type {
       .addModule("ctxmenu", new CtxmenuModule(this))
       .addModule("sidemenu", new SidemenuModule(this))
       .addModule("menubar", new MenubarModule(this))
+      .addModule("editors", new EditorsModule(this))
       .addModule("filetree", new FiletreeModule(this))
       .addModule("openfiles", new OpenFilesModule(this))
-      .addModule("editors", new EditorsModule(this))
       .addModule("themes", await new ThemesModule(this).init());
 
     // register the extensions

@@ -4,7 +4,6 @@ import {
   MenuItem,
   Mnote,
 } from "../common/types";
-import { Emitter } from "mnote-util/emitter";
 import { el } from "mnote-util/elbuilder";
 import { Context } from "./types";
 import { FSModule } from "./fs";
@@ -19,6 +18,7 @@ import { PromptsModule } from "./prompts";
 import { MenubarModule } from "./menubar";
 import { SystemModule } from "./system";
 import { getPathName } from "../../../mnote-util/path";
+import { EditorsModule } from "./editors";
 
 const nothingHere = el("div")
   .inner("No opened directory")
@@ -35,10 +35,7 @@ export class FiletreeModule {
   menubar: MenubarModule;
   prompts: PromptsModule;
   system: SystemModule;
-
-  events: Emitter<{
-    fileSelected: (path: string) => void;
-  }> = new Emitter();
+  editors: EditorsModule;
 
   selectedFile?: string;
   directory?: string;
@@ -59,6 +56,7 @@ export class FiletreeModule {
     this.logging = app.modules.logging as LoggingModule;
     this.prompts = app.modules.prompts as PromptsModule;
     this.menubar = app.modules.menubar as MenubarModule;
+    this.editors = app.modules.editors as EditorsModule;
 
     const cmdOrCtrl = this.system.USES_CMD ? "Cmd" : "Ctrl";
 
@@ -73,7 +71,7 @@ export class FiletreeModule {
             directory: false,
           });
           if (!maybePath) return;
-          this.setSelectedFile(maybePath);
+          this.updateEditorSelectedFile(maybePath);
         },
       });
 
@@ -127,7 +125,7 @@ export class FiletreeModule {
           return [{
             name: "Open file",
             click: () => {
-              this.setSelectedFile(filePath);
+              this.updateEditorSelectedFile(filePath);
             },
           }, {
             name: "Delete file",
@@ -162,6 +160,17 @@ export class FiletreeModule {
     this.ctxmenu.addSectionReducer(ctxmenuReducer);
     this.layout.mountToFiletree(this.element);
 
+    const onEditorTabChange = () => {
+      if (this.editors.currentTab) {
+        this.setSelectedFile(this.editors.currentTab.info.document.path);
+      } else {
+        this.setSelectedFile();
+      }
+    };
+
+    this.editors.events.on("activeTabsChanged", onEditorTabChange);
+    this.editors.events.on("currentTabSet", onEditorTabChange);
+
     this.app.hooks.on("startup", () => this.startup());
   }
 
@@ -182,7 +191,7 @@ export class FiletreeModule {
     this.fs.onWatchEvent(() => this.refreshTree());
 
     if (startDirectory) this.setDirectory(startDirectory);
-    if (startFile) this.setSelectedFile(startFile);
+    if (startFile) this.updateEditorSelectedFile(startFile);
   }
 
   async refreshTree() {
@@ -203,16 +212,19 @@ export class FiletreeModule {
     }
   }
 
+  updateEditorSelectedFile(path: string) {
+    this.editors.open(path);
+  }
+
   setFileTree(tree: FileTreeNodeWithChildren) {
     this.logging.info("setFileTree", tree);
     this.tree = tree;
     this.updateDisplay();
   }
 
-  setSelectedFile(path: string) {
+  setSelectedFile(path?: string) {
     this.logging.info("setSelectedFile", path);
     this.selectedFile = path;
-    this.events.emitSync("fileSelected", path);
     this.updateDisplay();
   }
 
@@ -234,7 +246,7 @@ export class FiletreeModule {
     const hooks: FileTreeHooks = {
       fileFocused: (path: string) => {
         this.logging.info("file focused", path);
-        this.setSelectedFile(path);
+        this.updateEditorSelectedFile(path);
       },
       fileDroppedOnDir: (targetDir: string, droppedFile: string) => {
         const newPath = this.fs.joinPath([targetDir, getPathName(droppedFile)]);
