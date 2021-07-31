@@ -18,7 +18,7 @@ export default class List extends Component {
   toggleAddingCard = () =>
     this.setState({ addingCard: !this.state.addingCard });
 
-  addCard = async (cardTitle, cardText) => {
+  addCard = (cardTitle, cardText) => {
     const { listId, dispatch } = this.props;
 
     this.toggleAddingCard();
@@ -36,7 +36,7 @@ export default class List extends Component {
 
   handleChangeTitle = (e) => this.setState({ title: e.target.value });
 
-  editListTitle = async () => {
+  editListTitle = () => {
     const { listId, dispatch } = this.props;
     const { title } = this.state;
 
@@ -48,7 +48,7 @@ export default class List extends Component {
     });
   };
 
-  deleteList = async () => {
+  deleteList = () => {
     const { listId, list, dispatch } = this.props;
     dispatch({
       type: "DELETE_LIST",

@@ -11,7 +11,7 @@ export default class AddList extends Component {
 
   handleChangeTitle = (e) => this.setState({ title: e.target.value });
 
-  createList = async () => {
+  createList = () => {
     const { title } = this.state;
     const { dispatch } = this.props;
 

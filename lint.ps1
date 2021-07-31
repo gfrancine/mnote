@@ -1,4 +1,4 @@
-deno lint  `
+deno lint `
   mnote-core/src `
   mnote-extensions/calendar `
   mnote-extensions/kanban `
@@ -7,4 +7,5 @@ deno lint  `
   mnote-extensions/starter `
   mnote-app/src `
   mnote-app/src-web `
-  mnote-util
+  mnote-util `
+  mnote-deps/kanban

@@ -22,7 +22,7 @@ export default class Card extends Component {
 
   endEditing = () => this.setState({ hover: false, editing: false });
 
-  editCard = async (title, text) => {
+  editCard = (title, text) => {
     const { card, dispatch } = this.props;
 
     this.endEditing();
@@ -33,7 +33,7 @@ export default class Card extends Component {
     });
   };
 
-  deleteCard = async () => {
+  deleteCard = () => {
     const { listId, card, dispatch } = this.props;
 
     dispatch({
