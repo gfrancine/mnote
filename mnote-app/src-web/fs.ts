@@ -4,7 +4,7 @@ import {
   FsInteropModule,
   FsReadDirOptions,
 } from "mnote-core";
-import { getPathExtension } from "../../mnote-util/path";
+import { getPathExtension } from "mnote-util/path";
 import { contents, tree } from "./mocks";
 
 export class FS implements FsInteropModule {

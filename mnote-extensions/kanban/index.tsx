@@ -11,7 +11,7 @@ import { el } from "mnote-util/elbuilder";
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import Board, { defaultValue, KanbanState } from "mnote-deps/kanban";
-import { getPathExtension } from "../../mnote-util/path";
+import { getPathExtension } from "mnote-util/path";
 
 import "./kanban.scss";
 

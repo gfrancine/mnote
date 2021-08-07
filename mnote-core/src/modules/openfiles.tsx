@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 import { LayoutModule } from ".";
-import { el } from "../../../mnote-util/elbuilder";
+import { el } from "mnote-util/elbuilder";
 import { Mnote } from "../common/types";
 import { OpenFile } from "../common/types";
 import OpenFiles from "../components/openfiles";

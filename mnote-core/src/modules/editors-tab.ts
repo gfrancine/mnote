@@ -1,4 +1,4 @@
-import { getPathName } from "../../../mnote-util/path";
+import { getPathName } from "mnote-util/path";
 import { strings } from "../common/strings";
 import { Mnote } from "../common/types";
 import { FSModule } from "./fs";

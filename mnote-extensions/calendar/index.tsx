@@ -11,7 +11,7 @@ import {
 import { el } from "mnote-util/elbuilder";
 import React, { useState } from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { getPathExtension } from "../../mnote-util/path";
+import { getPathExtension } from "mnote-util/path";
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import moment from "moment";

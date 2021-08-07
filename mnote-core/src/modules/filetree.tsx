@@ -17,7 +17,7 @@ import FileTree from "../components/filetree";
 import { PromptsModule } from "./prompts";
 import { MenubarModule } from "./menubar";
 import { SystemModule } from "./system";
-import { getPathName } from "../../../mnote-util/path";
+import { getPathName } from "mnote-util/path";
 import { EditorsModule } from "./editors";
 
 const nothingHere = el("div")
