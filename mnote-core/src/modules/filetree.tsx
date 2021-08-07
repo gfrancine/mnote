@@ -21,7 +21,7 @@ import { getPathName } from "../../../mnote-util/path";
 import { EditorsModule } from "./editors";
 
 const nothingHere = el("div")
-  .inner("No opened directory")
+  .inner("No opened folder")
   .class("placeholder-nothing")
   .element;
 

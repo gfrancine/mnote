@@ -10,7 +10,7 @@
     box-sizing: border-box;
     width: max-content;
     box-shadow: map.get($theme, "shadow");
-    min-width: 180px;
+    min-width: 210px;
 
     .menu-item {
       font-family: map.get($theme, "font-main");

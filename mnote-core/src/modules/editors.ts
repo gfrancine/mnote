@@ -18,7 +18,7 @@ import { FiletreeModule } from "./filetree";
 
 // todo: a nicer placeholder
 const nothingHere = el("div")
-  .inner("No opened file... yet.")
+  .inner("Click the three dots on the top right to open a file or folder.")
   .class("placeholder-nothing")
   .element;
 

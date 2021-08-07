@@ -32,6 +32,9 @@
       justify-content: center;
       color: var(--mnote-fg-dim);
       cursor: default;
+      text-align: center;
+      box-sizing: border-box;
+      padding: 10%;
     }
 
     .layout-sidebar {

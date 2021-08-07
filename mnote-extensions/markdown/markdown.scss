@@ -42,7 +42,8 @@
     cursor: pointer;
   }
 
-  ul.bullet-list {
+  ul.bullet-list,
+  ol.ordered-list {
     padding-inline-start: 1.2em;
   }
 }
