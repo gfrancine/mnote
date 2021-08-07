@@ -65,7 +65,7 @@ function Wrapper(
           export: false,
           loadScene: false,
           saveToActiveFile: false,
-          saveAsImage: true,
+          saveAsImage: false,
         },
       }}
       initialData={initialData}
