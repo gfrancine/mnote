@@ -66,6 +66,8 @@ fn make_menu() -> Menu {
       .add_native_item(MenuItem::Cut)
       .add_native_item(MenuItem::Copy)
       .add_native_item(MenuItem::Paste)
+      .add_native_item(MenuItem::Separator)
+      .add_native_item(MenuItem::SelectAll),
   );
 
   Menu::new()
