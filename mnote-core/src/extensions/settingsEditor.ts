@@ -5,6 +5,7 @@ import { Editor } from "../modules/types";
 import { el } from "mnote-util/elbuilder";
 import { MenubarModule, SettingsModule } from "../modules";
 import { createIcon } from "../components/icons";
+import { SETTINGS_ALIAS_PATH as SETTINGS_PATH } from "../common/constants";
 
 // an editor extension contains:
 // - the editor
@@ -13,8 +14,6 @@ import { createIcon } from "../components/icons";
 
 // instead of saving to file, the settings editor will
 // invoke the Settings.setSettings module
-
-const SETTINGS_PATH = "Settings";
 
 class SettingsEditor implements Editor {
   app: Mnote;
@@ -129,7 +128,7 @@ export class SettingsExtension implements Extension {
 
   startup() {
     const openSettings = () => {
-      (this.app.modules.editors as EditorsModule).newTab("Settings");
+      (this.app.modules.editors as EditorsModule).open(SETTINGS_PATH);
     };
 
     (this.app.modules.menubar as MenubarModule).addSectionReducer(() => {

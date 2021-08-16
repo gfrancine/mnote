@@ -2,6 +2,7 @@ import { Mnote } from "../common/types";
 import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
 import { Emitter } from "mnote-util/emitter";
+import { SETTINGS_NAME } from "../common/constants";
 
 // the file is only read once at initialization. as long as the
 // app is running state is kept here and persisted based on the
@@ -14,7 +15,6 @@ export class SettingsModule {
   fs: FSModule;
   logging: LoggingModule;
 
-  SETTINGS_NAME = ".mnotesettings";
   protected settingsPath = ""; // initialized in init()
   protected settings: Settings = this.defaultSettings();
 
@@ -31,7 +31,7 @@ export class SettingsModule {
   async init() {
     this.settingsPath = this.fs.joinPath([
       await this.fs.getConfigDir(),
-      this.SETTINGS_NAME,
+      SETTINGS_NAME,
     ]);
 
     try {
