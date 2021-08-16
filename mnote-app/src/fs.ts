@@ -11,6 +11,8 @@ import * as fs from "@tauri-apps/api/fs";
 import * as path from "@tauri-apps/api/path";
 import * as dialog from "@tauri-apps/api/dialog";
 
+// https://tauri.studio/en/docs/api/js/modules/fs
+
 export class FS implements FsInteropModule {
   protected watcher = new Watcher(); // at the bottom of the file
 

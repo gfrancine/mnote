@@ -57,6 +57,21 @@ function DirNode(props: {
 }) {
   const name = useMemo(() => getPathName(props.node.path), [props.node.path]);
 
+  // sort by name and by type (directories go first)
+  const sortedChildren = useMemo(
+    () =>
+      props.node.children
+        .slice()
+        .sort((a, b) => getPathName(a.path) > getPathName(b.path) ? 1 : -1)
+        .sort((a, b) => {
+          if (a.children && b.children) return 0;
+          if (!a.children && !b.children) return 0;
+          if (a.children) return -1;
+          return 1;
+        }),
+    [props.node.children],
+  );
+
   const [expanded, setExpanded] = useState<boolean>(
     props.initExpanded === undefined ? false : props.initExpanded,
   );
@@ -103,7 +118,7 @@ function DirNode(props: {
       mn-dir-path={props.node.path}
     />
     <TreeChildren hidden={!(props.visible && expanded)}>
-      {props.node.children.map((node) =>
+      {sortedChildren.map((node) =>
         node.children
           ? <DirNode
             visible={expanded}

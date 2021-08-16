@@ -12,6 +12,11 @@ export const tree = {
         { path: "file-f" },
       ],
     },
+    { path: "a/a/a/zzzzzthisshouldbesorted" },
+    {
+      path: "a/a/a/zzzzzthisshouldbeabovefiles",
+      children: [],
+    },
     { path: "file-g.md" },
     { path: "file-h.excalidraw" },
     { path: "file-i.mnkanban" },
