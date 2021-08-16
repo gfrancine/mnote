@@ -6,7 +6,7 @@ import {
   FileTreeNode as Node,
   FileTreeNodeWithChildren as NodeWithChildren,
 } from "../common/types";
-import { TreeChildren, TreeItem } from "./tree";
+import { ElementToReact, TreeChildren, TreeItem } from "./tree";
 
 const DRAG_DATA_TYPE = "mn-filetree-drag-data";
 
@@ -15,11 +15,18 @@ type FileTreeDragData = {
   path: string;
 };
 
+type FileIconFactory = (
+  node: Node,
+  fillClass: string,
+  strokeClass: string,
+) => Element | void;
+
 function FileNode(props: {
   visible?: boolean;
   node: Node;
   focusedNode?: string; // path of the focused node
   hooks?: FileTreeHooks;
+  getFileIcon?: FileIconFactory;
 }) {
   const name = useMemo(() => getPathName(props.node.path), [props.node.path]);
 
@@ -27,7 +34,13 @@ function FileNode(props: {
 
   return <TreeItem
     text={name}
-    icon={<BlankFile fillClass="fill" strokeClass="stroke" />}
+    icon={(() => {
+      if (props.getFileIcon) {
+        const icon = props.getFileIcon(props.node, "fill", "stroke");
+        if (icon) return <ElementToReact element={icon} />;
+      }
+      return <BlankFile fillClass="fill" strokeClass="stroke" />;
+    })()}
     hidden={!props.visible}
     focused={props.focusedNode === props.node.path}
     onClick={onClick}
@@ -54,6 +67,7 @@ function DirNode(props: {
   initExpanded?: boolean; // is the dir open at initialization?
   focusedNode?: string; // path of the focused node
   hooks?: FileTreeHooks;
+  getFileIcon?: FileIconFactory;
 }) {
   const name = useMemo(() => getPathName(props.node.path), [props.node.path]);
 
@@ -126,6 +140,7 @@ function DirNode(props: {
             node={node as NodeWithChildren}
             hooks={props.hooks}
             focusedNode={props.focusedNode}
+            getFileIcon={props.getFileIcon}
           />
           : <FileNode
             visible={expanded}
@@ -133,6 +148,7 @@ function DirNode(props: {
             key={node.path}
             hooks={props.hooks}
             focusedNode={props.focusedNode}
+            getFileIcon={props.getFileIcon}
           />
       )}
     </TreeChildren>
@@ -145,6 +161,7 @@ export default function (props: {
   node?: NodeWithChildren;
   initFocusedNode?: string; // path of the focused node
   hooks?: FileTreeHooks;
+  getFileIcon?: FileIconFactory;
 }) {
   // console.log("filetree component", props);
 
@@ -158,6 +175,7 @@ export default function (props: {
         draggable={false}
         node={props.node}
         focusedNode={props.initFocusedNode}
+        getFileIcon={props.getFileIcon}
       />
       : <></>}
   </div>;

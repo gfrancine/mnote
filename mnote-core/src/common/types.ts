@@ -110,6 +110,7 @@ export type OpenFile = {
   saved: boolean;
   index: number; // instead of the path, this is the primary key
   path?: string;
+  getIcon: (fillClass: string, strokeClass: string) => Element | void;
   onOpen: (file: OpenFile) => void | Promise<void>;
   onClose: (file: OpenFile) => void | Promise<void>;
 };

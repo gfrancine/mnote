@@ -37,8 +37,24 @@ export class OpenFilesModule {
   }
 
   setOpenFiles(files: OpenFile[], activeIndex?: number) {
+    const getFileIcon = (
+      file: OpenFile,
+      fillClass: string,
+      strokeClass: string,
+    ) => {
+      for (const editorInfo of Object.values(this.editors.editorKinds)) {
+        if (!editorInfo.provider.getIcon) continue;
+        return editorInfo.provider.getIcon(fillClass, strokeClass);
+      }
+    };
+
     render(
-      <OpenFiles openFiles={[...files]} activeIndex={activeIndex} />,
+      <OpenFiles
+        openFiles={[...files]}
+        activeIndex={activeIndex}
+        getIcon={(file: OpenFile, fillClass: string, strokeClass: string) =>
+          file.getIcon(fillClass, strokeClass)}
+      />,
       this.element,
     );
   }
@@ -49,6 +65,9 @@ export class OpenFilesModule {
       index,
       path: tab.info.document.path,
       saved: tab.info.document.saved,
+      getIcon: (fillClass: string, strokeClass: string) => {
+        return tab.info.editorInfo.provider.getIcon?.(fillClass, strokeClass);
+      },
       onClose: () => {
         this.editors.close(tab);
       },

@@ -1,5 +1,5 @@
 // item heads used by filetree and openfiles
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 type DivProps =
   & React.DetailedHTMLProps<
@@ -53,5 +53,22 @@ export function TreeChildren(props: {
       (props.hidden ? "tree-hidden" : "")}
   >
     {props.children}
+  </div>;
+}
+
+export function ElementToReact(props: { element: Element }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    containerRef.current.appendChild(props.element);
+
+    return () => {
+      if (!containerRef.current) return;
+      containerRef.current.removeChild(props.element);
+    };
+  });
+
+  return <div style={{ width: "100%", height: "100%" }} ref={containerRef}>
   </div>;
 }

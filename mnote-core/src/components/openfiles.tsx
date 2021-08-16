@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { OpenFile } from "../common/types";
 import {
   BlankFile,
@@ -8,11 +8,16 @@ import {
   Close,
   Nothing,
 } from "./icons-jsx";
-import { TreeChildren, TreeItem } from "./tree";
+import { ElementToReact, TreeChildren, TreeItem } from "./tree";
 
 export default function (props: {
   openFiles: OpenFile[];
   activeIndex?: number;
+  getIcon?: (
+    file: OpenFile,
+    fillClass: string,
+    strokeClass: string,
+  ) => Element | void;
 }) {
   const [expanded, setExpanded] = useState(true);
 
@@ -29,9 +34,18 @@ export default function (props: {
         <TreeItem
           key={file.index}
           text={file.name}
-          icon={file.saved
-            ? <BlankFile fillClass="fill" strokeClass="stroke" />
-            : <Circle fillClass="fill" strokeClass="stroke" />}
+          icon={(() => {
+            if (!file.saved) {
+              return <Circle fillClass="fill" strokeClass="stroke" />;
+            }
+
+            if (props.getIcon) {
+              const icon = props.getIcon(file, "fill", "stroke");
+              if (icon) return <ElementToReact element={icon} />;
+            }
+
+            return <BlankFile fillClass="fill" strokeClass="stroke" />;
+          })()}
           focused={props.activeIndex === file.index}
           onClick={() => file.onOpen(file)}
         >

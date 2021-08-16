@@ -1,7 +1,7 @@
 import {
   FileTreeHooks,
+  FileTreeNode,
   FileTreeNodeWithChildren,
-  MenuItem,
   Mnote,
 } from "../common/types";
 import { el } from "mnote-util/elbuilder";
@@ -270,12 +270,29 @@ export class FiletreeModule {
       },
     };
 
+    const getFileIcon = (
+      node: FileTreeNode,
+      fillClass: string,
+      strokeClass: string,
+    ) => {
+      for (const editorInfo of Object.values(this.editors.editorKinds)) {
+        if (
+          !editorInfo.provider.getIcon || !editorInfo.provider.shouldUseIcon
+        ) {
+          continue;
+        }
+        if (!editorInfo.provider.shouldUseIcon(node.path)) continue;
+        return editorInfo.provider.getIcon(fillClass, strokeClass);
+      }
+    };
+
     if (this.tree) {
       render(
         <FileTree
           node={this.tree}
           hooks={hooks}
           initFocusedNode={this.selectedFile}
+          getFileIcon={getFileIcon}
         />,
         this.element,
       );

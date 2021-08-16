@@ -20,7 +20,7 @@ export class SidemenuModule {
     return el("div")
       .class("sidemenu-button")
       .children(
-        createIcon(iconName, "stroke", "fill"),
+        createIcon(iconName, "fill", "stroke"),
       )
       .element;
   }

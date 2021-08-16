@@ -45,7 +45,7 @@ export class MenubarModule /* implements Module */ {
         el("div")
           .class("menubar-icon")
           .children(
-            createIcon("kebabMenu", "stroke", "fill"),
+            createIcon("kebabMenu", "fill", "stroke"),
           )
           .element,
       )

@@ -4,6 +4,7 @@ import { EditorContext, EditorProvider, Extension } from "../modules/types";
 import { Editor } from "../modules/types";
 import { el } from "mnote-util/elbuilder";
 import { MenubarModule, SettingsModule } from "../modules";
+import { createIcon } from "../components/icons";
 
 // an editor extension contains:
 // - the editor
@@ -12,6 +13,8 @@ import { MenubarModule, SettingsModule } from "../modules";
 
 // instead of saving to file, the settings editor will
 // invoke the Settings.setSettings module
+
+const SETTINGS_PATH = "Settings";
 
 class SettingsEditor implements Editor {
   app: Mnote;
@@ -42,7 +45,7 @@ class SettingsEditor implements Editor {
   startup(containter: HTMLElement, ctx: EditorContext) {
     ctx.setDocument({
       name: "Settings",
-      path: "thishsouldnow",
+      path: SETTINGS_PATH,
       saved: true,
     });
 
@@ -98,10 +101,20 @@ class SettingsEditorProvider implements EditorProvider {
     this.settings = app.modules.settings as SettingsModule;
   }
 
-  tryGetEditor(_path: string) {}
+  tryGetEditor(path: string) {
+    if (path === SETTINGS_PATH) return new SettingsEditor(this.app);
+  }
 
   createNewEditor() {
     return new SettingsEditor(this.app);
+  }
+
+  getIcon(fillClass: string, strokeClass: string) {
+    return createIcon("settings", fillClass, strokeClass);
+  }
+
+  shouldUseIcon(path: string) {
+    return path === SETTINGS_PATH;
   }
 }
 

@@ -34,6 +34,11 @@ export interface EditorProvider {
   // getExtensions(): string[] // allowed extensions for Save As prompt
   tryGetEditor(path: string): Editor | void;
   createNewEditor(): Editor;
+  // Tab icon factory
+  // shouldUseIcon: called by the file tree, whether to use getIcon on a path
+  shouldUseIcon?: (path: string) => boolean;
+  // called by openfiles
+  getIcon?: (fillClass: string, strokeClass: string) => Element;
 }
 
 export type EditorInfo = {
