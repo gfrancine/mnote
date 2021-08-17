@@ -27,7 +27,18 @@ export const tree = {
 // extensions and their test data
 
 export const contents: Record<string, string> = {
-  md: `# lorem ipsum`,
+  md: `# lorem ipsum
+  > quote
+
+  paragraph \`inline code\`
+
+  - bullet
+    - list
+      - nested
+
+  \`\`\`js
+  code fence
+  \`\`\``,
   mncalendar: `{"events":[{"start":"2021-07-11T19:00:00.000Z","end":
   "2021-07-11T21:30:00.000Z","title":"a","allDay":false,"id":null}],
   "view":"month"}`,

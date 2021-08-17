@@ -3,6 +3,8 @@
 @mixin milkdown($theme) {
   // decorators
 
+  --font-code: #{map.get($theme, "font-monospace")};
+
   .strong {
     font-weight: 600;
   }
