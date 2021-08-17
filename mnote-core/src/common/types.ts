@@ -111,6 +111,7 @@ export type OpenFile = {
   index: number; // instead of the path, this is the primary key
   path?: string;
   getIcon: (fillClass: string, strokeClass: string) => Element | void;
+  onSave: (file: OpenFile) => void | Promise<void>;
   onOpen: (file: OpenFile) => void | Promise<void>;
   onClose: (file: OpenFile) => void | Promise<void>;
 };

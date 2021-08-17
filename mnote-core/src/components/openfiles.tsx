@@ -48,6 +48,8 @@ export default function (props: {
           })()}
           focused={props.activeIndex === file.index}
           onClick={() => file.onOpen(file)}
+          mn-tab-index={file.index} // used by context menu to open the right path
+          className="openfiles-item" // also used by context menu
         >
           <div
             className="openfiles-close tree-item-icon"

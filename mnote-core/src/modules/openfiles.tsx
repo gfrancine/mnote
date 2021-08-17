@@ -6,16 +6,21 @@ import { Mnote } from "../common/types";
 import { OpenFile } from "../common/types";
 import OpenFiles from "../components/openfiles";
 import { EditorsModule } from "./editors";
-import { Tab } from "./types";
+import { Context, Tab } from "./types";
+import { CtxmenuModule } from "./ctxmenu";
 
 export class OpenFilesModule {
   layout: LayoutModule;
   editors: EditorsModule;
   element: HTMLElement;
+  ctxmenu: CtxmenuModule;
+
+  openFiles: OpenFile[] = [];
 
   constructor(app: Mnote) {
     this.layout = app.modules.layout as LayoutModule;
     this.editors = app.modules.editors as EditorsModule;
+    this.ctxmenu = app.modules.ctxmenu as CtxmenuModule;
     this.element = el("div")
       .class("openfiles-main")
       .element;
@@ -34,19 +39,43 @@ export class OpenFilesModule {
     this.editors.events.on("activeTabsChanged", onEditorTabChange);
     this.editors.events.on("currentTabSet", onEditorTabChange);
     // click > action up > event down > render
+
+    const ctxmenuReducer = (ctx: Context) => {
+      // find a file tree item
+      let tabItem: Element | undefined;
+
+      for (const el of ctx.elements) {
+        if (el.classList.contains("openfiles-item")) {
+          tabItem = el;
+          break;
+        }
+      }
+
+      if (tabItem) {
+        const indexAttr = tabItem.getAttribute("mn-tab-index");
+        if (!indexAttr) return;
+        const index = parseInt(indexAttr);
+        const file = this.openFiles[index];
+        if (!file) return;
+
+        return [{
+          name: "Open editor",
+          click: () => file.onOpen(file),
+        }, {
+          name: "Close editor",
+          click: () => file.onClose(file),
+        }, {
+          name: "Save editor",
+          click: () => file.onSave(file),
+        }];
+      }
+    };
+
+    this.ctxmenu.addSectionReducer(ctxmenuReducer);
   }
 
   setOpenFiles(files: OpenFile[], activeIndex?: number) {
-    const getFileIcon = (
-      file: OpenFile,
-      fillClass: string,
-      strokeClass: string,
-    ) => {
-      for (const editorInfo of Object.values(this.editors.editorKinds)) {
-        if (!editorInfo.provider.getIcon) continue;
-        return editorInfo.provider.getIcon(fillClass, strokeClass);
-      }
-    };
+    this.openFiles = [...files];
 
     render(
       <OpenFiles
@@ -73,6 +102,9 @@ export class OpenFilesModule {
       },
       onOpen: () => {
         this.editors.changeCurrentTab(tab);
+      },
+      onSave: () => {
+        this.editors.save(tab);
       },
     }));
   }

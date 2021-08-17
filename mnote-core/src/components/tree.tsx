@@ -25,6 +25,7 @@ export function TreeItem(
     focused?: boolean;
     hidden?: boolean;
     ref?: React.Ref<HTMLDivElement>;
+    className?: string;
   },
 ) {
   return (

@@ -55,6 +55,7 @@ function FileNode(props: {
         }),
       );
     }}
+    className={"filetree-item"} // used by context menu
     //@ts-ignore: custom dom attribute
     mn-file-path={props.node.path}
   />;
@@ -128,6 +129,7 @@ function DirNode(props: {
           }),
         );
       }}
+      className={"filetree-item"}
       //@ts-ignore: custom dom attribute
       mn-dir-path={props.node.path}
     />
