@@ -26,6 +26,7 @@ import { clipboard } from "@milkdown/plugin-clipboard";
 import { getPathExtension } from "mnote-util/path";
 import { el } from "mnote-util/elbuilder";
 import "./markdown.scss";
+import { markdownIcon } from "./icon";
 
 // an editor extension contains:
 // - the editor
@@ -177,6 +178,14 @@ class MarkdownEditorProvider implements EditorProvider {
 
   createNewEditor() {
     return new MarkdownEditor(this.app);
+  }
+
+  getIcon(fillClass: string, strokeClass: string) {
+    return markdownIcon(fillClass, strokeClass);
+  }
+
+  shouldUseIcon(path: string) {
+    return getPathExtension(path) === "md";
   }
 }
 

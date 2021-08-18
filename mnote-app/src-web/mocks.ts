@@ -3,7 +3,7 @@
 export const tree = {
   path: "dir-a",
   children: [
-    { path: "file-b" },
+    { path: "file-b.txt" },
     { path: "file-c" },
     {
       path: "dir-d",

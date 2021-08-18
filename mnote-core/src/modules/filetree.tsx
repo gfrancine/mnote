@@ -281,6 +281,7 @@ export class FiletreeModule {
         ) {
           continue;
         }
+        console.log("editorinfo", editorInfo);
         if (!editorInfo.provider.shouldUseIcon(node.path)) continue;
         return editorInfo.provider.getIcon(fillClass, strokeClass);
       }

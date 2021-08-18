@@ -73,9 +73,11 @@ export class Mnote implements Type {
       .addModule("themes", await new ThemesModule(this).init());
 
     // register the extensions
-    (this.modules.extensions as ExtensionsModule)
-      .add(new PlaintextExtension(this))
-      .add(new SettingsExtension(this));
+    const extensions = (this.modules.extensions as ExtensionsModule);
+    await Promise.all([
+      extensions.add(new PlaintextExtension(this)),
+      extensions.add(new SettingsExtension(this)),
+    ]);
   }
 
   async startup() {

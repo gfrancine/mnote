@@ -26,11 +26,13 @@ console.log(nodefill);
 
   await app.init();
 
-  (app.modules.extensions as ExtensionsModule)
-    .add(new MarkdownExtension(app))
-    .add(new ExcalidrawExtension(app))
-    .add(new KanbanExtension(app))
-    .add(new CalendarExtension(app));
+  const extensions = (app.modules.extensions as ExtensionsModule);
+  await Promise.all([
+    extensions.add(new MarkdownExtension(app)),
+    extensions.add(new ExcalidrawExtension(app)),
+    extensions.add(new KanbanExtension(app)),
+    extensions.add(new CalendarExtension(app)),
+  ]);
 
   await app.startup();
 })();

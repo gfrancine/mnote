@@ -12,17 +12,17 @@ export class ExtensionsModule /* implements Module */ {
     this.app = app;
   }
 
-  add(extension: Extension) {
+  async add(extension: Extension) {
     this.extensions.push(extension);
-    extension.startup();
+    await extension.startup();
     return this;
   }
 
-  remove(extension: Extension) {
+  async remove(extension: Extension) {
     const index = this.extensions.indexOf(extension);
     if (index === undefined) return;
     delete this.extensions[index];
-    extension.cleanup();
+    await extension.cleanup();
     return this;
   }
 }

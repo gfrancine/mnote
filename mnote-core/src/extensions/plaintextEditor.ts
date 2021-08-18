@@ -4,6 +4,8 @@ import { EditorContext, EditorProvider, Extension } from "../modules/types";
 import { Editor } from "../modules/types";
 import { el } from "mnote-util/elbuilder";
 import { FSModule } from "../modules/fs";
+import { createIcon } from "../components/icons";
+import { getPathExtension } from "../../../mnote-util/path";
 
 // an editor extension contains:
 // - the editor
@@ -80,6 +82,14 @@ class PlaintextEditorProvider implements EditorProvider {
   }
   createNewEditor() {
     return new PlaintextEditor(this.app);
+  }
+
+  getIcon(fillClass: string, strokeClass: string) {
+    return createIcon("textFile", fillClass, strokeClass);
+  }
+
+  shouldUseIcon(path: string) {
+    return getPathExtension(path) === "txt";
   }
 }
 
