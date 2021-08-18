@@ -95,6 +95,13 @@ export class OpenFilesModule {
       path: tab.info.document.path,
       saved: tab.info.document.saved,
       getIcon: (fillClass: string, strokeClass: string) => {
+        if (
+          tab.info.document.path &&
+          tab.info.editorInfo.provider.shouldUseIcon &&
+          !tab.info.editorInfo.provider.shouldUseIcon(tab.info.document.path)
+        ) {
+          return;
+        }
         return tab.info.editorInfo.provider.getIcon?.(fillClass, strokeClass);
       },
       onClose: () => {
