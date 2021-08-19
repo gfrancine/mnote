@@ -6,6 +6,7 @@ import { el } from "mnote-util/elbuilder";
 import { FSModule } from "../modules/fs";
 import { createIcon } from "../components/icons";
 import { getPathExtension } from "../../../mnote-util/path";
+import { FileIconsModule } from "../modules/fileicons";
 
 // an editor extension contains:
 // - the editor
@@ -84,13 +85,7 @@ class PlaintextEditorProvider implements EditorProvider {
     return new PlaintextEditor(this.app);
   }
 
-  getIcon(fillClass: string, strokeClass: string) {
-    return createIcon("textFile", fillClass, strokeClass);
-  }
-
-  shouldUseIcon(path: string) {
-    return getPathExtension(path) === "txt";
-  }
+  getRegisteredIconKind = () => "textFile";
 }
 
 // extension
@@ -103,6 +98,13 @@ export class PlaintextExtension implements Extension {
   }
 
   startup() {
+    (this.app.modules.fileicons as FileIconsModule).registerIcon({
+      kind: "textFile",
+      factory: (fillClass: string, strokeClass: string) =>
+        createIcon("textFile", fillClass, strokeClass),
+      shouldUse: (path: string) => getPathExtension(path) === "txt",
+    });
+
     (this.app.modules.editors as EditorsModule).registerEditor({
       kind: "Plaintext",
       provider: new PlaintextEditorProvider(this.app),

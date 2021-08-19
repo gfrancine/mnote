@@ -8,6 +8,7 @@ import {
   CtxmenuModule,
   EditorsModule,
   ExtensionsModule,
+  FileIconsModule,
   FiletreeModule,
   FSModule,
   InputModule,
@@ -68,6 +69,7 @@ export class Mnote implements Type {
       .addModule("sidemenu", new SidemenuModule(this))
       .addModule("menubar", new MenubarModule(this))
       .addModule("editors", new EditorsModule(this))
+      .addModule("fileicons", new FileIconsModule(this))
       .addModule("filetree", new FiletreeModule(this))
       .addModule("openfiles", new OpenFilesModule(this))
       .addModule("themes", await new ThemesModule(this).init());

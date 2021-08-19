@@ -6,6 +6,7 @@ import { el } from "mnote-util/elbuilder";
 import { MenubarModule, SettingsModule } from "../modules";
 import { createIcon } from "../components/icons";
 import { SETTINGS_ALIAS_PATH as SETTINGS_PATH } from "../common/constants";
+import { FileIconsModule } from "../modules/fileicons";
 
 // an editor extension contains:
 // - the editor
@@ -108,13 +109,7 @@ class SettingsEditorProvider implements EditorProvider {
     return new SettingsEditor(this.app);
   }
 
-  getIcon(fillClass: string, strokeClass: string) {
-    return createIcon("settings", fillClass, strokeClass);
-  }
-
-  shouldUseIcon(path: string) {
-    return path === SETTINGS_PATH;
-  }
+  getRegisteredIconKind = () => "settings";
 }
 
 // extension
@@ -138,6 +133,13 @@ export class SettingsExtension implements Extension {
       };
 
       return [button];
+    });
+
+    (this.app.modules.fileicons as FileIconsModule).registerIcon({
+      kind: "settings",
+      factory: (fillClass: string, strokeClass: string) =>
+        createIcon("settings", fillClass, strokeClass),
+      shouldUse: () => false, // this icon should never show up in the file tree
     });
 
     (this.app.modules.editors as EditorsModule).registerEditor({

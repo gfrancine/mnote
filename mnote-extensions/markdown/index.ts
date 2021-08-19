@@ -7,6 +7,7 @@ import {
   EditorProvider,
   EditorsModule,
   Extension,
+  FileIconsModule,
   FSModule,
   Mnote,
   SettingsModule,
@@ -187,13 +188,7 @@ class MarkdownEditorProvider implements EditorProvider {
     return new MarkdownEditor(this.app);
   }
 
-  getIcon(fillClass: string, strokeClass: string) {
-    return markdownIcon(fillClass, strokeClass);
-  }
-
-  shouldUseIcon(path: string) {
-    return getPathExtension(path) === "md";
-  }
+  getRegisteredIconKind = () => "markdown";
 }
 
 // extension
@@ -208,6 +203,13 @@ export class MarkdownExtension implements Extension {
   }
 
   startup() {
+    (this.app.modules.fileicons as FileIconsModule).registerIcon({
+      kind: "markdown",
+      factory: (fillClass: string, strokeClass: string) =>
+        markdownIcon(fillClass, strokeClass),
+      shouldUse: (path: string) => getPathExtension(path) === "md",
+    });
+
     this.editors.registerEditor({
       kind: "Markdown",
       provider: new MarkdownEditorProvider(this.app),

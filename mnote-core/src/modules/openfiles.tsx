@@ -8,12 +8,14 @@ import OpenFiles from "../components/openfiles";
 import { EditorsModule } from "./editors";
 import { Context, Tab } from "./types";
 import { CtxmenuModule } from "./ctxmenu";
+import { FileIconsModule } from "./fileicons";
 
 export class OpenFilesModule {
   layout: LayoutModule;
   editors: EditorsModule;
   element: HTMLElement;
   ctxmenu: CtxmenuModule;
+  fileicons: FileIconsModule;
 
   openFiles: OpenFile[] = [];
 
@@ -21,6 +23,8 @@ export class OpenFilesModule {
     this.layout = app.modules.layout as LayoutModule;
     this.editors = app.modules.editors as EditorsModule;
     this.ctxmenu = app.modules.ctxmenu as CtxmenuModule;
+    this.fileicons = app.modules.fileicons as FileIconsModule;
+
     this.element = el("div")
       .class("openfiles-main")
       .element;
@@ -95,14 +99,16 @@ export class OpenFilesModule {
       path: tab.info.document.path,
       saved: tab.info.document.saved,
       getIcon: (fillClass: string, strokeClass: string) => {
-        if (
-          tab.info.document.path &&
-          tab.info.editorInfo.provider.shouldUseIcon &&
-          !tab.info.editorInfo.provider.shouldUseIcon(tab.info.document.path)
-        ) {
-          return;
+        if (tab.info.editorInfo.provider.getRegisteredIconKind) {
+          const kind = tab.info.editorInfo.provider.getRegisteredIconKind();
+          const icon = this.fileicons.getIcons()[kind];
+          if (icon) return icon.factory(fillClass, strokeClass);
         }
-        return tab.info.editorInfo.provider.getIcon?.(fillClass, strokeClass);
+
+        if (tab.info.document.path) {
+          const icon = this.fileicons.getIconForPath(tab.info.document.path);
+          return icon?.factory(fillClass, strokeClass);
+        }
       },
       onClose: () => {
         this.editors.close(tab);

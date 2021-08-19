@@ -34,11 +34,7 @@ export interface EditorProvider {
   // getExtensions(): string[] // allowed extensions for Save As prompt
   tryGetEditor(path: string): Editor | void | Promise<Editor | void>;
   createNewEditor(): Editor | Promise<Editor>;
-  // Tab icon factory
-  // shouldUseIcon: called by the file tree, whether to use getIcon on a path
-  shouldUseIcon?: (path: string) => boolean;
-  // called by openfiles
-  getIcon?: (fillClass: string, strokeClass: string) => Element;
+  getRegisteredIconKind?: () => string;
 }
 
 export type EditorInfo = {
@@ -82,4 +78,10 @@ export type PromptButton = {
   text: string;
   command: string;
   kind: "emphasis" | "normal";
+};
+
+export type FileIcon = {
+  kind: string;
+  factory: (fillClass: string, strokeClass: string) => Element;
+  shouldUse: (path: string) => boolean;
 };

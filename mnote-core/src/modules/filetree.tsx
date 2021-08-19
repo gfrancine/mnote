@@ -19,6 +19,7 @@ import { MenubarModule } from "./menubar";
 import { SystemModule } from "./system";
 import { getPathName } from "mnote-util/path";
 import { EditorsModule } from "./editors";
+import { FileIconsModule } from "./fileicons";
 
 const nothingHere = el("div")
   .inner("No opened folder")
@@ -36,6 +37,7 @@ export class FiletreeModule {
   prompts: PromptsModule;
   system: SystemModule;
   editors: EditorsModule;
+  fileicons: FileIconsModule;
 
   selectedFile?: string;
   directory?: string;
@@ -57,6 +59,7 @@ export class FiletreeModule {
     this.prompts = app.modules.prompts as PromptsModule;
     this.menubar = app.modules.menubar as MenubarModule;
     this.editors = app.modules.editors as EditorsModule;
+    this.fileicons = app.modules.fileicons as FileIconsModule;
 
     const cmdOrCtrl = this.system.USES_CMD ? "Cmd" : "Ctrl";
 
@@ -275,16 +278,8 @@ export class FiletreeModule {
       fillClass: string,
       strokeClass: string,
     ) => {
-      for (const editorInfo of Object.values(this.editors.editorKinds)) {
-        if (
-          !editorInfo.provider.getIcon || !editorInfo.provider.shouldUseIcon
-        ) {
-          continue;
-        }
-        console.log("editorinfo", editorInfo);
-        if (!editorInfo.provider.shouldUseIcon(node.path)) continue;
-        return editorInfo.provider.getIcon(fillClass, strokeClass);
-      }
+      const icon = this.fileicons.getIconForPath(node.path);
+      return icon?.factory(fillClass, strokeClass);
     };
 
     if (this.tree) {
