@@ -58,7 +58,7 @@ export class OpenFilesModule {
       if (tabItem) {
         const indexAttr = tabItem.getAttribute("mn-tab-index");
         if (!indexAttr) return;
-        const index = parseInt(indexAttr);
+        const index = parseInt(indexAttr, 10);
         const file = this.openFiles[index];
         if (!file) return;
 
