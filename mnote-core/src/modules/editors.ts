@@ -184,7 +184,7 @@ export class EditorsModule {
     for (let i = this.editors.length - 1; i > -1; i--) {
       const kind = this.editors[i].kind;
       const provider = this.editors[i].provider;
-      const editor = provider.tryGetEditor(path);
+      const editor = await provider.tryGetEditor(path);
       if (editor) {
         selectedEditor = editor;
         selectedEditorKind = kind;
@@ -223,7 +223,7 @@ export class EditorsModule {
       throw new Error(strings.editorDoesNotExist(editorKind));
     }
 
-    const editor = editorInfo.provider.createNewEditor();
+    const editor = await editorInfo.provider.createNewEditor();
     const document = {
       name: "Untitled",
       // no path

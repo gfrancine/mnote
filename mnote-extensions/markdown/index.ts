@@ -77,12 +77,6 @@ class MarkdownEditor implements Editor {
 
     this.element = el("div")
       .class("md-extension")
-      .hook((e) => {
-        e.element.style.setProperty(
-          "--md-font-size",
-          "" + this.settings.getKey("md.font-size"),
-        );
-      })
       .children(
         this.editorContainer,
         this.statsbar,
@@ -113,7 +107,19 @@ class MarkdownEditor implements Editor {
       .use(history);
   }
 
+  updateFontSize = () =>
+    this.settings.getKeyWithDefault(
+      "md.font-size",
+      "1em",
+      (v) => typeof v === "string",
+    ).then((value) => {
+      this.element.style.setProperty("--md-font-size", value);
+    });
+
   async startup(containter: HTMLElement, ctx: EditorContext) {
+    this.settings.events.on("change", this.updateFontSize);
+    await this.updateFontSize();
+
     this.ctx = ctx;
     this.container = containter;
     this.container.appendChild(this.element);
@@ -151,6 +157,7 @@ class MarkdownEditor implements Editor {
   }
 
   cleanup() {
+    this.settings.events.remove("change", this.updateFontSize);
     if (this.container) this.container.removeChild(this.element);
     this.element.innerHTML = "";
   }
@@ -193,22 +200,14 @@ class MarkdownEditorProvider implements EditorProvider {
 
 export class MarkdownExtension implements Extension {
   app: Mnote;
-  settings: SettingsModule;
   editors: EditorsModule;
 
   constructor(app: Mnote) {
     this.app = app;
-    this.settings = app.modules.settings as SettingsModule;
     this.editors = app.modules.editors as EditorsModule;
   }
 
-  async startup() {
-    await this.settings.getKeyWithDefault(
-      "md.font-size",
-      "1em",
-      (v) => typeof v === "string",
-    );
-
+  startup() {
     this.editors.registerEditor({
       kind: "Markdown",
       provider: new MarkdownEditorProvider(this.app),
