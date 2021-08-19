@@ -2,7 +2,6 @@ import {
   Editor,
   EditorContext,
   EditorProvider,
-  EditorsModule,
   Extension,
   FSModule,
   Mnote,
@@ -165,7 +164,7 @@ export class ExcalidrawExtension implements Extension {
   }
 
   startup() {
-    (this.app.modules.editors as EditorsModule).registerEditor({
+    this.app.modules.editors.registerEditor({
       kind: "Excalidraw",
       provider: new ExcalidrawEditorProvider(this.app),
       saveAsFileTypes: [{

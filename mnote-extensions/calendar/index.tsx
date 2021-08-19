@@ -2,7 +2,6 @@ import {
   Editor,
   EditorContext,
   EditorProvider,
-  EditorsModule,
   Extension,
   FSModule,
   Mnote,
@@ -307,7 +306,7 @@ export class CalendarExtension implements Extension {
   }
 
   startup() {
-    (this.app.modules.editors as EditorsModule).registerEditor({
+    this.app.modules.editors.registerEditor({
       kind: "Calendar",
       provider: new CalendarEditorProvider(this.app),
       saveAsFileTypes: [{

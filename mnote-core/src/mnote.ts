@@ -1,6 +1,6 @@
 // The implementation of the Mnote type in ./types
 
-import { Mnote as Type, MnoteOptions, Module } from "./common/types";
+import { Mnote as Type, MnoteOptions } from "./common/types";
 import { Emitter } from "mnote-util/emitter";
 import { el } from "mnote-util/elbuilder";
 
@@ -26,6 +26,25 @@ import {
 import { PlaintextExtension } from "./extensions/plaintextEditor";
 import { SettingsExtension } from "./extensions/settingsEditor";
 
+type Modules = {
+  logging: LoggingModule;
+  fs: FSModule;
+  system: SystemModule;
+  input: InputModule;
+  extensions: ExtensionsModule;
+  settings: SettingsModule;
+  layout: LayoutModule;
+  prompts: PromptsModule;
+  ctxmenu: CtxmenuModule;
+  sidemenu: SidemenuModule;
+  menubar: MenubarModule;
+  editors: EditorsModule;
+  fileicons: FileIconsModule;
+  filetree: FiletreeModule;
+  openfiles: OpenFilesModule;
+  themes: ThemesModule;
+};
+
 export class Mnote implements Type {
   options: MnoteOptions;
 
@@ -33,7 +52,7 @@ export class Mnote implements Type {
 
   element: Element;
 
-  modules: Record<string, Module> = {};
+  modules: Modules = {} as Modules;
 
   hooks: Emitter<{
     startup: () => Promise<void> | void;
@@ -56,23 +75,24 @@ export class Mnote implements Type {
 
   async init() {
     // register the modules
-    this
-      .addModule("logging", new LoggingModule(this))
-      .addModule("fs", new FSModule(this.options.fs))
-      .addModule("system", new SystemModule(this.options.system))
-      .addModule("input", new InputModule(this))
-      .addModule("extensions", new ExtensionsModule(this))
-      .addModule("settings", await new SettingsModule(this).init())
-      .addModule("layout", new LayoutModule(this))
-      .addModule("prompts", new PromptsModule(this))
-      .addModule("ctxmenu", new CtxmenuModule(this))
-      .addModule("sidemenu", new SidemenuModule(this))
-      .addModule("menubar", new MenubarModule(this))
-      .addModule("editors", new EditorsModule(this))
-      .addModule("fileicons", new FileIconsModule(this))
-      .addModule("filetree", new FiletreeModule(this))
-      .addModule("openfiles", new OpenFilesModule(this))
-      .addModule("themes", await new ThemesModule(this).init());
+    this.modules = {
+      logging: new LoggingModule(this),
+      fs: new FSModule(this.options.fs),
+      system: new SystemModule(this.options.system),
+      input: new InputModule(this),
+      extensions: new ExtensionsModule(this),
+      settings: await new SettingsModule(this).init(),
+      layout: new LayoutModule(this),
+      prompts: new PromptsModule(this),
+      ctxmenu: new CtxmenuModule(this),
+      sidemenu: new SidemenuModule(this),
+      menubar: new MenubarModule(this),
+      editors: new EditorsModule(this),
+      fileicons: new FileIconsModule(this),
+      filetree: new FiletreeModule(this),
+      openfiles: new OpenFilesModule(this),
+      themes: await new ThemesModule(this).init(),
+    };
 
     // register the extensions
     const extensions = (this.modules.extensions as ExtensionsModule);
@@ -85,10 +105,5 @@ export class Mnote implements Type {
   async startup() {
     await this.hooks.emitAsync("startup");
     this.container.appendChild(this.element);
-  }
-
-  addModule(name: string, module: Module): Mnote {
-    this.modules[name] = module;
-    return this;
   }
 }

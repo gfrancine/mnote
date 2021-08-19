@@ -49,6 +49,7 @@ export class ThemesModule {
     );
 
     this.rawSetTheme(theme);
+    return this;
   }
 
   protected rawSetTheme(theme: string) {

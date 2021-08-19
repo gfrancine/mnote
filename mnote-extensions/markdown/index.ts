@@ -5,9 +5,7 @@ import {
   Editor,
   EditorContext,
   EditorProvider,
-  EditorsModule,
   Extension,
-  FileIconsModule,
   FSModule,
   Mnote,
   SettingsModule,
@@ -61,7 +59,7 @@ class MarkdownEditor implements Editor {
   constructor(app: Mnote) {
     this.app = app;
     this.fs = (app.modules.fs as FSModule);
-    this.settings = (app.modules.settings as SettingsModule);
+    this.settings = app.modules.settings;
 
     this.editorContainer = el("div")
       .class("md-container")
@@ -195,22 +193,20 @@ class MarkdownEditorProvider implements EditorProvider {
 
 export class MarkdownExtension implements Extension {
   app: Mnote;
-  editors: EditorsModule;
 
   constructor(app: Mnote) {
     this.app = app;
-    this.editors = app.modules.editors as EditorsModule;
   }
 
   startup() {
-    (this.app.modules.fileicons as FileIconsModule).registerIcon({
+    this.app.modules.fileicons.registerIcon({
       kind: "markdown",
       factory: (fillClass: string, strokeClass: string) =>
         markdownIcon(fillClass, strokeClass),
       shouldUse: (path: string) => getPathExtension(path) === "md",
     });
 
-    this.editors.registerEditor({
+    this.app.modules.editors.registerEditor({
       kind: "Markdown",
       provider: new MarkdownEditorProvider(this.app),
       saveAsFileTypes: [{

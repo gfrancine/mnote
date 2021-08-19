@@ -17,8 +17,6 @@ export type Mnote = {
   }>;
 
   modules: Record<string, Module>;
-
-  addModule: (name: string, module: Module) => Mnote;
 };
 
 // options mainly for interop
