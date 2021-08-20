@@ -201,8 +201,7 @@ export class MarkdownExtension implements Extension {
   startup() {
     this.app.modules.fileicons.registerIcon({
       kind: "markdown",
-      factory: (fillClass: string, strokeClass: string) =>
-        markdownIcon(fillClass, strokeClass),
+      factory: markdownIcon,
       shouldUse: (path: string) => getPathExtension(path) === "md",
     });
 

@@ -14,6 +14,7 @@ import Board, { defaultValue, KanbanState } from "mnote-deps/kanban";
 import { getPathExtension } from "mnote-util/path";
 
 import "./kanban.scss";
+import { kanbanIcon } from "./icon";
 
 // https://github.com/rcdexta/react-trello
 
@@ -114,6 +115,8 @@ class KanbanEditorProvider implements EditorProvider {
   createNewEditor() {
     return new KanbanEditor(this.app);
   }
+
+  getRegisteredIconKind = () => "kanban";
 }
 
 // extension
@@ -133,6 +136,12 @@ export class KanbanExtension implements Extension {
         name: "Mnote Kanban",
         extensions: ["mnkanban"],
       }],
+    });
+
+    this.app.modules.fileicons.registerIcon({
+      kind: "kanban",
+      factory: kanbanIcon,
+      shouldUse: (path) => getPathExtension(path) === "mnkanban",
     });
   }
 

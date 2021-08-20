@@ -18,6 +18,7 @@ import moment from "moment";
 import "./big-calendar/styles.scss";
 import "./big-calendar/dragAndDrop.scss";
 import "./calendar.scss";
+import { calendarIcon } from "./icon";
 
 // https://github.com/rcdexta/react-trello
 
@@ -294,6 +295,8 @@ class CalendarEditorProvider implements EditorProvider {
   createNewEditor() {
     return new CalendarEditor(this.app);
   }
+
+  getRegisteredIconKind = () => "calendar";
 }
 
 // extension
@@ -313,6 +316,12 @@ export class CalendarExtension implements Extension {
         name: "Mnote Calendar",
         extensions: ["mncalendar"],
       }],
+    });
+
+    this.app.modules.fileicons.registerIcon({
+      kind: "calendar",
+      factory: calendarIcon,
+      shouldUse: (path) => getPathExtension(path) === "mncalendar",
     });
   }
 
