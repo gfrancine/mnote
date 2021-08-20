@@ -25,6 +25,7 @@ export class SettingsModule {
   constructor(app: Mnote) {
     this.app = app;
     this.fs = app.modules.fs as FSModule;
+    console.log(app.modules);
     this.logging = app.modules.logging as LoggingModule;
   }
 

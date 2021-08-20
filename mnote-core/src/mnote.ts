@@ -75,24 +75,24 @@ export class Mnote implements Type {
 
   async init() {
     // register the modules
-    this.modules = {
-      logging: new LoggingModule(this),
-      fs: new FSModule(this.options.fs),
-      system: new SystemModule(this.options.system),
-      input: new InputModule(this),
-      extensions: new ExtensionsModule(this),
-      settings: await new SettingsModule(this).init(),
-      layout: new LayoutModule(this),
-      prompts: new PromptsModule(this),
-      ctxmenu: new CtxmenuModule(this),
-      sidemenu: new SidemenuModule(this),
-      menubar: new MenubarModule(this),
-      editors: new EditorsModule(this),
-      fileicons: new FileIconsModule(this),
-      filetree: new FiletreeModule(this),
-      openfiles: new OpenFilesModule(this),
-      themes: await new ThemesModule(this).init(),
-    };
+    const m = this.modules;
+
+    m.logging = new LoggingModule(this);
+    m.fs = new FSModule(this.options.fs);
+    m.system = new SystemModule(this.options.system);
+    m.input = new InputModule(this);
+    m.extensions = new ExtensionsModule(this);
+    m.settings = await new SettingsModule(this).init();
+    m.layout = new LayoutModule(this);
+    m.prompts = new PromptsModule(this);
+    m.ctxmenu = new CtxmenuModule(this);
+    m.sidemenu = new SidemenuModule(this);
+    m.menubar = new MenubarModule(this);
+    m.editors = new EditorsModule(this);
+    m.fileicons = new FileIconsModule(this);
+    m.filetree = new FiletreeModule(this);
+    m.openfiles = new OpenFilesModule(this);
+    m.themes = await new ThemesModule(this).init();
 
     // register the extensions
     const extensions = (this.modules.extensions as ExtensionsModule);
