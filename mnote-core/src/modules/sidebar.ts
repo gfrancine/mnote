@@ -9,6 +9,7 @@ export class SidebarModule {
   layout: LayoutModule;
   menubar: MenubarModule;
   element: HTMLElement;
+  handle: HTMLElement;
   sidemenu: HTMLElement;
   toggleSidebarButton: HTMLElement;
   sidebarVisible = true;
@@ -18,10 +19,11 @@ export class SidebarModule {
     this.menubar = app.modules.menubar as MenubarModule;
 
     this.element = this.layout.sidebar;
+    this.handle = this.layout.sidebarHandle;
 
     makeResizable({
       element: this.element,
-      handle: this.layout.sidebarHandle,
+      handle: this.handle,
       vertical: false,
       cursor: "col-resize",
     });
@@ -69,8 +71,10 @@ export class SidebarModule {
   updateSidebarVisible() {
     if (this.sidebarVisible) {
       this.element.classList.remove("hidden");
+      this.handle.classList.remove("hidden");
     } else {
       this.element.classList.add("hidden");
+      this.handle.classList.add("hidden");
     }
   }
 }

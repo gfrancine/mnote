@@ -19,10 +19,14 @@
       background-repeat: no-repeat;
       background-position: 50%;
       width: 5px;
-    }
 
-    .gutter.gutter-horizontal {
-      cursor: col-resize;
+      &.gutter-horizontal {
+        cursor: col-resize;
+      }
+
+      &.hidden {
+        display: none;
+      }
     }
 
     .placeholder-nothing {
@@ -58,7 +62,7 @@
         box-sizing: border-box;
         height: 100%;
         overflow-y: auto;
-        margin: 0 15px 0 20px;
+        padding: 0 15px 0 20px;
 
         @include scrollbar.scrollbar(map.get($theme, "sidebar-bg-hover"));
       }
