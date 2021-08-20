@@ -99,15 +99,15 @@ export class OpenFilesModule {
       path: tab.info.document.path,
       saved: tab.info.document.saved,
       getIcon: (fillClass: string, strokeClass: string) => {
+        if (tab.info.document.path) {
+          const icon = this.fileicons.getIconForPath(tab.info.document.path);
+          return icon?.factory(fillClass, strokeClass);
+        }
+
         if (tab.info.editorInfo.provider.getRegisteredIconKind) {
           const kind = tab.info.editorInfo.provider.getRegisteredIconKind();
           const icon = this.fileicons.getIcons()[kind];
           if (icon) return icon.factory(fillClass, strokeClass);
-        }
-
-        if (tab.info.document.path) {
-          const icon = this.fileicons.getIconForPath(tab.info.document.path);
-          return icon?.factory(fillClass, strokeClass);
         }
       },
       onClose: () => {

@@ -139,7 +139,7 @@ export class SettingsExtension implements Extension {
       kind: "settings",
       factory: (fillClass: string, strokeClass: string) =>
         createIcon("settings", fillClass, strokeClass),
-      shouldUse: () => false, // this icon should never show up in the file tree
+      shouldUse: (path) => path === SETTINGS_PATH,
     });
 
     (this.app.modules.editors as EditorsModule).registerEditor({
