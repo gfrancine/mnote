@@ -4,7 +4,7 @@ import { LayoutModule } from "./layout";
 import { MenubarModule } from "./menubar";
 import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
-import { SidemenuModule } from "./sidemenu";
+import { SidebarModule } from "./sidebar";
 import { InputModule } from "./input";
 import { PromptsModule } from "./prompts";
 import { SystemModule } from "./system";
@@ -15,6 +15,7 @@ import { strings } from "../common/strings";
 import { Menu } from "../components/menu";
 import { TabManager } from "./editors-tab";
 import { FiletreeModule } from "./filetree";
+import { createIcon } from "../components/icons";
 
 // todo: a nicer placeholder
 const nothingHere = el("div")
@@ -36,7 +37,7 @@ export class EditorsModule {
   system: SystemModule;
   input: InputModule;
   logging: LoggingModule;
-  sidemenu: SidemenuModule;
+  sidebar: SidebarModule;
   prompts: PromptsModule;
 
   events: Emitter<{
@@ -62,7 +63,7 @@ export class EditorsModule {
     this.system = app.modules.system as SystemModule;
     this.input = app.modules.input as InputModule;
     this.logging = app.modules.logging as LoggingModule;
-    this.sidemenu = app.modules.sidemenu as SidemenuModule;
+    this.sidebar = app.modules.sidebar as SidebarModule;
     this.prompts = app.modules.prompts as PromptsModule;
 
     this.element = el("div")
@@ -74,7 +75,7 @@ export class EditorsModule {
     this.element.appendChild(nothingHere);
 
     // hook methods to the rest of the app
-    this.hookToSidebarMenu();
+    this.hookToSidebar();
     this.hookToMenubar();
     this.hookToInputs();
     this.hookToSystem();
@@ -274,9 +275,12 @@ export class EditorsModule {
   // Bind the module to the rest of the app
   //
 
-  protected hookToSidebarMenu() {
+  protected hookToSidebar() {
     // the "New File" button and menu
-    const button = this.sidemenu.createButton("add");
+    const button = this.sidebar.createSidemenuButton((fillClass, strokeClass) =>
+      createIcon("add", fillClass, strokeClass)
+    );
+
     let menu: Menu | undefined;
 
     const hideMenu = () => {
@@ -337,7 +341,7 @@ export class EditorsModule {
       }
     });
 
-    this.sidemenu.addButton(button);
+    this.sidebar.addSidemenuButton(button);
   }
 
   protected hookToMenubar() {

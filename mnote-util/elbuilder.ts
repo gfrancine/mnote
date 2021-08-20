@@ -68,7 +68,7 @@ export class Elbuilder {
     return this;
   }
 
-  children(...els: HTMLElement[]) {
+  children(...els: Element[]) {
     els.forEach((el) => {
       this.element.appendChild(el);
     });

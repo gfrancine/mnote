@@ -18,13 +18,13 @@ import {
   OpenFilesModule,
   PromptsModule,
   SettingsModule,
-  SidemenuModule,
   SystemModule,
   ThemesModule,
 } from "./modules";
 
 import { PlaintextExtension } from "./extensions/plaintextEditor";
 import { SettingsExtension } from "./extensions/settingsEditor";
+import { SidebarModule } from "./modules/sidebar";
 
 type Modules = {
   logging: LoggingModule;
@@ -36,8 +36,8 @@ type Modules = {
   layout: LayoutModule;
   prompts: PromptsModule;
   ctxmenu: CtxmenuModule;
-  sidemenu: SidemenuModule;
   menubar: MenubarModule;
+  sidebar: SidebarModule;
   editors: EditorsModule;
   fileicons: FileIconsModule;
   filetree: FiletreeModule;
@@ -86,8 +86,8 @@ export class Mnote implements Type {
     m.layout = new LayoutModule(this);
     m.prompts = new PromptsModule(this);
     m.ctxmenu = new CtxmenuModule(this);
-    m.sidemenu = new SidemenuModule(this);
     m.menubar = new MenubarModule(this);
+    m.sidebar = new SidebarModule(this);
     m.editors = new EditorsModule(this);
     m.fileicons = new FileIconsModule(this);
     m.filetree = new FiletreeModule(this);

@@ -3,7 +3,7 @@
 @use "layout";
 @use "menubar";
 @use "editor";
-@use "sidemenu";
+@use "sidebar";
 
 @use "extensions";
 @use "components";
@@ -37,7 +37,7 @@
     @include layout.layout($vars);
     @include menubar.menubar($vars);
     @include editor.editor($vars);
-    @include sidemenu.sidemenu($vars);
+    @include sidebar.sidebar($vars);
 
     @include extensions.extensions($vars);
     @include components.components($vars);

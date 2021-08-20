@@ -1,6 +1,6 @@
 import { MenuItem, Mnote /* , Module */ } from "../common/types";
 import { LayoutModule } from "./layout";
-import { el } from "mnote-util/elbuilder";
+import { el, Elbuilder } from "mnote-util/elbuilder";
 import { Menu } from "../components/menu";
 import { LoggingModule } from "./logging";
 import { createIcon } from "../components/icons";
@@ -39,16 +39,12 @@ export class MenubarModule /* implements Module */ {
       .class("menubar-left")
       .element;
 
-    this.menuToggle = el("div")
-      .class("menubar-menu-toggle")
-      .children(
-        el("div")
-          .class("menubar-icon")
-          .children(
-            createIcon("kebabMenu", "fill", "stroke"),
-          )
-          .element,
-      )
+    this.menuToggle = new Elbuilder(
+      this.createMenubarButton(
+        ((fillClass, strokeClass) =>
+          createIcon("kebabMenu", fillClass, strokeClass)),
+      ),
+    )
       .on("click", () => {
         if (this.menuCurrent) {
           this.hideMenu();
@@ -60,7 +56,6 @@ export class MenubarModule /* implements Module */ {
 
     this.right = el("div")
       .class("menubar-right")
-      .children(this.menuToggle)
       .element;
 
     this.element = el("div")
@@ -70,6 +65,8 @@ export class MenubarModule /* implements Module */ {
         this.right,
       )
       .element;
+
+    this.addMenubarButton(this.menuToggle);
 
     this.logging = app.modules.logging as LoggingModule;
     this.layout = app.modules.layout as LayoutModule;
@@ -86,6 +83,26 @@ export class MenubarModule /* implements Module */ {
         this.hideMenu();
       }
     });
+  }
+
+  createMenubarButton(
+    iconFactory: (fillClass: string, strokeClass: string) => Element,
+  ) {
+    return el("div")
+      .class("menubar-menu-button")
+      .children(
+        el("div")
+          .class("menubar-icon")
+          .children(
+            iconFactory("fill", "stroke"),
+          )
+          .element,
+      )
+      .element;
+  }
+
+  addMenubarButton(button: HTMLElement) {
+    this.right.prepend(button);
   }
 
   showMenu() {

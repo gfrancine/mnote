@@ -9,4 +9,5 @@ deno fmt `
   mnote-app/src `
   mnote-app/src-web `
   mnote-util `
-  mnote-deps/kanban
+  mnote-deps/kanban `
+  mnote-deps/resizable

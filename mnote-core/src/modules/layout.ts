@@ -10,7 +10,6 @@
 
 import { Mnote /* , Module */ } from "../common/types";
 import { el } from "mnote-util/elbuilder";
-import Split from "mnote-deps/split";
 
 // https://split.js.org/#/
 
@@ -22,6 +21,7 @@ export class LayoutModule /* implements Module */ {
   openFiles: HTMLElement;
   sidebarMenu: HTMLElement;
   contents: HTMLElement;
+  sidebarHandle: HTMLElement;
 
   constructor(app: Mnote) {
     this.menubar = (() => {
@@ -60,6 +60,11 @@ export class LayoutModule /* implements Module */ {
         .element;
     })();
 
+    this.sidebarHandle = el("div")
+      .class("gutter")
+      .class("gutter-horizontal")
+      .element;
+
     this.contents = (() => {
       return el("div")
         .class("layout-contents")
@@ -78,14 +83,10 @@ export class LayoutModule /* implements Module */ {
       .class("layout")
       .children(
         this.sidebar,
+        this.sidebarHandle,
         container,
       )
       .element;
-
-    Split([this.sidebar, container], {
-      gutterSize: 5,
-      sizes: [20, 80], // in %
-    });
 
     app.element.appendChild(this.main);
   }

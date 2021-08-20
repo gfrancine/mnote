@@ -8,7 +8,7 @@ export { FSModule } from "./fs";
 export { LoggingModule } from "./logging";
 export { CtxmenuModule } from "./ctxmenu";
 export { SystemModule } from "./system";
-export { SidemenuModule } from "./sidemenu";
+export { SidebarModule } from "./sidebar";
 export { FiletreeModule } from "./filetree";
 export { SettingsModule } from "./settings";
 export { ThemesModule } from "./themes";
