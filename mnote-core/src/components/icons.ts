@@ -50,6 +50,7 @@ const icons = {
       </g>
     </svg>
   `),
+  //
   settings: (
     _fillClass: string,
     strokeClass: string,
@@ -72,6 +73,7 @@ const icons = {
       />
     </svg>
   `),
+  //
   textFile: (
     _fillClass: string,
     strokeClass: string,
@@ -89,19 +91,19 @@ const icons = {
       class="${strokeClass}"/>
   </svg>
   `),
+  //
   leftSidebar: (
     _fillClass: string,
     strokeClass: string,
   ) =>
     toHtml(`
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-    <title>ionicons-v5-j</title>
-    <line x1="80" y1="160" x2="432" y2="160" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
-      class="${strokeClass}"/>
-    <line x1="80" y1="256" x2="300" y2="256" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
-      class="${strokeClass}"/>
-    <line x1="80" y1="352" x2="360" y2="352" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
-      class="${strokeClass}"/>
-  </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <line x1="50" y1="96" x2="462" y2="100" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px" 
+        class="${strokeClass}" />
+      <line x1="50" y1="256" x2="330" y2="256" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px" 
+        class="${strokeClass}" />
+      <line x1="50" y1="416" x2="360" y2="412" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px" 
+        class="${strokeClass}" />
+    </svg>
   `),
 };
