@@ -285,7 +285,7 @@ export class EditorsModule {
   protected hookToSidebar() {
     // the "New File" button and menu
     const button = this.sidebar.createSidemenuButton((fillClass, strokeClass) =>
-      createIcon("add", fillClass, strokeClass)
+      createIcon("add", fillClass, strokeClass, "Create a new file")
     );
 
     let menu: Menu | undefined;

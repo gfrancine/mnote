@@ -95,7 +95,6 @@ export class FiletreeModule {
       if (this.directory) {
         buttons.push({
           name: "Refresh Folder",
-          shortcut: cmdOrCtrl + "+O",
           click: () => {
             this.refreshTree();
           },

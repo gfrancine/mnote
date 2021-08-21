@@ -5,12 +5,15 @@ import { toHtml } from "mnote-util/dom";
 
 export type IconsList = typeof icons;
 
+export const titleAlt = (alt?: string) => alt ? `<title>${alt}</title>` : "";
+
 export function createIcon(
   name: keyof IconsList,
   fillClass: string,
   strokeClass: string,
+  alt?: string,
 ) {
-  return icons[name](fillClass, strokeClass);
+  return icons[name](fillClass, strokeClass, alt);
 }
 
 const icons = {
@@ -18,9 +21,11 @@ const icons = {
   kebabMenu: (
     _fillClass: string,
     strokeClass: string,
+    alt?: string,
   ) =>
     toHtml(`
     <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+      ${titleAlt(alt)}
       <circle cx="256" cy="256" r="32" class="${strokeClass}" style="fill:none;stroke-miterlimit:10;stroke-width:32px"/>
       <circle cx="256" cy="416" r="32" class="${strokeClass}" style="fill:none;stroke-miterlimit:10;stroke-width:32px"/>
       <circle cx="256" cy="96" r="32" class="${strokeClass}" style="fill:none;stroke-miterlimit:10;stroke-width:32px"/>
@@ -30,9 +35,11 @@ const icons = {
   add: (
     _fillClass: string,
     strokeClass: string,
+    alt?: string,
   ) =>
     toHtml(`
     <svg viewBox="0 0 512 512" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+      ${titleAlt(alt)}
       <defs>
         <path d="M0 0L512 0L512 512L0 512L0 0Z" id="path_1" />
         <clipPath id="mask_1">
@@ -54,9 +61,11 @@ const icons = {
   settings: (
     _fillClass: string,
     strokeClass: string,
+    alt?: string,
   ) =>
     toHtml(`
     <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+      ${titleAlt(alt)}
       <path d="M262.29,192.31a64,64,0,1,0,57.4,57.4A64.13,64.13,0,0,0,262.29,192.31ZM416.39,256a154.34,154.34,0,0,1-1.53,
         20.79l45.21,35.46A10.81,10.81,0,0,1,462.52,326l-42.77,74a10.81,10.81,0,0,1-13.14,4.59l-44.9-18.08a16.11,16.11,0,0,
         0-15.17,1.75A164.48,164.48,0,0,1,325,400.8a15.94,15.94,0,0,0-8.82,12.14l-6.73,47.89A11.08,11.08,0,0,1,298.77,
@@ -77,9 +86,11 @@ const icons = {
   textFile: (
     _fillClass: string,
     strokeClass: string,
+    alt?: string,
   ) =>
     toHtml(`
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  ${titleAlt(alt)}
     <path d="M416,221.25V416a48,48,0,0,1-48,48H144a48,48,0,0,1-48-48V96a48,48,0,0,1,48-48h98.75a32,32,0,0,1,22.62,9.37L406.63,
       198.63A32,32,0,0,1,416,221.25Z" style="fill:none;stroke-linejoin:round;stroke-width:32px"
       class="${strokeClass}"/>
@@ -95,9 +106,11 @@ const icons = {
   leftSidebar: (
     _fillClass: string,
     strokeClass: string,
+    alt?: string,
   ) =>
     toHtml(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+    ${titleAlt(alt)}
       <line x1="50" y1="96" x2="462" y2="100" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px" 
         class="${strokeClass}" />
       <line x1="50" y1="256" x2="330" y2="256" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px" 

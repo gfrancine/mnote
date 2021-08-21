@@ -37,7 +37,9 @@ export class SidebarModule {
     this.toggleSidebarButton = this.menubar.createMenubarButton((
       fillClass,
       strokeClass,
-    ) => createIcon("leftSidebar", fillClass, strokeClass));
+    ) =>
+      createIcon("leftSidebar", fillClass, strokeClass, "Toggle the sidebar")
+    );
     this.toggleSidebarButton.addEventListener(
       "click",
       () => this.setSidebarVisible(!this.sidebarVisible),
