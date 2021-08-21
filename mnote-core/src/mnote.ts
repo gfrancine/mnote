@@ -5,6 +5,7 @@ import { Emitter } from "mnote-util/emitter";
 import { el } from "mnote-util/elbuilder";
 
 import {
+  AppDirModule,
   CtxmenuModule,
   EditorsModule,
   ExtensionsModule,
@@ -32,6 +33,7 @@ type Modules = {
   system: SystemModule;
   input: InputModule;
   extensions: ExtensionsModule;
+  appdir: AppDirModule;
   settings: SettingsModule;
   layout: LayoutModule;
   prompts: PromptsModule;
@@ -82,6 +84,7 @@ export class Mnote implements Type {
     m.system = new SystemModule(this.options.system);
     m.input = new InputModule(this);
     m.extensions = new ExtensionsModule(this);
+    m.appdir = await new AppDirModule(this).init();
     m.settings = await new SettingsModule(this).init();
     m.layout = new LayoutModule(this);
     m.prompts = new PromptsModule(this);
