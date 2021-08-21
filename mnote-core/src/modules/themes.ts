@@ -1,5 +1,4 @@
 import { Mnote } from "../common/types";
-import { Emitter } from "mnote-util/emitter";
 import { SettingsModule } from "./settings";
 import { dark, light } from "../components/colors";
 
@@ -23,57 +22,69 @@ export class ThemesModule {
     light,
   };
 
-  events: Emitter<{
-    register: (name: string) => void | Promise<void>;
-  }> = new Emitter();
+  // events: Emitter<{}> = new Emitter();
 
   constructor(app: Mnote) {
     this.app = app;
     this.settings = app.modules.settings as SettingsModule;
 
     this.settings.events.on("change", () => {
-      this.init();
+      this.updateTheme();
     });
 
-    this.events.on("register", () => {
-      this.init();
-    });
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener(
+      "change",
+      async () => {
+        const theme = await this.getSettingsValue();
+        if (theme !== "system") return;
+        this.updateSystemTheme();
+      },
+    );
   }
 
-  // load from settings
   async init() {
-    const theme = await this.settings.getKeyWithDefault(
-      "theme",
-      "light",
-      (v) => typeof v === "string" && this.hasTheme(v),
-    );
-
-    this.rawSetTheme(theme);
+    await this.updateTheme();
     return this;
   }
 
-  protected rawSetTheme(theme: string) {
-    if (!this.hasTheme(theme)) theme = "light";
+  protected async updateTheme() {
+    let theme = await this.getSettingsValue();
+    if (!this.hasTheme(theme)) theme = "system";
+    console.log("theme updated:", theme);
+    if (theme === "system") {
+      this.updateSystemTheme();
+    } else {
+      this.updateWithRegisteredTheme(theme);
+    }
+  }
+
+  private updateSystemTheme() {
+    const perfersDark =
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (perfersDark) {
+      this.updateWithRegisteredTheme("dark");
+    } else {
+      this.updateWithRegisteredTheme("light");
+    }
+  }
+
+  protected updateWithRegisteredTheme(theme: string) {
+    if (!this.themes[theme]) theme = "light";
     const colors = this.themes[theme];
     for (const k of Object.keys(colors)) {
       setVar(k, colors[k]);
     }
   }
 
-  /** set the theme and persist */
-  async setTheme(theme: string) {
-    if (!this.hasTheme(theme)) theme = "light";
-    await this.settings.setKey("theme", theme);
-    this.rawSetTheme(theme);
-  }
-
-  registerTheme(name: string, colors: Record<string, string>) {
-    this.themes[name] = colors;
-    this.events.emit("register", name);
-    return this;
+  getSettingsValue() {
+    return this.settings.getKeyWithDefault(
+      "theme",
+      "system",
+      (v) => typeof v === "string" && this.hasTheme(v),
+    );
   }
 
   hasTheme(name: string) {
-    return this.themes[name] !== undefined;
+    return name === "system" || this.themes[name] !== undefined;
   }
 }
