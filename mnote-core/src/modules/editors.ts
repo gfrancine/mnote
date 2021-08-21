@@ -167,14 +167,21 @@ export class EditorsModule {
     this.changeCurrentTab(tab);
   }
 
+  tryGetTabFromPath(path: string) {
+    for (const tab of this.activeTabs) {
+      if (tab.info.document.path === path) {
+        return tab;
+      }
+    }
+  }
+
   // open button
   // hooked to file tree's selectedfile event
   async open(path: string) {
-    for (const tab of this.activeTabs) {
-      if (tab.info.document.path === path) {
-        this.changeCurrentTab(tab);
-        return;
-      }
+    const existingTab = this.tryGetTabFromPath(path);
+    if (existingTab) {
+      this.changeCurrentTab(existingTab);
+      return;
     }
 
     let selectedEditor: Editor | undefined;
