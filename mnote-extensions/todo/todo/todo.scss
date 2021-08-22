@@ -1,0 +1,242 @@
+/*
+
+$colors: (
+  icon-fg: #aaa,
+  icon-hover-fg: #888,
+  dropdown-bg: #eee,
+  dropdown-fg: #222,
+  item-border: #ddd,
+  item-editing-border: #888,
+  item-done-fg: #888,
+  item-placeholder-fg: #aaa,
+  title-placeholder-fg: #aaa,
+  bullet-border: #888,
+  bullet-hover-bg: #ddd,
+  fg-main: #222,
+  accent: #222
+);
+
+*/
+
+@mixin todo($colors) {
+  .todo {
+    * {
+      box-sizing: border-box;
+    }
+
+    .todo-header {
+      display: flex;
+      margin: 2em 0;
+      flex-direction: row;
+
+      .left {
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: 50%;
+
+        .title {
+          display: block;
+          font-size: 2.2em;
+          font-weight: bold;
+          background: none;
+          font-family: inherit;
+          resize: none;
+          border: none;
+          width: 100%;
+          outline: none;
+          color: inherit;
+          overflow: hidden;
+          position: relative;
+          border-bottom: solid 1px transparent;
+
+          &::placeholder {
+            color: map-get($colors, title-placeholder-fg);
+          }
+
+          &:focus {
+            border-bottom: solid 1px map-get($colors, item-editing-border);
+          }
+        }
+      }
+
+      .right {
+        width: 50%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: flex-end;
+
+        .dropdown {
+          font-family: inherit;
+          font-size: 0.9em;
+          color: map-get($colors, dropdown-fg);
+          height: 2.2em;
+          outline: none;
+          border: none;
+          background: map-get($colors, dropdown-bg);
+          padding: 0.25em;
+          border-radius: 0.2em;
+          margin-left: 0.5em;
+
+          * {
+            font-family: inherit;
+            color: inherit;
+          }
+        }
+      }
+
+      &.small {
+        flex-direction: column;
+        .left {
+          width: 100%;
+          margin-bottom: 1em;
+        }
+        .right {
+          width: 100%;
+          justify-content: start;
+        }
+      }
+    }
+
+    .todo-list {
+      .todo-item {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        margin: 0;
+
+        &.draggedover {
+          &:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin-left: 3em;
+          }
+          &.above:before {
+            top: 1px;
+            border-top: solid 2px map-get($colors, accent);
+            z-index: 1;
+          }
+          &.below:before {
+            bottom: -1px;
+            border-bottom: solid 2px map-get($colors, accent);
+            z-index: 1;
+          }
+        }
+
+        .left-element {
+          margin: 1em 0.25em 0.5em 0.25em;
+          width: 1.5em;
+          height: 1.5em;
+        }
+
+        .add-icon {
+          display: grid;
+          place-items: center;
+
+          .stroke {
+            stroke: map-get($colors, icon-fg);
+          }
+          .fill {
+            fill: map-get($colors, icon-fg);
+          }
+        }
+
+        .checked-bullet {
+          padding: 0.1em 0;
+          .outer {
+            stroke: map-get($colors, bullet-border);
+            fill: none;
+          }
+
+          &:hover {
+            cursor: pointer;
+            .outer {
+              fill: map-get($colors, bullet-hover-bg);
+            }
+          }
+
+          .inner {
+            fill: map-get($colors, accent);
+          }
+        }
+
+        &.done .todo-text-input .input {
+          color: map-get($colors, item-done-fg);
+          text-decoration: line-through;
+        }
+
+        .button.delete {
+          opacity: 0;
+        }
+
+        &:hover .button.delete {
+          opacity: 1;
+        }
+
+        .todo-text-input {
+          width: 100%;
+          flex: 1;
+          display: flex;
+          flex-direction: row;
+          border-bottom: 1px solid map-get($colors, item-border);
+          margin: 0 0 0 0.5em;
+          padding: 1em 0 0.5em 0;
+
+          &.editing {
+            border-bottom: 1px solid map-get($colors, item-editing-border);
+          }
+
+          .input {
+            width: 100%;
+            resize: none;
+            border: none;
+            outline: none;
+            font-size: 1em;
+            font-family: inherit;
+            background: none;
+            color: inherit;
+            overflow: hidden;
+            &::placeholder {
+              color: map-get($colors, item-placeholder-fg);
+            }
+          }
+
+          .buttons {
+            display: flex;
+            flex-direction: row;
+            margin-left: 0.5em;
+            height: 1.2em;
+            margin: 0 0.5em;
+
+            .button {
+              width: 1.2em;
+              height: 1.2em;
+
+              .stroke {
+                stroke: map-get($colors, icon-fg);
+              }
+              .fill {
+                fill: map-get($colors, icon-fg);
+              }
+
+              &:hover {
+                cursor: pointer;
+                .stroke {
+                  stroke: map-get($colors, icon-hover-fg);
+                }
+                .fill {
+                  fill: map-get($colors, icon-hover-fg);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

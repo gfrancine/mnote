@@ -21,6 +21,7 @@ export const tree = {
     { path: "file-h.excalidraw" },
     { path: "file-i.mnkanban" },
     { path: "file-j.mncalendar" },
+    { path: "file-j.mntodo" },
   ],
 };
 
@@ -72,4 +73,6 @@ export const contents: Record<string, string> = {
   "viewBackgroundColor":"#ffffff","zenModeEnabled":true,"zoom":{"value":0.8,
   "translation":{"x":0,"y":0}},"viewModeEnabled":false,"offsetLeft":242.5,
   "offsetTop":36,"width":957.5,"height":764}}`,
+  mntodo: `{"version":1,"data":{"items":{"1":{"id":"1","done":true,"text":
+  "Do something useful","depth":0}},"itemsOrder":["1"]}}`,
 };

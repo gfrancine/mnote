@@ -1,0 +1,27 @@
+@use "~mnote-styles/mnote-vars" as mn;
+@import "./todo/todo";
+
+$colors: (
+  icon-fg: map-get(mn.$vars, fg-dim),
+  icon-hover-fg: map-get(mn.$vars, fg-secondary),
+  dropdown-bg: map-get(mn.$vars, bg-secondary),
+  dropdown-fg: map-get(mn.$vars, fg-main),
+  item-border: map-get(mn.$vars, border-main),
+  item-editing-border: map-get(mn.$vars, fg-secondary),
+  item-done-fg: map-get(mn.$vars, fg-dim),
+  item-placeholder-fg: map-get(mn.$vars, fg-dim),
+  title-placeholder-fg: map-get(mn.$vars, fg-dim),
+  bullet-border: map-get(mn.$vars, fg-dim),
+  bullet-hover-bg: map-get(mn.$vars, bg-secondary),
+  fg-main: map-get(mn.$vars, fg-main),
+  accent: map-get(mn.$vars, fg-main),
+);
+
+.todo-extension {
+  font-size: 0.9em;
+  max-width: 720px;
+  width: 80%;
+  margin: auto;
+
+  @include todo($colors);
+}

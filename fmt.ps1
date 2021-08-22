@@ -5,7 +5,7 @@ deno fmt `
   mnote-extensions/kanban `
   mnote-extensions/markdown `
   mnote-extensions/excalidraw `
-  mnote-extensions/starter `
+  mnote-extensions/todo `
   mnote-app/src `
   mnote-app/src-web `
   mnote-util `

@@ -10,6 +10,7 @@
     "mnote-core": "file:../mnote-core",
     "mnote-deps": "file:../mnote-deps",
     "mnote-util": "file:../mnote-util",
-    "moment": "^2.29.1"
+    "moment": "^2.29.1",
+    "nanoid": "^3.1.25"
   }
 }
