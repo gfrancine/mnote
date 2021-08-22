@@ -19,6 +19,8 @@
       background-repeat: no-repeat;
       background-position: 50%;
       width: 5px;
+      flex-shrink: 0;
+      flex-grow: 0;
 
       &.gutter-horizontal {
         cursor: col-resize;
