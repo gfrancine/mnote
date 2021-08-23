@@ -1,4 +1,4 @@
-import { toHtml } from "../../mnote-util/dom";
+import { toHtml } from "mnote-util/dom";
 
 export const markdownIcon = (fillClass: string, _strokeClass: string) =>
   toHtml(`

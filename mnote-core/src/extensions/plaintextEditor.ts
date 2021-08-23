@@ -5,7 +5,7 @@ import { Editor } from "../modules/types";
 import { el } from "mnote-util/elbuilder";
 import { FSModule } from "../modules/fs";
 import { createIcon } from "../components/icons";
-import { getPathExtension } from "../../../mnote-util/path";
+import { getPathExtension } from "mnote-util/path";
 import { FileIconsModule } from "../modules/fileicons";
 
 // an editor extension contains:

@@ -10,7 +10,7 @@ import { MarkdownExtension } from "mnote-extensions/markdown";
 import { ExcalidrawExtension } from "mnote-extensions/excalidraw";
 import { KanbanExtension } from "mnote-extensions/kanban";
 import { CalendarExtension } from "mnote-extensions/calendar";
-import { TodoExtension } from "../../mnote-extensions/todo";
+import { TodoExtension } from "mnote-extensions/todo";
 
 // run this so it gets bundled
 console.log(nodefill);
