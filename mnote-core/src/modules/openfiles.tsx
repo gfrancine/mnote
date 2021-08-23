@@ -104,8 +104,8 @@ export class OpenFilesModule {
           return icon?.factory(fillClass, strokeClass);
         }
 
-        if (tab.info.editorInfo.provider.getRegisteredIconKind) {
-          const kind = tab.info.editorInfo.provider.getRegisteredIconKind();
+        if (tab.info.editorInfo.registeredIconKind) {
+          const kind = tab.info.editorInfo.registeredIconKind;
           const icon = this.fileicons.getIcons()[kind];
           if (icon) return icon.factory(fillClass, strokeClass);
         }

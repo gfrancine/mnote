@@ -108,8 +108,6 @@ class SettingsEditorProvider implements EditorProvider {
   createNewEditor() {
     return new SettingsEditor(this.app);
   }
-
-  getRegisteredIconKind = () => "settings";
 }
 
 // extension
@@ -147,6 +145,7 @@ export class SettingsExtension implements Extension {
       provider: new SettingsEditorProvider(this.app),
       hideFromNewMenu: true,
       disableSaveAs: true,
+      registeredIconKind: "settings",
     });
   }
 

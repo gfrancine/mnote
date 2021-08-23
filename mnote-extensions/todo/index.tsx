@@ -131,8 +131,6 @@ class TodoEditorProvider implements EditorProvider {
   createNewEditor() {
     return new TodoEditor(this.app);
   }
-
-  getRegisteredIconKind = () => "todo";
 }
 
 // extension
@@ -148,6 +146,7 @@ export class TodoExtension implements Extension {
     this.app.modules.editors.registerEditor({
       kind: "Todo",
       provider: new TodoEditorProvider(this.app),
+      registeredIconKind: "todo",
       saveAsFileTypes: [{
         name: "Mnote Todo",
         extensions: ["mntodo"],

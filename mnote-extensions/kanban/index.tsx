@@ -115,8 +115,6 @@ class KanbanEditorProvider implements EditorProvider {
   createNewEditor() {
     return new KanbanEditor(this.app);
   }
-
-  getRegisteredIconKind = () => "kanban";
 }
 
 // extension
@@ -132,6 +130,7 @@ export class KanbanExtension implements Extension {
     this.app.modules.editors.registerEditor({
       kind: "Kanban",
       provider: new KanbanEditorProvider(this.app),
+      registeredIconKind: "kanban",
       saveAsFileTypes: [{
         name: "Mnote Kanban",
         extensions: ["mnkanban"],

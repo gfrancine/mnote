@@ -295,8 +295,6 @@ class CalendarEditorProvider implements EditorProvider {
   createNewEditor() {
     return new CalendarEditor(this.app);
   }
-
-  getRegisteredIconKind = () => "calendar";
 }
 
 // extension
@@ -312,6 +310,7 @@ export class CalendarExtension implements Extension {
     this.app.modules.editors.registerEditor({
       kind: "Calendar",
       provider: new CalendarEditorProvider(this.app),
+      registeredIconKind: "calendar",
       saveAsFileTypes: [{
         name: "Mnote Calendar",
         extensions: ["mncalendar"],

@@ -185,8 +185,6 @@ class MarkdownEditorProvider implements EditorProvider {
   createNewEditor() {
     return new MarkdownEditor(this.app);
   }
-
-  getRegisteredIconKind = () => "markdown";
 }
 
 // extension
@@ -208,6 +206,7 @@ export class MarkdownExtension implements Extension {
     this.app.modules.editors.registerEditor({
       kind: "Markdown",
       provider: new MarkdownEditorProvider(this.app),
+      registeredIconKind: "markdown",
       saveAsFileTypes: [{
         name: "Markdown",
         extensions: ["md"],

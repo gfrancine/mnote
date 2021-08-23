@@ -84,8 +84,6 @@ class PlaintextEditorProvider implements EditorProvider {
   createNewEditor() {
     return new PlaintextEditor(this.app);
   }
-
-  getRegisteredIconKind = () => "textFile";
 }
 
 // extension
@@ -108,6 +106,7 @@ export class PlaintextExtension implements Extension {
     (this.app.modules.editors as EditorsModule).registerEditor({
       kind: "Plaintext",
       provider: new PlaintextEditorProvider(this.app),
+      registeredIconKind: "textFile",
     });
   }
 

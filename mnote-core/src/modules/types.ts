@@ -34,7 +34,6 @@ export interface EditorProvider {
   // getExtensions(): string[] // allowed extensions for Save As prompt
   tryGetEditor(path: string): Editor | void | Promise<Editor | void>;
   createNewEditor(): Editor | Promise<Editor>;
-  getRegisteredIconKind?: () => string;
 }
 
 export type EditorInfo = {
@@ -46,6 +45,8 @@ export type EditorInfo = {
   saveAsFileTypes?: DialogFileType[];
   /** Disable the save as dialog. Useful for non-file system editors */
   disableSaveAs?: boolean;
+  /** Get the editor's icon registered from the file icons module */
+  registeredIconKind?: string;
 };
 
 export type TabInfo = {
