@@ -10,6 +10,8 @@ import {
 // todo: mock
 // https://tauri.studio/en/docs/api/js/modules/fs
 
+// todo: DRY void methods
+
 export class FSModule implements FsInteropModule {
   protected fs?: FsInteropModule;
 
@@ -118,5 +120,12 @@ export class FSModule implements FsInteropModule {
     handler: FsWatcherEvents[K],
   ) {
     this.fs?.onWatchEvent(event, handler);
+  }
+
+  offWatchEvent<K extends keyof FsWatcherEvents>(
+    event: K,
+    handler: FsWatcherEvents[K],
+  ) {
+    this.fs?.offWatchEvent(event, handler);
   }
 }

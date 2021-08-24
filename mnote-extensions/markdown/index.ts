@@ -156,7 +156,7 @@ class MarkdownEditor implements Editor {
   }
 
   cleanup() {
-    this.settings.events.remove("change", this.updateFontSize);
+    this.settings.events.off("change", this.updateFontSize);
     if (this.container) this.container.removeChild(this.element);
     this.element.innerHTML = "";
   }

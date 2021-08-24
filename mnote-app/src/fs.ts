@@ -208,4 +208,11 @@ export class FS implements FsInteropModule {
   ) {
     this.watcher.events.on(event, handler);
   }
+
+  offWatchEvent<K extends keyof FsWatcherEvents>(
+    event: K,
+    handler: FsWatcherEvents[K],
+  ) {
+    this.watcher.events.off(event, handler);
+  }
 }

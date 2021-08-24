@@ -72,6 +72,11 @@ export interface FsInteropModule {
     event: K,
     handler: FsWatcherEvents[K],
   ): void;
+  // weird a** semantics
+  offWatchEvent<K extends keyof FsWatcherEvents>(
+    event: K,
+    handler: FsWatcherEvents[K],
+  ): void;
 }
 
 export type FileItem = {

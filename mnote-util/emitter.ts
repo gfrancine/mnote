@@ -20,7 +20,7 @@ export class Emitter<E extends Record<string, Function>> {
     listeners.push(listener);
   }
 
-  remove<K extends keyof E>(event: K, listener: E[K]) {
+  off<K extends keyof E>(event: K, listener: E[K]) {
     const listeners = this.events[event];
     if (!listeners) return;
 
