@@ -26,8 +26,37 @@ export class TabManager {
     this.prompts = app.modules.prompts as PromptsModule;
   }
 
+  // mark the document as unsaved, remove the path
+  private onWatcherRemove = (path: string) => {
+    const { document } = this.ctx.getTabInfo();
+    if (!document.path) return;
+    if (path === document.path) {
+      const newDoc = { ...document };
+      delete newDoc.path;
+      newDoc.saved = false;
+      this.ctx.setDocument(newDoc);
+    }
+  };
+
+  // update the document path and name
+  private onWatcherRename = (path: string, targetPath: string) => {
+    const { document } = this.ctx.getTabInfo();
+    if (!document.path) return;
+    if (path === document.path) {
+      this.ctx.setDocument({
+        ...document,
+        path: targetPath,
+        name: getPathName(targetPath),
+      });
+    }
+  };
+
   async startup() {
     const { document, container, editor } = this.ctx.getTabInfo();
+
+    this.fs.onWatchEvent("rename", this.onWatcherRename);
+    this.fs.onWatchEvent("remove", this.onWatcherRemove);
+
     await editor.startup(container, this.makeContext());
     if (document.path) await editor.load(document.path);
     return this;
@@ -110,11 +139,18 @@ export class TabManager {
     return true;
   }
 
+  private async cleanup() {
+    this.fs.onWatchEvent("rename", this.onWatcherRename);
+    this.fs.onWatchEvent("remove", this.onWatcherRemove);
+    const { editor } = this.ctx.getTabInfo();
+    await editor.cleanup();
+  }
+
   async close(): Promise<boolean> {
-    const { editor, document } = this.ctx.getTabInfo();
+    const { document } = this.ctx.getTabInfo();
 
     if (document.saved) {
-      await editor.cleanup();
+      await this.cleanup();
       return true;
     } else {
       const action = await this.prompts.promptButtons(
@@ -125,7 +161,7 @@ export class TabManager {
       switch (action as "cancel" | "save" | "dontsave") {
         case "save":
           if (await this.save()) {
-            await editor.cleanup();
+            await this.cleanup();
             return true;
           } else {
             return false;
@@ -133,13 +169,12 @@ export class TabManager {
         case "cancel":
           return false;
         case "dontsave":
-          await editor.cleanup();
+          await this.cleanup();
           return true;
       }
     }
   }
 }
-
 const confirmCloseButtons: PromptButton[] = [
   {
     kind: "normal",
