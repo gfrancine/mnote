@@ -34,6 +34,13 @@ export type MnoteOptions = {
 
 export type DialogFileType = { name: string; extensions: string[] };
 
+export type FsWatcherEvents = {
+  event: () => void | Promise<void>;
+  write: (path: string) => void | Promise<void>;
+  remove: (path: string) => void | Promise<void>;
+  rename: (path: string, targetPath: string) => void | Promise<void>;
+};
+
 export interface FsInteropModule {
   //todo
   writeTextFile(path: string, contents: string): Promise<void>;
@@ -61,7 +68,10 @@ export interface FsInteropModule {
   joinPath(items: string[]): string;
 
   watchInit(path: string): Promise<void>;
-  onWatchEvent(handler: () => void | Promise<void>): void;
+  onWatchEvent<K extends keyof FsWatcherEvents>(
+    event: K,
+    handler: FsWatcherEvents[K],
+  ): void;
 }
 
 export type FileItem = {

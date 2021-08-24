@@ -28,20 +28,50 @@ fn fs_rename(from: String, to: String) -> Result<(), String> {
   Ok(())
 }
 
-use notify::{watcher, RecursiveMode, Watcher};
+use notify::{watcher, RecursiveMode, Watcher, DebouncedEvent};
 use std::sync::mpsc::channel;
 use std::time::Duration;
+use serde::Serialize;
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct WatcherPayload<'a> {
+  kind: &'a str, // 
+  path: Option<&'a str>,
+  target_path: Option<&'a str>,
+}
 
 #[tauri::command]
 async fn watcher_init(window: tauri::Window, path: String) {
   let (tx, rx) = channel();
-  let mut watcher = watcher(tx, Duration::from_secs(10)).unwrap();
+  let mut watcher = watcher(tx, Duration::from_secs(3)).unwrap();
   watcher.watch(path, RecursiveMode::Recursive).unwrap();
 
   loop {
     if let Ok(ev) = rx.recv() {
       println!("Event: {:?}", ev);
-      window.emit("watcher_event", "").unwrap();
+      let emit = |payload: WatcherPayload| {
+        window.emit("watcher_event", payload).unwrap();
+      };
+
+      match ev {
+        DebouncedEvent::Write(path) => emit(WatcherPayload {
+          kind: "write",
+          path: path.as_path().to_str(),
+          target_path: None,
+        }),
+        DebouncedEvent::Rename(path, target) => emit(WatcherPayload {
+          kind: "rename",
+          path: path.as_path().to_str(),
+          target_path: target.as_path().to_str(),
+        }),
+        DebouncedEvent::Remove(path) => emit(WatcherPayload {
+          kind: "remove",
+          path: path.as_path().to_str(),
+          target_path: None,
+        }),
+        _ => ()
+      };
     }
   }
 }

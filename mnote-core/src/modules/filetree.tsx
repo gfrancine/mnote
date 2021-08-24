@@ -200,7 +200,7 @@ export class FiletreeModule {
       }
     }
 
-    this.fs.onWatchEvent(() => this.refreshTree());
+    this.fs.onWatchEvent("event", () => this.refreshTree());
 
     if (startDirectory) this.setDirectory(startDirectory);
     if (startFile) this.updateEditorSelectedFile(startFile);

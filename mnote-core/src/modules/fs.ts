@@ -3,6 +3,7 @@ import {
   FileItemWithChildren,
   FsInteropModule,
   FsReadDirOptions,
+  FsWatcherEvents,
 } from "../common/types";
 
 // the interop module
@@ -112,7 +113,10 @@ export class FSModule implements FsInteropModule {
     await this.fs?.watchInit(path);
   }
 
-  onWatchEvent(handler: () => void | Promise<void>) {
-    this.fs?.onWatchEvent(handler);
+  onWatchEvent<K extends keyof FsWatcherEvents>(
+    event: K,
+    handler: FsWatcherEvents[K],
+  ) {
+    this.fs?.onWatchEvent(event, handler);
   }
 }

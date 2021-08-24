@@ -3,15 +3,55 @@ import {
   FileItemWithChildren,
   FsInteropModule,
   FsReadDirOptions,
+  FsWatcherEvents,
 } from "mnote-core";
 import { invoke } from "@tauri-apps/api/tauri";
-import { listen } from "@tauri-apps/api/event";
+import { Event as TauriEvent, listen } from "@tauri-apps/api/event";
 import { Emitter } from "mnote-util/emitter";
 import * as fs from "@tauri-apps/api/fs";
 import * as path from "@tauri-apps/api/path";
 import * as dialog from "@tauri-apps/api/dialog";
 
 // https://tauri.studio/en/docs/api/js/modules/fs
+
+type RustWatcherPayload = {
+  kind: "write" | "remove" | "rename";
+  path?: string; // conversion from PathBuf is an Option
+  targetPath?: string;
+};
+
+export class Watcher {
+  protected initialized = false;
+  events = new Emitter<FsWatcherEvents>();
+
+  isInitialized() {
+    return this.initialized;
+  }
+
+  async init(path: string) {
+    this.initialized = true;
+
+    await listen("watcher_event", (event: TauriEvent<RustWatcherPayload>) => {
+      console.log("Watcher event:", event);
+      this.events.emit("event");
+
+      if (!event.payload.path) return;
+
+      if (event.payload.kind === "rename") {
+        if (!event.payload.targetPath) return;
+        this.events.emit(
+          "rename",
+          event.payload.path,
+          event.payload.targetPath,
+        );
+      } else {
+        this.events.emit(event.payload.kind, event.payload.path);
+      }
+    });
+
+    invoke("watcher_init", { path }); // do NOT await
+  }
+}
 
 export class FS implements FsInteropModule {
   protected watcher = new Watcher(); // at the bottom of the file
@@ -162,30 +202,10 @@ export class FS implements FsInteropModule {
     await this.watcher.init(path);
   }
 
-  onWatchEvent(handler: () => void | Promise<void>) {
-    this.watcher.onEvent(handler);
-  }
-}
-
-export class Watcher {
-  protected initialized = false;
-  protected emitter = new Emitter<{
-    event: () => void | Promise<void>;
-  }>();
-
-  isInitialized() {
-    return this.initialized;
-  }
-
-  async init(path: string) {
-    this.initialized = true;
-    await listen("watcher_event", () => {
-      this.emitter.emit("event");
-    });
-    invoke("watcher_init", { path }); // do NOT await
-  }
-
-  onEvent(handler: () => void | Promise<void>) {
-    this.emitter.on("event", handler);
+  onWatchEvent<K extends keyof FsWatcherEvents>(
+    event: K,
+    handler: FsWatcherEvents[K],
+  ) {
+    this.watcher.events.on(event, handler);
   }
 }

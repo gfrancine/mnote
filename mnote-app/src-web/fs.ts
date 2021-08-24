@@ -70,5 +70,5 @@ export class FS implements FsInteropModule {
     return Promise.resolve();
   }
 
-  onWatchEvent(_handler: () => void | Promise<void>): void {}
+  onWatchEvent(_event: string, _handler: () => void | Promise<void>): void {}
 }
