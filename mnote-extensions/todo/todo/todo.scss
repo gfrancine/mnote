@@ -129,7 +129,7 @@ $colors: (
         }
 
         .left-element {
-          margin: 1em 0.25em 0.5em 0.25em;
+          margin: 1em 0.25em 0.5em;
           width: 1.5em;
           height: 1.5em;
         }
@@ -185,7 +185,7 @@ $colors: (
           flex-direction: row;
           border-bottom: 1px solid map-get($colors, item-border);
           margin: 0 0 0 0.5em;
-          padding: 1em 0 0.5em 0;
+          padding: 1em 0 0.5em;
 
           &.editing {
             border-bottom: 1px solid map-get($colors, item-editing-border);
@@ -209,9 +209,8 @@ $colors: (
           .buttons {
             display: flex;
             flex-direction: row;
-            margin-left: 0.5em;
             height: 1.2em;
-            margin: 0 0.5em;
+            margin: 0.5em 0.5em 0;
 
             .button {
               width: 1.2em;

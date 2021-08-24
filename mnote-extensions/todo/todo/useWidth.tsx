@@ -1,8 +1,8 @@
 import { RefObject, useEffect, useState } from "react";
 
-export default function useWidth<T extends HTMLElement>(
+export default function useWidth(
   { ref, min = -Infinity, max = Infinity }: {
-    ref: RefObject<T>;
+    ref: RefObject<HTMLElement>;
     min?: number;
     max?: number;
   },

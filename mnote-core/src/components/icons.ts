@@ -111,11 +111,11 @@ const icons = {
     toHtml(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
     ${titleAlt(alt)}
-      <line x1="50" y1="96" x2="462" y2="100" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px" 
+      <line x1="50" y1="96" x2="462" y2="100" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
         class="${strokeClass}" />
-      <line x1="50" y1="256" x2="330" y2="256" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px" 
+      <line x1="50" y1="256" x2="330" y2="256" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
         class="${strokeClass}" />
-      <line x1="50" y1="416" x2="360" y2="412" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px" 
+      <line x1="50" y1="416" x2="360" y2="412" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
         class="${strokeClass}" />
     </svg>
   `),
