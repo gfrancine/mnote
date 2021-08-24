@@ -98,6 +98,9 @@ function Wrapper(props: {
   prompt: (message: string) => Promise<string | undefined>;
 }) {
   const [data, setData] = useState<Data>({
+    // defaults
+    view: "month",
+    //
     ...props.initialData,
     displayDragItemInCell: true,
     dayLayoutAlgorithm: "no-overlap",

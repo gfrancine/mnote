@@ -42,7 +42,7 @@ export const contents: Record<string, string> = {
   \`\`\``,
   mncalendar: `{"events":[{"start":"2021-07-11T19:00:00.000Z","end":
   "2021-07-11T21:30:00.000Z","title":"a","allDay":false,"id":null}],
-  "view":"month"}`,
+  "view":"day"}`,
   mnkanban: `{"board":{"lists":[]},"listsById":{},"cardsById":{}}`,
   excalidraw: `{"elements":[{"id":"H_6ROOV6mTGcLrQqWBi4v","type":"rectangle",
   "x":336.5,"y":298,"width":158,"height":241,"angle":0,"strokeColor":"#000000",
