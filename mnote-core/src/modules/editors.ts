@@ -365,7 +365,7 @@ export class EditorsModule {
 
     this.events.on("currentTabSet", updateMenubarTitle);
 
-    const cmdOrCtrl = this.system.USES_CMD ? "Cmd" : "Ctrl";
+    const cmdOrCtrl = this.system.usesCmd() ? "Cmd" : "Ctrl";
     this.logging.info("command or ctrl?", cmdOrCtrl);
 
     // menubar reducer

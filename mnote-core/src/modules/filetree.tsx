@@ -61,7 +61,7 @@ export class FiletreeModule {
     this.editors = app.modules.editors as EditorsModule;
     this.fileicons = app.modules.fileicons as FileIconsModule;
 
-    const cmdOrCtrl = this.system.USES_CMD ? "Cmd" : "Ctrl";
+    const cmdOrCtrl = this.system.usesCmd() ? "Cmd" : "Ctrl";
 
     const menubarReducer = () => {
       const buttons = [];

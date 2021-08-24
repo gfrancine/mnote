@@ -140,7 +140,7 @@ export type MenuItem = {
 // system module
 
 export interface SystemInteropModule {
-  USES_CMD: boolean;
+  usesCmd: () => boolean;
   hookToQuit: (hook: SystemCancelQuitHook) => void;
 }
 
