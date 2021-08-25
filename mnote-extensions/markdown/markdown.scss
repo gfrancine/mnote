@@ -46,4 +46,8 @@
   ol.ordered-list {
     padding-inline-start: 1.2em;
   }
+
+  p.paragraph {
+    word-break: break-word; //
+  }
 }
