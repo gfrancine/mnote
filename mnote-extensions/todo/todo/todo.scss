@@ -1,9 +1,14 @@
+@use "./dropdowns/dropdowns.scss";
+
 /*
 
 $colors: (
   icon-fg: #aaa,
   icon-hover-fg: #888,
   dropdown-bg: #eee,
+  dropdown-bg-selected: #ccc,
+  dropdown-bg-hover: #ddd,
+  dropdown-shadow: 0 2px 5px #000,
   dropdown-fg: #222,
   item-border: #ddd,
   item-editing-border: #888,
@@ -68,21 +73,56 @@ $colors: (
         justify-content: flex-end;
         align-items: flex-end;
 
-        .dropdown {
-          font-family: inherit;
-          font-size: 0.9em;
-          color: map-get($colors, dropdown-fg);
-          height: 2.2em;
-          outline: none;
-          border: none;
-          background: map-get($colors, dropdown-bg);
-          padding: 0.25em;
-          border-radius: 0.2em;
-          margin-left: 0.5em;
+        @include dropdowns.base;
 
-          * {
-            font-family: inherit;
-            color: inherit;
+        .dropdown-container {
+          margin-left: 0.5em;
+          font-size: 0.9em;
+
+          .dropdown-toggle {
+            background: map-get($colors, dropdown-bg);
+            border-radius: 0.2em;
+            padding: 0.5em 0.3em;
+            min-width: 8em;
+
+            .placeholder {
+              color: map-get($colors, dropdown-fg);
+            }
+
+            .content {
+              margin-right: 0.5em;
+            }
+
+            .icon {
+              .fill {
+                fill: map-get($colors, dropdown-fg);
+              }
+
+              .stroke {
+                stroke: map-get($colors, dropdown-fg);
+              }
+            }
+          }
+
+          .dropdown-menu {
+            box-shadow: map-get($colors, dropdown-shadow);
+            padding: 0.3em 0;
+            border-radius: 0.2em;
+            min-width: 10em;
+            margin-top: 0.2em;
+            background: map-get($colors, dropdown-bg);
+          }
+
+          .dropdown-menu-item {
+            padding: 0.5em 0.3em;
+
+            &:hover {
+              background: map-get($colors, dropdown-bg-hover);
+            }
+
+            &.selected {
+              background: map-get($colors, dropdown-bg-selected);
+            }
           }
         }
       }

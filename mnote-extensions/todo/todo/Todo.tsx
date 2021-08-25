@@ -10,6 +10,8 @@ import NewTodo from "./NewTodo";
 import { nanoid } from "nanoid";
 import TextareaAutosize from "react-textarea-autosize";
 import useWidth from "./useWidth";
+import Menu from "./dropdowns/Menu";
+import Select from "./dropdowns/Select";
 
 const NEW_ITEM_MOCK_ID = "_$*!(@)#%*!$@()#$NEWITEM";
 
@@ -31,7 +33,7 @@ export default function Todo(props: {
 
   const [currentlyEditing, setCurrentlyEditing] = useState<string | null>(null);
 
-  const [filterType, setFilterType] = useState<TodoListFilterType>("none");
+  const [filterType, setFilterType] = useState<TodoListFilterType>("all");
 
   const [hasInitialized, setHasInitialized] = useState(false);
 
@@ -49,7 +51,6 @@ export default function Todo(props: {
   }, [items, title, itemsOrder]);
 
   const filters: Record<TodoListFilterType, (item: TodoItemData) => boolean> = {
-    none: () => true,
     all: () => true,
     active: (item) => !item.done,
     completed: (item) => item.done,
@@ -159,47 +160,35 @@ export default function Todo(props: {
           />
         </div>
         <div className="right">
-          {/* todo: replace with a proper dropdown */}
-          <select
-            value={filterType}
-            className="dropdown"
-            onInput={(e) => {
-              setFilterType(
-                (e.target as HTMLSelectElement).value as TodoListFilterType,
-              );
-            }}
-          >
-            <option value="none">Filter...</option>
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
-          </select>
-          <select
-            value="0"
-            className="dropdown"
-            onInput={(e) => {
-              const input = (e.target as HTMLSelectElement);
-              switch (input.value) {
-                case "clear-completed": {
-                  clearCompleted();
-                  return;
-                }
-                case "clear-all": {
-                  clearAll();
-                  return;
-                }
-              }
-            }}
-          >
-            <option value="0">More actions...</option>
-            <option value="clear-completed">Clear completed</option>
-            <option value="clear-all">Clear all</option>
-          </select>
+          <Select
+            placeholder="Filter..."
+            onChange={(value) => setFilterType(value)}
+            options={[{
+              text: "All",
+              value: "all",
+            }, {
+              text: "Active",
+              value: "active",
+            }, {
+              text: "Completed",
+              value: "completed",
+            }]}
+          />
+          <Menu
+            text="More Actions"
+            items={[{
+              text: "Clear completed",
+              onClick: () => clearCompleted(),
+            }, {
+              text: "Clear all",
+              onClick: () => clearAll(),
+            }]}
+          />
         </div>
       </div>
       <div className="todo-list">
         {itemsOrder.map((id, index) => {
-          return filters[filterType](items[id])
+          return filters[filterType || "all"](items[id])
             ? <TodoItem
               index={index}
               key={id}

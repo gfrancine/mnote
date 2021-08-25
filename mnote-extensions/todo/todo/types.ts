@@ -19,4 +19,4 @@ export type TodoItemContext = {
   editItemByIndex: (index: number) => void;
 };
 
-export type TodoListFilterType = "none" | "all" | "active" | "completed";
+export type TodoListFilterType = "all" | "active" | "completed";
