@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import {
   TodoData,
   TodoItemContext,
@@ -115,9 +115,9 @@ export default function Todo(props: {
     },
   };
 
-  const headerRef = useRef<HTMLDivElement>(null);
-  const isHeaderSmall = useWidth({
-    ref: headerRef,
+  const statsbarRef = useRef<HTMLDivElement>(null);
+  const isStatsbarSmall = useWidth({
+    ref: statsbarRef,
     max: 560,
   });
 
@@ -141,17 +141,20 @@ export default function Todo(props: {
     setItemsOrder([]);
   };
 
+  const amountCompleted: number = useMemo(
+    (() => {
+      return Object.values(items).filter((item) => item.done).length;
+    }),
+    [items],
+  );
+
   return (
     <div className="todo">
-      <div
-        className={"todo-header" +
-          (isHeaderSmall ? " small" : "")}
-        ref={headerRef}
-      >
-        <div className="left">
+      <div className="todo-header">
+        <div className="title">
           <TextareaAutosize
             value={title}
-            className="title"
+            className="title-textarea"
             spellCheck={false}
             placeholder="Title..."
             onInput={(e) => {
@@ -159,31 +162,40 @@ export default function Todo(props: {
             }}
           />
         </div>
-        <div className="right">
-          <Select
-            placeholder="Filter..."
-            onChange={(value) => setFilterType(value)}
-            options={[{
-              text: "All",
-              value: "all",
-            }, {
-              text: "Active",
-              value: "active",
-            }, {
-              text: "Completed",
-              value: "completed",
-            }]}
-          />
-          <Menu
-            text="More Actions"
-            items={[{
-              text: "Clear completed",
-              onClick: () => clearCompleted(),
-            }, {
-              text: "Clear all",
-              onClick: () => clearAll(),
-            }]}
-          />
+        <div
+          className={"statsbar" +
+            (isStatsbarSmall ? " small" : "")}
+          ref={statsbarRef}
+        >
+          <div className="left">
+            {amountCompleted} done, {itemsOrder.length - amountCompleted} active
+          </div>
+          <div className="right">
+            <Select
+              placeholder="Filter..."
+              onChange={(value) => setFilterType(value)}
+              options={[{
+                text: "All",
+                value: "all",
+              }, {
+                text: "Active",
+                value: "active",
+              }, {
+                text: "Completed",
+                value: "completed",
+              }]}
+            />
+            <Menu
+              text="More Actions"
+              items={[{
+                text: "Clear completed",
+                onClick: () => clearCompleted(),
+              }, {
+                text: "Clear all",
+                onClick: () => clearAll(),
+              }]}
+            />
+          </div>
         </div>
       </div>
       <div className="todo-list">

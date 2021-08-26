@@ -30,16 +30,10 @@ $colors: (
     }
 
     .todo-header {
-      display: flex;
       margin: 2em 0;
-      flex-direction: row;
 
-      .left {
-        flex-grow: 0;
-        flex-shrink: 0;
-        width: 50%;
-
-        .title {
+      .title {
+        .title-textarea {
           display: block;
           font-size: 2.2em;
           font-weight: bold;
@@ -64,78 +58,103 @@ $colors: (
         }
       }
 
-      .right {
-        width: 50%;
-        flex-grow: 0;
-        flex-shrink: 0;
-        display: flex;
+      .statsbar {
         flex-direction: row;
-        justify-content: flex-end;
-        align-items: flex-end;
+        display: flex;
+        margin-top: 1em;
 
-        @include dropdowns.base;
-
-        .dropdown-container {
-          margin-left: 0.5em;
-          font-size: 0.9em;
-
-          .dropdown-toggle {
-            background: map-get($colors, dropdown-bg);
-            border-radius: 0.2em;
-            padding: 0.5em 0.3em;
-            min-width: 8em;
-
-            .placeholder {
-              color: map-get($colors, dropdown-fg);
-            }
-
-            .content {
-              margin-right: 0.5em;
-            }
-
-            .icon {
-              .fill {
-                fill: map-get($colors, dropdown-fg);
-              }
-
-              .stroke {
-                stroke: map-get($colors, dropdown-fg);
-              }
-            }
-          }
-
-          .dropdown-menu {
-            box-shadow: map-get($colors, dropdown-shadow);
-            padding: 0.3em 0;
-            border-radius: 0.2em;
-            min-width: 10em;
-            margin-top: 0.2em;
-            background: map-get($colors, dropdown-bg);
-          }
-
-          .dropdown-menu-item {
-            padding: 0.5em 0.3em;
-
-            &:hover {
-              background: map-get($colors, dropdown-bg-hover);
-            }
-
-            &.selected {
-              background: map-get($colors, dropdown-bg-selected);
-            }
-          }
-        }
-      }
-
-      &.small {
-        flex-direction: column;
         .left {
-          width: 100%;
-          margin-bottom: 1em;
+          flex-grow: 0;
+          flex-shrink: 0;
+          width: 50%;
+          display: flex;
+          align-items: center;
         }
+
         .right {
-          width: 100%;
-          justify-content: start;
+          width: 50%;
+          flex-grow: 0;
+          flex-shrink: 0;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+          align-items: flex-end;
+
+          @include dropdowns.base;
+
+          .dropdown-container {
+            margin-left: 0.5em;
+            font-size: 0.9em;
+
+            .dropdown-toggle {
+              background: map-get($colors, dropdown-bg);
+              border-radius: 0.2em;
+              padding: 0.5em 0.3em;
+              min-width: 8em;
+
+              .placeholder {
+                color: map-get($colors, dropdown-fg);
+              }
+
+              .content {
+                margin-right: 0.5em;
+              }
+
+              .icon {
+                .fill {
+                  fill: map-get($colors, dropdown-fg);
+                }
+
+                .stroke {
+                  stroke: map-get($colors, dropdown-fg);
+                }
+              }
+            }
+
+            .dropdown-menu {
+              box-shadow: map-get($colors, dropdown-shadow);
+              padding: 0.3em 0;
+              border-radius: 0.2em;
+              min-width: 10em;
+              margin-top: 0.2em;
+              background: map-get($colors, dropdown-bg);
+              right: 0;
+            }
+
+            .dropdown-menu-item {
+              padding: 0.5em 0.3em;
+
+              &:hover {
+                background: map-get($colors, dropdown-bg-hover);
+              }
+
+              &.selected {
+                background: map-get($colors, dropdown-bg-selected);
+              }
+            }
+          }
+        }
+
+        &.small {
+          flex-direction: column;
+
+          .left {
+            width: 100%;
+            margin-bottom: 1em;
+          }
+          .right {
+            width: 100%;
+            justify-content: start;
+
+            .dropdown-container {
+              margin-left: 0;
+              margin-right: 0.5em;
+
+              .dropdown-menu {
+                right: unset;
+              }
+            }
+          }
         }
       }
     }
