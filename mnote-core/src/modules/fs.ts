@@ -78,14 +78,16 @@ export class FSModule implements FsInteropModule {
   }
 
   dialogOpen(opts: {
-    extensions?: string[];
+    fileTypes?: DialogFileType[];
     directory: boolean;
+    startingPath?: string;
   }): Promise<string | void> {
     return this.fs ? this.fs.dialogOpen(opts) : Promise.resolve();
   }
 
   dialogSave(opts: {
     fileTypes?: DialogFileType[];
+    startingPath?: string;
   }): Promise<string | void> {
     return this.fs ? this.fs.dialogSave(opts) : Promise.resolve();
   }

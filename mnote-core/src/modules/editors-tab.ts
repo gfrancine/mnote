@@ -116,6 +116,7 @@ export class TabManager {
       ? document.path
       : await this.fs.dialogSave({
         fileTypes: editorInfo.saveAsFileTypes,
+        startingPath: document.path,
       });
 
     console.log("new path", newPath);

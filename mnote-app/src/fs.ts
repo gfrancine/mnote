@@ -130,18 +130,16 @@ export class FS implements FsInteropModule {
   }
 
   async dialogOpen(opts: {
-    extensions?: string[];
+    fileTypes?: DialogFileType[];
     directory: boolean;
+    startingPath?: string;
   }): Promise<string | void> {
     try {
-      const filters: dialog.DialogFilter[] | undefined = opts.extensions
-        ? [{ name: "extensions", extensions: opts.extensions }]
-        : undefined;
-
       const result = await dialog.open({
         directory: opts.directory,
         multiple: false,
-        filters,
+        filters: opts.fileTypes,
+        // defaultPath: opts.startingPath, // broken
       }) as string;
 
       return result;
@@ -152,9 +150,11 @@ export class FS implements FsInteropModule {
 
   dialogSave(opts: {
     fileTypes?: DialogFileType[];
+    startingPath?: string;
   }): Promise<string | void> {
     try {
       return dialog.save({
+        // defaultPath: opts.startingPath, // broken
         filters: opts.fileTypes,
       });
     } catch {

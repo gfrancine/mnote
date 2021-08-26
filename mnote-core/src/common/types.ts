@@ -57,11 +57,13 @@ export interface FsInteropModule {
   isFile(path: string): Promise<boolean>;
   isDir(path: string): Promise<boolean>;
   dialogOpen(opts: {
-    extensions?: string[];
+    fileTypes?: DialogFileType[];
     directory: boolean;
+    startingPath?: string;
   }): Promise<string | void>;
   dialogSave(opts: {
     fileTypes?: DialogFileType[];
+    startingPath?: string;
   }): Promise<string | void>;
   getConfigDir(): Promise<string>;
   getCurrentDir(): Promise<string>;

@@ -72,6 +72,7 @@ export class FiletreeModule {
         click: async () => {
           const maybePath = await this.fs.dialogOpen({
             directory: false,
+            startingPath: this.directory,
           });
           if (!maybePath) return;
           this.updateEditorSelectedFile(maybePath);
