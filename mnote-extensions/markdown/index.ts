@@ -149,6 +149,7 @@ class MarkdownEditor implements Editor {
 
   async load(path: string) {
     const contents = await this.fs.readTextFile(path);
+    this.contents = contents;
     this.editorContainer.innerHTML = "";
     this.milkdown = this.createMilkdown({ contents });
     await this.milkdown.create();
