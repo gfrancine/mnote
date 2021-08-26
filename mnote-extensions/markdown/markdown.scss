@@ -50,4 +50,9 @@
   p.paragraph {
     word-break: break-word; //
   }
+
+  hr {
+    border: none;
+    border-top: solid 1px map-get(mn.$vars, border-main);
+  }
 }
