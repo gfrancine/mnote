@@ -17,6 +17,7 @@ import { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
 import { AppState as ExcalidrawAppState } from "@excalidraw/excalidraw/types/types";
 
 import "./styles.scss";
+import { excalidrawIcon } from "./icon";
 
 // an editor extension contains:
 // - the editor
@@ -171,6 +172,13 @@ export class ExcalidrawExtension implements Extension {
         name: "Excalidraw",
         extensions: ["excalidraw"],
       }],
+      registeredIconKind: "excalidraw",
+    });
+
+    this.app.modules.fileicons.registerIcon({
+      kind: "excalidraw",
+      factory: excalidrawIcon,
+      shouldUse: (path) => getPathExtension(path) === "excalidraw",
     });
   }
 
