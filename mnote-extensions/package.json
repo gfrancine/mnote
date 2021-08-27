@@ -9,6 +9,7 @@
     "@milkdown/preset-commonmark": "^4.9.6",
     "mnote-core": "file:../mnote-core",
     "mnote-deps": "file:../mnote-deps",
+    "mnote-styles": "file:../mnote-styles",
     "mnote-util": "file:../mnote-util",
     "moment": "^2.29.1",
     "nanoid": "^3.1.25"
