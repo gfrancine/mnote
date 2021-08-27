@@ -100,8 +100,8 @@ class SettingsEditorProvider implements EditorProvider {
     this.settings = app.modules.settings as SettingsModule;
   }
 
-  tryGetEditor(path: string) {
-    if (path === SETTINGS_ALIAS_PATH) return new SettingsEditor(this.app);
+  canOpenPath(path: string) {
+    return path === SETTINGS_ALIAS_PATH;
   }
 
   createNewEditor() {

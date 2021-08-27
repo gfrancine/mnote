@@ -290,10 +290,8 @@ class CalendarEditorProvider implements EditorProvider {
     this.app = app;
   }
 
-  tryGetEditor(path: string) {
-    if (getPathExtension(path) === "mncalendar") {
-      return new CalendarEditor(this.app);
-    }
+  canOpenPath(path: string) {
+    return getPathExtension(path) === "mncalendar";
   }
   createNewEditor() {
     return new CalendarEditor(this.app);

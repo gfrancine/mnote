@@ -117,10 +117,8 @@ class TodoEditorProvider implements EditorProvider {
     this.app = app;
   }
 
-  tryGetEditor(path: string) {
-    if (getPathExtension(path) === "mntodo") {
-      return new TodoEditor(this.app);
-    }
+  canOpenPath(path: string) {
+    return getPathExtension(path) === "mntodo";
   }
   createNewEditor() {
     return new TodoEditor(this.app);

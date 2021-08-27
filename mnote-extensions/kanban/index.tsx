@@ -101,10 +101,8 @@ class KanbanEditorProvider implements EditorProvider {
     this.app = app;
   }
 
-  tryGetEditor(path: string) {
-    if (getPathExtension(path) === "mnkanban") {
-      return new KanbanEditor(this.app);
-    }
+  canOpenPath(path: string) {
+    return getPathExtension(path) === "mnkanban";
   }
   createNewEditor() {
     return new KanbanEditor(this.app);

@@ -92,11 +92,10 @@ class PlaintextEditorProvider implements EditorProvider {
     this.app = app;
   }
 
-  tryGetEditor(path: string) {
-    if (getPathExtension(path) === "txt") {
-      return new PlaintextEditor(this.app);
-    }
+  canOpenPath(path: string) {
+    return getPathExtension(path) === "txt";
   }
+
   createNewEditor() {
     return new PlaintextEditor(this.app);
   }

@@ -1,5 +1,12 @@
 import { MenuItem, Mnote } from "../common/types";
-import { DocInfo, Editor, EditorInfo, Tab, TabContext, TabInfo } from "./types";
+import {
+  DocInfo,
+  EditorInfo,
+  EditorProvider,
+  Tab,
+  TabContext,
+  TabInfo,
+} from "./types";
 import { LayoutModule } from "./layout";
 import { MenubarModule } from "./menubar";
 import { FSModule } from "./fs";
@@ -184,7 +191,7 @@ export class EditorsModule {
       return;
     }
 
-    let selectedEditor: Editor | undefined;
+    let selectedProvider: EditorProvider | undefined;
     let selectedEditorKind: string | undefined;
 
     // last added runs first, assuming it's more selective
@@ -192,9 +199,8 @@ export class EditorsModule {
     for (let i = this.editors.length - 1; i > -1; i--) {
       const kind = this.editors[i].kind;
       const provider = this.editors[i].provider;
-      const editor = await provider.tryGetEditor(path);
-      if (editor) {
-        selectedEditor = editor;
+      if (await provider.canOpenPath(path)) {
+        selectedProvider = provider;
         selectedEditorKind = kind;
         break;
       }
@@ -202,7 +208,7 @@ export class EditorsModule {
 
     // this should not happen because we have a plaintext editor
     // but it's good to have this
-    if (!selectedEditor || !selectedEditorKind) {
+    if (!selectedProvider || !selectedEditorKind) {
       this.prompts.notify(strings.openErrorUnsupported(path));
       return;
     }
@@ -214,7 +220,7 @@ export class EditorsModule {
     };
 
     const info: TabInfo = {
-      editor: selectedEditor,
+      editor: await selectedProvider.createNewEditor(),
       document,
       editorKind: selectedEditorKind,
       editorInfo: this.editorKinds[selectedEditorKind],

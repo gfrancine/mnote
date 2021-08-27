@@ -138,10 +138,8 @@ class ExcalidrawEditorProvider implements EditorProvider {
     this.app = app;
   }
 
-  tryGetEditor(path: string) {
-    if (getPathExtension(path) === "excalidraw") {
-      return new ExcalidrawEditor(this.app);
-    }
+  canOpenPath(path: string) {
+    return getPathExtension(path) === "excalidraw";
   }
 
   createNewEditor() {

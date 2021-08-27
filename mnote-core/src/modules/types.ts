@@ -30,7 +30,7 @@ export interface Editor {
 
 export interface EditorProvider {
   // getExtensions(): string[] // allowed extensions for Save As prompt
-  tryGetEditor(path: string): Editor | void | Promise<Editor | void>;
+  canOpenPath(path: string): boolean | Promise<boolean>;
   createNewEditor(): Editor | Promise<Editor>;
 }
 

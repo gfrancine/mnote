@@ -178,10 +178,8 @@ class MarkdownEditorProvider implements EditorProvider {
     this.app = app;
   }
 
-  tryGetEditor(path: string) {
-    if (getPathExtension(path) === "md") {
-      return new MarkdownEditor(this.app);
-    }
+  canOpenPath(path: string) {
+    return getPathExtension(path) === "md";
   }
 
   createNewEditor() {
