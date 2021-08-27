@@ -1,12 +1,15 @@
-import { MenuItem, Mnote } from "../common/types";
-import { EditorsModule } from "../modules/editors";
-import { EditorContext, EditorProvider, Extension } from "../modules/types";
-import { Editor } from "../modules/types";
+import {
+  Editor,
+  EditorContext,
+  EditorProvider,
+  Extension,
+  MenuItem,
+  Mnote,
+  SettingsModule,
+} from "mnote-core";
 import { el } from "mnote-util/elbuilder";
-import { MenubarModule, SettingsModule } from "../modules";
-import { createIcon } from "../components/icons";
-import { SETTINGS_ALIAS_PATH as SETTINGS_PATH } from "../common/constants";
-import { FileIconsModule } from "../modules/fileicons";
+import { settingsIcon } from "./icon";
+import "./settings.scss";
 
 // an editor extension contains:
 // - the editor
@@ -15,6 +18,10 @@ import { FileIconsModule } from "../modules/fileicons";
 
 // instead of saving to file, the settings editor will
 // invoke the Settings.setSettings module
+
+// the path used by its editor to identify a currently open editor
+// and whether to use the settings icon on a path
+export const SETTINGS_ALIAS_PATH = "Settings *.[]:;|,_";
 
 class SettingsEditor implements Editor {
   app: Mnote;
@@ -29,13 +36,13 @@ class SettingsEditor implements Editor {
     this.app = app;
     this.settings = (app.modules.settings as SettingsModule);
     this.textarea = el("textarea")
-      .class("plaintext-textarea")
+      .class("settings-textarea")
       .class("mousetrap") // enable shortcuts
       .attr("spellcheck", "false")
       .element as HTMLTextAreaElement;
 
     this.element = el("div")
-      .class("plaintext-editor")
+      .class("settings-editor")
       .children(
         this.textarea,
       )
@@ -45,7 +52,7 @@ class SettingsEditor implements Editor {
   startup(containter: HTMLElement, ctx: EditorContext) {
     ctx.setDocument({
       name: "Settings",
-      path: SETTINGS_PATH,
+      path: SETTINGS_ALIAS_PATH,
       saved: true,
     });
 
@@ -94,7 +101,7 @@ class SettingsEditorProvider implements EditorProvider {
   }
 
   tryGetEditor(path: string) {
-    if (path === SETTINGS_PATH) return new SettingsEditor(this.app);
+    if (path === SETTINGS_ALIAS_PATH) return new SettingsEditor(this.app);
   }
 
   createNewEditor() {
@@ -113,26 +120,24 @@ export class SettingsExtension implements Extension {
 
   startup() {
     const openSettings = () => {
-      (this.app.modules.editors as EditorsModule).open(SETTINGS_PATH);
+      this.app.modules.editors.open(SETTINGS_ALIAS_PATH);
     };
 
-    (this.app.modules.menubar as MenubarModule).addSectionReducer(() => {
+    this.app.modules.menubar.addSectionReducer(() => {
       const button: MenuItem = {
         name: "Settings",
         click: openSettings,
       };
-
       return [button];
     });
 
-    (this.app.modules.fileicons as FileIconsModule).registerIcon({
+    this.app.modules.fileicons.registerIcon({
       kind: "settings",
-      factory: (fillClass: string, strokeClass: string) =>
-        createIcon("settings", fillClass, strokeClass),
-      shouldUse: (path) => path === SETTINGS_PATH,
+      factory: settingsIcon,
+      shouldUse: (path) => path === SETTINGS_ALIAS_PATH,
     });
 
-    (this.app.modules.editors as EditorsModule).registerEditor({
+    this.app.modules.editors.registerEditor({
       kind: "Settings",
       provider: new SettingsEditorProvider(this.app),
       hideFromNewMenu: true,

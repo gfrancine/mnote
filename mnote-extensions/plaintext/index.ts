@@ -1,12 +1,15 @@
-import { Mnote } from "../common/types";
-import { EditorsModule } from "../modules/editors";
-import { EditorContext, EditorProvider, Extension } from "../modules/types";
-import { Editor } from "../modules/types";
+import {
+  Editor,
+  EditorContext,
+  EditorProvider,
+  Extension,
+  FSModule,
+  Mnote,
+} from "mnote-core";
 import { el } from "mnote-util/elbuilder";
-import { FSModule } from "../modules/fs";
-import { createIcon } from "../components/icons";
 import { getPathExtension } from "mnote-util/path";
-import { FileIconsModule } from "../modules/fileicons";
+import { plaintextIcon } from "./icon";
+import "./plaintext.scss";
 
 // an editor extension contains:
 // - the editor
@@ -78,9 +81,10 @@ class PlaintextEditorProvider implements EditorProvider {
     this.app = app;
   }
 
-  tryGetEditor(_path: string) {
-    // always return true, plaintext can open anything
-    return new PlaintextEditor(this.app);
+  tryGetEditor(path: string) {
+    if (getPathExtension(path) === "txt") {
+      return new PlaintextEditor(this.app);
+    }
   }
   createNewEditor() {
     return new PlaintextEditor(this.app);
@@ -97,14 +101,13 @@ export class PlaintextExtension implements Extension {
   }
 
   startup() {
-    (this.app.modules.fileicons as FileIconsModule).registerIcon({
+    this.app.modules.fileicons.registerIcon({
       kind: "textFile",
-      factory: (fillClass: string, strokeClass: string) =>
-        createIcon("textFile", fillClass, strokeClass),
+      factory: plaintextIcon,
       shouldUse: (path: string) => getPathExtension(path) === "txt",
     });
 
-    (this.app.modules.editors as EditorsModule).registerEditor({
+    this.app.modules.editors.registerEditor({
       kind: "Plaintext",
       provider: new PlaintextEditorProvider(this.app),
       registeredIconKind: "textFile",

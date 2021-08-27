@@ -1,9 +1,11 @@
 import nodefill from "../nodefill";
 
-import { ExtensionsModule, Mnote } from "mnote-core";
+import { Mnote } from "mnote-core";
 import { FS } from "./fs";
 import "../styles.scss";
 
+import { PlaintextExtension } from "mnote-extensions/plaintext";
+import { SettingsExtension } from "mnote-extensions/settings";
 import { MarkdownExtension } from "mnote-extensions/markdown";
 import { ExcalidrawExtension } from "mnote-extensions/excalidraw";
 import { KanbanExtension } from "mnote-extensions/kanban";
@@ -24,8 +26,10 @@ console.log(nodefill);
 
   await app.init();
 
-  const extensions = (app.modules.extensions as ExtensionsModule);
+  const extensions = app.modules.extensions;
   await Promise.all([
+    extensions.add(new PlaintextExtension(app)),
+    extensions.add(new SettingsExtension(app)),
     extensions.add(new MarkdownExtension(app)),
     extensions.add(new ExcalidrawExtension(app)),
     extensions.add(new KanbanExtension(app)),

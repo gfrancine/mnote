@@ -4,8 +4,6 @@
 @use "menubar";
 @use "editor";
 @use "sidebar";
-
-@use "extensions";
 @use "components";
 
 @use "sass:map";
@@ -38,8 +36,6 @@
     @include menubar.menubar($vars);
     @include editor.editor($vars);
     @include sidebar.sidebar($vars);
-
-    @include extensions.extensions($vars);
     @include components.components($vars);
   }
 }

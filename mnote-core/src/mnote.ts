@@ -19,13 +19,10 @@ import {
   OpenFilesModule,
   PromptsModule,
   SettingsModule,
+  SidebarModule,
   SystemModule,
   ThemesModule,
 } from "./modules";
-
-import { PlaintextExtension } from "./extensions/plaintextEditor";
-import { SettingsExtension } from "./extensions/settingsEditor";
-import { SidebarModule } from "./modules/sidebar";
 
 type Modules = {
   logging: LoggingModule;
@@ -96,13 +93,6 @@ export class Mnote implements Type {
     m.filetree = new FiletreeModule(this);
     m.openfiles = new OpenFilesModule(this);
     m.themes = await new ThemesModule(this).init();
-
-    // register the extensions
-    const extensions = (this.modules.extensions as ExtensionsModule);
-    await Promise.all([
-      extensions.add(new PlaintextExtension(this)),
-      extensions.add(new SettingsExtension(this)),
-    ]);
   }
 
   async startup() {

@@ -2,7 +2,6 @@ import { Mnote } from "../common/types";
 import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
 import { Emitter } from "mnote-util/emitter";
-import { SETTINGS_NAME } from "../common/constants";
 import { AppDirModule } from "./appdir";
 
 // the file is only read once at initialization. as long as the
@@ -10,6 +9,9 @@ import { AppDirModule } from "./appdir";
 // data in this module
 
 type Settings = Record<string, unknown>;
+
+// the file name of the settings file
+export const SETTINGS_NAME = ".mnotesettings";
 
 export class SettingsModule {
   app: Mnote;
