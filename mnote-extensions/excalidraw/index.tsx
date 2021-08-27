@@ -99,30 +99,24 @@ class ExcalidrawEditor implements Editor {
     this.emitter = new Emitter();
   }
 
-  startup(containter: HTMLElement, ctx: EditorContext) {
+  async startup(containter: HTMLElement, ctx: EditorContext) {
     this.ctx = ctx;
     this.container = containter;
     containter.appendChild(this.element);
 
     this.emitter.on("change", makeCallback(this));
 
+    const { path } = ctx.getDocument();
+    if (path) {
+      const contents = await this.fs.readTextFile(path);
+      const data: ExcalidrawData = JSON.parse(contents);
+      this.data = data;
+    }
+
     render(
       <Wrapper initialData={this.data} emitter={this.emitter} />,
       this.element,
     );
-  }
-
-  async load(path: string) {
-    unmountComponentAtNode(this.element);
-
-    const contents = await this.fs.readTextFile(path);
-    const data: ExcalidrawData = JSON.parse(contents);
-    this.data = data;
-
-    this.emitter = new Emitter();
-    this.emitter.on("change", makeCallback(this));
-
-    render(<Wrapper initialData={data} emitter={this.emitter} />, this.element);
   }
 
   cleanup() {

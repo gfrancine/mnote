@@ -18,15 +18,13 @@ export type DocInfo = {
 
 export type EditorContext = {
   updateEdited(): void; // notify the app that the document has changed
-  getDocument(): DocInfo | undefined;
+  getDocument(): DocInfo;
   setDocument(doc: DocInfo): void;
 };
 
 export interface Editor {
   startup(container: HTMLElement, ctx: EditorContext): void | Promise<void>; // setup editor on element
   cleanup(): void | Promise<void>; // clear state, called before closing / switching to a new doc
-
-  load(path: string): void | Promise<void>; // import contents as needed, the editor guarantees the path exists
   save(path: string): void | Promise<void>; // write to file. the editor guarantees the path exists
 }
 

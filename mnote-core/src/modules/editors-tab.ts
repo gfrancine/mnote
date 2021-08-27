@@ -52,13 +52,12 @@ export class TabManager {
   };
 
   async startup() {
-    const { document, container, editor } = this.ctx.getTabInfo();
+    const { container, editor } = this.ctx.getTabInfo();
 
     this.fs.onWatchEvent("rename", this.onWatcherRename);
     this.fs.onWatchEvent("remove", this.onWatcherRemove);
 
     await editor.startup(container, this.makeContext());
-    if (document.path) await editor.load(document.path);
     return this;
   }
 

@@ -71,25 +71,19 @@ class TodoEditor implements Editor {
       .element;
   }
 
-  startup(containter: HTMLElement, ctx: EditorContext) {
+  async startup(containter: HTMLElement, ctx: EditorContext) {
     this.ctx = ctx;
     this.container = containter;
     this.container.appendChild(this.element);
-    render(
-      <Wrapper
-        initialData={this.todo.data}
-        onChange={makeCallback(this)}
-      />,
-      this.element,
-    );
-  }
 
-  async load(path: string) {
-    unmountComponentAtNode(this.element);
-    const contents = await this.fs.readTextFile(path);
-    const file: TodoFile = JSON.parse(contents);
-    const migrated = migrate(file);
-    this.todo = migrated;
+    const { path } = ctx.getDocument();
+    if (path) {
+      const contents = await this.fs.readTextFile(path);
+      const file: TodoFile = JSON.parse(contents);
+      const migrated = migrate(file);
+      this.todo = migrated;
+    }
+
     render(
       <Wrapper
         initialData={this.todo.data}

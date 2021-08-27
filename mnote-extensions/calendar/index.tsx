@@ -238,18 +238,18 @@ class CalendarEditor implements Editor {
       .element;
   }
 
-  startup(containter: HTMLElement, ctx: EditorContext) {
+  async startup(containter: HTMLElement, ctx: EditorContext) {
     this.ctx = ctx;
     this.container = containter;
     this.container.appendChild(this.element);
-    this.renderWrapper();
-  }
 
-  async load(path: string) {
-    unmountComponentAtNode(this.element);
-    const contents = await this.fs.readTextFile(path);
-    const data = deserializeData(contents);
-    this.data = data;
+    const { path } = ctx.getDocument();
+    if (path) {
+      const contents = await this.fs.readTextFile(path);
+      const data = deserializeData(contents);
+      this.data = data;
+    }
+
     this.renderWrapper();
   }
 

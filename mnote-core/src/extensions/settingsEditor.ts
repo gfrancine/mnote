@@ -64,14 +64,6 @@ class SettingsEditor implements Editor {
     containter.appendChild(this.element);
   }
 
-  load(_path: string) {
-    this.textarea.value = JSON.stringify(
-      this.settings.getSettings(),
-      undefined,
-      2,
-    );
-  }
-
   cleanup() {
     if (this.container) {
       this.container.removeChild(this.element);

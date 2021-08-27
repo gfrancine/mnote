@@ -121,6 +121,16 @@ class MarkdownEditor implements Editor {
 
     this.ctx = ctx;
     this.container = containter;
+
+    const { path } = ctx.getDocument();
+    if (path) {
+      const contents = await this.fs.readTextFile(path);
+      this.contents = contents;
+      this.editorContainer.innerHTML = "";
+      this.milkdown = this.createMilkdown({ contents });
+      this.updateStats();
+    }
+
     this.container.appendChild(this.element);
 
     console.log("create startup");
@@ -144,15 +154,6 @@ class MarkdownEditor implements Editor {
 
   protected onUpdate() {
     this.ctx?.updateEdited();
-    this.updateStats();
-  }
-
-  async load(path: string) {
-    const contents = await this.fs.readTextFile(path);
-    this.contents = contents;
-    this.editorContainer.innerHTML = "";
-    this.milkdown = this.createMilkdown({ contents });
-    await this.milkdown.create();
     this.updateStats();
   }
 

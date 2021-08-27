@@ -41,19 +41,20 @@ class PlaintextEditor implements Editor {
       .element;
   }
 
-  startup(containter: HTMLElement, ctx: EditorContext) {
+  async startup(containter: HTMLElement, ctx: EditorContext) {
     this.textarea.addEventListener("input", () => {
       this.contents = this.textarea.value;
       ctx.updateEdited();
     });
 
+    const { path } = ctx.getDocument();
+    if (path) {
+      const contents = await this.fs.readTextFile(path);
+      this.textarea.value = contents;
+    }
+
     this.container = containter;
     containter.appendChild(this.element);
-  }
-
-  async load(path: string) {
-    const contents = await this.fs.readTextFile(path);
-    this.textarea.value = contents;
   }
 
   cleanup() {

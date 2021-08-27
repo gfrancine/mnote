@@ -56,24 +56,18 @@ class KanbanEditor implements Editor {
       .element;
   }
 
-  startup(containter: HTMLElement, ctx: EditorContext) {
+  async startup(containter: HTMLElement, ctx: EditorContext) {
     this.ctx = ctx;
     this.container = containter;
     this.container.appendChild(this.element);
-    render(
-      <Wrapper
-        initialData={this.board}
-        onChange={makeCallback(this)}
-      />,
-      this.element,
-    );
-  }
 
-  async load(path: string) {
-    unmountComponentAtNode(this.element);
-    const contents = await this.fs.readTextFile(path);
-    const data: KanbanState = JSON.parse(contents);
-    this.board = data;
+    const { path } = ctx.getDocument();
+    if (path) {
+      const contents = await this.fs.readTextFile(path);
+      const data: KanbanState = JSON.parse(contents);
+      this.board = data;
+    }
+
     render(
       <Wrapper
         initialData={this.board}
