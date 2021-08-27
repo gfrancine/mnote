@@ -34,6 +34,17 @@ class PlaintextEditor implements Editor {
       .class("plaintext-textarea")
       .class("mousetrap") // enable shortcuts
       .attr("spellcheck", "false")
+      .on("keydown", (e) => {
+        // allow tabs
+        if (e.key !== "Tab") return;
+        e.preventDefault();
+        const self = e.target as HTMLTextAreaElement;
+        const start = self.selectionStart;
+        self.value = self.value.slice(0, start) +
+          "\t" +
+          self.value.slice(self.selectionEnd, self.value.length);
+        self.selectionStart = start + 1;
+      })
       .element as HTMLTextAreaElement;
 
     this.element = el("div")
