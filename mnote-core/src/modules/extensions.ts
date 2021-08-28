@@ -5,12 +5,9 @@ import { Extension } from "./types";
 // extensions as the scripts
 
 export class ExtensionsModule /* implements Module */ {
-  app: Mnote;
-  extensions: Extension[] = [];
+  private extensions: Extension[] = [];
 
-  constructor(app: Mnote) {
-    this.app = app;
-  }
+  constructor(_app: Mnote) {}
 
   async add(extension: Extension) {
     this.extensions.push(extension);

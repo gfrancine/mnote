@@ -12,13 +12,9 @@ import { Context } from "./types";
 type SectionReducer = (ctx: Context) => MenuItem[] | void;
 
 export class CtxmenuModule {
-  ctxmenu: ContextMenu;
-  app: Mnote;
-  reducers: SectionReducer[] = [];
+  private reducers: SectionReducer[] = [];
 
   constructor(app: Mnote) {
-    this.app = app;
-
     const getSections = (ctx: Context) => {
       const sections: MenuItem[][] = [];
       this.reducers.forEach((reducer) => {
@@ -28,7 +24,7 @@ export class CtxmenuModule {
       return sections;
     };
 
-    this.ctxmenu = new ContextMenu(
+    new ContextMenu(
       app.element,
       [(app.modules.layout as LayoutModule).contents],
       getSections,

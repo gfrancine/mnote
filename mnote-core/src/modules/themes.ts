@@ -15,9 +15,8 @@ function setVar(key: string, value: string) {
 // themes module, binds the registry with the rest of the app
 
 export class ThemesModule {
-  app: Mnote;
-  settings: SettingsModule;
-  themes: Record<string, Record<string, string>> = {
+  private settings: SettingsModule;
+  private themes: Record<string, Record<string, string>> = {
     dark,
     light,
   };
@@ -25,7 +24,6 @@ export class ThemesModule {
   // events: Emitter<{}> = new Emitter();
 
   constructor(app: Mnote) {
-    this.app = app;
     this.settings = app.modules.settings as SettingsModule;
 
     this.settings.events.on("change", () => {
@@ -56,7 +54,7 @@ export class ThemesModule {
     return this;
   }
 
-  protected async updateTheme() {
+  private async updateTheme() {
     let theme = await this.getSettingsValue();
     if (!this.hasTheme(theme)) theme = "system";
     console.log("theme updated:", theme);
@@ -77,7 +75,7 @@ export class ThemesModule {
     }
   }
 
-  protected updateWithRegisteredTheme(theme: string) {
+  private updateWithRegisteredTheme(theme: string) {
     if (!this.themes[theme]) theme = "light";
     const colors = this.themes[theme];
     for (const k of Object.keys(colors)) {

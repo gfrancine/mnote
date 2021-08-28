@@ -1,7 +1,7 @@
 import { SystemCancelQuitHook, SystemInteropModule } from "../common/types";
 
 export class SystemModule implements SystemInteropModule {
-  protected system?: SystemInteropModule;
+  private system?: SystemInteropModule;
 
   constructor(system?: SystemInteropModule) {
     this.system = system;

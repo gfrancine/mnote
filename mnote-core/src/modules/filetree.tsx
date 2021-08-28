@@ -27,21 +27,21 @@ const nothingHere = el("div")
   .element;
 
 export class FiletreeModule {
-  app: Mnote;
-  element: HTMLElement;
-  fs: FSModule;
-  layout: LayoutModule;
-  ctxmenu: CtxmenuModule;
-  logging: LoggingModule;
-  menubar: MenubarModule;
-  prompts: PromptsModule;
-  system: SystemModule;
-  editors: EditorsModule;
-  fileicons: FileIconsModule;
+  private app: Mnote;
+  private element: HTMLElement;
+  private fs: FSModule;
+  private layout: LayoutModule;
+  private ctxmenu: CtxmenuModule;
+  private logging: LoggingModule;
+  private menubar: MenubarModule;
+  private prompts: PromptsModule;
+  private system: SystemModule;
+  private editors: EditorsModule;
+  private fileicons: FileIconsModule;
 
-  selectedFile?: string;
-  directory?: string;
-  tree?: FileTreeNodeWithChildren;
+  private selectedFile?: string;
+  private directory?: string;
+  private tree?: FileTreeNodeWithChildren;
 
   constructor(app: Mnote) {
     this.app = app;
@@ -253,7 +253,7 @@ export class FiletreeModule {
     this.refreshTree();
   }
 
-  protected updateDisplay() {
+  private updateDisplay() {
     this.logging.info("filetree updateDisplay", this.tree, this.selectedFile);
 
     const hooks: FileTreeHooks = {

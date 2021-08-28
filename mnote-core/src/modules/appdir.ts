@@ -4,13 +4,11 @@ import { Mnote } from "../common/types";
 const APPDIR_NAME = "Mnote";
 
 export class AppDirModule {
-  app: Mnote;
-  fs: FSModule;
+  private fs: FSModule;
 
   private appDirPath = "";
 
   constructor(app: Mnote) {
-    this.app = app;
     this.fs = app.modules.fs as FSModule;
   }
 

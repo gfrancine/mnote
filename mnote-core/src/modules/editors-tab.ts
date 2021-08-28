@@ -12,16 +12,13 @@ import {
 } from "./types";
 
 export class TabManager {
-  ctx: TabContext;
-  app: Mnote;
+  private ctx: TabContext;
 
-  fs: FSModule;
-  prompts: PromptsModule;
+  private fs: FSModule;
+  private prompts: PromptsModule;
 
   constructor(app: Mnote, ctx: TabContext) {
     this.ctx = ctx;
-    this.app = app;
-
     this.fs = app.modules.fs as FSModule;
     this.prompts = app.modules.prompts as PromptsModule;
   }

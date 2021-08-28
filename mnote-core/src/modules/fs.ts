@@ -13,7 +13,7 @@ import {
 // todo: DRY void methods
 
 export class FSModule implements FsInteropModule {
-  protected fs?: FsInteropModule;
+  private fs?: FsInteropModule;
 
   constructor(fs?: FsInteropModule) {
     if (fs) this.fs = fs;

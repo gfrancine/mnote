@@ -4,7 +4,7 @@ import { Prompt } from "../components/prompt";
 import { el } from "mnote-util/elbuilder";
 
 export class PromptsModule {
-  app: Mnote;
+  private app: Mnote;
 
   constructor(app: Mnote) {
     this.app = app;

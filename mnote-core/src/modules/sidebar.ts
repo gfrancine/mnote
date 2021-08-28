@@ -6,13 +6,13 @@ import { MenubarModule } from "./menubar";
 import makeResizable from "mnote-deps/resizable";
 
 export class SidebarModule {
-  layout: LayoutModule;
-  menubar: MenubarModule;
-  element: HTMLElement;
-  handle: HTMLElement;
-  sidemenu: HTMLElement;
-  toggleSidebarButton: HTMLElement;
-  sidebarVisible = true;
+  private layout: LayoutModule;
+  private menubar: MenubarModule;
+  private element: HTMLElement;
+  private handle: HTMLElement;
+  private sidemenu: HTMLElement;
+  private toggleSidebarButton: HTMLElement;
+  private sidebarVisible = true;
 
   constructor(app: Mnote) {
     this.layout = app.modules.layout as LayoutModule;

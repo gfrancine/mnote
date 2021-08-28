@@ -20,22 +20,20 @@ type Settings = Record<string, unknown>;
 export const SETTINGS_NAME = ".mnotesettings";
 
 export class SettingsModule {
-  app: Mnote;
-  fs: FSModule;
-  appdir: AppDirModule;
-  logging: LoggingModule;
+  private fs: FSModule;
+  private appdir: AppDirModule;
+  private logging: LoggingModule;
 
-  protected settingsPath = ""; // initialized in init()
-  protected settings: Settings = this.defaultSettings();
+  private settingsPath = ""; // initialized in init()
+  private settings: Settings = this.defaultSettings();
 
   events: Emitter<{
     change: (settings: Settings) => void | Promise<void>;
   }> = new Emitter();
 
-  inputs: Record<string, Inputs> = {}; // [settings key]: input class
+  private inputs: Record<string, Inputs> = {}; // [settings key]: input class
 
   constructor(app: Mnote) {
-    this.app = app;
     this.fs = app.modules.fs as FSModule;
     this.appdir = app.modules.appdir as AppDirModule;
     this.logging = app.modules.logging as LoggingModule;
@@ -68,7 +66,7 @@ export class SettingsModule {
   }
 
   /** persist to the file */
-  protected async persistSettings() {
+  private async persistSettings() {
     this.logging.info(
       "Persist settings to path",
       this.settingsPath,

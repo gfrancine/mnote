@@ -10,27 +10,17 @@ import { createIcon } from "../components/icons";
 type SectionReducer = () => MenuItem[] | void;
 
 export class MenubarModule /* implements Module */ {
-  layout: LayoutModule;
-  logging: LoggingModule;
+  private layout: LayoutModule;
+  private logging: LoggingModule;
 
-  element: HTMLElement;
-  left: HTMLElement;
-  right: HTMLElement;
-  app: Mnote;
+  private element: HTMLElement;
+  private left: HTMLElement;
+  private right: HTMLElement;
+  private app: Mnote;
 
-  menuToggle: HTMLElement;
-  menuButtons: MenuItem[][] = [
-    [
-      {
-        name: "hey",
-        click: () => {
-          this.logging.info("menubar: menu item click");
-        },
-      },
-    ],
-  ];
-  menuReducers: SectionReducer[] = [];
-  menuCurrent?: Menu;
+  private menuToggle: HTMLElement;
+  private menuReducers: SectionReducer[] = [];
+  private menuCurrent?: Menu;
 
   constructor(app: Mnote) {
     this.app = app;

@@ -1,7 +1,7 @@
 import { Mnote /* , Module */ } from "../common/types";
 
 export class LoggingModule /* implements Module */ {
-  enabled = true;
+  private enabled = true;
 
   constructor(app: Mnote) {
     if (app.options.isProduction) {

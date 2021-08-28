@@ -9,7 +9,6 @@ import {
 } from "./types";
 import { LayoutModule } from "./layout";
 import { MenubarModule } from "./menubar";
-import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
 import { SidebarModule } from "./sidebar";
 import { InputModule } from "./input";
@@ -21,7 +20,6 @@ import { getPathName } from "mnote-util/path";
 import { strings } from "../common/strings";
 import { Menu } from "../components/menu";
 import { TabManager } from "./editors-tab";
-import { FiletreeModule } from "./filetree";
 import { createIcon } from "../components/icons";
 
 // todo: a nicer placeholder
@@ -36,16 +34,14 @@ const nothingHere = el("div")
 // here
 
 export class EditorsModule {
-  element: HTMLElement;
-  app: Mnote;
-  menubar: MenubarModule;
-  filetree: FiletreeModule;
-  fs: FSModule;
-  system: SystemModule;
-  input: InputModule;
-  logging: LoggingModule;
-  sidebar: SidebarModule;
-  prompts: PromptsModule;
+  private element: HTMLElement;
+  private app: Mnote;
+  private menubar: MenubarModule;
+  private system: SystemModule;
+  private input: InputModule;
+  private logging: LoggingModule;
+  private sidebar: SidebarModule;
+  private prompts: PromptsModule;
 
   events: Emitter<{
     currentTabSet: (tab?: Tab) => void; // menubar *Untitled text
@@ -65,8 +61,6 @@ export class EditorsModule {
   constructor(app: Mnote) {
     this.app = app;
     this.menubar = app.modules.menubar as MenubarModule;
-    this.filetree = app.modules.filetree as FiletreeModule;
-    this.fs = app.modules.fs as FSModule;
     this.system = app.modules.system as SystemModule;
     this.input = app.modules.input as InputModule;
     this.logging = app.modules.logging as LoggingModule;
@@ -124,17 +118,17 @@ export class EditorsModule {
   }
 
   // this is used to update the existing tab's state
-  protected setCurrentTab(tab?: Tab) {
+  private setCurrentTab(tab?: Tab) {
     this.currentTab = tab;
     this.events.emit("currentTabSet", tab);
   }
 
-  protected addActiveTab(tab: Tab) {
+  private addActiveTab(tab: Tab) {
     this.activeTabs.push(tab);
     this.events.emit("activeTabsChanged");
   }
 
-  protected removeActiveTab(index: number) {
+  private removeActiveTab(index: number) {
     this.activeTabs.splice(index, 1);
     this.events.emit("activeTabsChanged");
   }
@@ -288,7 +282,7 @@ export class EditorsModule {
   // Bind the module to the rest of the app
   //
 
-  protected hookToSidebar() {
+  private hookToSidebar() {
     // the "New File" button and menu
     const button = this.sidebar.createSidemenuButton((fillClass, strokeClass) =>
       createIcon("add", fillClass, strokeClass, "Create a new file")
@@ -357,7 +351,7 @@ export class EditorsModule {
     this.sidebar.addSidemenuButton(button);
   }
 
-  protected hookToMenubar() {
+  private hookToMenubar() {
     // update the menubar title
     const updateMenubarTitle = (tab?: Tab) => {
       if (tab) {
@@ -416,7 +410,7 @@ export class EditorsModule {
     this.menubar.addSectionReducer(menubarReducer);
   }
 
-  protected hookToInputs() {
+  private hookToInputs() {
     this.input.registerShortcut(["command+s", "ctrl+s"], (e) => {
       this.logging.info("editor keys: ctrl s");
       if (this.currentTab) {
@@ -442,7 +436,7 @@ export class EditorsModule {
     });
   }
 
-  protected hookToSystem() {
+  private hookToSystem() {
     this.system.hookToQuit(async (cancel) => {
       for (const tab of this.activeTabs) {
         const willClose = await this.close(tab);

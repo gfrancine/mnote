@@ -11,13 +11,13 @@ import { CtxmenuModule } from "./ctxmenu";
 import { FileIconsModule } from "./fileicons";
 
 export class OpenFilesModule {
-  layout: LayoutModule;
-  editors: EditorsModule;
-  element: HTMLElement;
-  ctxmenu: CtxmenuModule;
-  fileicons: FileIconsModule;
+  private layout: LayoutModule;
+  private editors: EditorsModule;
+  private element: HTMLElement;
+  private ctxmenu: CtxmenuModule;
+  private fileicons: FileIconsModule;
 
-  openFiles: OpenFile[] = [];
+  private openFiles: OpenFile[] = [];
 
   constructor(app: Mnote) {
     this.layout = app.modules.layout as LayoutModule;
