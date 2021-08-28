@@ -4,12 +4,16 @@
 import { el } from "mnote-util/elbuilder";
 import { freeze, unfreeze } from "mnote-util/dom";
 import { PromptButton } from "../modules/types";
+import { Signal } from "mnote-util/signal";
 
 export class Prompt {
   container: Element;
   message: string;
   buttons: PromptButton[];
   insertedElements: HTMLElement[] = [];
+  buttonEls: HTMLElement[];
+  overlay: HTMLElement;
+  resolveSignal = new Signal<(command: string) => unknown>();
 
   constructor(opts: {
     container: Element;
@@ -24,10 +28,8 @@ export class Prompt {
     if (opts.insertedElements) {
       this.insertedElements = opts.insertedElements;
     }
-  }
 
-  prompt(): Promise<string> {
-    const buttonEls: HTMLElement[] = [];
+    this.buttonEls = [];
 
     this.buttons.forEach((buttonData) => {
       const button = el("div")
@@ -37,12 +39,12 @@ export class Prompt {
         .attr("prompt-command", buttonData.command)
         .element;
 
-      buttonEls.push(button);
+      this.buttonEls.push(button);
     });
 
     const buttons = el("div")
       .class("prompt-buttons")
-      .children(...buttonEls)
+      .children(...this.buttonEls)
       .element;
 
     const text = el("div")
@@ -63,33 +65,43 @@ export class Prompt {
       )
       .element;
 
-    const overlay = el("div")
+    this.overlay = el("div")
       .class("prompt-overlay")
       .children(menu)
       .element;
+  }
 
+  resolveEarly(command: string) {
+    this.resolveSignal.emitSync(command);
+  }
+
+  prompt(): Promise<string> {
     freeze();
-    this.container.appendChild(overlay);
+    this.container.appendChild(this.overlay);
 
     return new Promise((resolve) => {
       const listeners: Map<HTMLElement, () => void> = new Map();
 
-      buttonEls.forEach((element) => {
-        const command = element.getAttribute("prompt-command");
-
-        const listener = () => {
+      const makeListener = (command: string) =>
+        () => {
           for (const [k, v] of listeners.entries()) {
             k.removeEventListener("click", v);
           }
-
-          // types can be cast safely as long as no one messes
-          // with it manually
-
-          (overlay.parentNode as HTMLElement).removeChild(overlay);
+          (this.overlay.parentNode as HTMLElement).removeChild(this.overlay);
           unfreeze();
-          resolve(command as string);
+          resolve(command);
         };
 
+      const signalListener = (command: string) => {
+        makeListener(command)();
+        this.resolveSignal.unlisten(signalListener);
+      };
+
+      this.resolveSignal.listen(signalListener);
+
+      this.buttonEls.forEach((element) => {
+        const command = element.getAttribute("prompt-command");
+        const listener = makeListener(command as string);
         listeners.set(element, listener);
         element.addEventListener("click", listener);
       });

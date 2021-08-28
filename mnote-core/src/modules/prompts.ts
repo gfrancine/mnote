@@ -39,7 +39,7 @@ export class PromptsModule {
       .attr("spellcheck", "false")
       .element as HTMLInputElement;
 
-    const action = await new Prompt({
+    const prompt = new Prompt({
       container: this.app.element,
       message: message,
       insertedElements: [input],
@@ -52,7 +52,13 @@ export class PromptsModule {
         text: "Confirm",
         command: "confirm",
       }],
-    }).prompt();
+    });
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") prompt.resolveEarly("confirm");
+    });
+
+    const action = await prompt.prompt();
 
     console.log("finished text input, got value", input.value);
 
