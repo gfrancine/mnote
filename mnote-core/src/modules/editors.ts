@@ -282,6 +282,18 @@ export class EditorsModule {
   // Bind the module to the rest of the app
   //
 
+  actions = {
+    save: () => {
+      if (this.currentTab) this.save(this.currentTab);
+    },
+    saveAs: () => {
+      if (this.currentTab) this.saveAs(this.currentTab);
+    },
+    closeEditor: () => {
+      if (this.currentTab) this.close(this.currentTab);
+    },
+  };
+
   private hookToSidebar() {
     // the "New File" button and menu
     const button = this.sidebar.createSidemenuButton((fillClass, strokeClass) =>
@@ -380,27 +392,21 @@ export class EditorsModule {
         buttons.push({
           name: "Save",
           shortcut: cmdOrCtrl + "+S",
-          click: () => {
-            if (this.currentTab) this.save(this.currentTab);
-          },
+          click: this.actions.save,
         });
 
         if (!editorInfo.disableSaveAs) {
           buttons.push({
-            name: "Save As",
+            name: "Save As...",
             shortcut: cmdOrCtrl + "+Shift+S",
-            click: () => {
-              if (this.currentTab) this.saveAs(this.currentTab);
-            },
+            click: this.actions.saveAs,
           });
         }
 
         buttons.push({
-          name: "Close",
+          name: "Close Editor",
           shortcut: cmdOrCtrl + "+W",
-          click: () => {
-            if (this.currentTab) this.close(this.currentTab);
-          },
+          click: this.actions.closeEditor,
         });
 
         return buttons;
@@ -441,6 +447,17 @@ export class EditorsModule {
       for (const tab of this.activeTabs) {
         const willClose = await this.close(tab);
         if (!willClose) cancel();
+      }
+    });
+
+    this.system.onAppMenuClick((menuId) => {
+      switch (menuId) {
+        case "close-editor":
+          return this.actions.closeEditor();
+        case "save":
+          return this.actions.save();
+        case "save-as":
+          return this.actions.saveAs();
       }
     });
   }

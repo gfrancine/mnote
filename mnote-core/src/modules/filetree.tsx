@@ -63,33 +63,40 @@ export class FiletreeModule {
 
     const cmdOrCtrl = this.system.usesCmd() ? "Cmd" : "Ctrl";
 
+    // DRY
+
+    const openFile = async () => {
+      const maybePath = await this.fs.dialogOpen({
+        directory: false,
+        startingPath: this.directory,
+      });
+      if (!maybePath) return;
+      this.updateEditorSelectedFile(maybePath);
+    };
+
+    const openFolder = async () => {
+      if (this.directory) return;
+      const maybePath = await this.fs.dialogOpen({
+        directory: true,
+      });
+      if (!maybePath) return;
+      this.setDirectory(maybePath);
+    };
+
     const menubarReducer = () => {
       const buttons = [];
 
       buttons.push({
-        name: "Open File",
+        name: "Open File...",
         shortcut: cmdOrCtrl + "+O",
-        click: async () => {
-          const maybePath = await this.fs.dialogOpen({
-            directory: false,
-            startingPath: this.directory,
-          });
-          if (!maybePath) return;
-          this.updateEditorSelectedFile(maybePath);
-        },
+        click: openFile,
       });
 
       if (!this.directory) {
         buttons.push({
-          name: "Open Folder",
+          name: "Open Folder...",
           shortcut: cmdOrCtrl + "+O",
-          click: async () => {
-            const maybePath = await this.fs.dialogOpen({
-              directory: true,
-            });
-            if (!maybePath) return;
-            this.setDirectory(maybePath);
-          },
+          click: openFolder,
         });
       }
 
@@ -104,6 +111,15 @@ export class FiletreeModule {
 
       return buttons;
     };
+
+    this.system.onAppMenuClick((menuId) => {
+      switch (menuId) {
+        case "open-file":
+          return openFile();
+        case "open-folder":
+          return openFolder();
+      }
+    });
 
     const ctxmenuReducer = (ctx: Context) => {
       // find a file tree item

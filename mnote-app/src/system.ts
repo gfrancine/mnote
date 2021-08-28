@@ -1,10 +1,18 @@
-import { SystemCancelQuitHook, SystemInteropModule } from "mnote-core";
+import {
+  SystemAppMenuId,
+  SystemAppMenuListener,
+  SystemCancelQuitHook,
+  SystemInteropModule,
+} from "mnote-core";
 import { invoke } from "@tauri-apps/api/tauri";
-import { listen } from "@tauri-apps/api/event";
+import { Event, listen } from "@tauri-apps/api/event";
+import { Signal } from "../../mnote-util/signal";
 // import { appWindow, getCurrent } from "@tauri-apps/api/window";
 
 export class System implements SystemInteropModule {
   private USES_CMD = false;
+
+  private appMenuSignal = new Signal<SystemAppMenuListener>();
 
   private cancelQuitHooks: SystemCancelQuitHook[] = [];
 
@@ -26,8 +34,9 @@ export class System implements SystemInteropModule {
       await appWindow.close();
     }); */
 
-    await listen("menu_event", (payload) => {
-      console.log("rust menu event", payload);
+    await listen("menu_event", (event: Event<SystemAppMenuId>) => {
+      console.log("rust menu event", event);
+      this.appMenuSignal.emit(event.payload);
     });
 
     return this;
@@ -40,5 +49,13 @@ export class System implements SystemInteropModule {
   hookToQuit(hook: SystemCancelQuitHook) {
     console.log("hooked to quit", hook);
     this.cancelQuitHooks.push(hook);
+  }
+
+  onAppMenuClick(listener: SystemAppMenuListener) {
+    this.appMenuSignal.listen(listener);
+  }
+
+  offAppMenuClick(listener: SystemAppMenuListener) {
+    this.appMenuSignal.unlisten(listener);
   }
 }

@@ -76,7 +76,7 @@ async fn watcher_init(window: tauri::Window, path: String) {
   }
 }
 
-use tauri::{Menu, MenuItem, Submenu};
+use tauri::{Menu, MenuItem, Submenu, CustomMenuItem};
 
 fn make_menu() -> Menu {
   // https://docs.rs/tauri/1.0.0-beta.5/tauri/enum.MenuItem.html
@@ -85,6 +85,18 @@ fn make_menu() -> Menu {
     "Mnote",
     Menu::new()
       .add_native_item(MenuItem::Quit),
+  );
+
+  let file_submenu = Submenu::new(
+    "File",
+    Menu::new()
+      .add_item(CustomMenuItem::new("open-file", "Open File..."))
+      .add_item(CustomMenuItem::new("open-folder", "Open Folder..."))
+      .add_native_item(MenuItem::Separator)
+      .add_item(CustomMenuItem::new("save", "Save"))
+      .add_item(CustomMenuItem::new("save-as", "Save As..."))
+      .add_native_item(MenuItem::Separator)
+      .add_item(CustomMenuItem::new("close-editor", "Close Editor")),
   );
 
   let edit_submenu = Submenu::new(
@@ -102,6 +114,7 @@ fn make_menu() -> Menu {
 
   Menu::new()
     .add_submenu(main_submenu)
+    .add_submenu(file_submenu)
     .add_submenu(edit_submenu)
 }
 

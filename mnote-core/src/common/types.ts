@@ -122,9 +122,20 @@ export type MenuItem = {
 
 // system module
 
+export type SystemAppMenuId =
+  | "open-file"
+  | "open-folder"
+  | "save"
+  | "save-as"
+  | "close-editor"; // todo
+
+export type SystemAppMenuListener = (menuId: SystemAppMenuId) => unknown;
+
 export interface SystemInteropModule {
   usesCmd: () => boolean;
   hookToQuit: (hook: SystemCancelQuitHook) => void;
+  onAppMenuClick: (listener: SystemAppMenuListener) => void;
+  offAppMenuClick: (listener: SystemAppMenuListener) => void;
 }
 
 export type SystemCancelQuitHook = (cancel: () => void) => void | Promise<void>;

@@ -27,7 +27,7 @@ export class Emitter<E extends Record<string, Function>> {
     const index = listeners.indexOf(listener);
     if (index === -1) return;
 
-    delete listeners[index];
+    listeners.splice(index, 1);
   }
 
   emit<K extends keyof E>(event: K, ...args: Arguments<E[K]>) {

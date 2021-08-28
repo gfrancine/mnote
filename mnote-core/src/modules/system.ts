@@ -1,4 +1,8 @@
-import { SystemCancelQuitHook, SystemInteropModule } from "../common/types";
+import {
+  SystemAppMenuListener,
+  SystemCancelQuitHook,
+  SystemInteropModule,
+} from "../common/types";
 
 export class SystemModule implements SystemInteropModule {
   private system?: SystemInteropModule;
@@ -14,10 +18,14 @@ export class SystemModule implements SystemInteropModule {
   }
 
   hookToQuit(hook: SystemCancelQuitHook) {
-    if (this.system) {
-      this.system.hookToQuit(hook);
-    }
+    this.system?.hookToQuit(hook);
   }
 
-  // todo: move some fs items to system?
+  onAppMenuClick(listener: SystemAppMenuListener) {
+    this.system?.onAppMenuClick(listener);
+  }
+
+  offAppMenuClick(listener: SystemAppMenuListener) {
+    this.system?.offAppMenuClick(listener);
+  }
 }
