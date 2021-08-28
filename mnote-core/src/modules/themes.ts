@@ -40,6 +40,15 @@ export class ThemesModule {
         this.updateSystemTheme();
       },
     );
+
+    this.settings.registerInput("enum", {
+      title: "Theme",
+      key: "theme",
+      category: "Appearance",
+    }, {
+      default: "system",
+      getItems: () => ["system", ...Object.keys(this.themes)],
+    });
   }
 
   async init() {

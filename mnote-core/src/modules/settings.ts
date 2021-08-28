@@ -3,6 +3,12 @@ import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
 import { Emitter } from "mnote-util/emitter";
 import { AppDirModule } from "./appdir";
+import {
+  constructorMap,
+  GeneralOptions,
+  InputOptionsMap,
+  Inputs,
+} from "../common/inputs";
 
 // the file is only read once at initialization. as long as the
 // app is running state is kept here and persisted based on the
@@ -25,6 +31,8 @@ export class SettingsModule {
   events: Emitter<{
     change: (settings: Settings) => void | Promise<void>;
   }> = new Emitter();
+
+  inputs: Record<string, Inputs> = {}; // [settings key]: input class
 
   constructor(app: Mnote) {
     this.app = app;
@@ -121,5 +129,28 @@ export class SettingsModule {
     this.settings = this.defaultSettings();
     return this.persistSettings()
       .then(() => this.events.emit("change", this.settings));
+  }
+
+  // inputs
+  // the settings module only collects the input data assuming that an editor
+  // will pick it up and use it
+
+  getInputs = () => this.inputs;
+
+  registerInput<T extends keyof InputOptionsMap & keyof typeof constructorMap>(
+    type: T,
+    generalOpts: GeneralOptions,
+    opts: InputOptionsMap[T],
+  ) {
+    const constructor = constructorMap[type];
+    if (!constructor) throw new Error(`Input type ${type} does not exist!`);
+    // this is safe but I can't get typescript to resolve it
+    // deno-lint-ignore no-explicit-any
+    const input = new constructor(generalOpts, opts as any);
+    this.inputs[generalOpts.key] = input;
+  }
+
+  removeInput(key: string) {
+    if (this.inputs[key]) delete this.inputs[key];
   }
 }
