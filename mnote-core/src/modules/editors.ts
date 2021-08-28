@@ -1,4 +1,5 @@
-import { MenuItem, Mnote } from "../common/types";
+import { MenuItem } from "../common/types";
+import { Mnote } from "..";
 import {
   DocInfo,
   EditorInfo,
@@ -7,7 +8,6 @@ import {
   TabContext,
   TabInfo,
 } from "./types";
-import { LayoutModule } from "./layout";
 import { MenubarModule } from "./menubar";
 import { LoggingModule } from "./logging";
 import { SidebarModule } from "./sidebar";
@@ -60,18 +60,18 @@ export class EditorsModule {
 
   constructor(app: Mnote) {
     this.app = app;
-    this.menubar = app.modules.menubar as MenubarModule;
-    this.system = app.modules.system as SystemModule;
-    this.input = app.modules.input as InputModule;
-    this.logging = app.modules.logging as LoggingModule;
-    this.sidebar = app.modules.sidebar as SidebarModule;
-    this.prompts = app.modules.prompts as PromptsModule;
+    this.menubar = app.modules.menubar;
+    this.system = app.modules.system;
+    this.input = app.modules.input;
+    this.logging = app.modules.logging;
+    this.sidebar = app.modules.sidebar;
+    this.prompts = app.modules.prompts;
 
     this.element = el("div")
       .class("editor-main")
       .element;
 
-    (app.modules.layout as LayoutModule).mountToContents(this.element);
+    app.modules.layout.mountToContents(this.element);
 
     this.element.appendChild(nothingHere);
 

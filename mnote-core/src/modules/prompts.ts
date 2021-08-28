@@ -1,4 +1,4 @@
-import { Mnote } from "../common/types";
+import { Mnote } from "..";
 import { PromptButton } from "./types";
 import { Prompt } from "../components/prompt";
 import { el } from "mnote-util/elbuilder";

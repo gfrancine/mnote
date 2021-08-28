@@ -1,4 +1,4 @@
-import { Mnote } from "../common/types";
+import { Mnote } from "..";
 import { FSModule } from "./fs";
 import { LoggingModule } from "./logging";
 import { Emitter } from "mnote-util/emitter";
@@ -34,9 +34,9 @@ export class SettingsModule {
   private inputs: Record<string, Inputs> = {}; // [settings key]: input class
 
   constructor(app: Mnote) {
-    this.fs = app.modules.fs as FSModule;
-    this.appdir = app.modules.appdir as AppDirModule;
-    this.logging = app.modules.logging as LoggingModule;
+    this.fs = app.modules.fs;
+    this.appdir = app.modules.appdir;
+    this.logging = app.modules.logging;
   }
 
   async init() {

@@ -1,4 +1,4 @@
-import { Mnote /* , Module */ } from "../common/types";
+import { Mnote } from "..";
 
 export class LoggingModule /* implements Module */ {
   private enabled = true;

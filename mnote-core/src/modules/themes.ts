@@ -1,4 +1,4 @@
-import { Mnote } from "../common/types";
+import { Mnote } from "..";
 import { SettingsModule } from "./settings";
 import { dark, light } from "../components/colors";
 
@@ -24,7 +24,7 @@ export class ThemesModule {
   // events: Emitter<{}> = new Emitter();
 
   constructor(app: Mnote) {
-    this.settings = app.modules.settings as SettingsModule;
+    this.settings = app.modules.settings;
 
     this.settings.events.on("change", () => {
       this.updateTheme();

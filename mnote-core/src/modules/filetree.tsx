@@ -2,8 +2,8 @@ import {
   FileTreeHooks,
   FileTreeNode,
   FileTreeNodeWithChildren,
-  Mnote,
 } from "../common/types";
+import { Mnote } from "..";
 import { el } from "mnote-util/elbuilder";
 import { Context } from "./types";
 import { FSModule } from "./fs";
@@ -51,15 +51,15 @@ export class FiletreeModule {
       .children(nothingHere)
       .element;
 
-    this.fs = app.modules.fs as FSModule;
-    this.system = app.modules.system as SystemModule;
-    this.layout = app.modules.layout as LayoutModule;
-    this.ctxmenu = app.modules.ctxmenu as CtxmenuModule;
-    this.logging = app.modules.logging as LoggingModule;
-    this.prompts = app.modules.prompts as PromptsModule;
-    this.menubar = app.modules.menubar as MenubarModule;
-    this.editors = app.modules.editors as EditorsModule;
-    this.fileicons = app.modules.fileicons as FileIconsModule;
+    this.fs = app.modules.fs;
+    this.system = app.modules.system;
+    this.layout = app.modules.layout;
+    this.ctxmenu = app.modules.ctxmenu;
+    this.logging = app.modules.logging;
+    this.prompts = app.modules.prompts;
+    this.menubar = app.modules.menubar;
+    this.editors = app.modules.editors;
+    this.fileicons = app.modules.fileicons;
 
     const cmdOrCtrl = this.system.usesCmd() ? "Cmd" : "Ctrl";
 

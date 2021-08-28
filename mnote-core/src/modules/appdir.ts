@@ -1,5 +1,5 @@
 import { FSModule } from ".";
-import { Mnote } from "../common/types";
+import { Mnote } from "..";
 
 const APPDIR_NAME = "Mnote";
 
@@ -9,7 +9,7 @@ export class AppDirModule {
   private appDirPath = "";
 
   constructor(app: Mnote) {
-    this.fs = app.modules.fs as FSModule;
+    this.fs = app.modules.fs;
   }
 
   async init() {

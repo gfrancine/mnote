@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "react-dom";
 import { LayoutModule } from ".";
 import { el } from "mnote-util/elbuilder";
-import { Mnote } from "../common/types";
+import { Mnote } from "..";
 import { OpenFile } from "../common/types";
 import OpenFiles from "../components/openfiles";
 import { EditorsModule } from "./editors";
@@ -20,10 +20,10 @@ export class OpenFilesModule {
   private openFiles: OpenFile[] = [];
 
   constructor(app: Mnote) {
-    this.layout = app.modules.layout as LayoutModule;
-    this.editors = app.modules.editors as EditorsModule;
-    this.ctxmenu = app.modules.ctxmenu as CtxmenuModule;
-    this.fileicons = app.modules.fileicons as FileIconsModule;
+    this.layout = app.modules.layout;
+    this.editors = app.modules.editors;
+    this.ctxmenu = app.modules.ctxmenu;
+    this.fileicons = app.modules.fileicons;
 
     this.element = el("div")
       .class("openfiles-main")

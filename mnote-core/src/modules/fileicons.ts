@@ -1,4 +1,4 @@
-import { Mnote } from "../common/types";
+import { Mnote } from "..";
 import { FileIcon } from "./types";
 
 export class FileIconsModule {

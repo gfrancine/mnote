@@ -1,6 +1,6 @@
-import { MenuItem, Mnote } from "../common/types";
+import { MenuItem } from "../common/types";
+import { Mnote } from "..";
 import { Menu } from "../components/menu";
-import { LayoutModule } from "./layout";
 import { Context } from "./types";
 
 /* {
@@ -26,7 +26,7 @@ export class CtxmenuModule {
 
     new ContextMenu(
       app.element,
-      [(app.modules.layout as LayoutModule).contents],
+      [app.modules.layout.contents],
       getSections,
     );
   }

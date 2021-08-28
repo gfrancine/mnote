@@ -1,5 +1,5 @@
 import { el } from "mnote-util/elbuilder";
-import { Mnote } from "../common/types";
+import { Mnote } from "..";
 import { createIcon } from "../components/icons";
 import { LayoutModule } from "./layout";
 import { MenubarModule } from "./menubar";
@@ -15,8 +15,8 @@ export class SidebarModule {
   private sidebarVisible = true;
 
   constructor(app: Mnote) {
-    this.layout = app.modules.layout as LayoutModule;
-    this.menubar = app.modules.menubar as MenubarModule;
+    this.layout = app.modules.layout;
+    this.menubar = app.modules.menubar;
 
     this.element = this.layout.sidebar;
     this.handle = this.layout.sidebarHandle;

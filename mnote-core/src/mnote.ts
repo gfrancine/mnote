@@ -1,6 +1,6 @@
 // The implementation of the Mnote type in ./types
 
-import { Mnote as Type, MnoteOptions } from "./common/types";
+import { MnoteOptions } from "./common/types";
 import { Emitter } from "mnote-util/emitter";
 import { el } from "mnote-util/elbuilder";
 
@@ -44,7 +44,7 @@ type Modules = {
   themes: ThemesModule;
 };
 
-export class Mnote implements Type {
+export class Mnote {
   options: MnoteOptions;
 
   container: Element;

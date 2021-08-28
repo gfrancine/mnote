@@ -1,4 +1,5 @@
-import { MenuItem, Mnote /* , Module */ } from "../common/types";
+import { MenuItem } from "../common/types";
+import { Mnote } from "..";
 import { LayoutModule } from "./layout";
 import { el, Elbuilder } from "mnote-util/elbuilder";
 import { Menu } from "../components/menu";
@@ -58,8 +59,8 @@ export class MenubarModule /* implements Module */ {
 
     this.addMenubarButton(this.menuToggle);
 
-    this.logging = app.modules.logging as LoggingModule;
-    this.layout = app.modules.layout as LayoutModule;
+    this.logging = app.modules.logging;
+    this.layout = app.modules.layout;
     this.layout.mountToMenubar(this.element);
 
     // close the menu when the user clicks somewhere else

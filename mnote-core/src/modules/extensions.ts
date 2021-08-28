@@ -1,4 +1,4 @@
-import { Mnote /* , Module */ } from "../common/types";
+import { Mnote } from "..";
 import { Extension } from "./types";
 
 // if modules are services, think of

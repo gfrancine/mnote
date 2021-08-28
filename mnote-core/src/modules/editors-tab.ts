@@ -1,6 +1,6 @@
 import { getPathName } from "mnote-util/path";
 import { strings } from "../common/strings";
-import { Mnote } from "../common/types";
+import { Mnote } from "..";
 import { FSModule } from "./fs";
 import { PromptsModule } from "./prompts";
 import {
@@ -19,8 +19,8 @@ export class TabManager {
 
   constructor(app: Mnote, ctx: TabContext) {
     this.ctx = ctx;
-    this.fs = app.modules.fs as FSModule;
-    this.prompts = app.modules.prompts as PromptsModule;
+    this.fs = app.modules.fs;
+    this.prompts = app.modules.prompts;
   }
 
   // mark the document as unsaved, remove the path
