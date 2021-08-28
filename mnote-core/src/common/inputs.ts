@@ -44,15 +44,18 @@ export class NumberInput {
   }
 }
 
-export type EnumInputOptions = {
+export type SelectInputOptions = {
   default: string;
-  getItems: () => string[];
+  getItems: () => {
+    value: string;
+    text: string;
+  }[];
 };
 
-export class EnumInput {
+export class SelectInput {
   generalOpts: GeneralOptions;
-  opts: EnumInputOptions;
-  constructor(generalOpts: GeneralOptions, opts: EnumInputOptions) {
+  opts: SelectInputOptions;
+  constructor(generalOpts: GeneralOptions, opts: SelectInputOptions) {
     this.generalOpts = generalOpts;
     this.opts = opts;
   }
@@ -61,16 +64,16 @@ export class EnumInput {
 export type InputOptionsMap = {
   string: StringInputOptions;
   number: NumberInputOptions;
-  enum: EnumInputOptions;
+  select: SelectInputOptions;
 };
 
 export const constructorMap = {
   string: StringInput,
   number: NumberInput,
-  enum: EnumInput,
+  select: SelectInput,
 };
 
 export type Inputs =
   | StringInput
   | NumberInput
-  | EnumInput;
+  | SelectInput;

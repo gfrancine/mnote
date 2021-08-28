@@ -84,3 +84,8 @@ export type FileIcon = {
   factory: (fillClass: string, strokeClass: string) => Element;
   shouldUse: (path: string) => boolean;
 };
+
+export type ThemeInfo = {
+  name: string;
+  colors: Record<string, string>;
+};

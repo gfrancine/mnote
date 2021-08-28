@@ -1,6 +1,7 @@
 import { Mnote } from "..";
 import { SettingsModule } from "./settings";
 import { dark, light } from "../components/colors";
+import { ThemeInfo } from "./types";
 
 // colors are declared at bottom
 
@@ -16,19 +17,21 @@ function setVar(key: string, value: string) {
 
 export class ThemesModule {
   private settings: SettingsModule;
-  private themes: Record<string, Record<string, string>> = {
-    dark,
-    light,
+  private themes: Record<string, ThemeInfo> = {
+    dark: {
+      name: "Dark",
+      colors: dark,
+    },
+    light: {
+      name: "Light",
+      colors: light,
+    },
   };
 
   // events: Emitter<{}> = new Emitter();
 
   constructor(app: Mnote) {
     this.settings = app.modules.settings;
-
-    this.settings.events.on("change", () => {
-      this.updateTheme();
-    });
 
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener(
       "change",
@@ -39,13 +42,26 @@ export class ThemesModule {
       },
     );
 
-    this.settings.registerInput("enum", {
+    this.settings.events.on("change", () => {
+      this.updateTheme();
+    });
+
+    this.settings.registerInput("select", {
       title: "Theme",
       key: "theme",
       category: "Appearance",
     }, {
       default: "system",
-      getItems: () => ["system", ...Object.keys(this.themes)],
+      getItems: () => [
+        {
+          value: "system",
+          text: "System",
+        },
+        ...Object.keys(this.themes).map((key) => ({
+          value: key,
+          text: this.themes[key].name,
+        })),
+      ],
     });
   }
 
@@ -77,9 +93,9 @@ export class ThemesModule {
 
   private updateWithRegisteredTheme(theme: string) {
     if (!this.themes[theme]) theme = "light";
-    const colors = this.themes[theme];
-    for (const k of Object.keys(colors)) {
-      setVar(k, colors[k]);
+    const themeInfo = this.themes[theme];
+    for (const k of Object.keys(themeInfo.colors)) {
+      setVar(k, themeInfo.colors[k]);
     }
   }
 
@@ -93,5 +109,10 @@ export class ThemesModule {
 
   hasTheme(name: string) {
     return name === "system" || this.themes[name] !== undefined;
+  }
+
+  registerTheme(key: string, info: ThemeInfo) {
+    this.themes[key] = info;
+    return this.updateTheme(); // promise
   }
 }
