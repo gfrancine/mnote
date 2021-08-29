@@ -282,7 +282,8 @@ export class EditorsModule {
   // Bind the module to the rest of the app
   //
 
-  actions = {
+  // shared actions between menubar & app menu
+  private actions = {
     save: () => {
       if (this.currentTab) this.save(this.currentTab);
     },

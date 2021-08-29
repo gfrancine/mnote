@@ -8,7 +8,7 @@ import {
   GeneralOptions,
   InputOptionsMap,
   Inputs,
-} from "../common/inputs";
+} from "./settings-inputs";
 
 // the file is only read once at initialization. as long as the
 // app is running state is kept here and persisted based on the

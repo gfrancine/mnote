@@ -1,5 +1,3 @@
-// think of modules as the "services"
-
 export { LayoutModule } from "./layout";
 export { ExtensionsModule } from "./extensions";
 export { MenubarModule } from "./menubar";
@@ -17,3 +15,8 @@ export { PromptsModule } from "./prompts";
 export { OpenFilesModule } from "./openfiles";
 export { FileIconsModule } from "./fileicons";
 export { AppDirModule } from "./appdir";
+
+// non-module exports
+
+export { TabManager } from "./editors-tab";
+export * as settingsInputs from "./settings-inputs";

@@ -9,7 +9,7 @@ type DivProps =
   & Record<string, unknown>;
 
 function omit<
-  K extends string | number | symbol,
+  K extends string | number,
   T extends Record<K, unknown>,
   O extends readonly K[],
 >(object: T, ...keys: O) {
