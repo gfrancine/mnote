@@ -67,7 +67,7 @@ export type TabContext = {
 };
 
 // right click context menu context
-export type Context = {
+export type CtxmenuContext = {
   pageX: number;
   pageY: number;
   elements: Element[];

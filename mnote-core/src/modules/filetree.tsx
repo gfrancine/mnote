@@ -5,7 +5,7 @@ import {
 } from "../common/types";
 import { Mnote } from "..";
 import { el } from "mnote-util/elbuilder";
-import { Context } from "./types";
+import { CtxmenuContext } from "./types";
 import { FSModule } from "./fs";
 import { LayoutModule } from "./layout";
 import { CtxmenuModule } from "./ctxmenu";
@@ -121,7 +121,7 @@ export class FiletreeModule {
       }
     });
 
-    const ctxmenuReducer = (ctx: Context) => {
+    const ctxmenuReducer = (ctx: CtxmenuContext) => {
       // find a file tree item
       let fileTreeItem: Element | undefined;
 

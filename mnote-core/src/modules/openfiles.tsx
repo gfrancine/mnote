@@ -6,7 +6,7 @@ import { Mnote } from "..";
 import { OpenFile } from "../common/types";
 import OpenFiles from "../components/openfiles";
 import { EditorsModule } from "./editors";
-import { Context, Tab } from "./types";
+import { CtxmenuContext, Tab } from "./types";
 import { CtxmenuModule } from "./ctxmenu";
 import { FileIconsModule } from "./fileicons";
 
@@ -44,7 +44,7 @@ export class OpenFilesModule {
     this.editors.events.on("currentTabSet", onEditorTabChange);
     // click > action up > event down > render
 
-    const ctxmenuReducer = (ctx: Context) => {
+    const ctxmenuReducer = (ctx: CtxmenuContext) => {
       // find a file tree item
       let tabItem: Element | undefined;
 
