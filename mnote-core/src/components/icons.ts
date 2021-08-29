@@ -59,19 +59,17 @@ const icons = {
   `),
   //
   leftSidebar: (
-    _fillClass: string,
+    fillClass: string,
     strokeClass: string,
     alt?: string,
   ) =>
     toHtml(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-    ${titleAlt(alt)}
-      <line x1="50" y1="96" x2="462" y2="100" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
-        class="${strokeClass}" />
-      <line x1="50" y1="256" x2="330" y2="256" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
-        class="${strokeClass}" />
-      <line x1="50" y1="416" x2="360" y2="412" style="fill:none;stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
-        class="${strokeClass}" />
+      ${titleAlt(alt)}
+      <path xmlns="http://www.w3.org/2000/svg" d="M50,48H186a0,0,0,0,1,0,0V464a0,0,0,0,1,0,0H50a18,18,0,0,1-18-18V66A18,18,0,0,1,50,48Z"
+        class="${strokeClass} ${fillClass}" style="stroke-miterlimit:10;stroke-width:32px" />
+      <path xmlns="http://www.w3.org/2000/svg" d="M190,48H462a18,18,0,0,1,18,18V446a18,18,0,0,1-18,18H190a0,0,0,0,1,0,0V48A0,0,0,0,1,190,48Z"
+        class="${strokeClass}" style="fill:none;stroke-miterlimit:10;stroke-width:32px" />
     </svg>
   `),
 };
