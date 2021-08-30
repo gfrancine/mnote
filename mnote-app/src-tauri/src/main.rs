@@ -76,7 +76,7 @@ async fn watcher_init(window: tauri::Window, path: String) {
   }
 }
 
-use tauri::{Menu, MenuItem, Submenu, CustomMenuItem};
+use tauri::{Menu, MenuItem, Submenu, CustomMenuItem, Manager};
 
 fn make_menu() -> Menu {
   // https://docs.rs/tauri/1.0.0-beta.5/tauri/enum.MenuItem.html
@@ -139,7 +139,18 @@ fn main() {
     builder
   };
 
-  builder
-    .run(tauri::generate_context!())
-    .expect("error while running tauri application");
+  let app = builder
+    .build(tauri::generate_context!())
+    .expect("error building the app");
+  
+  app.run(|app_handle, e| {
+    match e {
+      tauri::Event::CloseRequested { label, api, .. } => {
+        api.prevent_close();
+        let window = app_handle.get_window(&label).unwrap();
+        window.emit("close-requested", ()).unwrap();
+      },
+      _ => ()
+    }
+  })
 }
