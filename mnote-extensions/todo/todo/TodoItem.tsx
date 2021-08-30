@@ -91,7 +91,6 @@ export default function TodoItem(props: {
       onDragStart={(e) => {
         e.dataTransfer.setData("todo-index", "" + props.index);
       }}
-      onDragEnter={(e) => console.log(e.target)}
       draggable
       className={"todo-item" +
         (dragoverLocation ? " draggedover " + dragoverLocation : "") +

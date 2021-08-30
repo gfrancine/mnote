@@ -60,8 +60,6 @@ export class PromptsModule {
 
     const action = await prompt.prompt();
 
-    console.log("finished text input, got value", input.value);
-
     if (
       action === "cancel" ||
       input.value.length < 1

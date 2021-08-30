@@ -1,14 +1,19 @@
 import { Mnote } from "..";
+import { LogModule } from "./log";
 const Mousetrap = require("mousetrap");
 
 export class InputModule {
-  constructor(_: Mnote) {}
+  private log: LogModule;
+
+  constructor(app: Mnote) {
+    this.log = app.modules.log;
+  }
 
   registerShortcut(
     combinations: string[],
     callback: (e: KeyboardEvent) => void | Promise<void>,
   ) {
-    console.log("input: bind combinations", combinations);
+    this.log.info("input: bind combinations", combinations);
     Mousetrap.bind(combinations, callback);
   }
 }

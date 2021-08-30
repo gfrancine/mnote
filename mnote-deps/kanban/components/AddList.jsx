@@ -15,7 +15,6 @@ export default class AddList extends Component {
     const { title } = this.state;
     const { dispatch } = this.props;
 
-    console.log("create list");
     this.props.setAddingList(false);
 
     dispatch({
@@ -34,7 +33,6 @@ export default class AddList extends Component {
           title={title}
           handleChangeTitle={this.handleChangeTitle}
           onClickOutside={() => {
-            console.log("listEditor click outside");
             setAddingList(false);
           }}
           saveList={this.createList}
@@ -44,7 +42,6 @@ export default class AddList extends Component {
           handleSave={this.createList}
           saveLabel={"Add list"}
           handleCancel={() => {
-            console.log("EditButtons cancel");
             setAddingList(false);
           }}
         />

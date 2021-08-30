@@ -109,7 +109,6 @@ export default function Todo(props: {
         ? NEW_ITEM_MOCK_ID
         : itemsOrder[index];
 
-      console.log("ideeeey", id);
       if (!id) return;
       setCurrentlyEditing(id);
     },

@@ -82,7 +82,6 @@ class MarkdownEditor implements Editor {
       )
       .element;
 
-    console.log("instatiate constructor");
     this.milkdown = this.createMilkdown({ contents: "" });
   }
 
@@ -133,7 +132,6 @@ class MarkdownEditor implements Editor {
 
     this.container.appendChild(this.element);
 
-    console.log("create startup");
     await this.milkdown.create();
   }
 

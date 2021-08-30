@@ -1,7 +1,7 @@
 import { MenuItem } from "../common/types";
 import { Mnote } from "..";
 import { Menu } from "../components/menu";
-import { Context } from "./types";
+import { CtxmenuContext } from "./types";
 
 /* {
   name: "Copy",
@@ -9,13 +9,13 @@ import { Context } from "./types";
   click: () => {},
 } */
 
-type SectionReducer = (ctx: Context) => MenuItem[] | void;
+type SectionReducer = (ctx: CtxmenuContext) => MenuItem[] | void;
 
 export class CtxmenuModule {
   private reducers: SectionReducer[] = [];
 
   constructor(app: Mnote) {
-    const getSections = (ctx: Context) => {
+    const getSections = (ctx: CtxmenuContext) => {
       const sections: MenuItem[][] = [];
       this.reducers.forEach((reducer) => {
         const section = reducer(ctx);
@@ -44,7 +44,7 @@ export class ContextMenu {
   constructor(
     element: Element,
     blacklist: Element[],
-    getSections: (context: Context) => MenuItem[][],
+    getSections: (context: CtxmenuContext) => MenuItem[][],
   ) {
     this.blacklist = new Set(blacklist);
 
@@ -59,7 +59,7 @@ export class ContextMenu {
       e.stopPropagation();
       e.preventDefault();
 
-      const context: Context = {
+      const context: CtxmenuContext = {
         pageX: e.pageX,
         pageY: e.pageY,
         elements: document.elementsFromPoint(e.pageX, e.pageY),
@@ -102,8 +102,6 @@ export class ContextMenu {
     };
 
     const onClick = (e: MouseEvent) => {
-      console.log("somewhereelse click");
-
       if (!this.activeMenu) return;
 
       const mouseoverEls = document.elementsFromPoint(e.pageX, e.pageY);

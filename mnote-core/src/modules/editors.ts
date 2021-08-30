@@ -155,7 +155,7 @@ export class EditorsModule {
       await manager.startup();
     } catch (e) {
       this.prompts.notify(strings.loadError(e));
-      console.error(e);
+      this.log.err("editors: trySetupTab error", info, e);
       return;
     }
 
@@ -379,7 +379,6 @@ export class EditorsModule {
     this.events.on("currentTabSet", updateMenubarTitle);
 
     const cmdOrCtrl = this.system.usesCmd() ? "Cmd" : "Ctrl";
-    this.log.info("command or ctrl?", cmdOrCtrl);
 
     // menu reducer
     const menuReducer = () => {
@@ -419,7 +418,7 @@ export class EditorsModule {
 
   private hookToInputs() {
     this.input.registerShortcut(["command+s", "ctrl+s"], (e) => {
-      this.log.info("editor keys: ctrl s");
+      this.log.info("editors: ctrl s");
       if (this.currentTab) {
         e.preventDefault();
         this.save(this.currentTab);
@@ -427,7 +426,7 @@ export class EditorsModule {
     });
 
     this.input.registerShortcut(["command+shift+s", "ctrl+shift+s"], (e) => {
-      this.log.info("editor keys: ctrl shift s");
+      this.log.info("editors: ctrl shift s");
       if (this.currentTab) {
         e.preventDefault();
         this.saveAs(this.currentTab);
@@ -435,7 +434,7 @@ export class EditorsModule {
     });
 
     this.input.registerShortcut(["command+w", "ctrl+w"], (e) => {
-      this.log.info("editor keys: ctrl w");
+      this.log.info("editors: ctrl w");
       if (this.currentTab) {
         e.preventDefault();
         this.close(this.currentTab);

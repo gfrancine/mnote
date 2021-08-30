@@ -10,17 +10,20 @@ import {
   PromptButton,
   TabContext,
 } from "./types";
+import { LogModule } from "./log";
 
 export class TabManager {
   private ctx: TabContext;
 
   private fs: FSModule;
   private prompts: PromptsModule;
+  private log: LogModule;
 
   constructor(app: Mnote, ctx: TabContext) {
     this.ctx = ctx;
     this.fs = app.modules.fs;
     this.prompts = app.modules.prompts;
+    this.log = app.modules.log;
   }
 
   // mark the document as unsaved, remove the path
@@ -80,7 +83,11 @@ export class TabManager {
       return true;
     } catch (e) {
       this.prompts.notify(strings.saveError(e));
-      console.error(e);
+      this.log.err(
+        "editor tab: error while saving document with trySaveEditor",
+        document,
+        e,
+      );
       return false;
     }
   }
@@ -115,7 +122,7 @@ export class TabManager {
         startingPath: document.path,
       });
 
-    console.log("new path", newPath);
+    this.log.info("editor tabs: saveAs - new path:", newPath);
     if (!newPath) return false;
 
     const newPathName = getPathName(newPath);

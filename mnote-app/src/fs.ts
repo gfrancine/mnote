@@ -32,7 +32,6 @@ export class Watcher {
     this.initialized = true;
 
     await listen("watcher_event", (event: TauriEvent<RustWatcherPayload>) => {
-      console.log("Watcher event:", event);
       this.events.emit("event");
 
       if (!event.payload.path) return;
@@ -60,7 +59,6 @@ export class FS implements FsInteropModule {
 
   async init() {
     this.USES_BACKSLASH = await invoke("is_windows");
-    console.log("uses backslash?", this.USES_BACKSLASH);
     return this;
   }
 

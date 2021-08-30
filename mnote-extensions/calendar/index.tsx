@@ -266,7 +266,6 @@ class CalendarEditor implements Editor {
   }
 
   handleChange(data: Data) {
-    console.log("calendar data ", data);
     this.data = { events: data.events, view: data.view };
     this.ctx?.updateEdited();
   }

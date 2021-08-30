@@ -1,12 +1,19 @@
 import { Mnote } from "..";
 
-export class LogModule /* implements Module */ {
+// When logging, have a prefix with a colon before the message
+// e.g. log.info("editors: file opened")
+// if it's coming from a module, use the module name
+
+export class LogModule {
   private enabled = true;
 
   constructor(app: Mnote) {
     if (app.options.isProduction) {
       this.enabled = false;
-      this.info = () => {};
+      const noop = () => {};
+      this.info = noop;
+      this.err = noop;
+      this.warn = noop;
     }
   }
 

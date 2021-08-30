@@ -46,7 +46,6 @@ function FileNode(props: {
     onClick={onClick}
     draggable
     onDragStart={(e) => {
-      console.log("dragstart");
       e.dataTransfer.setData(
         DRAG_DATA_TYPE,
         JSON.stringify({
@@ -101,26 +100,19 @@ function DirNode(props: {
         : <ChevronRight fillClass="fill" strokeClass="stroke" />}
       onClick={onClick}
       onDragOver={(e) => {
-        console.log("dragover");
         e.preventDefault();
       }}
       onDrop={(e) => {
         const data = e.dataTransfer.getData(DRAG_DATA_TYPE);
-        try {
-          const dragData: FileTreeDragData = JSON.parse(data);
-          console.log("dropped on dir", dragData);
-          if (dragData.kind === "file") {
-            props.hooks?.fileDroppedOnDir?.(props.node.path, dragData.path);
-          } else {
-            props.hooks?.dirDroppedOnDir?.(props.node.path, dragData.path);
-          }
-        } catch (err) {
-          console.log("drag failure", err, data);
+        const dragData: FileTreeDragData = JSON.parse(data);
+        if (dragData.kind === "file") {
+          props.hooks?.fileDroppedOnDir?.(props.node.path, dragData.path);
+        } else {
+          props.hooks?.dirDroppedOnDir?.(props.node.path, dragData.path);
         }
       }}
       draggable
       onDragStart={(e) => {
-        console.log("dragstart");
         e.dataTransfer.setData(
           DRAG_DATA_TYPE,
           JSON.stringify({
@@ -165,8 +157,6 @@ export default function (props: {
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
 }) {
-  // console.log("filetree component", props);
-
   return <div className="filetree-main">
     {props.node
       ? <DirNode

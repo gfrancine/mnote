@@ -2,6 +2,7 @@ import { Mnote } from "..";
 import { SettingsModule } from "./settings";
 import { dark, light } from "../components/colors";
 import { ThemeInfo } from "./types";
+import { LogModule } from "./log";
 
 // colors are declared at bottom
 
@@ -17,6 +18,7 @@ function setVar(key: string, value: string) {
 
 export class ThemesModule {
   private settings: SettingsModule;
+  private log: LogModule;
   private themes: Record<string, ThemeInfo> = {
     dark: {
       name: "Dark",
@@ -32,6 +34,7 @@ export class ThemesModule {
 
   constructor(app: Mnote) {
     this.settings = app.modules.settings;
+    this.log = app.modules.log;
 
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener(
       "change",
@@ -73,7 +76,7 @@ export class ThemesModule {
   private async updateTheme() {
     let theme = await this.getSettingsValue();
     if (!this.hasTheme(theme)) theme = "system";
-    console.log("theme updated:", theme);
+    this.log.info("theme: updateTheme", theme);
     if (theme === "system") {
       this.updateSystemTheme();
     } else {

@@ -11,7 +11,6 @@ export default class Board extends Component {
   };
 
   setAddingList = (boolean) => {
-    console.log("set adding list", boolean);
     this.setState({ addingList: boolean });
   };
 
@@ -88,7 +87,6 @@ export default class Board extends Component {
                   : (
                     <div
                       onClick={() => {
-                        console.log("add list button");
                         this.setAddingList(true);
                       }}
                       className="add-list-button"

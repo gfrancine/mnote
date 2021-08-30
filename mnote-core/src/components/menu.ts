@@ -115,7 +115,6 @@ export class Menu {
   }
 
   cleanup() {
-    console.log("menu: cleanup", this.element, this.element.parentNode);
     if (this.element.parentNode) {
       this.element = this.element.parentNode.removeChild(this.element);
     }

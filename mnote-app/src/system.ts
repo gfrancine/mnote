@@ -35,7 +35,6 @@ export class System implements SystemInteropModule {
     }); */
 
     await listen("menu_event", (event: Event<SystemAppMenuId>) => {
-      console.log("rust menu event", event);
       this.appMenuSignal.emit(event.payload);
     });
 
@@ -47,7 +46,6 @@ export class System implements SystemInteropModule {
   }
 
   hookToQuit(hook: SystemCancelQuitHook) {
-    console.log("hooked to quit", hook);
     this.cancelQuitHooks.push(hook);
   }
 

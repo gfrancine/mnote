@@ -65,8 +65,6 @@ export class MenubarModule /* implements Module */ {
 
     // close the menu when the user clicks somewhere else
     document.addEventListener("mousedown", (e: MouseEvent) => {
-      this.log.info("menubar: menu listener for external mousedown");
-
       if (!this.menuCurrent) return;
       const mouseoverEls = document.elementsFromPoint(e.pageX, e.pageY);
 

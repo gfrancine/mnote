@@ -78,7 +78,6 @@ class PlaintextEditor implements Editor {
   }
 
   async save(path: string) {
-    console.log("plaintext: save file", path, this.contents);
     await this.fs.writeTextFile(path, this.contents);
   }
 }

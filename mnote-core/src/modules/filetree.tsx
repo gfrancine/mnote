@@ -141,7 +141,7 @@ export class FiletreeModule {
             );
             if (!name) return;
             const path = this.fs.joinPath([dir, name]);
-            console.log("new dir", path);
+            this.log.info("filetree: New folder", path);
             // todo
             await this.fs.createDir(path);
           },
@@ -225,7 +225,7 @@ export class FiletreeModule {
 
   async refreshTree() {
     if (!this.directory) {
-      this.log.warn("refreshed empty directory");
+      this.log.warn("filetree: refreshed empty directory");
       return;
     }
 
@@ -235,7 +235,7 @@ export class FiletreeModule {
       this.setFileTree(tree as FileTreeNodeWithChildren);
     } else {
       this.log.err(
-        "filetree read directory - no children, Dir:",
+        "filetree: read directory - no children, Dir:",
         this.directory,
       );
     }
@@ -246,41 +246,39 @@ export class FiletreeModule {
   }
 
   setFileTree(tree: FileTreeNodeWithChildren) {
-    this.log.info("setFileTree", tree);
+    this.log.info("filetree: setFileTree", tree);
     this.tree = tree;
     this.updateDisplay();
   }
 
   setSelectedFile(path?: string) {
-    this.log.info("setSelectedFile", path);
+    this.log.info("filetree: setSelectedFile", path);
     this.selectedFile = path;
     this.updateDisplay();
   }
 
   setDirectory(path: string) {
-    this.log.info("setDirectory", path);
+    this.log.info("filetree: setDirectory", path);
     //
     // todo: close the existing watcher
     //
     this.directory = path;
-    console.log("watch init");
     this.fs.watchInit(path);
-    console.log("finished watch init");
     this.refreshTree();
   }
 
   private updateDisplay() {
-    this.log.info("filetree updateDisplay", this.tree, this.selectedFile);
+    this.log.info("filetree: updateDisplay", this.tree, this.selectedFile);
 
     const hooks: FileTreeHooks = {
       fileFocused: (path: string) => {
-        this.log.info("file focused", path);
+        this.log.info("filetree: file focused", path);
         this.updateEditorSelectedFile(path);
       },
       fileDroppedOnDir: (targetDir: string, droppedFile: string) => {
         const newPath = this.fs.joinPath([targetDir, getPathName(droppedFile)]);
         this.log.info(
-          "file dropped on dir",
+          "filetree: file dropped on dir",
           droppedFile,
           targetDir,
           newPath,
@@ -290,7 +288,7 @@ export class FiletreeModule {
       dirDroppedOnDir: (targetDir: string, droppedDir: string) => {
         const newPath = this.fs.joinPath([targetDir, getPathName(droppedDir)]);
         this.log.info(
-          "dir dropped on dir",
+          "filetree: dir dropped on dir",
           droppedDir,
           targetDir,
           newPath,
