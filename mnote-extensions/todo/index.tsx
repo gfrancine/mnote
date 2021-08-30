@@ -1,11 +1,4 @@
-import {
-  Editor,
-  EditorContext,
-  EditorProvider,
-  Extension,
-  FSModule,
-  Mnote,
-} from "mnote-core";
+import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
@@ -108,30 +101,17 @@ class TodoEditor implements Editor {
   }
 }
 
-// provider
-
-class TodoEditorProvider implements EditorProvider {
-  app: Mnote;
-
-  constructor(app: Mnote) {
-    this.app = app;
-  }
-
-  canOpenPath(path: string) {
-    return getPathExtension(path) === "mntodo";
-  }
-  createNewEditor() {
-    return new TodoEditor(this.app);
-  }
-}
-
 // extension
 
 export class TodoExtension implements Extension {
   startup(app: Mnote) {
+    const matchesExtension = (path: string) =>
+      getPathExtension(path) === "mntodo";
+
     app.modules.editors.registerEditor({
       kind: "Todo",
-      provider: new TodoEditorProvider(app),
+      canOpenPath: matchesExtension,
+      createNewEditor: () => new TodoEditor(app),
       registeredIconKind: "todo",
       saveAsFileTypes: [{
         name: "Mnote Todo",
@@ -142,7 +122,7 @@ export class TodoExtension implements Extension {
     app.modules.fileicons.registerIcon({
       kind: "todo",
       factory: todoIcon,
-      shouldUse: (path) => getPathExtension(path) === "mntodo",
+      shouldUse: matchesExtension,
     });
   }
 

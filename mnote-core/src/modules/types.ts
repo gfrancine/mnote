@@ -29,15 +29,10 @@ export interface Editor {
   save(path: string): void | Promise<void>; // write to file. the editor guarantees the path exists
 }
 
-export interface EditorProvider {
-  // getExtensions(): string[] // allowed extensions for Save As prompt
-  canOpenPath(path: string): boolean | Promise<boolean>;
-  createNewEditor(): Editor | Promise<Editor>;
-}
-
 export type EditorInfo = {
   kind: string;
-  provider: EditorProvider;
+  canOpenPath: (path: string) => boolean | Promise<boolean>;
+  createNewEditor: () => Editor | Promise<Editor>;
   /** Hide the editor from the "+" (new) menu */
   hideFromNewMenu?: boolean;
   /** What file types (name, extension) to save as */
@@ -49,7 +44,6 @@ export type EditorInfo = {
 };
 
 export type TabInfo = {
-  editorKind: string;
   editorInfo: EditorInfo;
   editor: Editor;
   document: DocInfo;

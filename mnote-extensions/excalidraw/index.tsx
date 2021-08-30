@@ -1,11 +1,4 @@
-import {
-  Editor,
-  EditorContext,
-  EditorProvider,
-  Extension,
-  FSModule,
-  Mnote,
-} from "mnote-core";
+import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 import { Emitter } from "mnote-util/emitter";
 import { getPathExtension } from "mnote-util/path";
@@ -18,11 +11,6 @@ import { AppState as ExcalidrawAppState } from "@excalidraw/excalidraw/types/typ
 
 import "./styles.scss";
 import { excalidrawIcon } from "./icon";
-
-// an editor extension contains:
-// - the editor
-// - the provider
-// - the extension itself
 
 type ExcalidrawData = {
   readonly elements?: ExcalidrawElement[];
@@ -129,31 +117,17 @@ class ExcalidrawEditor implements Editor {
   }
 }
 
-// provider
-
-class ExcalidrawEditorProvider implements EditorProvider {
-  app: Mnote;
-
-  constructor(app: Mnote) {
-    this.app = app;
-  }
-
-  canOpenPath(path: string) {
-    return getPathExtension(path) === "excalidraw";
-  }
-
-  createNewEditor() {
-    return new ExcalidrawEditor(this.app);
-  }
-}
-
 // extension
 
 export class ExcalidrawExtension implements Extension {
   startup(app: Mnote) {
+    const matchesExtension = (path: string) =>
+      getPathExtension(path) === "excalidraw";
+
     app.modules.editors.registerEditor({
       kind: "Excalidraw",
-      provider: new ExcalidrawEditorProvider(app),
+      canOpenPath: matchesExtension,
+      createNewEditor: () => new ExcalidrawEditor(app),
       saveAsFileTypes: [{
         name: "Excalidraw",
         extensions: ["excalidraw"],
@@ -164,7 +138,7 @@ export class ExcalidrawExtension implements Extension {
     app.modules.fileicons.registerIcon({
       kind: "excalidraw",
       factory: excalidrawIcon,
-      shouldUse: (path) => getPathExtension(path) === "excalidraw",
+      shouldUse: matchesExtension,
     });
   }
 

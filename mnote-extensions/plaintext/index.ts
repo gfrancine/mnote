@@ -1,20 +1,8 @@
-import {
-  Editor,
-  EditorContext,
-  EditorProvider,
-  Extension,
-  FSModule,
-  Mnote,
-} from "mnote-core";
+import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 import { getPathExtension } from "mnote-util/path";
 import { plaintextIcon } from "./icon";
 import "./plaintext.scss";
-
-// an editor extension contains:
-// - the editor
-// - the provider
-// - the extension itself
 
 class PlaintextEditor implements Editor {
   app: Mnote;
@@ -82,37 +70,22 @@ class PlaintextEditor implements Editor {
   }
 }
 
-// provider
-
-class PlaintextEditorProvider implements EditorProvider {
-  app: Mnote;
-
-  constructor(app: Mnote) {
-    this.app = app;
-  }
-
-  canOpenPath(path: string) {
-    return getPathExtension(path) === "txt";
-  }
-
-  createNewEditor() {
-    return new PlaintextEditor(this.app);
-  }
-}
-
 // extension
 
 export class PlaintextExtension implements Extension {
   startup(app: Mnote) {
+    const matchesExtension = (path: string) => getPathExtension(path) === "txt";
+
     app.modules.fileicons.registerIcon({
       kind: "textFile",
       factory: plaintextIcon,
-      shouldUse: (path: string) => getPathExtension(path) === "txt",
+      shouldUse: matchesExtension,
     });
 
     app.modules.editors.registerEditor({
       kind: "Plaintext",
-      provider: new PlaintextEditorProvider(app),
+      canOpenPath: matchesExtension,
+      createNewEditor: () => new PlaintextEditor(app),
       registeredIconKind: "textFile",
     });
   }

@@ -1,7 +1,6 @@
 import {
   Editor,
   EditorContext,
-  EditorProvider,
   Extension,
   MenuItem,
   Mnote,
@@ -10,11 +9,6 @@ import {
 import { el } from "mnote-util/elbuilder";
 import { settingsIcon } from "./icon";
 import "./settings.scss";
-
-// an editor extension contains:
-// - the editor
-// - the provider
-// - the extension itself
 
 // instead of saving to file, the settings editor will
 // invoke the Settings.setSettings module
@@ -89,30 +83,12 @@ class SettingsEditor implements Editor {
   }
 }
 
-// provider
-
-class SettingsEditorProvider implements EditorProvider {
-  app: Mnote;
-  settings: SettingsModule;
-
-  constructor(app: Mnote) {
-    this.app = app;
-    this.settings = app.modules.settings as SettingsModule;
-  }
-
-  canOpenPath(path: string) {
-    return path === SETTINGS_ALIAS_PATH;
-  }
-
-  createNewEditor() {
-    return new SettingsEditor(this.app);
-  }
-}
-
 // extension
 
 export class SettingsExtension implements Extension {
   startup(app: Mnote) {
+    const isSettingsPath = (path: string) => path === SETTINGS_ALIAS_PATH;
+
     const openSettings = () => {
       app.modules.editors.open(SETTINGS_ALIAS_PATH);
     };
@@ -128,12 +104,13 @@ export class SettingsExtension implements Extension {
     app.modules.fileicons.registerIcon({
       kind: "settings",
       factory: settingsIcon,
-      shouldUse: (path) => path === SETTINGS_ALIAS_PATH,
+      shouldUse: isSettingsPath,
     });
 
     app.modules.editors.registerEditor({
       kind: "Settings",
-      provider: new SettingsEditorProvider(app),
+      canOpenPath: isSettingsPath,
+      createNewEditor: () => new SettingsEditor(app),
       hideFromNewMenu: true,
       disableSaveAs: true,
       registeredIconKind: "settings",

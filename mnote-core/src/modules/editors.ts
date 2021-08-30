@@ -1,13 +1,6 @@
 import { MenuItem } from "../common/types";
 import { Mnote } from "..";
-import {
-  DocInfo,
-  EditorInfo,
-  EditorProvider,
-  Tab,
-  TabContext,
-  TabInfo,
-} from "./types";
+import { DocInfo, EditorInfo, Tab, TabContext, TabInfo } from "./types";
 import { MenubarModule } from "./menubar";
 import { LogModule } from "./log";
 import { SidebarModule } from "./sidebar";
@@ -48,8 +41,7 @@ export class EditorsModule {
     activeTabsChanged: () => void;
   }> = new Emitter();
 
-  // collection of editors, thier providers and their configurations
-  // providers return an editor if it should open a path
+  // collection of editors and their configurations
   // keep both a list and a map, the list for finding a match from
   // last to first registered
   editors: EditorInfo[] = [];
@@ -82,7 +74,6 @@ export class EditorsModule {
     this.hookToSystem();
   }
 
-  /** Register an editor provider */
   registerEditor(opts: EditorInfo) {
     if (this.editorKinds[opts.kind]) {
       throw new Error(strings.editorAlreadyExists(opts.kind));
@@ -185,24 +176,21 @@ export class EditorsModule {
       return;
     }
 
-    let selectedProvider: EditorProvider | undefined;
-    let selectedEditorKind: string | undefined;
+    let selectedEditorInfo: EditorInfo | undefined;
 
     // last added runs first, assuming it's more selective
     // as the plaintext (which accepts all) is first
     for (let i = this.editors.length - 1; i > -1; i--) {
-      const kind = this.editors[i].kind;
-      const provider = this.editors[i].provider;
-      if (await provider.canOpenPath(path)) {
-        selectedProvider = provider;
-        selectedEditorKind = kind;
+      const info = this.editors[i];
+      if (await info.canOpenPath(path)) {
+        selectedEditorInfo = info;
         break;
       }
     }
 
     // this should not happen because we have a plaintext editor
     // but it's good to have this
-    if (!selectedProvider || !selectedEditorKind) {
+    if (!selectedEditorInfo) {
       this.prompts.notify(strings.openErrorUnsupported(path));
       return;
     }
@@ -214,10 +202,9 @@ export class EditorsModule {
     };
 
     const info: TabInfo = {
-      editor: await selectedProvider.createNewEditor(),
+      editor: await selectedEditorInfo.createNewEditor(),
       document,
-      editorKind: selectedEditorKind,
-      editorInfo: this.editorKinds[selectedEditorKind],
+      editorInfo: selectedEditorInfo,
       container: this.createContainer(),
     };
 
@@ -231,7 +218,7 @@ export class EditorsModule {
       throw new Error(strings.editorDoesNotExist(editorKind));
     }
 
-    const editor = await editorInfo.provider.createNewEditor();
+    const editor = await editorInfo.createNewEditor();
     const document = {
       name: "Untitled",
       // no path
@@ -241,7 +228,6 @@ export class EditorsModule {
     const info: TabInfo = {
       editor,
       document,
-      editorKind,
       editorInfo,
       container: this.createContainer(),
     };
@@ -386,8 +372,6 @@ export class EditorsModule {
       // whether to display the buttons
       const tab = this.currentTab;
       if (tab) {
-        const editorInfo = this.editorKinds[tab.info.editorKind];
-
         const buttons = [];
         buttons.push({
           name: "Save",
@@ -395,7 +379,7 @@ export class EditorsModule {
           click: this.actions.save,
         });
 
-        if (!editorInfo.disableSaveAs) {
+        if (!tab.info.editorInfo.disableSaveAs) {
           buttons.push({
             name: "Save As...",
             shortcut: cmdOrCtrl + "+Shift+S",

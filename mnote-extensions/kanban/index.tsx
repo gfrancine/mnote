@@ -1,12 +1,4 @@
-import {
-  Editor,
-  EditorContext,
-  EditorProvider,
-  EditorsModule,
-  Extension,
-  FSModule,
-  Mnote,
-} from "mnote-core";
+import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
@@ -15,13 +7,6 @@ import { getPathExtension } from "mnote-util/path";
 
 import "./kanban.scss";
 import { kanbanIcon } from "./icon";
-
-// https://github.com/rcdexta/react-trello
-
-// an editor extension contains:
-// - the editor
-// - the provider
-// - the extension itself
 
 function Wrapper(props: {
   initialData?: KanbanState;
@@ -92,30 +77,17 @@ class KanbanEditor implements Editor {
   }
 }
 
-// provider
-
-class KanbanEditorProvider implements EditorProvider {
-  app: Mnote;
-
-  constructor(app: Mnote) {
-    this.app = app;
-  }
-
-  canOpenPath(path: string) {
-    return getPathExtension(path) === "mnkanban";
-  }
-  createNewEditor() {
-    return new KanbanEditor(this.app);
-  }
-}
-
 // extension
 
 export class KanbanExtension implements Extension {
   startup(app: Mnote) {
+    const matchesExtension = (path: string) =>
+      getPathExtension(path) === "mnkanban";
+
     app.modules.editors.registerEditor({
       kind: "Kanban",
-      provider: new KanbanEditorProvider(app),
+      canOpenPath: matchesExtension,
+      createNewEditor: () => new KanbanEditor(app),
       registeredIconKind: "kanban",
       saveAsFileTypes: [{
         name: "Mnote Kanban",
@@ -126,7 +98,7 @@ export class KanbanExtension implements Extension {
     app.modules.fileicons.registerIcon({
       kind: "kanban",
       factory: kanbanIcon,
-      shouldUse: (path) => getPathExtension(path) === "mnkanban",
+      shouldUse: matchesExtension,
     });
   }
 

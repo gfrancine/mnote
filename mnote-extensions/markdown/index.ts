@@ -4,7 +4,6 @@
 import {
   Editor,
   EditorContext,
-  EditorProvider,
   Extension,
   FSModule,
   Mnote,
@@ -26,11 +25,6 @@ import { getPathExtension } from "mnote-util/path";
 import { el } from "mnote-util/elbuilder";
 import "./markdown.scss";
 import { markdownIcon } from "./icon";
-
-// an editor extension contains:
-// - the editor
-// - the provider
-// - the extension itself
 
 function countWords(text: string): number {
   const matches = text.match(/\w+/g);
@@ -167,37 +161,22 @@ class MarkdownEditor implements Editor {
   }
 }
 
-// provider
-
-class MarkdownEditorProvider implements EditorProvider {
-  app: Mnote;
-
-  constructor(app: Mnote) {
-    this.app = app;
-  }
-
-  canOpenPath(path: string) {
-    return getPathExtension(path) === "md";
-  }
-
-  createNewEditor() {
-    return new MarkdownEditor(this.app);
-  }
-}
-
 // extension
 
 export class MarkdownExtension implements Extension {
   startup(app: Mnote) {
+    const matchesExtension = (path: string) => getPathExtension(path) === "md";
+
     app.modules.fileicons.registerIcon({
       kind: "markdown",
       factory: markdownIcon,
-      shouldUse: (path: string) => getPathExtension(path) === "md",
+      shouldUse: matchesExtension,
     });
 
     app.modules.editors.registerEditor({
       kind: "Markdown",
-      provider: new MarkdownEditorProvider(app),
+      canOpenPath: matchesExtension,
+      createNewEditor: () => new MarkdownEditor(app),
       registeredIconKind: "markdown",
       saveAsFileTypes: [{
         name: "Markdown",

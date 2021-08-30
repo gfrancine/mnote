@@ -1,7 +1,6 @@
 import {
   Editor,
   EditorContext,
-  EditorProvider,
   Extension,
   FSModule,
   Mnote,
@@ -19,13 +18,6 @@ import "./big-calendar/styles.scss";
 import "./big-calendar/dragAndDrop.scss";
 import "./calendar.scss";
 import { calendarIcon } from "./icon";
-
-// https://github.com/rcdexta/react-trello
-
-// an editor extension contains:
-// - the editor
-// - the provider
-// - the extension itself
 
 // https://github.com/jquense/react-big-calendar/blob/master/examples/demos/createEventWithNoOverlap.js
 
@@ -280,30 +272,17 @@ class CalendarEditor implements Editor {
   }
 }
 
-// provider
-
-class CalendarEditorProvider implements EditorProvider {
-  app: Mnote;
-
-  constructor(app: Mnote) {
-    this.app = app;
-  }
-
-  canOpenPath(path: string) {
-    return getPathExtension(path) === "mncalendar";
-  }
-  createNewEditor() {
-    return new CalendarEditor(this.app);
-  }
-}
-
 // extension
 
 export class CalendarExtension implements Extension {
   startup(app: Mnote) {
+    const matchesExtension = (path: string) =>
+      getPathExtension(path) === "mncalendar";
+
     app.modules.editors.registerEditor({
       kind: "Calendar",
-      provider: new CalendarEditorProvider(app),
+      canOpenPath: matchesExtension,
+      createNewEditor: () => new CalendarEditor(app),
       registeredIconKind: "calendar",
       saveAsFileTypes: [{
         name: "Mnote Calendar",
@@ -314,7 +293,7 @@ export class CalendarExtension implements Extension {
     app.modules.fileicons.registerIcon({
       kind: "calendar",
       factory: calendarIcon,
-      shouldUse: (path) => getPathExtension(path) === "mncalendar",
+      shouldUse: matchesExtension,
     });
   }
 
