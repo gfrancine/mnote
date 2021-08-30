@@ -1,21 +1,21 @@
 import { FSModule } from ".";
 import { Mnote } from "..";
 
-const APPDIR_NAME = "Mnote";
-
 export class AppDirModule {
   private fs: FSModule;
 
-  private appDirPath = "";
+  private appDirPath = ""; // initialized in init()
+  private appDirName = "Mnote";
 
   constructor(app: Mnote) {
     this.fs = app.modules.fs;
+    this.appDirName = app.options.appDirectoryName || this.appDirName;
   }
 
   async init() {
     this.appDirPath = this.fs.joinPath([
       await this.fs.getConfigDir(),
-      APPDIR_NAME,
+      this.appDirName,
     ]);
 
     if (!await this.fs.isDir(this.appDirPath)) {

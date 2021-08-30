@@ -11,6 +11,8 @@ export type MnoteOptions = {
   fs?: FsInteropModule;
   system?: SystemInteropModule;
   isProduction?: boolean;
+  appDirectoryName?: string;
+  appSettingsFileName?: string;
 };
 
 export type DialogFileType = { name: string; extensions: string[] };

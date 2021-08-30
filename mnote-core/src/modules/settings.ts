@@ -16,15 +16,13 @@ import {
 
 type Settings = Record<string, unknown>;
 
-// the file name of the settings file
-export const SETTINGS_NAME = ".mnotesettings";
-
 export class SettingsModule {
   private fs: FSModule;
   private appdir: AppDirModule;
   private logging: LoggingModule;
 
   private settingsPath = ""; // initialized in init()
+  private settingsName = ".mnotesettings";
   private settings: Settings = this.defaultSettings();
 
   events: Emitter<{
@@ -37,12 +35,14 @@ export class SettingsModule {
     this.fs = app.modules.fs;
     this.appdir = app.modules.appdir;
     this.logging = app.modules.logging;
+
+    this.settingsName = app.options.appSettingsFileName || this.settingsName;
   }
 
   async init() {
     this.settingsPath = this.fs.joinPath([
       await this.appdir.getPath(),
-      SETTINGS_NAME,
+      this.settingsName,
     ]);
 
     try {
