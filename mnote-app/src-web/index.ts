@@ -26,15 +26,14 @@ console.log(nodefill);
 
   await app.init();
 
-  const extensions = app.modules.extensions;
-  await Promise.all([
-    extensions.add(new PlaintextExtension()),
-    extensions.add(new SettingsExtension()),
-    extensions.add(new MarkdownExtension()),
-    extensions.add(new ExcalidrawExtension()),
-    extensions.add(new KanbanExtension()),
-    extensions.add(new CalendarExtension()),
-    extensions.add(new TodoExtension()),
+  await app.modules.extensions.addAll([
+    new PlaintextExtension(),
+    new SettingsExtension(),
+    new MarkdownExtension(),
+    new ExcalidrawExtension(),
+    new KanbanExtension(),
+    new CalendarExtension(),
+    new TodoExtension(),
   ]);
 
   await app.startup();

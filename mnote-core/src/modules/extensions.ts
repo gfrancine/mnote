@@ -18,6 +18,10 @@ export class ExtensionsModule /* implements Module */ {
     return this;
   }
 
+  addAll(extensions: Extension[]) {
+    return Promise.all(extensions.map((extension) => this.add(extension)));
+  }
+
   async remove(extension: Extension) {
     const index = this.extensions.indexOf(extension);
     if (index === undefined) return;
