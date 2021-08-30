@@ -301,16 +301,10 @@ class CalendarEditorProvider implements EditorProvider {
 // extension
 
 export class CalendarExtension implements Extension {
-  app: Mnote;
-
-  constructor(app: Mnote) {
-    this.app = app;
-  }
-
-  startup() {
-    this.app.modules.editors.registerEditor({
+  startup(app: Mnote) {
+    app.modules.editors.registerEditor({
       kind: "Calendar",
-      provider: new CalendarEditorProvider(this.app),
+      provider: new CalendarEditorProvider(app),
       registeredIconKind: "calendar",
       saveAsFileTypes: [{
         name: "Mnote Calendar",
@@ -318,12 +312,12 @@ export class CalendarExtension implements Extension {
       }],
     });
 
-    this.app.modules.fileicons.registerIcon({
+    app.modules.fileicons.registerIcon({
       kind: "calendar",
       factory: calendarIcon,
       shouldUse: (path) => getPathExtension(path) === "mncalendar",
     });
   }
 
-  cleanup() {}
+  cleanup(_app: Mnote) {}
 }

@@ -150,16 +150,10 @@ class ExcalidrawEditorProvider implements EditorProvider {
 // extension
 
 export class ExcalidrawExtension implements Extension {
-  app: Mnote;
-
-  constructor(app: Mnote) {
-    this.app = app;
-  }
-
-  startup() {
-    this.app.modules.editors.registerEditor({
+  startup(app: Mnote) {
+    app.modules.editors.registerEditor({
       kind: "Excalidraw",
-      provider: new ExcalidrawEditorProvider(this.app),
+      provider: new ExcalidrawEditorProvider(app),
       saveAsFileTypes: [{
         name: "Excalidraw",
         extensions: ["excalidraw"],
@@ -167,12 +161,12 @@ export class ExcalidrawExtension implements Extension {
       registeredIconKind: "excalidraw",
     });
 
-    this.app.modules.fileicons.registerIcon({
+    app.modules.fileicons.registerIcon({
       kind: "excalidraw",
       factory: excalidrawIcon,
       shouldUse: (path) => getPathExtension(path) === "excalidraw",
     });
   }
 
-  cleanup() {}
+  cleanup(_app: Mnote) {}
 }

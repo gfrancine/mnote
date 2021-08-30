@@ -6,12 +6,15 @@ import { Extension } from "./types";
 
 export class ExtensionsModule /* implements Module */ {
   private extensions: Extension[] = [];
+  private app: Mnote;
 
-  constructor(_app: Mnote) {}
+  constructor(app: Mnote) {
+    this.app = app;
+  }
 
   async add(extension: Extension) {
     this.extensions.push(extension);
-    await extension.startup();
+    await extension.startup(this.app);
     return this;
   }
 
@@ -19,7 +22,7 @@ export class ExtensionsModule /* implements Module */ {
     const index = this.extensions.indexOf(extension);
     if (index === undefined) return;
     delete this.extensions[index];
-    await extension.cleanup();
+    await extension.cleanup(this.app);
     return this;
   }
 }

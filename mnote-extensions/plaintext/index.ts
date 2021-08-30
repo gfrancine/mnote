@@ -104,25 +104,19 @@ class PlaintextEditorProvider implements EditorProvider {
 // extension
 
 export class PlaintextExtension implements Extension {
-  app: Mnote;
-
-  constructor(app: Mnote) {
-    this.app = app;
-  }
-
-  startup() {
-    this.app.modules.fileicons.registerIcon({
+  startup(app: Mnote) {
+    app.modules.fileicons.registerIcon({
       kind: "textFile",
       factory: plaintextIcon,
       shouldUse: (path: string) => getPathExtension(path) === "txt",
     });
 
-    this.app.modules.editors.registerEditor({
+    app.modules.editors.registerEditor({
       kind: "Plaintext",
-      provider: new PlaintextEditorProvider(this.app),
+      provider: new PlaintextEditorProvider(app),
       registeredIconKind: "textFile",
     });
   }
 
-  cleanup() {}
+  cleanup(_app: Mnote) {}
 }

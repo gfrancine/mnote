@@ -190,22 +190,16 @@ class MarkdownEditorProvider implements EditorProvider {
 // extension
 
 export class MarkdownExtension implements Extension {
-  app: Mnote;
-
-  constructor(app: Mnote) {
-    this.app = app;
-  }
-
-  startup() {
-    this.app.modules.fileicons.registerIcon({
+  startup(app: Mnote) {
+    app.modules.fileicons.registerIcon({
       kind: "markdown",
       factory: markdownIcon,
       shouldUse: (path: string) => getPathExtension(path) === "md",
     });
 
-    this.app.modules.editors.registerEditor({
+    app.modules.editors.registerEditor({
       kind: "Markdown",
-      provider: new MarkdownEditorProvider(this.app),
+      provider: new MarkdownEditorProvider(app),
       registeredIconKind: "markdown",
       saveAsFileTypes: [{
         name: "Markdown",
@@ -213,7 +207,7 @@ export class MarkdownExtension implements Extension {
       }],
     });
 
-    this.app.modules.settings.registerInput("string", {
+    app.modules.settings.registerInput("string", {
       key: "md.font-size",
       title: "Markdown font size",
       category: "Markdown",
@@ -224,5 +218,5 @@ export class MarkdownExtension implements Extension {
     });
   }
 
-  cleanup() {}
+  cleanup(_app: Mnote) {}
 }

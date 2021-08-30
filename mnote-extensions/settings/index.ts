@@ -112,18 +112,12 @@ class SettingsEditorProvider implements EditorProvider {
 // extension
 
 export class SettingsExtension implements Extension {
-  app: Mnote;
-
-  constructor(app: Mnote) {
-    this.app = app;
-  }
-
-  startup() {
+  startup(app: Mnote) {
     const openSettings = () => {
-      this.app.modules.editors.open(SETTINGS_ALIAS_PATH);
+      app.modules.editors.open(SETTINGS_ALIAS_PATH);
     };
 
-    this.app.modules.menubar.addSectionReducer(() => {
+    app.modules.menubar.addSectionReducer(() => {
       const button: MenuItem = {
         name: "Settings",
         click: openSettings,
@@ -131,20 +125,20 @@ export class SettingsExtension implements Extension {
       return [button];
     });
 
-    this.app.modules.fileicons.registerIcon({
+    app.modules.fileicons.registerIcon({
       kind: "settings",
       factory: settingsIcon,
       shouldUse: (path) => path === SETTINGS_ALIAS_PATH,
     });
 
-    this.app.modules.editors.registerEditor({
+    app.modules.editors.registerEditor({
       kind: "Settings",
-      provider: new SettingsEditorProvider(this.app),
+      provider: new SettingsEditorProvider(app),
       hideFromNewMenu: true,
       disableSaveAs: true,
       registeredIconKind: "settings",
     });
   }
 
-  cleanup() {}
+  cleanup(_app: Mnote) {}
 }

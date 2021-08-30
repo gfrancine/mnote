@@ -112,16 +112,10 @@ class KanbanEditorProvider implements EditorProvider {
 // extension
 
 export class KanbanExtension implements Extension {
-  app: Mnote;
-
-  constructor(app: Mnote) {
-    this.app = app;
-  }
-
-  startup() {
-    this.app.modules.editors.registerEditor({
+  startup(app: Mnote) {
+    app.modules.editors.registerEditor({
       kind: "Kanban",
-      provider: new KanbanEditorProvider(this.app),
+      provider: new KanbanEditorProvider(app),
       registeredIconKind: "kanban",
       saveAsFileTypes: [{
         name: "Mnote Kanban",
@@ -129,12 +123,12 @@ export class KanbanExtension implements Extension {
       }],
     });
 
-    this.app.modules.fileicons.registerIcon({
+    app.modules.fileicons.registerIcon({
       kind: "kanban",
       factory: kanbanIcon,
       shouldUse: (path) => getPathExtension(path) === "mnkanban",
     });
   }
 
-  cleanup() {}
+  cleanup(_app: Mnote) {}
 }

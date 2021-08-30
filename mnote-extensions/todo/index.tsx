@@ -128,16 +128,10 @@ class TodoEditorProvider implements EditorProvider {
 // extension
 
 export class TodoExtension implements Extension {
-  app: Mnote;
-
-  constructor(app: Mnote) {
-    this.app = app;
-  }
-
-  startup() {
-    this.app.modules.editors.registerEditor({
+  startup(app: Mnote) {
+    app.modules.editors.registerEditor({
       kind: "Todo",
-      provider: new TodoEditorProvider(this.app),
+      provider: new TodoEditorProvider(app),
       registeredIconKind: "todo",
       saveAsFileTypes: [{
         name: "Mnote Todo",
@@ -145,12 +139,12 @@ export class TodoExtension implements Extension {
       }],
     });
 
-    this.app.modules.fileicons.registerIcon({
+    app.modules.fileicons.registerIcon({
       kind: "todo",
       factory: todoIcon,
       shouldUse: (path) => getPathExtension(path) === "mntodo",
     });
   }
 
-  cleanup() {}
+  cleanup(_app: Mnote) {}
 }

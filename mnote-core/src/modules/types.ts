@@ -1,10 +1,11 @@
 import { DialogFileType } from "../common/types";
 import type { TabManager } from "./editors-tab";
+import type { Mnote } from "..";
 
 // used by the extension module
 export interface Extension {
-  startup(): void;
-  cleanup(): void;
+  startup(app: Mnote): void;
+  cleanup(app: Mnote): void;
 }
 
 // https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor

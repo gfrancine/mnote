@@ -31,13 +31,13 @@ console.log(nodefill);
 
   const extensions = app.modules.extensions;
   await Promise.all([
-    extensions.add(new PlaintextExtension(app)),
-    extensions.add(new SettingsExtension(app)),
-    extensions.add(new MarkdownExtension(app)),
-    extensions.add(new ExcalidrawExtension(app)),
-    extensions.add(new KanbanExtension(app)),
-    extensions.add(new CalendarExtension(app)),
-    extensions.add(new TodoExtension(app)),
+    extensions.add(new PlaintextExtension()),
+    extensions.add(new SettingsExtension()),
+    extensions.add(new MarkdownExtension()),
+    extensions.add(new ExcalidrawExtension()),
+    extensions.add(new KanbanExtension()),
+    extensions.add(new CalendarExtension()),
+    extensions.add(new TodoExtension()),
   ]);
 
   await app.startup();
