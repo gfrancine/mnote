@@ -26,11 +26,8 @@ jobs:
       shell: pwsh
       run: .\install.ps1
 
-    - name: bundle
-      run: cd mnote-app && npm run build
-
     - name: build debug
-      run: cd mnote-app && npm run tauri -- build --debug
+      run: cd mnote-app && npm run build-debug
 
     - name: upload (windows)
       if: matrix.platform == 'windows-latest'

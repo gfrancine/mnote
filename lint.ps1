@@ -9,6 +9,7 @@ deno lint `
   mnote-extensions/todo `
   mnote-app/src `
   mnote-app/src-web `
+  mnote-app/bundle-scripts `
   mnote-util `
   mnote-deps/kanban `
   mnote-deps/resizable

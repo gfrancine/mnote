@@ -12,7 +12,7 @@ import { KanbanExtension } from "mnote-extensions/kanban";
 import { CalendarExtension } from "mnote-extensions/calendar";
 import { TodoExtension } from "mnote-extensions/todo";
 
-(async () => {
+export const run = async (isProduction: boolean) => {
   const args: string[] = await invoke("get_args");
   const startPath = args[1];
 
@@ -20,6 +20,7 @@ import { TodoExtension } from "mnote-extensions/todo";
     startPath,
     fs: await new FS().init(),
     system: await new System().init(),
+    isProduction,
   });
 
   await app.init();
@@ -35,4 +36,4 @@ import { TodoExtension } from "mnote-extensions/todo";
   ]);
 
   await app.startup();
-})();
+};

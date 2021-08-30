@@ -1,1 +1,0 @@
-require("./run-build")([ "src-web/index.ts" ]);
