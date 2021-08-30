@@ -5,6 +5,8 @@
   <key>CFBundleDocumentTypes</key>
   <array>
     <dict>
+      <key>CFBundleTypeName</key>
+      <string>Mnote Document</string>
       <key>CFBundleTypeRole</key>         
       <string>Viewer</string>
       <key>CFBundleTypeExtensions</key>
