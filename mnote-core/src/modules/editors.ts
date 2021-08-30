@@ -381,8 +381,8 @@ export class EditorsModule {
     const cmdOrCtrl = this.system.usesCmd() ? "Cmd" : "Ctrl";
     this.logging.info("command or ctrl?", cmdOrCtrl);
 
-    // menubar reducer
-    const menubarReducer = () => {
+    // menu reducer
+    const menuReducer = () => {
       // use this value only to determine
       // whether to display the buttons
       const tab = this.currentTab;
@@ -414,7 +414,7 @@ export class EditorsModule {
       }
     };
 
-    this.menubar.addSectionReducer(menubarReducer);
+    this.menubar.addSectionReducer(menuReducer);
   }
 
   private hookToInputs() {

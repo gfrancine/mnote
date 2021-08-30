@@ -83,7 +83,7 @@ export class FiletreeModule {
       this.setDirectory(maybePath);
     };
 
-    const menubarReducer = () => {
+    const menuReducer = () => {
       const buttons = [];
 
       buttons.push({
@@ -185,7 +185,7 @@ export class FiletreeModule {
       }
     };
 
-    this.menubar.addSectionReducer(menubarReducer);
+    this.menubar.addSectionReducer(menuReducer);
     this.ctxmenu.addSectionReducer(ctxmenuReducer);
     this.layout.mountToFiletree(this.element);
 
