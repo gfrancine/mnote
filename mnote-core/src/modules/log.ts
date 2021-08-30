@@ -1,6 +1,6 @@
 import { Mnote } from "..";
 
-export class LoggingModule /* implements Module */ {
+export class LogModule /* implements Module */ {
   private enabled = true;
 
   constructor(app: Mnote) {

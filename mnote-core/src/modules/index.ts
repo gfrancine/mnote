@@ -3,7 +3,7 @@ export { ExtensionsModule } from "./extensions";
 export { MenubarModule } from "./menubar";
 export { EditorsModule } from "./editors";
 export { FSModule } from "./fs";
-export { LoggingModule } from "./logging";
+export { LogModule } from "./log";
 export { CtxmenuModule } from "./ctxmenu";
 export { SystemModule } from "./system";
 export { SidebarModule } from "./sidebar";

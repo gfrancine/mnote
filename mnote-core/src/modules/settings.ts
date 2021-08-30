@@ -1,6 +1,6 @@
 import { Mnote } from "..";
 import { FSModule } from "./fs";
-import { LoggingModule } from "./logging";
+import { LogModule } from "./log";
 import { Emitter } from "mnote-util/emitter";
 import { AppDirModule } from "./appdir";
 import {
@@ -19,7 +19,7 @@ type Settings = Record<string, unknown>;
 export class SettingsModule {
   private fs: FSModule;
   private appdir: AppDirModule;
-  private logging: LoggingModule;
+  private log: LogModule;
 
   private settingsPath = ""; // initialized in init()
   private settingsName = ".mnotesettings";
@@ -34,7 +34,7 @@ export class SettingsModule {
   constructor(app: Mnote) {
     this.fs = app.modules.fs;
     this.appdir = app.modules.appdir;
-    this.logging = app.modules.logging;
+    this.log = app.modules.log;
 
     this.settingsName = app.options.appSettingsFileName || this.settingsName;
   }
@@ -48,7 +48,7 @@ export class SettingsModule {
     try {
       const contents = await this.fs.readTextFile(this.settingsPath);
       const maybeSettings = JSON.parse(contents);
-      this.logging.info(
+      this.log.info(
         "valid settings?",
         maybeSettings,
         this.isValidSettings(maybeSettings),
@@ -67,7 +67,7 @@ export class SettingsModule {
 
   /** persist to the file */
   private async persistSettings() {
-    this.logging.info(
+    this.log.info(
       "Persist settings to path",
       this.settingsPath,
       this.settings,

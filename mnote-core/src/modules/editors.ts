@@ -9,7 +9,7 @@ import {
   TabInfo,
 } from "./types";
 import { MenubarModule } from "./menubar";
-import { LoggingModule } from "./logging";
+import { LogModule } from "./log";
 import { SidebarModule } from "./sidebar";
 import { InputModule } from "./input";
 import { PromptsModule } from "./prompts";
@@ -39,7 +39,7 @@ export class EditorsModule {
   private menubar: MenubarModule;
   private system: SystemModule;
   private input: InputModule;
-  private logging: LoggingModule;
+  private log: LogModule;
   private sidebar: SidebarModule;
   private prompts: PromptsModule;
 
@@ -63,7 +63,7 @@ export class EditorsModule {
     this.menubar = app.modules.menubar;
     this.system = app.modules.system;
     this.input = app.modules.input;
-    this.logging = app.modules.logging;
+    this.log = app.modules.log;
     this.sidebar = app.modules.sidebar;
     this.prompts = app.modules.prompts;
 
@@ -379,7 +379,7 @@ export class EditorsModule {
     this.events.on("currentTabSet", updateMenubarTitle);
 
     const cmdOrCtrl = this.system.usesCmd() ? "Cmd" : "Ctrl";
-    this.logging.info("command or ctrl?", cmdOrCtrl);
+    this.log.info("command or ctrl?", cmdOrCtrl);
 
     // menu reducer
     const menuReducer = () => {
@@ -419,7 +419,7 @@ export class EditorsModule {
 
   private hookToInputs() {
     this.input.registerShortcut(["command+s", "ctrl+s"], (e) => {
-      this.logging.info("editor keys: ctrl s");
+      this.log.info("editor keys: ctrl s");
       if (this.currentTab) {
         e.preventDefault();
         this.save(this.currentTab);
@@ -427,7 +427,7 @@ export class EditorsModule {
     });
 
     this.input.registerShortcut(["command+shift+s", "ctrl+shift+s"], (e) => {
-      this.logging.info("editor keys: ctrl shift s");
+      this.log.info("editor keys: ctrl shift s");
       if (this.currentTab) {
         e.preventDefault();
         this.saveAs(this.currentTab);
@@ -435,7 +435,7 @@ export class EditorsModule {
     });
 
     this.input.registerShortcut(["command+w", "ctrl+w"], (e) => {
-      this.logging.info("editor keys: ctrl w");
+      this.log.info("editor keys: ctrl w");
       if (this.currentTab) {
         e.preventDefault();
         this.close(this.currentTab);

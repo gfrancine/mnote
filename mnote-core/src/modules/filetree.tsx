@@ -9,7 +9,7 @@ import { CtxmenuContext } from "./types";
 import { FSModule } from "./fs";
 import { LayoutModule } from "./layout";
 import { CtxmenuModule } from "./ctxmenu";
-import { LoggingModule } from "./logging";
+import { LogModule } from "./log";
 
 import { render, unmountComponentAtNode } from "react-dom";
 import React from "react";
@@ -32,7 +32,7 @@ export class FiletreeModule {
   private fs: FSModule;
   private layout: LayoutModule;
   private ctxmenu: CtxmenuModule;
-  private logging: LoggingModule;
+  private log: LogModule;
   private menubar: MenubarModule;
   private prompts: PromptsModule;
   private system: SystemModule;
@@ -55,7 +55,7 @@ export class FiletreeModule {
     this.system = app.modules.system;
     this.layout = app.modules.layout;
     this.ctxmenu = app.modules.ctxmenu;
-    this.logging = app.modules.logging;
+    this.log = app.modules.log;
     this.prompts = app.modules.prompts;
     this.menubar = app.modules.menubar;
     this.editors = app.modules.editors;
@@ -225,7 +225,7 @@ export class FiletreeModule {
 
   async refreshTree() {
     if (!this.directory) {
-      this.logging.warn("refreshed empty directory");
+      this.log.warn("refreshed empty directory");
       return;
     }
 
@@ -234,7 +234,7 @@ export class FiletreeModule {
     if (tree.children) {
       this.setFileTree(tree as FileTreeNodeWithChildren);
     } else {
-      this.logging.err(
+      this.log.err(
         "filetree read directory - no children, Dir:",
         this.directory,
       );
@@ -246,19 +246,19 @@ export class FiletreeModule {
   }
 
   setFileTree(tree: FileTreeNodeWithChildren) {
-    this.logging.info("setFileTree", tree);
+    this.log.info("setFileTree", tree);
     this.tree = tree;
     this.updateDisplay();
   }
 
   setSelectedFile(path?: string) {
-    this.logging.info("setSelectedFile", path);
+    this.log.info("setSelectedFile", path);
     this.selectedFile = path;
     this.updateDisplay();
   }
 
   setDirectory(path: string) {
-    this.logging.info("setDirectory", path);
+    this.log.info("setDirectory", path);
     //
     // todo: close the existing watcher
     //
@@ -270,16 +270,16 @@ export class FiletreeModule {
   }
 
   private updateDisplay() {
-    this.logging.info("filetree updateDisplay", this.tree, this.selectedFile);
+    this.log.info("filetree updateDisplay", this.tree, this.selectedFile);
 
     const hooks: FileTreeHooks = {
       fileFocused: (path: string) => {
-        this.logging.info("file focused", path);
+        this.log.info("file focused", path);
         this.updateEditorSelectedFile(path);
       },
       fileDroppedOnDir: (targetDir: string, droppedFile: string) => {
         const newPath = this.fs.joinPath([targetDir, getPathName(droppedFile)]);
-        this.logging.info(
+        this.log.info(
           "file dropped on dir",
           droppedFile,
           targetDir,
@@ -289,7 +289,7 @@ export class FiletreeModule {
       },
       dirDroppedOnDir: (targetDir: string, droppedDir: string) => {
         const newPath = this.fs.joinPath([targetDir, getPathName(droppedDir)]);
-        this.logging.info(
+        this.log.info(
           "dir dropped on dir",
           droppedDir,
           targetDir,

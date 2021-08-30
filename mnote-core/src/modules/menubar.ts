@@ -3,7 +3,7 @@ import { Mnote } from "..";
 import { LayoutModule } from "./layout";
 import { el, Elbuilder } from "mnote-util/elbuilder";
 import { Menu } from "../components/menu";
-import { LoggingModule } from "./logging";
+import { LogModule } from "./log";
 import { createIcon } from "../components/icons";
 
 // https://quilljs.com/docs/modules/toolbar/
@@ -12,7 +12,7 @@ type SectionReducer = () => MenuItem[] | void;
 
 export class MenubarModule /* implements Module */ {
   private layout: LayoutModule;
-  private logging: LoggingModule;
+  private log: LogModule;
 
   private element: HTMLElement;
   private left: HTMLElement;
@@ -59,13 +59,13 @@ export class MenubarModule /* implements Module */ {
 
     this.addMenubarButton(this.menuToggle);
 
-    this.logging = app.modules.logging;
+    this.log = app.modules.log;
     this.layout = app.modules.layout;
     this.layout.mountToMenubar(this.element);
 
     // close the menu when the user clicks somewhere else
     document.addEventListener("mousedown", (e: MouseEvent) => {
-      this.logging.info("menubar: menu listener for external mousedown");
+      this.log.info("menubar: menu listener for external mousedown");
 
       if (!this.menuCurrent) return;
       const mouseoverEls = document.elementsFromPoint(e.pageX, e.pageY);
@@ -97,7 +97,7 @@ export class MenubarModule /* implements Module */ {
   }
 
   showMenu() {
-    this.logging.info("menubar: showMenu");
+    this.log.info("menubar: showMenu");
 
     this.hideMenu();
 
@@ -123,7 +123,7 @@ export class MenubarModule /* implements Module */ {
     this.menuCurrent = menu;
 
     menu.events.on("click", () => {
-      this.logging.info("menubar: menu event on click");
+      this.log.info("menubar: menu event on click");
       this.hideMenu();
     });
 
@@ -131,7 +131,7 @@ export class MenubarModule /* implements Module */ {
   }
 
   hideMenu() {
-    this.logging.info("menubar: hideMenu", this.menuCurrent);
+    this.log.info("menubar: hideMenu", this.menuCurrent);
 
     if (this.menuCurrent) {
       this.menuCurrent.cleanup();

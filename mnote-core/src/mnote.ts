@@ -14,7 +14,7 @@ import {
   FSModule,
   InputModule,
   LayoutModule,
-  LoggingModule,
+  LogModule,
   MenubarModule,
   OpenFilesModule,
   PromptsModule,
@@ -25,7 +25,7 @@ import {
 } from "./modules";
 
 type Modules = {
-  logging: LoggingModule;
+  log: LogModule;
   fs: FSModule;
   system: SystemModule;
   input: InputModule;
@@ -76,7 +76,7 @@ export class Mnote {
     // register the modules
     const m = this.modules;
 
-    m.logging = new LoggingModule(this);
+    m.log = new LogModule(this);
     m.fs = new FSModule(this.options.fs);
     m.system = new SystemModule(this.options.system);
     m.input = new InputModule(this);
