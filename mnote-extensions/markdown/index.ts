@@ -25,16 +25,7 @@ import { getPathExtension } from "mnote-util/path";
 import { el } from "mnote-util/elbuilder";
 import "./markdown.scss";
 import { markdownIcon } from "./icon";
-
-function countWords(text: string): number {
-  const matches = text.match(/\w+/g);
-  return matches ? matches.length : 0;
-}
-
-function countChars(text: string): number {
-  const matches = text.match(/\w/g);
-  return matches ? matches.length : 0;
-}
+import { countChars, countWords } from "mnote-util/wordcount";
 
 class MarkdownEditor implements Editor {
   app: Mnote;
