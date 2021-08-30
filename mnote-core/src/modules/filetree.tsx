@@ -248,13 +248,13 @@ export class FiletreeModule {
   setFileTree(tree: FileTreeNodeWithChildren) {
     this.log.info("filetree: setFileTree", tree);
     this.tree = tree;
-    this.updateDisplay();
+    this.updateTree();
   }
 
   setSelectedFile(path?: string) {
     this.log.info("filetree: setSelectedFile", path);
     this.selectedFile = path;
-    this.updateDisplay();
+    this.updateTree();
   }
 
   setDirectory(path: string) {
@@ -267,8 +267,8 @@ export class FiletreeModule {
     this.refreshTree();
   }
 
-  private updateDisplay() {
-    this.log.info("filetree: updateDisplay", this.tree, this.selectedFile);
+  private updateTree() {
+    this.log.info("filetree: updateTree", this.tree, this.selectedFile);
 
     const hooks: FileTreeHooks = {
       fileFocused: (path: string) => {
