@@ -124,15 +124,18 @@ export class EditorsModule {
     this.events.emit("activeTabsChanged");
   }
 
+  // DRY
+  private setTabDocument = (tabInfo: TabInfo, doc: DocInfo) => {
+    tabInfo.document = doc;
+    if (this.currentTab && this.currentTab.info === tabInfo) {
+      this.setCurrentTab(this.currentTab); // trigger an update
+    }
+  };
+
   private makeTabContext(info: TabInfo): TabContext {
     return {
       getTabInfo: () => info,
-      setDocument: (doc: DocInfo) => {
-        info.document = doc;
-        if (this.currentTab && this.currentTab.info === info) {
-          this.setCurrentTab(this.currentTab); // trigger an update
-        }
-      },
+      setDocument: (doc: DocInfo) => this.setTabDocument(info, doc),
     };
   }
 
@@ -157,6 +160,8 @@ export class EditorsModule {
 
     this.addActiveTab(tab);
     this.changeCurrentTab(tab);
+
+    return tab;
   }
 
   tryGetTabFromPath(path: string) {
@@ -164,6 +169,15 @@ export class EditorsModule {
       if (tab.info.document.path === path) {
         return tab;
       }
+    }
+  }
+
+  private async getEditorInfoForPath(path: string) {
+    // last added runs first, assuming it's more selective
+    // as the plaintext (which accepts all) is first
+    for (let i = this.editors.length - 1; i > -1; i--) {
+      const info = this.editors[i];
+      if (await info.canOpenPath(path)) return info;
     }
   }
 
@@ -176,17 +190,7 @@ export class EditorsModule {
       return;
     }
 
-    let selectedEditorInfo: EditorInfo | undefined;
-
-    // last added runs first, assuming it's more selective
-    // as the plaintext (which accepts all) is first
-    for (let i = this.editors.length - 1; i > -1; i--) {
-      const info = this.editors[i];
-      if (await info.canOpenPath(path)) {
-        selectedEditorInfo = info;
-        break;
-      }
-    }
+    const selectedEditorInfo = await this.getEditorInfoForPath(path);
 
     // this should not happen because we have a plaintext editor
     // but it's good to have this
@@ -211,6 +215,35 @@ export class EditorsModule {
     await this.trySetupTab(info);
   }
 
+  // guess the editor from the path
+  // used by "Create New File" context menu
+  async tryNewTabFromPath(path: string) {
+    const editorInfo = await this.getEditorInfoForPath(path);
+    if (!editorInfo) {
+      return;
+    }
+
+    const document = {
+      name: getPathName(path),
+      saved: false,
+    };
+
+    const info: TabInfo = {
+      editor: await editorInfo.createNewEditor(),
+      document,
+      editorInfo,
+      container: this.createContainer(),
+    };
+
+    const tab = await this.trySetupTab(info);
+    if (tab) {
+      this.setTabDocument(tab.info, {
+        ...document,
+        path,
+      });
+    }
+  }
+
   // create new button
   async newTab(editorKind: string) {
     const editorInfo = this.editorKinds[editorKind];
@@ -218,16 +251,13 @@ export class EditorsModule {
       throw new Error(strings.editorDoesNotExist(editorKind));
     }
 
-    const editor = await editorInfo.createNewEditor();
-    const document = {
-      name: "Untitled",
-      // no path
-      saved: false,
-    };
-
     const info: TabInfo = {
-      editor,
-      document,
+      editor: await editorInfo.createNewEditor(),
+      document: {
+        name: "Untitled",
+        // no path
+        saved: false,
+      },
       editorInfo,
       container: this.createContainer(),
     };

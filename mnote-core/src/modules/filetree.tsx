@@ -132,21 +132,32 @@ export class FiletreeModule {
         }
       }
 
-      const makeNewFolderButton = (dir: string) => {
-        return {
-          name: "New folder",
-          click: async () => {
-            const name = await this.prompts.promptTextInput(
-              "Create new folder",
-            );
-            if (!name) return;
-            const path = this.fs.joinPath([dir, name]);
-            this.log.info("filetree: New folder", path);
-            // todo
-            await this.fs.createDir(path);
-          },
-        };
-      };
+      const makeNewFolderButton = (dir: string) => ({
+        name: "New folder",
+        click: async () => {
+          const name = await this.prompts.promptTextInput(
+            "Create new folder",
+          );
+          if (!name) return;
+          const path = this.fs.joinPath([dir, name]);
+          this.log.info("filetree: New folder", path);
+          await this.fs.createDir(path);
+        },
+      });
+
+      const makeNewFileButton = (dir: string) => ({
+        name: "New file",
+        click: async () => {
+          const name = await this.prompts.promptTextInput(
+            "Create new file",
+          );
+          if (!name) return;
+          const path = this.fs.joinPath([dir, name]);
+          this.log.info("filetree: New file", path);
+          await this.fs.writeTextFile(path, "");
+          await this.editors.tryNewTabFromPath(path);
+        },
+      });
 
       if (fileTreeItem) {
         const filePath = fileTreeItem.getAttribute("mn-file-path");
@@ -176,12 +187,16 @@ export class FiletreeModule {
                 },
               },
               makeNewFolderButton(dirPath),
+              makeNewFileButton(dirPath),
             ];
           }
         }
       } else if (ctx.elements.includes(this.element) && this.directory) {
         // right clicked directly on the file tree
-        return [makeNewFolderButton(this.directory as string)];
+        return [
+          makeNewFolderButton(this.directory as string),
+          makeNewFileButton(this.directory as string),
+        ];
       }
     };
 
