@@ -25,9 +25,14 @@ $default-theme: (
   "border-dim": oc.$oc-gray-2,
   // sidebar
   "sidebar-bg-main": oc.$oc-gray-1,
-  "sidebar-bg-hover": oc.$oc-gray-3,
   "sidebar-fg-main": oc.$oc-gray-9,
-  "sidebar-fg-secondary": oc.$oc-gray-6,
+  "sidebar-item-icon": oc.$oc-gray-6,
+  "sidebar-item-hover-bg": oc.$oc-gray-2,
+  "sidebar-item-hover-fg": oc.$oc-gray-9,
+  "sidebar-item-hover-icon": oc.$oc-gray-6,
+  "sidebar-item-focused-bg": oc.$oc-gray-3,
+  "sidebar-item-focused-fg": oc.$oc-gray-9,
+  "sidebar-item-focused-icon": oc.$oc-gray-6,
   // buttons, assuming background is bg-main
   "btn-main-fg": oc.$oc-gray-9,
   "btn-main-fg-hover": oc.$oc-gray-9,

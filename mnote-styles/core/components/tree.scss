@@ -19,36 +19,58 @@
     border-radius: 5px;
     word-break: break-all;
 
-    &.tree-focused,
+    &.tree-hovered,
     &:hover {
-      background: map-get($theme, sidebar-bg-hover);
+      background: map-get($theme, sidebar-item-hover-bg);
+      color: map-get($theme, sidebar-item-hover-fg);
+
+      .fill {
+        fill: map-get($theme, sidebar-item-icon-hover);
+      }
+
+      .stroke {
+        stroke: map-get($theme, sidebar-item-icon-hover);
+      }
+    }
+
+    &.tree-focused {
+      background: map-get($theme, sidebar-item-focused-bg);
+      color: map-get($theme, sidebar-item-hover-fg);
+
+      .fill {
+        fill: map-get($theme, sidebar-item-focused-icon);
+      }
+
+      .stroke {
+        stroke: map-get($theme, sidebar-item-focused-icon);
+      }
+    }
+
+    .tree-item-icon {
+      width: 14px;
+      height: 14px;
+      min-width: 14px;
+      margin: auto 0.5em auto 0;
+      box-sizing: border-box;
+
+      .fill {
+        fill: map-get($theme, sidebar-item-icon);
+      }
+
+      .stroke {
+        stroke: map-get($theme, sidebar-item-icon);
+      }
+
+      svg {
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 
   .tree-children {
     box-sizing: border-box;
     padding-left: 0.8em;
-  }
-
-  .tree-item-icon {
-    width: 14px;
-    height: 14px;
-    min-width: 14px;
-    margin: auto 0.5em auto 0;
-    box-sizing: border-box;
-
-    .fill {
-      fill: map-get($theme, sidebar-fg-secondary);
-    }
-
-    .stroke {
-      stroke: map-get($theme, sidebar-fg-secondary);
-    }
-
-    svg {
-      box-sizing: border-box;
-      width: 100%;
-      height: 100%;
-    }
   }
 }

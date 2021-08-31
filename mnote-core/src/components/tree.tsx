@@ -22,6 +22,7 @@ export function TreeItem(
   props: DivProps & {
     text: string;
     icon: JSX.Element;
+    hovered?: boolean;
     focused?: boolean;
     hidden?: boolean;
     ref?: React.Ref<HTMLDivElement>;
@@ -31,6 +32,7 @@ export function TreeItem(
   return (
     <div
       className={"tree-item" +
+        (props.hovered ? " tree-hovered" : "") +
         (props.focused ? " tree-focused" : "") +
         (props.hidden ? " tree-hidden" : "") +
         (props.className ? " " + props.className : "")}

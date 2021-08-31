@@ -23,9 +23,15 @@ export const light = {
   "border-dim": gray[2],
 
   "sidebar-bg-main": gray[1],
-  "sidebar-bg-hover": gray[3],
   "sidebar-fg-main": gray[9],
-  "sidebar-fg-secondary": gray[6],
+
+  "sidebar-item-icon": gray[6],
+  "sidebar-item-hover-bg": gray[2],
+  "sidebar-item-hover-fg": gray[9],
+  "sidebar-item-hover-icon": gray[6],
+  "sidebar-item-focused-bg": gray[3],
+  "sidebar-item-focused-fg": gray[9],
+  "sidebar-item-focused-icon": gray[6],
 
   "btn-main-fg": gray[9], // buttons, assuming background is bg-main
   "btn-main-fg-hover": gray[9],
@@ -62,6 +68,14 @@ export const dark = {
   "sidebar-bg-hover": "#2B2D2E",
   "sidebar-fg-main": "#B0B6BB",
   "sidebar-fg-secondary": "#767E85",
+
+  "sidebar-item-icon": "#767E85",
+  "sidebar-item-hover-bg": "#2B2D2E",
+  "sidebar-item-hover-fg": "#B0B6BB",
+  "sidebar-item-hover-icon": "#767E85",
+  "sidebar-item-focused-bg": "#303233",
+  "sidebar-item-focused-fg": "#B0B6BB",
+  "sidebar-item-focused-icon": "#767E85",
 
   "btn-main-fg": "#B0B6BB", // buttons, assuming background is bg-main
   "btn-main-fg-hover": "#B0B6BB",

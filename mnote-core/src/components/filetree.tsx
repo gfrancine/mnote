@@ -58,7 +58,8 @@ function FileNode(props: {
         }
         return <BlankFile fillClass="fill" strokeClass="stroke" />;
       })()}
-      focused={props.focusedPath === props.node.path || isDraggedOver}
+      focused={props.focusedPath === props.node.path}
+      hovered={isDraggedOver}
       onClick={onClick}
       draggable
       onDragStart={(e) =>
@@ -141,7 +142,7 @@ function DirNode(props: {
           }),
         )}
       className="filetree-item"
-      focused={isDraggedOver}
+      hovered={isDraggedOver}
       //@ts-ignore: custom dom attribute
       mn-dir-path={props.node.path}
     />
