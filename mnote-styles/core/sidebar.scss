@@ -16,22 +16,22 @@
     height: 24px; // see layout styles
 
     .fill {
-      fill: map.get($theme, "fg-secondary");
+      fill: map-get($theme, "fg-secondary");
     }
 
     .stroke {
-      stroke: map.get($theme, "fg-secondary");
+      stroke: map-get($theme, "fg-secondary");
     }
 
     &:hover {
       cursor: pointer;
 
       .fill {
-        fill: map.get($theme, "fg-main");
+        fill: map-get($theme, "fg-main");
       }
 
       .stroke {
-        stroke: map.get($theme, "fg-main");
+        stroke: map-get($theme, "fg-main");
       }
     }
 

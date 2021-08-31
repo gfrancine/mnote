@@ -4,17 +4,17 @@
   .menu {
     position: absolute;
     z-index: 50;
-    background: map.get($theme, "bg-main");
+    background: map-get($theme, bg-main);
     padding: 0.5em 0;
     border-radius: 5px;
     box-sizing: border-box;
     width: max-content;
-    box-shadow: map.get($theme, "shadow");
+    box-shadow: map-get($theme, shadow);
     min-width: 210px;
 
     .menu-item {
-      font-family: map.get($theme, "font-main");
-      color: map.get($theme, "fg-main");
+      font-family: map-get($theme, font-main);
+      color: map-get($theme, fg-main);
       font-size: 13px;
       display: flex;
       flex-direction: row;
@@ -24,7 +24,7 @@
       cursor: pointer;
 
       &:hover {
-        background: map.get($theme, "bg-secondary");
+        background: map-get($theme, bg-secondary);
       }
 
       .menu-item-right,
@@ -33,7 +33,7 @@
       }
 
       .menu-item-right {
-        color: map.get($theme, "fg-dim");
+        color: map-get($theme, fg-dim);
         text-align: right;
         margin-left: 2em;
       }
@@ -42,7 +42,7 @@
     .menu-divider {
       width: 100%;
       height: 1px;
-      background: map.get($theme, "border-dim");
+      background: map-get($theme, border-dim);
       margin: 0.3em 0;
     }
   }

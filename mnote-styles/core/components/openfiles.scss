@@ -8,7 +8,7 @@
     width: 100%;
     height: 100%;
     box-sizing: border-box;
-    font-family: map.get($theme, "font-main");
+    font-family: map-get($theme, font-main);
   }
 
   .tree-item {
@@ -18,10 +18,10 @@
       margin-right: 0;
 
       &:hover .fill {
-        fill: map.get($theme, "fg-main");
+        fill: map-get($theme, fg-main);
       }
       &:hover .stroke {
-        stroke: map.get($theme, "fg-main");
+        stroke: map-get($theme, fg-main);
       }
     }
 

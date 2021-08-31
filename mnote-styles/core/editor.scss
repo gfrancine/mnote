@@ -9,6 +9,6 @@
     overflow: auto;
     box-sizing: border-box;
 
-    @include scrollbar.scrollbar(map.get($theme, "bg-secondary"));
+    @include scrollbar.scrollbar(map-get($theme, bg-secondary));
   }
 }

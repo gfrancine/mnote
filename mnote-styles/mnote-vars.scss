@@ -20,15 +20,16 @@ $default-theme: (
   "bg-secondary": oc.$oc-gray-1,
   "bg-dim": oc.$oc-gray-3,
   "shadow": 0 2px 5px oc.$oc-gray-3,
-  "overlay": #{oc.$oc-gray-7}32,
+  "overlay-bg": #{oc.$oc-gray-7}32,
   "border-main": oc.$oc-gray-4,
   "border-dim": oc.$oc-gray-2,
+  // sidebar
   "sidebar-bg-main": oc.$oc-gray-1,
   "sidebar-bg-hover": oc.$oc-gray-3,
   "sidebar-fg-main": oc.$oc-gray-9,
   "sidebar-fg-secondary": oc.$oc-gray-6,
-  "btn-main-fg": oc.$oc-gray-9,
   // buttons, assuming background is bg-main
+  "btn-main-fg": oc.$oc-gray-9,
   "btn-main-fg-hover": oc.$oc-gray-9,
   "btn-main-bg": oc.$oc-gray-2,
   "btn-main-bg-hover": oc.$oc-gray-3,

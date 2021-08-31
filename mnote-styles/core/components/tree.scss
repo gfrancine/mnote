@@ -21,7 +21,7 @@
 
     &.tree-focused,
     &:hover {
-      background: map.get($theme, "sidebar-bg-hover");
+      background: map-get($theme, sidebar-bg-hover);
     }
   }
 
@@ -38,11 +38,11 @@
     box-sizing: border-box;
 
     .fill {
-      fill: map.get($theme, "sidebar-fg-secondary");
+      fill: map-get($theme, sidebar-fg-secondary);
     }
 
     .stroke {
-      stroke: map.get($theme, "sidebar-fg-secondary");
+      stroke: map-get($theme, sidebar-fg-secondary);
     }
 
     svg {

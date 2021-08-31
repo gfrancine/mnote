@@ -17,7 +17,7 @@ export const light = {
   "bg-dim": gray[3],
 
   "shadow": "0px 2px 5px " + gray[3],
-  "overlay": gray[7] + "32",
+  "overlay-bg": gray[7] + "32",
 
   "border-main": gray[3],
   "border-dim": gray[2],
@@ -53,10 +53,10 @@ export const dark = {
   "bg-dim": "#404345",
 
   "shadow": "0px 2px 5px " + "#111",
-  "overlay": "#11111132",
+  "overlay-bg": "#11111132",
 
   "border-main": "#111",
-  "border-dim": "#111",
+  "border-dim": "#222",
 
   "sidebar-bg-main": "#242627",
   "sidebar-bg-hover": "#2B2D2E",
