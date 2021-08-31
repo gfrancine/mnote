@@ -7,11 +7,11 @@
     "bundle-debug": "shx rm -rf dist && shx cp -r public dist && node bundle-scripts/bundle-dev.js",
     "bundle-web": "shx rm -rf dist && shx cp -r public dist && node bundle-scripts/bundle-web.js",
     "bundle-release": "shx rm -rf dist && shx cp -r public dist && node bundle-scripts/bundle-release.js",
-    "build-debug": "npm run bundle-debug && npm run tauri -- build --debug",
-    "build-release": "npm run bundle-release && npm run tauri",
-    "dev": "npm run bundle-debug && npm run tauri dev",
+    "build-debug": "npm run bundle-debug && tauri build --debug",
+    "build-release": "npm run bundle-release && tauri build",
+    "dev": "npm run bundle-debug && tauri dev",
     "dev-web": "npm run bundle-web && serve dist --no-clipboard",
-    "action-publish": "npm run bundle-release && npm run tauri"
+    "action-publish": "npm run bundle-release && tauri"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.0-beta.9",
