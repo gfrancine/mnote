@@ -22,7 +22,20 @@ type FileIconFactory = (
   strokeClass: string,
 ) => Element | void;
 
+// dry for the drop handler
+const makeDropHandler = (dirPath: string, hooks?: FileTreeHooks) =>
+  (e: React.DragEvent<HTMLElement>) => {
+    const data = e.dataTransfer.getData(DRAG_DATA_TYPE);
+    const dragData: FileTreeDragData = JSON.parse(data);
+    if (dragData.kind === "file") {
+      hooks?.fileDroppedOnDir?.(dirPath, dragData.path);
+    } else {
+      hooks?.dirDroppedOnDir?.(dirPath, dragData.path);
+    }
+  };
+
 function FileNode(props: {
+  parentPath: string;
   visible?: boolean;
   node: Node;
   focusedPath?: string; // path of the focused node
@@ -32,6 +45,8 @@ function FileNode(props: {
   const name = useMemo(() => getPathName(props.node.path), [props.node.path]);
 
   const onClick = () => props.hooks?.fileFocused?.(props.node.path);
+
+  const [isDraggedOver, setDraggedOver] = useState(false);
 
   return props.visible
     ? <TreeItem
@@ -43,17 +58,23 @@ function FileNode(props: {
         }
         return <BlankFile fillClass="fill" strokeClass="stroke" />;
       })()}
-      focused={props.focusedPath === props.node.path}
+      focused={props.focusedPath === props.node.path || isDraggedOver}
       onClick={onClick}
       draggable
-      onDragStart={(e) => {
+      onDragStart={(e) =>
         e.dataTransfer.setData(
           DRAG_DATA_TYPE,
           JSON.stringify({
             path: props.node.path,
             kind: "file",
           }),
-        );
+        )}
+      onDragEnter={() => setDraggedOver(true)}
+      onDragLeave={() => setDraggedOver(false)}
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={(e) => {
+        makeDropHandler(props.parentPath, props.hooks)(e);
+        setDraggedOver(false);
       }}
       className="filetree-item" // used by context menu
       //@ts-ignore: custom dom attribute
@@ -92,6 +113,8 @@ function DirNode(props: {
 
   const onClick = expanded ? () => setExpanded(false) : () => setExpanded(true);
 
+  const [isDraggedOver, setDraggedOver] = useState(false);
+
   return <div className="filetree-dir">
     <TreeItem
       text={name}
@@ -103,25 +126,22 @@ function DirNode(props: {
         e.preventDefault();
       }}
       onDrop={(e) => {
-        const data = e.dataTransfer.getData(DRAG_DATA_TYPE);
-        const dragData: FileTreeDragData = JSON.parse(data);
-        if (dragData.kind === "file") {
-          props.hooks?.fileDroppedOnDir?.(props.node.path, dragData.path);
-        } else {
-          props.hooks?.dirDroppedOnDir?.(props.node.path, dragData.path);
-        }
+        makeDropHandler(props.node.path, props.hooks)(e);
+        setDraggedOver(false);
       }}
+      onDragEnter={() => setDraggedOver(true)}
+      onDragLeave={() => setDraggedOver(false)}
       draggable
-      onDragStart={(e) => {
+      onDragStart={(e) =>
         e.dataTransfer.setData(
           DRAG_DATA_TYPE,
           JSON.stringify({
             path: props.node.path,
             kind: "dir",
           }),
-        );
-      }}
-      className={"filetree-item"}
+        )}
+      className="filetree-item"
+      focused={isDraggedOver}
       //@ts-ignore: custom dom attribute
       mn-dir-path={props.node.path}
     />
@@ -137,6 +157,7 @@ function DirNode(props: {
             getFileIcon={props.getFileIcon}
           />
           : <FileNode
+            parentPath={props.node.path}
             visible={expanded}
             node={node}
             key={node.path}
