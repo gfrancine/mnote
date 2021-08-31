@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { BlankFile, ChevronDown, ChevronRight } from "./icons-jsx";
 import { getPathName } from "mnote-util/path";
 import {
@@ -25,7 +25,7 @@ type FileIconFactory = (
 function FileNode(props: {
   visible?: boolean;
   node: Node;
-  focusedNode?: string; // path of the focused node
+  focusedPath?: string; // path of the focused node
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
 }) {
@@ -43,7 +43,7 @@ function FileNode(props: {
         }
         return <BlankFile fillClass="fill" strokeClass="stroke" />;
       })()}
-      focused={props.focusedNode === props.node.path}
+      focused={props.focusedPath === props.node.path}
       onClick={onClick}
       draggable
       onDragStart={(e) => {
@@ -67,7 +67,7 @@ function DirNode(props: {
   node: NodeWithChildren;
   draggable?: boolean;
   initExpanded?: boolean; // is the dir open at initialization?
-  focusedNode?: string; // path of the focused node
+  focusedPath?: string; // path of the focused node
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
 }) {
@@ -82,6 +82,13 @@ function DirNode(props: {
   const [expanded, setExpanded] = useState<boolean>(
     props.initExpanded === undefined ? false : props.initExpanded,
   );
+
+  useEffect(() => {
+    if (!props.focusedPath) return;
+    if (props.focusedPath.search(props.node.path) > -1) {
+      setExpanded(true);
+    }
+  }, [props.focusedPath]);
 
   const onClick = expanded ? () => setExpanded(false) : () => setExpanded(true);
 
@@ -126,7 +133,7 @@ function DirNode(props: {
             key={node.path}
             node={node as NodeWithChildren}
             hooks={props.hooks}
-            focusedNode={props.focusedNode}
+            focusedPath={props.focusedPath}
             getFileIcon={props.getFileIcon}
           />
           : <FileNode
@@ -134,7 +141,7 @@ function DirNode(props: {
             node={node}
             key={node.path}
             hooks={props.hooks}
-            focusedNode={props.focusedNode}
+            focusedPath={props.focusedPath}
             getFileIcon={props.getFileIcon}
           />
       )}
@@ -159,7 +166,7 @@ export default function (props: {
         initExpanded
         draggable={false}
         node={props.node}
-        focusedNode={props.initFocusedNode}
+        focusedPath={props.initFocusedNode}
         getFileIcon={props.getFileIcon}
       />
       : <></>}

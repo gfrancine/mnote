@@ -3,25 +3,26 @@
 export const tree = {
   path: "dir-a",
   children: [
-    { path: "file-b.txt" },
-    { path: "file-c" },
+    { path: "dir-a/file-b.txt" },
+    { path: "dir-a/file-c" },
     {
-      path: "dir-d",
+      path: "dir-a/dir-d",
       children: [
-        { path: "file-e" },
-        { path: "file-f" },
+        { path: "dir-a/dir-d/file-e" },
+        { path: "dir-a/dir-d/file-f" },
+        { path: "dir-a/dir-d/file-f.txt" },
       ],
     },
-    { path: "a/a/a/zzzzzthisshouldbesorted" },
+    { path: "dir-a/zzzzzthisshouldbesorted" },
     {
-      path: "a/a/a/zzzzzthisshouldbeabovefiles",
+      path: "dir-a/zzzzzthisshouldbeabovefiles",
       children: [],
     },
-    { path: "file-g.md" },
-    { path: "file-h.excalidraw" },
-    { path: "file-i.mnkanban" },
-    { path: "file-j.mncalendar" },
-    { path: "file-j.mntodo" },
+    { path: "dir-a/file-g.md" },
+    { path: "dir-a/file-h.excalidraw" },
+    { path: "dir-a/file-i.mnkanban" },
+    { path: "dir-a/file-j.mncalendar" },
+    { path: "dir-a/file-j.mntodo" },
   ],
 };
 
