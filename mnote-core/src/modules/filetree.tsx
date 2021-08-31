@@ -61,160 +61,7 @@ export class FiletreeModule {
     this.editors = app.modules.editors;
     this.fileicons = app.modules.fileicons;
 
-    const cmdOrCtrl = this.system.usesCmd() ? "Cmd" : "Ctrl";
-
-    // DRY
-
-    const openFile = async () => {
-      const maybePath = await this.fs.dialogOpen({
-        directory: false,
-        startingPath: this.directory,
-      });
-      if (!maybePath) return;
-      this.updateEditorSelectedFile(maybePath);
-    };
-
-    const openFolder = async () => {
-      if (this.directory) return;
-      const maybePath = await this.fs.dialogOpen({
-        directory: true,
-      });
-      if (!maybePath) return;
-      this.setDirectory(maybePath);
-    };
-
-    const menuReducer = () => {
-      const buttons = [];
-
-      buttons.push({
-        name: "Open File...",
-        shortcut: cmdOrCtrl + "+O",
-        click: openFile,
-      });
-
-      if (!this.directory) {
-        buttons.push({
-          name: "Open Folder...",
-          shortcut: cmdOrCtrl + "+O",
-          click: openFolder,
-        });
-      }
-
-      if (this.directory) {
-        buttons.push({
-          name: "Refresh Folder",
-          click: () => {
-            this.refreshTree();
-          },
-        });
-      }
-
-      return buttons;
-    };
-
-    this.system.onAppMenuClick((menuId) => {
-      switch (menuId) {
-        case "open-file":
-          return openFile();
-        case "open-folder":
-          return openFolder();
-      }
-    });
-
-    const ctxmenuReducer = (ctx: CtxmenuContext) => {
-      // find a file tree item
-      let fileTreeItem: Element | undefined;
-
-      for (const el of ctx.elements) {
-        if (el.classList.contains("filetree-item")) {
-          fileTreeItem = el;
-          break;
-        }
-      }
-
-      const makeNewFolderButton = (dir: string) => ({
-        name: "New folder",
-        click: async () => {
-          const name = await this.prompts.promptTextInput(
-            "Create new folder",
-          );
-          if (!name) return;
-          const path = this.fs.joinPath([dir, name]);
-          this.log.info("filetree: New folder", path);
-          await this.fs.createDir(path);
-        },
-      });
-
-      const makeNewFileButton = (dir: string) => ({
-        name: "New file",
-        click: async () => {
-          const name = await this.prompts.promptTextInput(
-            "Create new file",
-          );
-          if (!name) return;
-          const path = this.fs.joinPath([dir, name]);
-          this.log.info("filetree: New file", path);
-          await this.fs.writeTextFile(path, "");
-          await this.editors.tryNewTabFromPath(path);
-        },
-      });
-
-      if (fileTreeItem) {
-        const filePath = fileTreeItem.getAttribute("mn-file-path");
-        if (filePath) {
-          return [{
-            name: "Open file",
-            click: () => {
-              this.updateEditorSelectedFile(filePath);
-            },
-          }, {
-            name: "Delete file",
-            click: () => {
-              this.fs.removeFile(filePath);
-            },
-          }];
-        } else {
-          // todo: add ability to hook on to new file? hook to file
-          // right click? hookTo("fileContextMenu")
-          // addFileContextMenuReducer, addDirContextMenuReducer
-          const dirPath = fileTreeItem.getAttribute("mn-dir-path");
-          if (dirPath) {
-            return [
-              {
-                name: "Delete folder",
-                click: () => {
-                  this.fs.removeDir(dirPath);
-                },
-              },
-              makeNewFolderButton(dirPath),
-              makeNewFileButton(dirPath),
-            ];
-          }
-        }
-      } else if (ctx.elements.includes(this.element) && this.directory) {
-        // right clicked directly on the file tree
-        return [
-          makeNewFolderButton(this.directory as string),
-          makeNewFileButton(this.directory as string),
-        ];
-      }
-    };
-
-    this.menubar.addSectionReducer(menuReducer);
-    this.ctxmenu.addSectionReducer(ctxmenuReducer);
-    this.layout.mountToFiletree(this.element);
-
-    const onEditorTabChange = () => {
-      if (this.editors.currentTab) {
-        this.setSelectedFile(this.editors.currentTab.info.document.path);
-      } else {
-        this.setSelectedFile();
-      }
-    };
-
-    this.editors.events.on("activeTabsChanged", onEditorTabChange);
-    this.editors.events.on("currentTabSet", onEditorTabChange);
-
+    this.bindToModules();
     this.app.hooks.on("startup", () => this.startup());
   }
 
@@ -335,5 +182,162 @@ export class FiletreeModule {
       unmountComponentAtNode(this.element);
       this.element.appendChild(nothingHere);
     }
+  }
+
+  private bindToModules() {
+    const cmdOrCtrl = this.system.usesCmd() ? "Cmd" : "Ctrl";
+
+    // DRY
+
+    const openFile = async () => {
+      const maybePath = await this.fs.dialogOpen({
+        directory: false,
+        startingPath: this.directory,
+      });
+      if (!maybePath) return;
+      this.updateEditorSelectedFile(maybePath);
+    };
+
+    const openFolder = async () => {
+      if (this.directory) return;
+      const maybePath = await this.fs.dialogOpen({
+        directory: true,
+      });
+      if (!maybePath) return;
+      this.setDirectory(maybePath);
+    };
+
+    const menuReducer = () => {
+      const buttons = [];
+
+      buttons.push({
+        name: "Open File...",
+        shortcut: cmdOrCtrl + "+O",
+        click: openFile,
+      });
+
+      if (!this.directory) {
+        buttons.push({
+          name: "Open Folder...",
+          shortcut: cmdOrCtrl + "+O",
+          click: openFolder,
+        });
+      }
+
+      if (this.directory) {
+        buttons.push({
+          name: "Refresh Folder",
+          click: () => {
+            this.refreshTree();
+          },
+        });
+      }
+
+      return buttons;
+    };
+
+    this.system.onAppMenuClick((menuId) => {
+      switch (menuId) {
+        case "open-file":
+          return openFile();
+        case "open-folder":
+          return openFolder();
+      }
+    });
+
+    const findFileTreeItem = (ctx: CtxmenuContext) => {
+      for (const el of ctx.elements) {
+        if (el.classList.contains("filetree-item")) {
+          return el;
+        }
+      }
+    };
+
+    const makeNewFolderButton = (dir: string) => ({
+      name: "New folder",
+      click: async () => {
+        const name = await this.prompts.promptTextInput(
+          "Create new folder",
+        );
+        if (!name) return;
+        const path = this.fs.joinPath([dir, name]);
+        this.log.info("filetree: New folder", path);
+        await this.fs.createDir(path);
+      },
+    });
+
+    const makeNewFileButton = (dir: string) => ({
+      name: "New file",
+      click: async () => {
+        const name = await this.prompts.promptTextInput(
+          "Create new file",
+        );
+        if (!name) return;
+        const path = this.fs.joinPath([dir, name]);
+        this.log.info("filetree: New file", path);
+        await this.fs.writeTextFile(path, "");
+        await this.editors.tryNewTabFromPath(path);
+      },
+    });
+
+    const ctxmenuReducer = (ctx: CtxmenuContext) => {
+      // find a file tree item
+      const fileTreeItem = findFileTreeItem(ctx);
+
+      if (fileTreeItem) {
+        const filePath = fileTreeItem.getAttribute("mn-file-path");
+        if (filePath) {
+          return [{
+            name: "Open file",
+            click: () => {
+              this.updateEditorSelectedFile(filePath);
+            },
+          }, {
+            name: "Delete file",
+            click: () => {
+              this.fs.removeFile(filePath);
+            },
+          }];
+        } else {
+          // todo: add ability to hook on to new file? hook to file
+          // right click? hookTo("fileContextMenu")
+          // addFileContextMenuReducer, addDirContextMenuReducer
+          const dirPath = fileTreeItem.getAttribute("mn-dir-path");
+          if (dirPath) {
+            return [
+              {
+                name: "Delete folder",
+                click: () => {
+                  this.fs.removeDir(dirPath);
+                },
+              },
+              makeNewFolderButton(dirPath),
+              makeNewFileButton(dirPath),
+            ];
+          }
+        }
+      } else if (ctx.elements.includes(this.element) && this.directory) {
+        // right clicked directly on the file tree
+        return [
+          makeNewFolderButton(this.directory as string),
+          makeNewFileButton(this.directory as string),
+        ];
+      }
+    };
+
+    this.menubar.addSectionReducer(menuReducer);
+    this.ctxmenu.addSectionReducer(ctxmenuReducer);
+    this.layout.mountToFiletree(this.element);
+
+    const onEditorTabChange = () => {
+      if (this.editors.currentTab) {
+        this.setSelectedFile(this.editors.currentTab.info.document.path);
+      } else {
+        this.setSelectedFile();
+      }
+    };
+
+    this.editors.events.on("activeTabsChanged", onEditorTabChange);
+    this.editors.events.on("currentTabSet", onEditorTabChange);
   }
 }
