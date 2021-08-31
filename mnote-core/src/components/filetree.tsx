@@ -7,6 +7,7 @@ import {
   FileTreeNodeWithChildren as NodeWithChildren,
 } from "../common/types";
 import { ElementToReact, TreeChildren, TreeItem } from "./tree";
+import { sortChildren } from "mnote-util/nodes";
 
 const DRAG_DATA_TYPE = "mn-filetree-drag-data";
 
@@ -32,32 +33,33 @@ function FileNode(props: {
 
   const onClick = () => props.hooks?.fileFocused?.(props.node.path);
 
-  return <TreeItem
-    text={name}
-    icon={(() => {
-      if (props.getFileIcon) {
-        const icon = props.getFileIcon(props.node, "fill", "stroke");
-        if (icon) return <ElementToReact element={icon} />;
-      }
-      return <BlankFile fillClass="fill" strokeClass="stroke" />;
-    })()}
-    hidden={!props.visible}
-    focused={props.focusedNode === props.node.path}
-    onClick={onClick}
-    draggable
-    onDragStart={(e) => {
-      e.dataTransfer.setData(
-        DRAG_DATA_TYPE,
-        JSON.stringify({
-          path: props.node.path,
-          kind: "file",
-        }),
-      );
-    }}
-    className={"filetree-item"} // used by context menu
-    //@ts-ignore: custom dom attribute
-    mn-file-path={props.node.path}
-  />;
+  return props.visible
+    ? <TreeItem
+      text={name}
+      icon={(() => {
+        if (props.getFileIcon) {
+          const icon = props.getFileIcon(props.node, "fill", "stroke");
+          if (icon) return <ElementToReact element={icon} />;
+        }
+        return <BlankFile fillClass="fill" strokeClass="stroke" />;
+      })()}
+      focused={props.focusedNode === props.node.path}
+      onClick={onClick}
+      draggable
+      onDragStart={(e) => {
+        e.dataTransfer.setData(
+          DRAG_DATA_TYPE,
+          JSON.stringify({
+            path: props.node.path,
+            kind: "file",
+          }),
+        );
+      }}
+      className="filetree-item" // used by context menu
+      //@ts-ignore: custom dom attribute
+      mn-file-path={props.node.path}
+    />
+    : <></>;
 }
 
 function DirNode(props: {
@@ -73,16 +75,7 @@ function DirNode(props: {
 
   // sort by name and by type (directories go first)
   const sortedChildren = useMemo(
-    () =>
-      props.node.children
-        .slice()
-        .sort((a, b) => getPathName(a.path) > getPathName(b.path) ? 1 : -1)
-        .sort((a, b) => {
-          if (a.children && b.children) return 0;
-          if (!a.children && !b.children) return 0;
-          if (a.children) return -1;
-          return 1;
-        }),
+    () => sortChildren(props.node),
     [props.node.children],
   );
 

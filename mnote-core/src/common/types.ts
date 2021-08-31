@@ -1,5 +1,7 @@
 // common types used by the files
 
+import { Node, NodeWithChildren } from "mnote-util/nodes";
+
 // options mainly for interop
 // 1. app receives these options, including functions for modules
 // 2. app creates some of the modules with arguments from here
@@ -80,15 +82,9 @@ export type FsReadDirOptions = {
 
 // file tree
 
-export type FileTreeNode = {
-  path: string; // path is the unique id
-  children?: FileTreeNode[]; // if none, it's a file node
-};
+export type FileTreeNode = Node;
 
-export type FileTreeNodeWithChildren = {
-  path: string; // path is the unique id
-  children: FileTreeNode[]; // if none, it's a file node
-};
+export type FileTreeNodeWithChildren = NodeWithChildren;
 
 export type FileTreeHooks = {
   fileFocused?: (path: string) => void | Promise<void>;
