@@ -1,0 +1,67 @@
+@use "./mnote-vars.scss" as mn;
+
+@mixin prelude {
+  color: map-get(mn.$vars, fg-main);
+}
+
+@mixin paragraph {
+  word-break: break-word;
+}
+
+@mixin link {
+  color: map-get(mn.$vars, fg-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+@mixin list {
+  padding-inline-start: 1.2em;
+}
+
+@mixin hr {
+  border: none;
+  border-top: solid 1px map-get(mn.$vars, border-main);
+}
+
+@mixin blockquote {
+  padding-left: 1em;
+  border-left: 4px solid;
+  border-left-color: map-get(mn.$vars, bg-dim);
+  color: map-get(mn.$vars, fg-secondary);
+  margin: 0;
+  * {
+    font-size: 1em;
+    line-height: 1.5em;
+  }
+}
+
+@mixin code-inline {
+  background-color: map-get(mn.$vars, bg-secondary);
+  border-radius: 2px;
+  font-weight: 500;
+  font-family: map-get(mn.$vars, font-monospace);
+  font-size: 0.9em;
+  padding: 0 0.2em;
+}
+
+@mixin code-fence {
+  border-radius: 5px;
+  font-size: 0.85em;
+  padding: 0 0.4em 1.4em;
+  overflow: hidden;
+  background-color: map-get(mn.$vars, bg-secondary);
+
+  * {
+    margin: 0;
+  }
+
+  pre {
+    font-family: map-get(mn.$vars, font-monospace);
+    margin: 0 1em;
+  }
+
+  code {
+    font-family: map-get(mn.$vars, font-monospace);
+    line-height: 1.5;
+  }
+}

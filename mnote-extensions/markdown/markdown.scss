@@ -1,10 +1,7 @@
-@use "milkdown";
-@use "sass:map";
 @use "~mnote-styles/mnote-vars" as mn;
+@use "~mnote-styles/mnote-rich-text" as richtext;
 
 .md-extension {
-  @include milkdown.milkdown(mn.$vars);
-
   --md-font-size: 1em;
 
   width: 100%;
@@ -12,13 +9,14 @@
   font-size: var(--md-font-size);
 
   .md-container {
+    @include richtext.prelude;
+
     width: 80%;
     max-width: 740px;
     height: 100%;
     margin: 0 auto;
     box-sizing: border-box;
-    background: map.get(mn.$vars, "bg-main");
-    color: map.get(mn.$vars, "fg-main");
+    background: map-get(mn.$vars, bg-main);
 
     .editor {
       box-sizing: border-box;
@@ -38,21 +36,98 @@
     right: 1em;
     font-size: 12px;
     bottom: 1em;
-    color: map.get(mn.$vars, "fg-dim");
+    color: map-get(mn.$vars, fg-dim);
     cursor: pointer;
   }
 
   ul.bullet-list,
   ol.ordered-list {
-    padding-inline-start: 1.2em;
+    @include richtext.list;
   }
 
   p.paragraph {
-    word-break: break-word; //
+    @include richtext.paragraph;
   }
 
   hr {
-    border: none;
-    border-top: solid 1px map-get(mn.$vars, border-main);
+    @include richtext.hr;
+  }
+
+  /// mikldown
+  // decorators
+
+  --font-code: #{map-get(mn.$vars, font-monospace)};
+
+  .strong {
+    font-weight: 600;
+  }
+
+  .link {
+    @include richtext.link;
+  }
+
+  .em {
+    font-style: italic;
+  }
+
+  //
+
+  .blockquote {
+    @include richtext.blockquote;
+  }
+
+  //code
+
+  .code-inline {
+    @include richtext.code-inline;
+  }
+
+  .code-fence {
+    @include richtext.code-fence;
+
+    div:first-child {
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 15ch;
+      max-width: 30ch;
+      margin: 1em;
+      display: grid;
+      grid-template-areas: select;
+      align-items: center;
+      cursor: pointer;
+      background-color: map-get(mn.$vars, bg-secondary);
+      position: relative;
+
+      &:hover::after {
+        background: map-get(mn.$vars, bg-secondary);
+        color: map-get(mn.$vars, fg-secondary);
+      }
+
+      .code-fence_select {
+        z-index: 1;
+        font-family: var(--font);
+        font-weight: 500;
+        line-height: 1.5;
+        color: map-get(mn.$vars, fg-dim);
+        grid-area: select;
+        font-size: 0.85em;
+        outline: none;
+        appearance: none;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        margin: 0;
+        background-color: transparent;
+      }
+
+      option {
+        background-color: map-get(mn.$vars, bg-secondary);
+        font-weight: normal;
+        display: block;
+        white-space: nowrap;
+        min-height: 1.2em;
+        padding: 0 2px 1px;
+      }
+    }
   }
 }
