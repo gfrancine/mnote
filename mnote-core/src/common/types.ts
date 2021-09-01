@@ -110,14 +110,6 @@ export type OpenFile = {
   onClose: (file: OpenFile) => void | Promise<void>;
 };
 
-// (context) menu
-
-export type MenuItem = {
-  name: string;
-  shortcut?: string;
-  click: (e: MouseEvent) => void;
-};
-
 // system module
 
 export type SystemAppMenuId =

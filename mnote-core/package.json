@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "main": "./src/index.ts",
   "dependencies": {
+    "mnote-components": "file:../mnote-components",
     "mnote-deps": "file:../mnote-deps",
     "mnote-util": "file:../mnote-util",
     "mousetrap": "^1.6.5"

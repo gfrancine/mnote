@@ -7,14 +7,12 @@
     "@milkdown/plugin-history": "^4.9.6",
     "@milkdown/plugin-listener": "^4.9.6",
     "@milkdown/preset-commonmark": "^4.9.6",
+    "mnote-components": "file:../mnote-components",
     "mnote-core": "file:../mnote-core",
     "mnote-deps": "file:../mnote-deps",
     "mnote-styles": "file:../mnote-styles",
     "mnote-util": "file:../mnote-util",
     "moment": "^2.29.1",
-    "nanoid": "^3.1.25",
-    "@excalidraw/excalidraw": "^0.9.0",
-    "react-beautiful-dnd": "^13.1.0",
-    "react-big-calendar": "^0.33.5"
+    "nanoid": "^3.1.25"
   }
 }

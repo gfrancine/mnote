@@ -7,6 +7,8 @@ cd mnote-util
 npm i
 cd ../mnote-deps
 npm i
+cd ../mnote-components
+npm i
 cd ../mnote-styles
 npm i
 cd ../mnote-extensions

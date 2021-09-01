@@ -1,6 +1,6 @@
 import { el } from "mnote-util/elbuilder";
 import { Mnote } from "..";
-import { createIcon } from "../components/icons";
+import { createIcon } from "mnote-components/vanilla/icons";
 import { LayoutModule } from "./layout";
 import { MenubarModule } from "./menubar";
 import makeResizable from "mnote-deps/resizable";

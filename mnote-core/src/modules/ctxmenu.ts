@@ -1,6 +1,5 @@
-import { MenuItem } from "../common/types";
 import { Mnote } from "..";
-import { Menu } from "../components/menu";
+import { Menu, MenuItem } from "mnote-components/vanilla/menu";
 import { CtxmenuContext } from "./types";
 
 /* {

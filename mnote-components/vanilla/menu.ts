@@ -1,6 +1,11 @@
 import { el, Elbuilder } from "mnote-util/elbuilder";
 import { Emitter } from "mnote-util/emitter";
-import { MenuItem } from "../common/types";
+
+export type MenuItem = {
+  name: string;
+  shortcut?: string;
+  click: (e: MouseEvent) => void;
+};
 
 type Anchor = {
   top: boolean;

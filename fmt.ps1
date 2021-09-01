@@ -8,6 +8,7 @@ deno fmt `
   mnote-extensions/markdown `
   mnote-extensions/excalidraw `
   mnote-extensions/todo `
+  mnote-components/react `
   mnote-app/src `
   mnote-app/src-web `
   mnote-app/bundle-scripts `

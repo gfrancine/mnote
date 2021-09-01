@@ -10,8 +10,8 @@ import NewTodo from "./NewTodo";
 import { nanoid } from "nanoid";
 import TextareaAutosize from "react-textarea-autosize";
 import useWidth from "./useWidth";
-import Menu from "./dropdowns/Menu";
-import Select from "./dropdowns/Select";
+import Menu from "mnote-components/react/dropdowns/Menu";
+import Select from "mnote-components/react/dropdowns/Select";
 
 const NEW_ITEM_MOCK_ID = "_$*!(@)#%*!$@()#$NEWITEM";
 

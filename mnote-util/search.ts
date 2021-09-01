@@ -1,9 +1,9 @@
 // search
 
 export type Match = {
-  start: number,
-  end: number,
-}
+  start: number;
+  end: number;
+};
 
 export function getMatches(value: string, searchTerm: string) {
   const matches: Match[] = [];

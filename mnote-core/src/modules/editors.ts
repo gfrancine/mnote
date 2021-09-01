@@ -1,4 +1,3 @@
-import { MenuItem } from "../common/types";
 import { Mnote } from "..";
 import { DocInfo, EditorInfo, Tab, TabContext, TabInfo } from "./types";
 import { MenubarModule } from "./menubar";
@@ -11,9 +10,9 @@ import { el } from "mnote-util/elbuilder";
 import { Emitter } from "mnote-util/emitter";
 import { getPathName } from "mnote-util/path";
 import { strings } from "../common/strings";
-import { Menu } from "../components/menu";
+import { Menu, MenuItem } from "mnote-components/vanilla/menu";
 import { TabManager } from "./editors-tab";
-import { createIcon } from "../components/icons";
+import { createIcon } from "mnote-components/vanilla/icons";
 
 // todo: a nicer placeholder
 const nothingHere = el("div")

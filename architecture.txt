@@ -1,18 +1,22 @@
-in entry order:
+in dependency order:
 
 - mnote-app
-  the build package, glues the core app, extensions, styles, and
-  the rust backend. contains both the bundle and tauri binary
+  the glue package, contains the tauri binary.
 
-  has two build sources (src and src-web), src-web being for
-  quick visual debugging and containing mocked code, and src for
-  the actual binary build
+  has two bundle sources (src and src-web). src-web is used for
+  visual debugging, has a mocked backend and runs on localhost:5000
+  src will be bundled with the real binary. bindings to rust goes
+  there
 
 - mnote-extensions
   add-ons on top of the core app, contains mostly editor extensions
 
 - mnote-styles
-  scss styles for only the core package
+  scss styles for only the core package, reusable styles that can
+  be consumed by other extensions
+
+- mnote-components
+  UI that can be used by other extensions
 
 - mnote-core
   main app logic. exports an instantiable Mnote class that accepts

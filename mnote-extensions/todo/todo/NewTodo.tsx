@@ -1,7 +1,7 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TodoItemContext } from "./types";
 import TextareaAutosize from "react-textarea-autosize";
-import { Add, Checkmark, Close } from "./icons";
+import { Add } from "./icons";
 
 export default function NewTodo(props: {
   isEditing: boolean;

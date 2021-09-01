@@ -1,4 +1,4 @@
-@use "./dropdowns/dropdowns.scss";
+@use "~mnote-components/react/dropdowns/dropdowns.scss";
 
 /*
 
@@ -80,59 +80,16 @@ $colors: (
           justify-content: flex-end;
           align-items: flex-end;
 
+          $dropdown-colors: (
+            bg: map-get($colors, dropdown-bg),
+            bg-selected: map-get($colors, dropdown-bg-selected),
+            bg-hover: map-get($colors, dropdown-bg-hover),
+            shadow: 0 2px 5px map-get($colors, dropdown-shadow),
+            fg: map-get($colors, dropdown-fg),
+          );
+
           @include dropdowns.base;
-
-          .dropdown-container {
-            margin-left: 0.5em;
-            font-size: 0.9em;
-
-            .dropdown-toggle {
-              background: map-get($colors, dropdown-bg);
-              border-radius: 0.2em;
-              padding: 0.5em 0.3em;
-              min-width: 8em;
-
-              .placeholder {
-                color: map-get($colors, dropdown-fg);
-              }
-
-              .content {
-                margin-right: 0.5em;
-              }
-
-              .icon {
-                .fill {
-                  fill: map-get($colors, dropdown-fg);
-                }
-
-                .stroke {
-                  stroke: map-get($colors, dropdown-fg);
-                }
-              }
-            }
-
-            .dropdown-menu {
-              box-shadow: map-get($colors, dropdown-shadow);
-              padding: 0.3em 0;
-              border-radius: 0.2em;
-              min-width: 10em;
-              margin-top: 0.2em;
-              background: map-get($colors, dropdown-bg);
-              right: 0;
-            }
-
-            .dropdown-menu-item {
-              padding: 0.5em 0.3em;
-
-              &:hover {
-                background: map-get($colors, dropdown-bg-hover);
-              }
-
-              &.selected {
-                background: map-get($colors, dropdown-bg-selected);
-              }
-            }
-          }
+          @include dropdowns.styled($dropdown-colors);
         }
 
         &.small {

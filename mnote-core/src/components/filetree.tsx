@@ -1,5 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { BlankFile, ChevronDown, ChevronRight } from "./icons-jsx";
+import {
+  BlankFile,
+  ChevronDown,
+  ChevronRight,
+} from "mnote-components/react/icons-jsx";
 import { getPathName } from "mnote-util/path";
 import {
   FileTreeHooks,

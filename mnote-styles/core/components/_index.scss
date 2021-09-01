@@ -1,15 +1,15 @@
-@use "menu";
 @use "prompt";
 @use "filetree";
 @use "openfiles";
 @use "tree";
+@use "menu";
 
 // todo: make all the mixins take colors as input
 
 @mixin components($theme) {
-  @include menu.menu($theme);
   @include prompt.prompt($theme);
   @include tree.tree($theme);
   @include openfiles.openfiles($theme);
   @include filetree.filetree($theme);
+  @include menu.menu($theme);
 }

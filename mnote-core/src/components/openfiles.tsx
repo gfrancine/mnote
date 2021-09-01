@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { OpenFile } from "../common/types";
 import {
   BlankFile,
@@ -6,8 +6,7 @@ import {
   ChevronRight,
   Circle,
   Close,
-  Nothing,
-} from "./icons-jsx";
+} from "mnote-components/react/icons-jsx";
 import { ElementToReact, TreeChildren, TreeItem } from "./tree";
 
 export default function (props: {

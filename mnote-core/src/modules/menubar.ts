@@ -1,10 +1,9 @@
-import { MenuItem } from "../common/types";
 import { Mnote } from "..";
 import { LayoutModule } from "./layout";
 import { el, Elbuilder } from "mnote-util/elbuilder";
-import { Menu } from "../components/menu";
+import { Menu, MenuItem } from "mnote-components/vanilla/menu";
 import { LogModule } from "./log";
-import { createIcon } from "../components/icons";
+import { createIcon } from "mnote-components/vanilla/icons";
 
 // https://quilljs.com/docs/modules/toolbar/
 
