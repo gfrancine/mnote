@@ -36,7 +36,15 @@ export function TreeItem(
         (props.focused ? " tree-focused" : "") +
         (props.hidden ? " tree-hidden" : "") +
         (props.className ? " " + props.className : "")}
-      {...omit(props, "text", "icon", "children", "focused", "className")}
+      {...omit(
+        props,
+        "text",
+        "icon",
+        "children",
+        "focused",
+        "className",
+        "hovered",
+      )}
     >
       <div className="tree-item-icon">
         {props.icon}
