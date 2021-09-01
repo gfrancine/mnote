@@ -1,8 +1,7 @@
 // layout styles for modules/layout.ts
 // using split.js
 
-@use "sass:map";
-@use "./util/scrollbar.scss";
+@use "../util/scrollbar.scss";
 
 @mixin layout($theme) {
   .layout {

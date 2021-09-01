@@ -1,5 +1,4 @@
-@use "core";
-@use "../node_modules/open-color/open-color" as oc;
+@use "./mnote-core.scss" as core;
 @use "./mnote-vars.scss" as mn;
 
 @include core.core(mn.$default-theme);

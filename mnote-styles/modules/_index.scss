@@ -1,0 +1,11 @@
+@use "layout";
+@use "menubar";
+@use "editor";
+@use "sidebar";
+
+@mixin modules($vars) {
+  @include layout.layout($vars);
+  @include menubar.menubar($vars);
+  @include editor.editor($vars);
+  @include sidebar.sidebar($vars);
+}

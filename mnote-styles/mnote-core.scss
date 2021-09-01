@@ -1,12 +1,7 @@
 @use "normalize";
 
-@use "layout";
-@use "menubar";
-@use "editor";
-@use "sidebar";
+@use "modules";
 @use "components";
-
-@use "sass:map";
 
 @mixin core($theme) {
   $vars: ();
@@ -32,11 +27,7 @@
     font-family: map-get($theme, font-main);
 
     @include normalize.normalize;
-
-    @include layout.layout($vars);
-    @include menubar.menubar($vars);
-    @include editor.editor($vars);
-    @include sidebar.sidebar($vars);
+    @include modules.modules($theme);
     @include components.components($vars);
   }
 }

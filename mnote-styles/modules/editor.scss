@@ -1,5 +1,4 @@
-@use "./util/scrollbar.scss";
-@use "sass:map";
+@use "../util/scrollbar.scss";
 
 @mixin editor($theme) {
   .editor-main,

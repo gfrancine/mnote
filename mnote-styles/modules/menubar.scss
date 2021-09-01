@@ -1,7 +1,5 @@
 // styles for modules/menubar.ts
 
-@use "sass:map";
-
 @mixin menubar($theme) {
   .menubar {
     width: 100%;
