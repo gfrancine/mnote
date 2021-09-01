@@ -2,6 +2,7 @@
 
 {
   "compilerOptions": {
+    "outFile": "./%@#asdfasjdfhaskdfhjask.js", // get rid of the input errors
     "jsx": "react",
     "target": "es6",
     "moduleResolution": "node",
@@ -11,6 +12,7 @@
     "alwaysStrict": true, /* Parse in strict mode and emit "use strict" for each source file. */
     "esModuleInterop": true, /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
     "skipLibCheck": true, /* Skip type checking of declaration files. */
+    "lib": ["es2020.string", "DOM"],
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
   },
   "exclude": [
