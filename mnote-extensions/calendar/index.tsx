@@ -13,6 +13,7 @@ import { getPathExtension } from "mnote-util/path";
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import moment from "moment";
+import { nanoid } from "nanoid";
 
 import "./big-calendar/styles.scss";
 import "./big-calendar/dragAndDrop.scss";
@@ -117,7 +118,7 @@ function Wrapper(props: {
     if (!title) return;
 
     const idList = data.events.map((a) => a.id);
-    const newId = Math.max(...idList) + 1;
+    const newId = Math.max(0, ...idList) + 1;
 
     const newEvent = {
       start: event.start as Date,
