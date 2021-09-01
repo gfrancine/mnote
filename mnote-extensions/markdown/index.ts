@@ -15,6 +15,7 @@ import {
   defaultValueCtx,
   Editor as MilkdownEditor,
   rootCtx,
+  themeFactory,
 } from "@milkdown/core";
 import { listener, listenerCtx } from "@milkdown/plugin-listener";
 import { commonmark } from "@milkdown/preset-commonmark";
@@ -82,12 +83,13 @@ class MarkdownEditor implements Editor {
       });
     };
 
-    return new MilkdownEditor()
-      .config(config)
+    return MilkdownEditor.make()
+      .use(themeFactory({}))
       .use(commonmark)
       .use(listener)
       .use(clipboard)
-      .use(history);
+      .use(history)
+      .config(config);
   }
 
   updateFontSize = () =>
