@@ -30,37 +30,35 @@ export default function (props: {
         onClick={() => setExpanded(!expanded)}
       />
       <TreeChildren hidden={!expanded}>
-        {props.openFiles.map((file) =>
-          (
-            <TreeItem
-              key={file.index}
-              text={file.name}
-              icon={(() => {
-                if (!file.saved) {
-                  return <Circle fillClass="fill" strokeClass="stroke" />;
-                }
+        {props.openFiles.map((file) => (
+          <TreeItem
+            key={file.index}
+            text={file.name}
+            icon={(() => {
+              if (!file.saved) {
+                return <Circle fillClass="fill" strokeClass="stroke" />;
+              }
 
-                if (props.getIcon) {
-                  const icon = props.getIcon(file, "fill", "stroke");
-                  if (icon) return <ElementToReact element={icon} />;
-                }
+              if (props.getIcon) {
+                const icon = props.getIcon(file, "fill", "stroke");
+                if (icon) return <ElementToReact element={icon} />;
+              }
 
-                return <BlankFile fillClass="fill" strokeClass="stroke" />;
-              })()}
-              focused={props.activeIndex === file.index}
-              onClick={() => file.onOpen(file)}
-              mn-tab-index={file.index} // used by context menu to open the right path
-              className="openfiles-item" // also used by context menu
+              return <BlankFile fillClass="fill" strokeClass="stroke" />;
+            })()}
+            focused={props.activeIndex === file.index}
+            onClick={() => file.onOpen(file)}
+            mn-tab-index={file.index} // used by context menu to open the right path
+            className="openfiles-item" // also used by context menu
+          >
+            <div
+              className="openfiles-close tree-item-icon"
+              onClick={() => file.onClose(file)}
             >
-              <div
-                className="openfiles-close tree-item-icon"
-                onClick={() => file.onClose(file)}
-              >
-                <Close fillClass="fill" strokeClass="stroke" />
-              </div>
-            </TreeItem>
-          )
-        )}
+              <Close fillClass="fill" strokeClass="stroke" />
+            </div>
+          </TreeItem>
+        ))}
       </TreeChildren>
     </div>
   );
