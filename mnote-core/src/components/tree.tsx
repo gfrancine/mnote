@@ -1,5 +1,5 @@
 // item heads used by filetree and openfiles
-import React, { useEffect, useRef } from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 
 type DivProps =
   & React.DetailedHTMLProps<
@@ -20,8 +20,8 @@ function omit<
 
 export function TreeItem(
   props: DivProps & {
-    text: string;
-    icon: JSX.Element;
+    text: ReactNode;
+    icon: ReactNode;
     hovered?: boolean;
     focused?: boolean;
     hidden?: boolean;
@@ -57,7 +57,7 @@ export function TreeItem(
 
 export function TreeChildren(props: {
   hidden?: boolean;
-  children?: JSX.Element[];
+  children?: ReactNode;
 }) {
   return props.hidden ? <></> : (
     <div
