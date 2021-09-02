@@ -53,6 +53,10 @@
     @include richtext.hr;
   }
 
+  .heading {
+    @include richtext.heading;
+  }
+
   /// mikldown
   // decorators
 
