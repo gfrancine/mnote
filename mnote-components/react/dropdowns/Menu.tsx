@@ -68,9 +68,7 @@ export default function Select({
           // using getIcon || () => confuses the parser
           getIcon ? getIcon : (fillClass, strokeClass) =>
             expanded
-              ? (
-                <ChevronUp strokeClass={strokeClass} fillClass={fillClass} />
-              )
+              ? <ChevronUp strokeClass={strokeClass} fillClass={fillClass} />
               : (
                 <ChevronDown
                   strokeClass={strokeClass}

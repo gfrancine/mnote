@@ -66,12 +66,10 @@ export default class Card extends Component {
                   </div>
                 </div>
               )}
-              {card.title.length > 0 && (
-                <div className="card-title">{card.title}</div>
-              )}
-              {card.text.length > 0 && (
-                <div className="card-text">{card.text}</div>
-              )}
+              {card.title.length > 0 &&
+                <div className="card-title">{card.title}</div>}
+              {card.text.length > 0 &&
+                <div className="card-text">{card.text}</div>}
             </div>
           )}
         </Draggable>

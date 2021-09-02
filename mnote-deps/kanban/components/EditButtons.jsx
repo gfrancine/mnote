@@ -1,6 +1,8 @@
 import React from "react";
 
-const EditButtons = ({ handleSave, saveLabel, handleCancel }) => (
+const EditButtons = (
+  { handleSave, saveLabel, handleCancel },
+) => (
   <div className="edit-buttons">
     <div
       tabIndex="0"

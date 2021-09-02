@@ -200,13 +200,15 @@ export default function Todo(props: {
       <div className="todo-list">
         {itemsOrder.map((id, index) => {
           return filters[filterType || "all"](items[id])
-            ? <TodoItem
-              index={index}
-              key={id}
-              item={items[id]}
-              isEditing={id === currentlyEditing}
-              ctx={ctx}
-            />
+            ? (
+              <TodoItem
+                index={index}
+                key={id}
+                item={items[id]}
+                isEditing={id === currentlyEditing}
+                ctx={ctx}
+              />
+            )
             : <Fragment key={id} />;
         })}
         <NewTodo

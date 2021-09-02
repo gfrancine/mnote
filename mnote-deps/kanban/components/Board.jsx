@@ -59,7 +59,10 @@ export default class Board extends Component {
     return (
       <DragDropContext onDragEnd={this.handleDragEnd}>
         <Droppable droppableId="board" direction="horizontal" type="COLUMN">
-          {(provided, _snapshot) => (
+          {(
+            provided,
+            _snapshot,
+          ) => (
             <div className="board" ref={provided.innerRef}>
               {appState.board.lists.map((listId, index) => {
                 return (

@@ -43,22 +43,27 @@ function Wrapper(
     },
   };
 
-  return <>
-    <Excalidraw
-      onChange={(elements, appState) =>
-        props.emitter.emit("change", { elements, appState } as ExcalidrawData)}
-      UIOptions={{
-        canvasActions: {
-          changeViewBackgroundColor: false,
-          export: false,
-          loadScene: false,
-          saveToActiveFile: false,
-          saveAsImage: false,
-        },
-      }}
-      initialData={initialData}
-    />
-  </>;
+  return (
+    <>
+      <Excalidraw
+        onChange={(elements, appState) =>
+          props.emitter.emit(
+            "change",
+            { elements, appState } as ExcalidrawData,
+          )}
+        UIOptions={{
+          canvasActions: {
+            changeViewBackgroundColor: false,
+            export: false,
+            loadScene: false,
+            saveToActiveFile: false,
+            saveAsImage: false,
+          },
+        }}
+        initialData={initialData}
+      />
+    </>
+  );
 }
 
 const makeCallback = (self: ExcalidrawEditor) =>

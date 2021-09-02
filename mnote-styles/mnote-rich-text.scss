@@ -6,11 +6,19 @@
 
 @mixin paragraph {
   word-break: break-word;
+  font-weight: normal;
+}
+
+@mixin heading {
+  word-break: break-word;
+  font-weight: bold;
 }
 
 @mixin link {
+  word-break: break-word;
   color: map-get(mn.$vars, fg-secondary);
   cursor: pointer;
+  font-weight: normal;
   transition: all 0.2s ease-in-out;
 }
 

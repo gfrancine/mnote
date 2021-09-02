@@ -32,10 +32,12 @@ function Wrapper(props: {
   initialData?: Partial<TodoData>;
   onChange?: (newData: TodoData) => void;
 }) {
-  return <Todo
-    initialState={props.initialData || {}}
-    onChange={props.onChange}
-  />;
+  return (
+    <Todo
+      initialState={props.initialData || {}}
+      onChange={props.onChange}
+    />
+  );
 }
 
 function makeCallback(editor: TodoEditor) {

@@ -59,12 +59,14 @@ export function TreeChildren(props: {
   hidden?: boolean;
   children?: JSX.Element[];
 }) {
-  return props.hidden ? <></> : <div
-    className={"tree-children" +
-      (props.hidden ? "tree-hidden" : "")}
-  >
-    {props.children}
-  </div>;
+  return props.hidden ? <></> : (
+    <div
+      className={"tree-children" +
+        (props.hidden ? "tree-hidden" : "")}
+    >
+      {props.children}
+    </div>
+  );
 }
 
 export function ElementToReact(props: { element: Element }) {
@@ -80,6 +82,8 @@ export function ElementToReact(props: { element: Element }) {
     };
   });
 
-  return <div style={{ width: "100%", height: "100%" }} ref={containerRef}>
-  </div>;
+  return (
+    <div style={{ width: "100%", height: "100%" }} ref={containerRef}>
+    </div>
+  );
 }

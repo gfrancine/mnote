@@ -53,38 +53,40 @@ function FileNode(props: {
   const [isDraggedOver, setDraggedOver] = useState(false);
 
   return props.visible
-    ? <TreeItem
-      text={name}
-      icon={(() => {
-        if (props.getFileIcon) {
-          const icon = props.getFileIcon(props.node, "fill", "stroke");
-          if (icon) return <ElementToReact element={icon} />;
-        }
-        return <BlankFile fillClass="fill" strokeClass="stroke" />;
-      })()}
-      focused={props.focusedPath === props.node.path}
-      hovered={isDraggedOver}
-      onClick={onClick}
-      draggable
-      onDragStart={(e) =>
-        e.dataTransfer.setData(
-          DRAG_DATA_TYPE,
-          JSON.stringify({
-            path: props.node.path,
-            kind: "file",
-          }),
-        )}
-      onDragEnter={() => setDraggedOver(true)}
-      onDragLeave={() => setDraggedOver(false)}
-      onDragOver={(e) => e.preventDefault()}
-      onDrop={(e) => {
-        makeDropHandler(props.parentPath, props.hooks)(e);
-        setDraggedOver(false);
-      }}
-      className="filetree-item" // used by context menu
-      //@ts-ignore: custom dom attribute
-      mn-file-path={props.node.path}
-    />
+    ? (
+      <TreeItem
+        text={name}
+        icon={(() => {
+          if (props.getFileIcon) {
+            const icon = props.getFileIcon(props.node, "fill", "stroke");
+            if (icon) return <ElementToReact element={icon} />;
+          }
+          return <BlankFile fillClass="fill" strokeClass="stroke" />;
+        })()}
+        focused={props.focusedPath === props.node.path}
+        hovered={isDraggedOver}
+        onClick={onClick}
+        draggable
+        onDragStart={(e) =>
+          e.dataTransfer.setData(
+            DRAG_DATA_TYPE,
+            JSON.stringify({
+              path: props.node.path,
+              kind: "file",
+            }),
+          )}
+        onDragEnter={() => setDraggedOver(true)}
+        onDragLeave={() => setDraggedOver(false)}
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => {
+          makeDropHandler(props.parentPath, props.hooks)(e);
+          setDraggedOver(false);
+        }}
+        className="filetree-item" // used by context menu
+        //@ts-ignore: custom dom attribute
+        mn-file-path={props.node.path}
+      />
+    )
     : <></>;
 }
 
@@ -120,59 +122,65 @@ function DirNode(props: {
 
   const [isDraggedOver, setDraggedOver] = useState(false);
 
-  return <div className="filetree-dir">
-    <TreeItem
-      text={name}
-      icon={expanded
-        ? <ChevronDown fillClass="fill" strokeClass="stroke" />
-        : <ChevronRight fillClass="fill" strokeClass="stroke" />}
-      onClick={onClick}
-      onDragOver={(e) => {
-        e.preventDefault();
-      }}
-      onDrop={(e) => {
-        makeDropHandler(props.node.path, props.hooks)(e);
-        setDraggedOver(false);
-      }}
-      onDragEnter={() => setDraggedOver(true)}
-      onDragLeave={() => setDraggedOver(false)}
-      draggable
-      onDragStart={(e) =>
-        e.dataTransfer.setData(
-          DRAG_DATA_TYPE,
-          JSON.stringify({
-            path: props.node.path,
-            kind: "dir",
-          }),
+  return (
+    <div className="filetree-dir">
+      <TreeItem
+        text={name}
+        icon={expanded
+          ? <ChevronDown fillClass="fill" strokeClass="stroke" />
+          : <ChevronRight fillClass="fill" strokeClass="stroke" />}
+        onClick={onClick}
+        onDragOver={(e) => {
+          e.preventDefault();
+        }}
+        onDrop={(e) => {
+          makeDropHandler(props.node.path, props.hooks)(e);
+          setDraggedOver(false);
+        }}
+        onDragEnter={() => setDraggedOver(true)}
+        onDragLeave={() => setDraggedOver(false)}
+        draggable
+        onDragStart={(e) =>
+          e.dataTransfer.setData(
+            DRAG_DATA_TYPE,
+            JSON.stringify({
+              path: props.node.path,
+              kind: "dir",
+            }),
+          )}
+        className="filetree-item"
+        hovered={isDraggedOver}
+        //@ts-ignore: custom dom attribute
+        mn-dir-path={props.node.path}
+      />
+      <TreeChildren hidden={!(props.visible && expanded)}>
+        {sortedChildren.map((node) =>
+          node.children
+            ? (
+              <DirNode
+                visible={expanded}
+                key={node.path}
+                node={node as NodeWithChildren}
+                hooks={props.hooks}
+                focusedPath={props.focusedPath}
+                getFileIcon={props.getFileIcon}
+              />
+            )
+            : (
+              <FileNode
+                parentPath={props.node.path}
+                visible={expanded}
+                node={node}
+                key={node.path}
+                hooks={props.hooks}
+                focusedPath={props.focusedPath}
+                getFileIcon={props.getFileIcon}
+              />
+            )
         )}
-      className="filetree-item"
-      hovered={isDraggedOver}
-      //@ts-ignore: custom dom attribute
-      mn-dir-path={props.node.path}
-    />
-    <TreeChildren hidden={!(props.visible && expanded)}>
-      {sortedChildren.map((node) =>
-        node.children
-          ? <DirNode
-            visible={expanded}
-            key={node.path}
-            node={node as NodeWithChildren}
-            hooks={props.hooks}
-            focusedPath={props.focusedPath}
-            getFileIcon={props.getFileIcon}
-          />
-          : <FileNode
-            parentPath={props.node.path}
-            visible={expanded}
-            node={node}
-            key={node.path}
-            hooks={props.hooks}
-            focusedPath={props.focusedPath}
-            getFileIcon={props.getFileIcon}
-          />
-      )}
-    </TreeChildren>
-  </div>;
+      </TreeChildren>
+    </div>
+  );
 }
 
 // file tree component
@@ -183,18 +191,22 @@ export default function (props: {
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
 }) {
-  return <div className="filetree-main">
-    {props.node
-      ? <DirNode
-        visible
-        hooks={props.hooks}
-        key={props.node.path}
-        initExpanded
-        draggable={false}
-        node={props.node}
-        focusedPath={props.initFocusedNode}
-        getFileIcon={props.getFileIcon}
-      />
-      : <></>}
-  </div>;
+  return (
+    <div className="filetree-main">
+      {props.node
+        ? (
+          <DirNode
+            visible
+            hooks={props.hooks}
+            key={props.node.path}
+            initExpanded
+            draggable={false}
+            node={props.node}
+            focusedPath={props.initFocusedNode}
+            getFileIcon={props.getFileIcon}
+          />
+        )
+        : <></>}
+    </div>
+  );
 }

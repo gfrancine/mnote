@@ -54,18 +54,14 @@ class CardEditor extends Component {
           />
         </div>
 
-        {this.props.hideEditButtons
-          ? (
-            <></>
-          )
-          : (
-            <EditButtons
-              handleSave={() => onSave(title, text)}
-              saveLabel={adding ? "Add card" : "Save"}
-              handleDelete={onDelete}
-              handleCancel={onCancel}
-            />
-          )}
+        {this.props.hideEditButtons ? <></> : (
+          <EditButtons
+            handleSave={() => onSave(title, text)}
+            saveLabel={adding ? "Add card" : "Save"}
+            handleDelete={onDelete}
+            handleCancel={onCancel}
+          />
+        )}
       </div>
     );
   }
