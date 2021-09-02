@@ -1,4 +1,4 @@
-import { DialogFileType } from "../common/types";
+import { DialogFilter } from "../common/types";
 import type { TabManager } from "./editors-tab";
 import type { Mnote } from "..";
 
@@ -36,7 +36,7 @@ export type EditorInfo = {
   /** Hide the editor from the "+" (new) menu */
   hideFromNewMenu?: boolean;
   /** What file types (name, extension) to save as */
-  saveAsFileTypes?: DialogFileType[];
+  saveAsFileTypes?: DialogFilter[];
   /** Disable the save as dialog. Useful for non-file system editors */
   disableSaveAs?: boolean;
   /** Get the editor's icon registered from the file icons module */

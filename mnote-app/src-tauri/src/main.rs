@@ -18,7 +18,10 @@ fn is_windows() -> bool {
   cfg!(windows)
 }
 
-use std::fs;
+use std::{
+  fs::{self},
+  path::PathBuf,
+};
 
 #[tauri::command]
 fn fs_rename(from: String, to: String) -> Result<(), String> {
@@ -28,15 +31,92 @@ fn fs_rename(from: String, to: String) -> Result<(), String> {
   Ok(())
 }
 
-use notify::{watcher, RecursiveMode, Watcher, DebouncedEvent};
+use rfd::FileDialog;
+use serde::{Deserialize, Serialize};
+
+#[derive(Deserialize)]
+struct DialogFilter {
+  name: String,
+  extensions: Vec<String>,
+}
+
+fn dialog_from_opts(
+  filters: Option<Vec<DialogFilter>>,
+  starting_directory: Option<String>,
+  starting_file_name: Option<String>,
+) -> FileDialog {
+  let mut dialog = FileDialog::new();
+
+  if let Some(filters) = filters {
+    for filter in filters.iter() {
+      let extensions: Vec<&str> = filter
+        .extensions
+        .iter()
+        .map(|string| string.as_str())
+        .collect();
+      dialog = dialog.add_filter(&filter.name, &extensions[..]);
+    }
+  }
+  if let Some(file_name) = starting_file_name {
+    dialog = dialog.set_file_name(&file_name);
+  }
+  if let Some(directory) = starting_directory {
+    dialog = dialog.set_directory(directory);
+  }
+
+  dialog
+}
+
+fn process_dialog_result(result: Option<PathBuf>) -> Option<String> {
+  match result {
+    Some(pathbuf) => {
+      if let Ok(path) = pathbuf.into_os_string().into_string() {
+        return Some(path);
+      } else {
+        return None;
+      }
+    }
+    None => return None,
+  }
+}
+
+#[tauri::command]
+fn fs_open_dialog(
+  filters: Option<Vec<DialogFilter>>,
+  is_directory: bool,
+  starting_directory: Option<String>,
+  starting_file_name: Option<String>,
+) -> Option<String> {
+  let dialog = dialog_from_opts(filters, starting_directory, starting_file_name);
+
+  let result = if is_directory {
+    dialog.pick_folder()
+  } else {
+    dialog.pick_file()
+  };
+
+  process_dialog_result(result)
+}
+
+#[tauri::command]
+fn fs_save_dialog(
+  filters: Option<Vec<DialogFilter>>,
+  starting_directory: Option<String>,
+  starting_file_name: Option<String>,
+) -> Option<String> {
+  process_dialog_result(
+    dialog_from_opts(filters, starting_directory, starting_file_name).save_file(),
+  )
+}
+
+use notify::{watcher, DebouncedEvent, RecursiveMode, Watcher};
 use std::sync::mpsc::channel;
 use std::time::Duration;
-use serde::Serialize;
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 struct WatcherPayload<'a> {
-  kind: &'a str, // 
+  kind: &'a str, //
   path: Option<&'a str>,
   target_path: Option<&'a str>,
 }
@@ -70,22 +150,18 @@ async fn watcher_init(window: tauri::Window, path: String) {
           path: path.as_path().to_str(),
           target_path: None,
         }),
-        _ => ()
+        _ => (),
       };
     }
   }
 }
 
-use tauri::{Menu, MenuItem, Submenu, CustomMenuItem, Manager};
+use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu};
 
 fn make_menu() -> Menu {
   // https://docs.rs/tauri/1.0.0-beta.5/tauri/enum.MenuItem.html
 
-  let main_submenu = Submenu::new(
-    "Mnote",
-    Menu::new()
-      .add_native_item(MenuItem::Quit),
-  );
+  let main_submenu = Submenu::new("Mnote", Menu::new().add_native_item(MenuItem::Quit));
 
   let file_submenu = Submenu::new(
     "File",
@@ -119,22 +195,21 @@ fn make_menu() -> Menu {
 }
 
 fn main() {
-  let builder = tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![
-      get_args, 
-      is_mac, 
-      is_windows, 
-      watcher_init, 
-      fs_rename
-    ]);
+  let builder = tauri::Builder::default().invoke_handler(tauri::generate_handler![
+    get_args,
+    is_mac,
+    is_windows,
+    watcher_init,
+    fs_rename,
+    fs_save_dialog,
+    fs_open_dialog
+  ]);
 
   let builder = if cfg!(target_os = "macos") {
-    builder
-      .menu(make_menu())
-      .on_menu_event(move |event| {
-        let e: &str = event.menu_item_id();
-        event.window().emit("menu_event", e).unwrap();
-      })
+    builder.menu(make_menu()).on_menu_event(move |event| {
+      let e: &str = event.menu_item_id();
+      event.window().emit("menu_event", e).unwrap();
+    })
   } else {
     builder
   };
@@ -142,15 +217,13 @@ fn main() {
   let app = builder
     .build(tauri::generate_context!())
     .expect("error building the app");
-  
-  app.run(|app_handle, e| {
-    match e {
-      tauri::Event::CloseRequested { label, api, .. } => {
-        api.prevent_close();
-        let window = app_handle.get_window(&label).unwrap();
-        window.emit("close-requested", ()).unwrap();
-      },
-      _ => ()
+
+  app.run(|app_handle, e| match e {
+    tauri::Event::CloseRequested { label, api, .. } => {
+      api.prevent_close();
+      let window = app_handle.get_window(&label).unwrap();
+      window.emit("close-requested", ()).unwrap();
     }
+    _ => (),
   })
 }

@@ -1,5 +1,5 @@
 import {
-  DialogFileType,
+  DialogFilter,
   FileItemWithChildren,
   FsInteropModule,
   FsReadDirOptions,
@@ -78,16 +78,18 @@ export class FSModule implements FsInteropModule {
   }
 
   dialogOpen(opts: {
-    fileTypes?: DialogFileType[];
-    directory: boolean;
-    startingPath?: string;
+    filters?: DialogFilter[];
+    isDirectory: boolean;
+    startingDirectory?: string;
+    startingFileName?: string;
   }): Promise<string | void> {
     return this.fs ? this.fs.dialogOpen(opts) : Promise.resolve();
   }
 
   dialogSave(opts: {
-    fileTypes?: DialogFileType[];
-    startingPath?: string;
+    filters?: DialogFilter[];
+    startingDirectory?: string;
+    startingFileName?: string;
   }): Promise<string | void> {
     return this.fs ? this.fs.dialogSave(opts) : Promise.resolve();
   }

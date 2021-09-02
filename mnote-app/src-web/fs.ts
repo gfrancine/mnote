@@ -1,5 +1,4 @@
 import {
-  DialogFileType,
   FileItemWithChildren,
   FsInteropModule,
   FsReadDirOptions,
@@ -44,16 +43,10 @@ export class FS implements FsInteropModule {
   isDir(_path: string): Promise<boolean> {
     return Promise.resolve(true);
   }
-  dialogOpen(_opts: {
-    initialPath?: string;
-    extensions?: string[];
-    directory: boolean;
-  }): Promise<string | void> {
+  dialogOpen(_opts: { isDirectory: boolean }): Promise<string | void> {
     return Promise.resolve("");
   }
-  dialogSave(_opts: {
-    fileTypes?: DialogFileType[];
-  }): Promise<string | void> {
+  dialogSave(_opts: Record<string, unknown>): Promise<string | void> {
     return Promise.resolve("");
   }
   getConfigDir(): Promise<string> {

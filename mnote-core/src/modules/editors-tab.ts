@@ -118,7 +118,7 @@ export class TabManager {
     const newPath = editorInfo.disableSaveAs
       ? document.path
       : await this.fs.dialogSave({
-        fileTypes: editorInfo.saveAsFileTypes,
+        filters: editorInfo.saveAsFileTypes,
         startingPath: document.path,
       });
 

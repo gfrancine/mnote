@@ -191,8 +191,8 @@ export class FiletreeModule {
 
     const openFile = async () => {
       const maybePath = await this.fs.dialogOpen({
-        directory: false,
-        startingPath: this.directory,
+        isDirectory: false,
+        startingDirectory: this.directory,
       });
       if (!maybePath) return;
       this.updateEditorSelectedFile(maybePath);
@@ -201,7 +201,7 @@ export class FiletreeModule {
     const openFolder = async () => {
       if (this.directory) return;
       const maybePath = await this.fs.dialogOpen({
-        directory: true,
+        isDirectory: true,
       });
       if (!maybePath) return;
       this.setDirectory(maybePath);

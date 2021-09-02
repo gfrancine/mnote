@@ -17,7 +17,7 @@ export type MnoteOptions = {
   appSettingsFileName?: string;
 };
 
-export type DialogFileType = { name: string; extensions: string[] };
+export type DialogFilter = { name: string; extensions: string[] };
 
 export type FsWatcherEvents = {
   event: () => void | Promise<void>;
@@ -42,13 +42,15 @@ export interface FsInteropModule {
   isFile(path: string): Promise<boolean>;
   isDir(path: string): Promise<boolean>;
   dialogOpen(opts: {
-    fileTypes?: DialogFileType[];
-    directory: boolean;
-    startingPath?: string;
+    filters?: DialogFilter[];
+    isDirectory: boolean;
+    startingDirectory?: string;
+    startingFileName?: string;
   }): Promise<string | void>;
   dialogSave(opts: {
-    fileTypes?: DialogFileType[];
-    startingPath?: string;
+    filters?: DialogFilter[];
+    startingDirectory?: string;
+    startingFileName?: string;
   }): Promise<string | void>;
   getConfigDir(): Promise<string>;
   getCurrentDir(): Promise<string>;

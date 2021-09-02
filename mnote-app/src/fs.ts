@@ -1,5 +1,5 @@
 import {
-  DialogFileType,
+  DialogFilter,
   FileItemWithChildren,
   FsInteropModule,
   FsReadDirOptions,
@@ -10,7 +10,6 @@ import { Event as TauriEvent, listen } from "@tauri-apps/api/event";
 import { Emitter } from "mnote-util/emitter";
 import * as fs from "@tauri-apps/api/fs";
 import * as path from "@tauri-apps/api/path";
-import * as dialog from "@tauri-apps/api/dialog";
 
 // https://tauri.studio/en/docs/api/js/modules/fs
 
@@ -127,37 +126,21 @@ export class FS implements FsInteropModule {
     }
   }
 
-  async dialogOpen(opts: {
-    fileTypes?: DialogFileType[];
-    directory: boolean;
-    startingPath?: string;
+  dialogOpen(opts: {
+    filters?: DialogFilter[];
+    isDirectory: boolean;
+    startingDirectory?: string;
+    startingFileName?: string;
   }): Promise<string | void> {
-    try {
-      const result = await dialog.open({
-        directory: opts.directory,
-        multiple: false,
-        filters: opts.fileTypes,
-        // defaultPath: opts.startingPath, // broken
-      }) as string;
-
-      return result;
-    } catch {
-      return;
-    }
+    return invoke("fs_open_dialog", opts);
   }
 
   dialogSave(opts: {
-    fileTypes?: DialogFileType[];
-    startingPath?: string;
+    filters?: DialogFilter[];
+    startingDirectory?: string;
+    startingFileName?: string;
   }): Promise<string | void> {
-    try {
-      return dialog.save({
-        // defaultPath: opts.startingPath, // broken
-        filters: opts.fileTypes,
-      });
-    } catch {
-      return Promise.resolve();
-    }
+    return invoke("fs_save_dialog", opts);
   }
 
   getConfigDir(): Promise<string> {
