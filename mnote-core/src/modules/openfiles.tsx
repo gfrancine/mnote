@@ -83,6 +83,10 @@ export class OpenFilesModule {
     this.ctxmenu.addSectionReducer(ctxmenuReducer);
   }
 
+  getOpenFiles() {
+    return this.openFiles;
+  }
+
   setOpenFiles(files: OpenFile[], activeIndex?: number) {
     this.log.info("open files: set open files", files, activeIndex);
     this.openFiles = [...files];
@@ -92,7 +96,6 @@ export class OpenFilesModule {
 
   setSearchTerm(searchTerm?: string) {
     this.log.info("open files: set search term", searchTerm);
-    if (searchTerm && searchTerm.length === 0) searchTerm = undefined;
     this.searchTerm = searchTerm;
     this.updateComponent();
   }

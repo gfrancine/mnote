@@ -20,7 +20,7 @@ import { SystemModule } from "./system";
 import { getPathName } from "mnote-util/path";
 import { EditorsModule } from "./editors";
 import { FileIconsModule } from "./fileicons";
-import { searchForPaths } from "mnote-util/nodes";
+import { MatchRange } from "../../../mnote-util/search";
 
 const nothingHere = el("div")
   .inner("No opened folder")
@@ -109,6 +109,10 @@ export class FiletreeModule {
     this.editors.open(path);
   }
 
+  getFileTree() {
+    return this.tree;
+  }
+
   setFileTree(tree: FileTreeNodeWithChildren) {
     this.log.info("filetree: setFileTree", tree);
     this.tree = tree;
@@ -133,7 +137,6 @@ export class FiletreeModule {
 
   setSearchTerm(searchTerm?: string) {
     this.log.info("filetree: set search term", searchTerm);
-    if (searchTerm && searchTerm.length === 0) searchTerm = undefined;
     this.searchTerm = searchTerm;
     this.updateTree();
   }

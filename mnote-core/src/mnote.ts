@@ -10,6 +10,7 @@ import {
   EditorsModule,
   ExtensionsModule,
   FileIconsModule,
+  FileSearchModule,
   FiletreeModule,
   FSModule,
   InputModule,
@@ -42,6 +43,7 @@ type Modules = {
   filetree: FiletreeModule;
   openfiles: OpenFilesModule;
   themes: ThemesModule;
+  filesearch: FileSearchModule;
 };
 
 export class Mnote {
@@ -92,11 +94,13 @@ export class Mnote {
     m.fileicons = new FileIconsModule(this);
     m.filetree = new FiletreeModule(this);
     m.openfiles = new OpenFilesModule(this);
+    m.filesearch = new FileSearchModule(this);
     m.themes = await new ThemesModule(this).init();
   }
 
   async startup() {
     await this.hooks.emitAsync("startup");
     this.container.appendChild(this.element);
+    this.modules.filesearch.search("file");
   }
 }

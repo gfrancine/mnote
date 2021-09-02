@@ -1,5 +1,4 @@
 import { getPathName } from "./path";
-import { getMatchingRanges, MatchRange } from "./search";
 
 export type Node = {
   path: string;
@@ -22,24 +21,4 @@ export function sortChildren(node: NodeWithChildren) {
     list.push(node);
   });
   return [...dirs.sort(sort), ...files.sort(sort)];
-}
-
-export type PathSearchResults = Record<string, MatchRange[]>;
-
-export function searchForPaths(root: NodeWithChildren, searchTerm: string) {
-  const results: PathSearchResults = {};
-  if (searchTerm.length < 1) return results;
-
-  const recurse = (node: Node) => {
-    if (node.children) {
-      node.children.forEach(recurse);
-    } else {
-      const ranges = getMatchingRanges(getPathName(node.path), searchTerm);
-      if (ranges.length < 1) return;
-      results[node.path] = ranges;
-    }
-  };
-
-  recurse(root);
-  return results;
 }

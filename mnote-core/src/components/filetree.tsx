@@ -11,11 +11,8 @@ import {
   FileTreeNodeWithChildren as NodeWithChildren,
 } from "../common/types";
 import { ElementToReact, TreeChildren, TreeItem } from "./tree";
-import {
-  PathSearchResults,
-  searchForPaths,
-  sortChildren,
-} from "mnote-util/nodes";
+import { getMatchingRanges, MatchRange } from "mnote-util/search";
+import { sortChildren } from "mnote-util/nodes";
 import { Highlight } from "mnote-components/react/highlight";
 
 const DRAG_DATA_TYPE = "mn-filetree-drag-data";
@@ -43,6 +40,24 @@ const makeDropHandler = (dirPath: string, hooks?: FileTreeHooks) =>
     }
   };
 
+function searchFileTree(tree: NodeWithChildren, searchTerm: string) {
+  const results: Record<string, MatchRange[]> = {};
+  if (searchTerm.length < 1) return results;
+
+  const recurse = (node: Node) => {
+    if (node.children) {
+      node.children.forEach(recurse);
+    } else {
+      const ranges = getMatchingRanges(getPathName(node.path), searchTerm);
+      if (ranges.length < 1) return;
+      results[node.path] = ranges;
+    }
+  };
+
+  recurse(tree);
+  return results;
+}
+
 function FileNode(props: {
   parentPath: string;
   visible?: boolean;
@@ -50,7 +65,7 @@ function FileNode(props: {
   focusedPath?: string; // path of the focused node
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
-  searchResults?: PathSearchResults;
+  searchResults?: Record<string, MatchRange[]>;
 }) {
   const name = useMemo(() => getPathName(props.node.path), [props.node.path]);
 
@@ -110,7 +125,7 @@ function DirNode(props: {
   focusedPath?: string; // path of the focused node
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
-  searchResults?: PathSearchResults;
+  searchResults?: Record<string, MatchRange[]>;
 }) {
   const name = useMemo(() => getPathName(props.node.path), [props.node.path]);
 
@@ -219,8 +234,8 @@ export default function (props: {
 }) {
   const searchResults = useMemo(() => {
     if (!props.searchTerm) return;
-    return searchForPaths(props.node, props.searchTerm);
-  }, [props.searchTerm]);
+    return searchFileTree(props.node, props.searchTerm);
+  }, [props.searchTerm, props.node]);
 
   return (
     <div className="filetree-main">

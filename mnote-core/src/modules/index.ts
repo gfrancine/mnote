@@ -15,6 +15,7 @@ export { PromptsModule } from "./prompts";
 export { OpenFilesModule } from "./openfiles";
 export { FileIconsModule } from "./fileicons";
 export { AppDirModule } from "./appdir";
+export { FileSearchModule } from "./filesearch";
 
 // non-module exports
 

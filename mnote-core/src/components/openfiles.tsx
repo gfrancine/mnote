@@ -9,8 +9,19 @@ import {
 } from "mnote-components/react/icons-jsx";
 import { ElementToReact, TreeChildren, TreeItem } from "./tree";
 import { Highlight } from "mnote-components/react/highlight";
-import { PathSearchResults } from "mnote-util/nodes";
-import { getMatchingRanges } from "../../../mnote-util/search";
+import { getMatchingRanges, MatchRange } from "mnote-util/search";
+
+function searchOpenFiles(openFiles: OpenFile[], searchTerm: string) {
+  const results: Record<string, MatchRange[]> = {};
+
+  for (const file of openFiles) {
+    if (results[file.name]) continue;
+    const ranges = getMatchingRanges(file.name, searchTerm);
+    if (ranges.length > 0) results[file.name] = ranges;
+  }
+
+  return results;
+}
 
 export default function (props: {
   openFiles: OpenFile[];
@@ -26,14 +37,8 @@ export default function (props: {
 
   const searchResults = useMemo(() => {
     if (!props.searchTerm) return;
-    const results: PathSearchResults = {};
-    for (const file of props.openFiles) {
-      if (results[file.name]) continue;
-      const ranges = getMatchingRanges(file.name, props.searchTerm);
-      if (ranges.length > 0) results[file.name] = ranges;
-    }
-    return results;
-  }, [props.searchTerm]);
+    return searchOpenFiles(props.openFiles, props.searchTerm);
+  }, [props.searchTerm, props.openFiles]);
 
   return (
     <div>
@@ -48,9 +53,7 @@ export default function (props: {
         {props.openFiles.map((file) => {
           const searchResultRanges = searchResults?.[file.name];
 
-          return (props.searchTerm !== undefined
-              ? searchResultRanges !== undefined
-              : true)
+          return (searchResults ? searchResultRanges : true)
             ? (
               <TreeItem
                 key={file.index}
