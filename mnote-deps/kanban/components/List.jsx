@@ -87,7 +87,10 @@ export default class List extends Component {
               )}
 
             <Droppable droppableId={list._id}>
-              {(provided, _snapshot) => (
+              {(
+                provided,
+                _snapshot,
+              ) => (
                 <div ref={provided.innerRef} className="lists-cards">
                   {list.cards &&
                     list.cards.map((cardId, index) => (

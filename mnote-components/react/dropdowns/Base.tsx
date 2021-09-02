@@ -7,9 +7,11 @@ export function Container(
     containerRef?: RefObject<HTMLDivElement>;
   },
 ) {
-  return <div ref={containerRef} className={"dropdown-container " + className}>
-    {children}
-  </div>;
+  return (
+    <div ref={containerRef} className={"dropdown-container " + className}>
+      {children}
+    </div>
+  );
 }
 
 export function Toggle(
@@ -33,21 +35,25 @@ export function Toggle(
     toggleRef?: RefObject<HTMLDivElement>;
   },
 ) {
-  return <div
-    className={"dropdown-toggle " +
-      (toggled ? " toggled " : " ") +
-      (disabled ? " disabled " : " ") +
-      className}
-    onClick={() => onClick?.()}
-    ref={toggleRef}
-  >
-    <div className="content">
-      {text || (placeholder && <span className="placeholder">
-        {placeholder}
-      </span>)}
+  return (
+    <div
+      className={"dropdown-toggle " +
+        (toggled ? " toggled " : " ") +
+        (disabled ? " disabled " : " ") +
+        className}
+      onClick={() => onClick?.()}
+      ref={toggleRef}
+    >
+      <div className="content">
+        {text || (placeholder && (
+          <span className="placeholder">
+            {placeholder}
+          </span>
+        ))}
+      </div>
+      {getIcon && <div className="icon">{getIcon("fill", "stroke")}</div>}
     </div>
-    {getIcon && <div className="icon">{getIcon("fill", "stroke")}</div>}
-  </div>;
+  );
 }
 
 export function Menu({
@@ -62,9 +68,11 @@ export function Menu({
   menuRef?: RefObject<HTMLDivElement>;
 }) {
   return visible
-    ? <div ref={menuRef} className={"dropdown-menu " + className}>
-      {children}
-    </div>
+    ? (
+      <div ref={menuRef} className={"dropdown-menu " + className}>
+        {children}
+      </div>
+    )
     : <Fragment />;
 }
 
@@ -81,12 +89,14 @@ export function Item({
   onClick?: () => unknown;
   itemRef?: RefObject<HTMLDivElement>;
 }) {
-  return <div
-    className={"dropdown-menu-item " + (selected ? "selected " : " ") +
-      className}
-    onClick={() => onClick?.()}
-    ref={itemRef}
-  >
-    {text}
-  </div>;
+  return (
+    <div
+      className={"dropdown-menu-item " + (selected ? "selected " : " ") +
+        className}
+      onClick={() => onClick?.()}
+      ref={itemRef}
+    >
+      {text}
+    </div>
+  );
 }

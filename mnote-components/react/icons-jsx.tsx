@@ -9,49 +9,53 @@ export function Nothing() {
 }
 
 export function Circle({ fillClass }: SVGProps) {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    version="1.1"
-    viewBox="0 0 640 640"
-  >
-    <path
-      d="M530 320C530 435.9 435.9 530 320 530C204.1 530 110 435.9 110 320C110 204.1 204.1 110 320 110C435.9 110 530 204.1 530 320Z"
-      opacity="1"
-      fillOpacity="1"
-      className={fillClass}
-    />
-  </svg>;
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      version="1.1"
+      viewBox="0 0 640 640"
+    >
+      <path
+        d="M530 320C530 435.9 435.9 530 320 530C204.1 530 110 435.9 110 320C110 204.1 204.1 110 320 110C435.9 110 530 204.1 530 320Z"
+        opacity="1"
+        fillOpacity="1"
+        className={fillClass}
+      />
+    </svg>
+  );
 }
 
 export function Close({ strokeClass }: SVGProps) {
-  return <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-    <line
-      x1="368"
-      y1="368"
-      x2="144"
-      y2="144"
-      className={strokeClass}
-      style={{
-        fill: "none",
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        strokeWidth: "32px",
-      }}
-    />
-    <line
-      x1="368"
-      y1="144"
-      x2="144"
-      y2="368"
-      className={strokeClass}
-      style={{
-        fill: "none",
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        strokeWidth: "32px",
-      }}
-    />
-  </svg>;
+  return (
+    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+      <line
+        x1="368"
+        y1="368"
+        x2="144"
+        y2="144"
+        className={strokeClass}
+        style={{
+          fill: "none",
+          strokeLinecap: "round",
+          strokeLinejoin: "round",
+          strokeWidth: "32px",
+        }}
+      />
+      <line
+        x1="368"
+        y1="144"
+        x2="144"
+        y2="368"
+        className={strokeClass}
+        style={{
+          fill: "none",
+          strokeLinecap: "round",
+          strokeLinejoin: "round",
+          strokeWidth: "32px",
+        }}
+      />
+    </svg>
+  );
 }
 
 export function ChevronRight({ strokeClass }: SVGProps) {

@@ -187,21 +187,23 @@ function Wrapper(props: {
     props.onChange(newData);
   };
 
-  return <DndCalendar
-    selectable
-    resizable
-    draggable
-    popup={true}
-    onEventDrop={onMove}
-    onEventResize={onResize}
-    onSelectSlot={onNewEvent}
-    onDragStart={onDragStart}
-    onView={onView}
-    localizer={localizer} // ?
-    events={data.events}
-    view={data.view}
-    defaultView={Views.WEEK}
-  />;
+  return (
+    <DndCalendar
+      selectable
+      resizable
+      draggable
+      popup={true}
+      onEventDrop={onMove}
+      onEventResize={onResize}
+      onSelectSlot={onNewEvent}
+      onDragStart={onDragStart}
+      onView={onView}
+      localizer={localizer} // ?
+      events={data.events}
+      view={data.view}
+      defaultView={Views.WEEK}
+    />
+  );
 }
 
 function makeCallback(editor: CalendarEditor) {

@@ -12,10 +12,12 @@ function Wrapper(props: {
   initialData?: KanbanState;
   onChange?: (newBoard: KanbanState) => void;
 }) {
-  return <Board
-    initialState={props.initialData || defaultValue()}
-    onChange={props.onChange}
-  />;
+  return (
+    <Board
+      initialState={props.initialData || defaultValue()}
+      onChange={props.onChange}
+    />
+  );
 }
 
 function makeCallback(editor: KanbanEditor) {
