@@ -9,8 +9,10 @@ import { EditorsModule } from "./editors";
 import { CtxmenuContext, Tab } from "./types";
 import { CtxmenuModule } from "./ctxmenu";
 import { FileIconsModule } from "./fileicons";
+import { LogModule } from "./log";
 
 export class OpenFilesModule {
+  private log: LogModule;
   private layout: LayoutModule;
   private editors: EditorsModule;
   private element: HTMLElement;
@@ -18,8 +20,11 @@ export class OpenFilesModule {
   private fileicons: FileIconsModule;
 
   private openFiles: OpenFile[] = [];
+  private searchTerm?: string;
+  private activeIndex?: number;
 
   constructor(app: Mnote) {
+    this.log = app.modules.log;
     this.layout = app.modules.layout;
     this.editors = app.modules.editors;
     this.ctxmenu = app.modules.ctxmenu;
@@ -79,14 +84,27 @@ export class OpenFilesModule {
   }
 
   setOpenFiles(files: OpenFile[], activeIndex?: number) {
+    this.log.info("open files: set open files", files, activeIndex);
     this.openFiles = [...files];
+    this.activeIndex = activeIndex;
+    this.updateComponent();
+  }
 
+  setSearchTerm(searchTerm?: string) {
+    this.log.info("open files: set search term", searchTerm);
+    if (searchTerm && searchTerm.length === 0) searchTerm = undefined;
+    this.searchTerm = searchTerm;
+    this.updateComponent();
+  }
+
+  private updateComponent() {
     render(
       <OpenFiles
-        openFiles={[...files]}
-        activeIndex={activeIndex}
+        openFiles={[...this.openFiles]}
+        activeIndex={this.activeIndex}
         getIcon={(file: OpenFile, fillClass: string, strokeClass: string) =>
           file.getIcon(fillClass, strokeClass)}
+        searchTerm={this.searchTerm}
       />,
       this.element,
     );

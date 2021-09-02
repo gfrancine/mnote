@@ -1,12 +1,12 @@
 // search
 
-export type Range = {
+export type MatchRange = {
   start: number;
   end: number;
 };
 
 export function getMatchingRanges(value: string, searchTerm: string) {
-  const matches: Range[] = [];
+  const matches: MatchRange[] = [];
 
   let offset = 0;
   while (true) {

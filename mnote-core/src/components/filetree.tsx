@@ -11,7 +11,12 @@ import {
   FileTreeNodeWithChildren as NodeWithChildren,
 } from "../common/types";
 import { ElementToReact, TreeChildren, TreeItem } from "./tree";
-import { sortChildren } from "mnote-util/nodes";
+import {
+  PathSearchResults,
+  searchForPaths,
+  sortChildren,
+} from "mnote-util/nodes";
+import { Highlight } from "mnote-components/react/highlight";
 
 const DRAG_DATA_TYPE = "mn-filetree-drag-data";
 
@@ -45,17 +50,24 @@ function FileNode(props: {
   focusedPath?: string; // path of the focused node
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
+  searchResults?: PathSearchResults;
 }) {
   const name = useMemo(() => getPathName(props.node.path), [props.node.path]);
 
   const onClick = () => props.hooks?.fileFocused?.(props.node.path);
 
+  const isSearching = props.searchResults !== undefined;
+  const searchResultRanges = props.searchResults?.[props.node.path];
+
   const [isDraggedOver, setDraggedOver] = useState(false);
 
-  return props.visible
+  return props.visible &&
+      (isSearching ? searchResultRanges !== undefined : true)
     ? (
       <TreeItem
-        text={name}
+        text={searchResultRanges
+          ? <Highlight text={name} ranges={searchResultRanges} />
+          : name}
         icon={(() => {
           if (props.getFileIcon) {
             const icon = props.getFileIcon(props.node, "fill", "stroke");
@@ -98,6 +110,7 @@ function DirNode(props: {
   focusedPath?: string; // path of the focused node
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
+  searchResults?: PathSearchResults;
 }) {
   const name = useMemo(() => getPathName(props.node.path), [props.node.path]);
 
@@ -117,6 +130,16 @@ function DirNode(props: {
       setExpanded(true);
     }
   }, [props.focusedPath]);
+
+  useEffect(() => {
+    if (!props.searchResults) return;
+    for (const path of Object.keys(props.searchResults)) {
+      if (path.search(props.node.path) > -1) {
+        setExpanded(true);
+        return;
+      }
+    }
+  }, [props.searchResults]);
 
   const onClick = expanded ? () => setExpanded(false) : () => setExpanded(true);
 
@@ -164,6 +187,7 @@ function DirNode(props: {
                 hooks={props.hooks}
                 focusedPath={props.focusedPath}
                 getFileIcon={props.getFileIcon}
+                searchResults={props.searchResults}
               />
             )
             : (
@@ -175,6 +199,7 @@ function DirNode(props: {
                 hooks={props.hooks}
                 focusedPath={props.focusedPath}
                 getFileIcon={props.getFileIcon}
+                searchResults={props.searchResults}
               />
             )
         )}
@@ -186,11 +211,17 @@ function DirNode(props: {
 // file tree component
 // not meant to be used with another react component
 export default function (props: {
-  node?: NodeWithChildren;
+  node: NodeWithChildren;
   initFocusedNode?: string; // path of the focused node
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
+  searchTerm?: string;
 }) {
+  const searchResults = useMemo(() => {
+    if (!props.searchTerm) return;
+    return searchForPaths(props.node, props.searchTerm);
+  }, [props.searchTerm]);
+
   return (
     <div className="filetree-main">
       {props.node
@@ -204,6 +235,7 @@ export default function (props: {
             node={props.node}
             focusedPath={props.initFocusedNode}
             getFileIcon={props.getFileIcon}
+            searchResults={searchResults}
           />
         )
         : <></>}

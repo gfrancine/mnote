@@ -1,9 +1,9 @@
 import React, { ReactNode } from "react";
-import { Range } from "mnote-util/search";
+import { MatchRange } from "mnote-util/search";
 
 export function Highlight({ text, ranges }: {
-  text: string,
-  ranges: Range[],
+  text: string;
+  ranges: MatchRange[];
 }) {
   const nodes: ReactNode[] = [];
 
@@ -12,10 +12,14 @@ export function Highlight({ text, ranges }: {
     const start = range.start > lastEnd ? range.start : lastEnd;
     const before = text.slice(lastEnd, start);
     const highlighted = text.slice(start, range.end);
-    nodes.push(before);
-    nodes.push(<mark>{highlighted}</mark>);
+    nodes.push(<span key={nodes.length}>{before}</span>);
+    nodes.push(<mark key={nodes.length}>{highlighted}</mark>);
     lastEnd = range.end;
   }
+
+  nodes.push(
+    <span key={nodes.length}>{text.slice(lastEnd, text.length)}</span>,
+  );
 
   return <>{nodes}</>;
 }
