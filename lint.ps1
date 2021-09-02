@@ -8,6 +8,7 @@ deno lint `
   mnote-extensions/excalidraw `
   mnote-extensions/todo `
   mnote-components/react `
+  mnote-components/vanilla `
   mnote-app/src `
   mnote-app/src-web `
   mnote-app/bundle-scripts `
