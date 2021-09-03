@@ -20,7 +20,7 @@ class RichtextEditor implements Editor {
     this.app = app;
     this.fs = (app.modules.fs as FSModule);
 
-    this.editorElement = el("div")
+    this.editorElement = el("textarea")
       .class("richtext-editor")
       .element;
 
@@ -48,9 +48,16 @@ class RichtextEditor implements Editor {
         // ['link', 'image']
       ],
     });
+
     this.editor.onChange = (contents) => {
       this.contents = contents;
     };
+
+    // hacky way to get rid of the notice
+    // REWRITEME
+    (this.element.querySelector(".se-notice button.close") as
+      | HTMLButtonElement
+      | undefined)?.click();
   }
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
@@ -80,15 +87,15 @@ class RichtextEditor implements Editor {
 export class RichtextExtension implements Extension {
   startup(app: Mnote) {
     const matchesExtension = (path: string) =>
-      getPathExtension(path) === "mnrichtext";
+      getPathExtension(path) === "html";
 
     app.modules.editors.registerEditor({
       kind: "Rich Text",
       canOpenPath: matchesExtension,
       createNewEditor: () => new RichtextEditor(app),
       saveAsFileTypes: [{
-        name: "Mnote Rich Text Document",
-        extensions: ["mnrichtext"],
+        name: "HTML Document",
+        extensions: ["html"],
       }],
     });
   }
