@@ -169,10 +169,10 @@ fn make_menu() -> Menu {
       .add_item(CustomMenuItem::new("open-file", "Open File..."))
       .add_item(CustomMenuItem::new("open-folder", "Open Folder..."))
       .add_native_item(MenuItem::Separator)
-      .add_item(CustomMenuItem::new("save", "Save"))
-      .add_item(CustomMenuItem::new("save-as", "Save As..."))
+      .add_item(CustomMenuItem::new("save", "Save").accelerator("CmdOrControl+S"))
+      .add_item(CustomMenuItem::new("save-as", "Save As...").accelerator("CmdOrControl+Shift+S"))
       .add_native_item(MenuItem::Separator)
-      .add_item(CustomMenuItem::new("close-editor", "Close Editor")),
+      .add_item(CustomMenuItem::new("close-editor", "Close Editor").accelerator("CmdOrControl+W")),
   );
 
   let edit_submenu = Submenu::new(

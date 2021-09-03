@@ -229,14 +229,12 @@ export class FiletreeModule {
 
       buttons.push({
         name: "Open File...",
-        shortcut: cmdOrCtrl + "+O",
         click: openFile,
       });
 
       if (!this.directory) {
         buttons.push({
           name: "Open Folder...",
-          shortcut: cmdOrCtrl + "+O",
           click: openFolder,
         });
       }
