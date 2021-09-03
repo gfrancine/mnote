@@ -1,0 +1,280 @@
+@use "~mnote-styles/mnote-vars" as mn;
+@use "~mnote-styles/mnote-rich-text" as richtext;
+
+// https://css2sass.herokuapp.com/
+// https://github.com/JiHong88/SunEditor/blob/da06c3c23b9b9cdee314f32067b094c60497d0fb/src/assets/css/suneditor.css
+
+@use "./suneditor/link-dialog.scss";
+@use "./suneditor/resizing-controller.scss";
+
+.richtext-extension {
+  height: 100%;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  // this file hould be reserved just for core styles
+  // plugins and styles that are too long to go here goes
+  // in the ./suneditor directory
+
+  .sun-editor {
+    @include link-dialog.link-dialog;
+    @include resizing-controller.resizing-controller;
+  }
+
+  .se-container,
+  .sun-editor {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+  }
+
+  .se-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .se-toolbar {
+    padding: 0 2em;
+  }
+
+  .se-btn-tray {
+    //overflow: auto; // contain floats
+
+    .se-toolbar-separator-vertical {
+      height: 1.2em;
+      float: left;
+      margin: 0 auto;
+      margin: 0.4em 0.2em;
+      border-left: solid 2px;
+      color: map-get(mn.$vars, bg-dim);
+    }
+
+    .se-btn-module.se-btn-module-border {
+      float: left;
+
+      ul.se-menu-list {
+        list-style: none;
+        width: auto;
+        height: auto;
+        padding: 0;
+        margin: 0;
+
+        li {
+          display: inline-block;
+
+          button.se-btn {
+            height: 2em;
+            width: 2em;
+            background: 0;
+            border: 0;
+            padding: 0.5em;
+            cursor: pointer;
+
+            svg {
+              width: 100%;
+              height: 100%;
+              fill: map-get(mn.$vars, fg-secondary);
+            }
+
+            span.se-tooltip-inner {
+              position: absolute;
+              top: 100%;
+            }
+
+            &:hover {
+              svg {
+                fill: map-get(mn.$vars, fg-main);
+              }
+            }
+
+            &:disabled {
+              cursor: not-allowed;
+
+              svg,
+              &:hover svg {
+                fill: map-get(mn.$vars, fg-dim);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .se-tooltip {
+    position: relative;
+    overflow: visible;
+
+    .se-tooltip-inner {
+      visibility: hidden;
+      position: absolute;
+      display: block;
+      width: auto;
+      top: 120%;
+      left: 50%;
+      background: transparent;
+      opacity: 0;
+      z-index: 1;
+      line-height: 1.5;
+      transition: opacity 0.5s;
+      margin: 0;
+      padding: 0;
+      bottom: auto;
+      float: none;
+      pointer-events: none;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      -moz-backface-visibility: hidden;
+
+      .se-tooltip-text {
+        position: relative;
+        display: inline-block;
+        width: auto;
+        left: -50%;
+        font-size: 0.8em;
+        margin: 0;
+        padding: 4px 6px;
+        border-radius: 2px;
+        background-color: map-get(mn.$vars, btn-emphasis-bg);
+        color: map-get(mn.$vars, btn-emphasis-fg);
+        text-align: center;
+        line-height: unset;
+        white-space: nowrap;
+        cursor: auto;
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 100%;
+          left: 50%;
+          margin-left: -5px;
+          border-width: 5px;
+          border-style: solid;
+          border-color: transparent transparent
+            map-get(mn.$vars, btn-emphasis-bg) transparent;
+        }
+        .se-shortcut {
+          display: block;
+        }
+        .se-shortcut > .se-shortcut-key {
+          display: inline;
+          font-weight: bold;
+        }
+      }
+    }
+
+    &:hover .se-tooltip-inner {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  .se-resizing-bar.sun-editor-common.se-resizing-none {
+    height: 3em;
+    line-height: 3em;
+    padding: 0 2em;
+    font-size: 0.8em;
+    color: map-get(mn.$vars, fg-dim);
+  }
+
+  .se-resizing-bar.sun-editor-common.se-resizing-none {
+    height: 3em;
+    line-height: 3em;
+    padding: 0 2em;
+    font-size: 0.8em;
+    color: map-get(mn.$vars, fg-dim);
+  }
+
+  .se-wrapper {
+    @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+    position: relative;
+
+    .se-wrapper-inner.se-wrapper-wysiwyg.sun-editor-editable {
+      padding: 1em max(8%, 3em);
+      outline: none;
+
+      @include richtext.prelude;
+      -webkit-user-select: text;
+      user-select: text;
+
+      p {
+        @include richtext.paragraph;
+      }
+
+      ul,
+      ol {
+        @include richtext.list;
+      }
+
+      p {
+        @include richtext.paragraph;
+      }
+
+      hr {
+        @include richtext.hr;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        @include richtext.heading;
+      }
+    }
+
+    textarea.se-wrapper-inner.se-wrapper-code {
+      @include richtext.code-fence;
+      @include richtext.code-inline;
+
+      outline: none;
+      padding: 1em;
+      margin: 1em 3em;
+      border: none;
+      resize: none;
+      width: -webkit-fill-available;
+    }
+  }
+
+  .se-notice {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    padding: 0.5em;
+    background: map-get(mn.$vars, btn-main-bg);
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+    color: map-get(mn.$vars, btn-main-fg);
+
+    span {
+      width: 100%;
+      height: auto;
+      min-height: 1em;
+    }
+
+    button.close {
+      margin: 0.4em;
+      box-sizing: border-box;
+      border: 0;
+      background: 0;
+      padding: 0;
+      cursor: pointer;
+
+      svg {
+        width: 0.7em;
+        height: 0.7em;
+        box-sizing: border-box;
+        fill: map-get(mn.$vars, btn-main-fg);
+      }
+    }
+  }
+}

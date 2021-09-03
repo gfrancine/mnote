@@ -9,6 +9,7 @@ import { ExcalidrawExtension } from "mnote-extensions/excalidraw";
 import { KanbanExtension } from "mnote-extensions/kanban";
 import { CalendarExtension } from "mnote-extensions/calendar";
 import { TodoExtension } from "mnote-extensions/todo";
+import { RichtextExtension } from "mnote-extensions/richtext";
 
 // web build
 // for quick visual debugging
@@ -29,6 +30,7 @@ import { TodoExtension } from "mnote-extensions/todo";
     new KanbanExtension(),
     new CalendarExtension(),
     new TodoExtension(),
+    new RichtextExtension(),
   ]);
 
   await app.startup();

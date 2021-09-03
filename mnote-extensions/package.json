@@ -13,6 +13,7 @@
     "mnote-styles": "file:../mnote-styles",
     "mnote-util": "file:../mnote-util",
     "moment": "^2.29.1",
-    "nanoid": "^3.1.25"
+    "nanoid": "^3.1.25",
+    "suneditor": "^2.41.3"
   }
 }

@@ -51,6 +51,7 @@
   font-family: map-get(mn.$vars, font-monospace);
   font-size: 0.9em;
   padding: 0 0.2em;
+  color: map-get(mn.$vars, fg-main);
 }
 
 @mixin code-fence {
@@ -59,6 +60,7 @@
   padding: 0 0.4em 1.4em;
   overflow: hidden;
   background-color: map-get(mn.$vars, bg-secondary);
+  color: map-get(mn.$vars, fg-main);
 
   * {
     margin: 0;

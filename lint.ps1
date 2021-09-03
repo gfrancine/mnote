@@ -1,6 +1,7 @@
 deno lint `
   mnote-core/src `
   mnote-extensions/plaintext `
+  mnote-extensions/richtext `
   mnote-extensions/settings `
   mnote-extensions/calendar `
   mnote-extensions/kanban `
