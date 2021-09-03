@@ -101,6 +101,5 @@ export class Mnote {
   async startup() {
     await this.hooks.emitAsync("startup");
     this.container.appendChild(this.element);
-    this.modules.filesearch.search("file");
   }
 }
