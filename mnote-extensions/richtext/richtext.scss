@@ -48,7 +48,7 @@
       margin: 0 auto;
       margin: 0.4em 0.2em;
       border-left: solid 2px;
-      color: map-get(mn.$vars, bg-dim);
+      color: map-get(mn.$vars, fg-dimmer);
     }
 
     .se-btn-module.se-btn-module-border {

@@ -14,9 +14,9 @@
       button-destructive-color: #{$oc-red-9},
       button-gray-1: map-get($theme, bg-secondary),
       // normal
-      button-gray-2: map-get($theme, bg-dim),
+      button-gray-2: map-get($theme, fg-dimmer),
       // hover
-      button-gray-3: map-get($theme, bg-dim),
+      button-gray-3: map-get($theme, fg-dimmer),
       // pressed
       button-special-active-bg-color: #{$oc-green-0},
       dialog-border-color: map-get($theme, border-main),
@@ -31,7 +31,7 @@
       input-hover-bg-color: #{$oc-gray-1},
       input-label-color: #{$oc-gray-7},
       island-bg-color: map-get($theme, bg-main),
-      keybinding-color: map-get($theme, bg-dim),
+      keybinding-color: map-get($theme, fg-dimmer),
       link-color: #{$oc-blue-7},
       overlay-bg-color: map-get($theme, overlay-bg),
       popup-bg-color: map-get($theme, bg-main),

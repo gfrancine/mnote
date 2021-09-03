@@ -12,8 +12,8 @@ $border-color: map-get($vars, border-main);
 $segment-width: percentage(math.div(1, 7));
 
 $time-selection-color: map-get($vars, fg-secondary);
-$time-selection-bg-color: map-get($vars, bg-dim);
-$date-selection-bg-color: map-get($vars, bg-dim);
+$time-selection-bg-color: map-get($vars, fg-dimmer);
+$date-selection-bg-color: map-get($vars, fg-dimmer);
 
 $event-bg: map-get($vars, btn-emphasis-bg);
 $event-border: #00000000;

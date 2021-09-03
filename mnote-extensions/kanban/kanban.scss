@@ -19,7 +19,7 @@
   font-family: map-get(mn.$vars, font-main);
 
   .board {
-    @include mn.scrollbar(map-get(mn.$vars, bg-dim));
+    @include mn.scrollbar(map-get(mn.$vars, fg-dimmer));
   }
 
   // @import "./styles/AddList.css";
@@ -31,7 +31,7 @@
   // @import "./styles/Board.css";
 
   .add-list-button {
-    background-color: map-get(mn.$vars, bg-dim);
+    background-color: map-get(mn.$vars, fg-dimmer);
     color: map-get(mn.$vars, fg-secondary);
     opacity: 0.8;
 
@@ -66,7 +66,7 @@
   }
 
   .card-icon:hover {
-    background: map-get(mn.$vars, bg-dim);
+    background: map-get(mn.$vars, fg-dimmer);
   }
 
   .card-text {
@@ -101,7 +101,7 @@
   }
 
   .lists-cards {
-    @include mn.scrollbar(map-get(mn.$vars, bg-dim));
+    @include mn.scrollbar(map-get(mn.$vars, fg-dimmer));
   }
 
   .toggle-add-card {
@@ -109,7 +109,7 @@
   }
 
   .toggle-add-card:hover {
-    background-color: map-get(mn.$vars, bg-dim);
+    background-color: map-get(mn.$vars, fg-dimmer);
     color: map-get(mn.$vars, fg-secondary);
   }
 
@@ -121,7 +121,7 @@
   }
 
   .list-title-edit .icon-wrapper:hover {
-    background: map-get(mn.$vars, bg-dim);
+    background: map-get(mn.$vars, fg-dimmer);
   }
 
   .list-title-textarea {

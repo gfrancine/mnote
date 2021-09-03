@@ -11,10 +11,10 @@ export const light = {
   "fg-main": gray[9],
   "fg-secondary": gray[6],
   "fg-dim": gray[5],
+  "fg-dimmer": gray[3],
 
   "bg-main": "#fff",
   "bg-secondary": gray[1],
-  "bg-dim": gray[3],
 
   "shadow": "0px 2px 5px " + gray[3],
   "overlay-bg": gray[7] + "32",
@@ -53,10 +53,10 @@ export const dark = {
   "fg-main": "#B0B6BB",
   "fg-secondary": "#767E85",
   "fg-dim": "#656A70",
+  "fg-dimmer": "#404345",
 
   "bg-main": "#2B2D2E",
   "bg-secondary": "#242627",
-  "bg-dim": "#404345",
 
   "shadow": "0px 2px 5px " + "#111",
   "overlay-bg": "#11111132",
@@ -100,7 +100,7 @@ const darkTheme = {
 
   "bg-main": gray[8],
   "bg-secondary": gray[9],
-  "bg-dim": gray[3],
+  "fg-dimmer": gray[3],
 
   "shadow": "0px 2px 5px " + "#111",
   "overlay": "#11111132",
