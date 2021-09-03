@@ -53,11 +53,18 @@ class RichtextEditor implements Editor {
       this.contents = contents;
     };
 
+    // disable spell check
+    // REWRITEME
+    (this.element.querySelector(
+      ".se-wrapper-inner.se-wrapper-wysiwyg.sun-editor-editable",
+    ) as HTMLDivElement | null)
+      ?.setAttribute("spellcheck", "false");
+
     // hacky way to get rid of the notice
     // REWRITEME
     (this.element.querySelector(".se-notice button.close") as
       | HTMLButtonElement
-      | undefined)?.click();
+      | null)?.click();
   }
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
