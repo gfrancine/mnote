@@ -32,6 +32,7 @@ class PlaintextEditor implements Editor {
           "\t" +
           self.value.slice(self.selectionEnd, self.value.length);
         self.selectionStart = start + 1;
+        self.selectionEnd = self.selectionStart;
       })
       .element as HTMLTextAreaElement;
 
