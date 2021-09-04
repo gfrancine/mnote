@@ -11,6 +11,7 @@ import { ExcalidrawExtension } from "mnote-extensions/excalidraw";
 import { KanbanExtension } from "mnote-extensions/kanban";
 import { CalendarExtension } from "mnote-extensions/calendar";
 import { TodoExtension } from "mnote-extensions/todo";
+import { RichtextExtension } from "mnote-extensions/richtext";
 
 export const run = async (isProduction: boolean) => {
   const args: string[] = await invoke("get_args");
@@ -33,6 +34,7 @@ export const run = async (isProduction: boolean) => {
     new KanbanExtension(),
     new CalendarExtension(),
     new TodoExtension(),
+    new RichtextExtension(),
   ]);
 
   await app.startup();
