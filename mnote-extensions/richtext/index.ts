@@ -3,7 +3,7 @@ import { el } from "mnote-util/elbuilder";
 import { getPathExtension } from "mnote-util/path";
 import suneditor from "suneditor";
 import SunEditor from "suneditor/src/lib/core";
-import _plugins from "suneditor/src/plugins";
+import plugins from "suneditor/src/plugins";
 import "./richtext.scss";
 
 class RichtextEditor implements Editor {
@@ -31,11 +31,18 @@ class RichtextEditor implements Editor {
 
     this.editor = suneditor.create(this.editorElement, {
       plugins: [
-        // plugins.image,
-        // plugins.link
+        plugins.image,
+        plugins.link,
+        plugins.align,
+        plugins.list,
+        plugins.table,
+        plugins.font,
+        plugins.fontSize,
+        plugins.formatBlock,
       ],
       buttonList: [
         ["undo", "redo"],
+        ["font", "fontSize", "formatBlock"],
         [
           "bold",
           "underline",
@@ -45,7 +52,8 @@ class RichtextEditor implements Editor {
           "superscript",
           "removeFormat",
         ],
-        // ['link', 'image']
+        ["outdent", "indent", "align"],
+        ["list", "link", "image", "table"],
       ],
     });
 
