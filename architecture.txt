@@ -11,12 +11,12 @@ in dependency order:
 - mnote-extensions
   add-ons on top of the core app, contains mostly editor extensions
 
+- mnote-components
+  UI that can be used by other extensions
+
 - mnote-styles
   scss styles for only the core package, reusable styles that can
   be consumed by other extensions
-
-- mnote-components
-  UI that can be used by other extensions
 
 - mnote-core
   main app logic. exports an instantiable Mnote class that accepts
