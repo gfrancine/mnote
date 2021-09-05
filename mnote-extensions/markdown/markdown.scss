@@ -57,6 +57,8 @@
     @include richtext.heading;
   }
 
+  @include richtext.heading-presets;
+
   /// mikldown
   // decorators
 
