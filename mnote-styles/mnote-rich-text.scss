@@ -8,11 +8,13 @@
   word-break: break-word;
   font-weight: normal;
   font-size: 1em;
+  letter-spacing: unset;
 }
 
 @mixin heading {
   word-break: break-word;
   font-weight: bold;
+  letter-spacing: unset;
 }
 
 @mixin heading-presets {
@@ -47,6 +49,7 @@
   cursor: pointer;
   font-weight: normal;
   transition: all 0.2s ease-in-out;
+  letter-spacing: unset;
 }
 
 @mixin list {
@@ -63,6 +66,7 @@
   border-left: 4px solid;
   border-left-color: map-get(mn.$vars, fg-dimmer);
   color: map-get(mn.$vars, fg-secondary);
+  letter-spacing: unset;
   margin: 0;
   * {
     line-height: 1.5em;
@@ -77,6 +81,7 @@
   font-size: 0.9em;
   padding: 0 0.2em;
   color: map-get(mn.$vars, fg-main);
+  letter-spacing: unset;
 }
 
 @mixin code-fence {
@@ -86,6 +91,7 @@
   overflow: hidden;
   background-color: map-get(mn.$vars, bg-secondary);
   color: map-get(mn.$vars, fg-main);
+  letter-spacing: unset;
   font-family: map-get(mn.$vars, font-monospace);
   line-height: 1.5;
 
@@ -95,6 +101,7 @@
 
   pre {
     font-family: map-get(mn.$vars, font-monospace);
+    letter-spacing: unset;
     margin: 0 1em;
     line-height: 1.5;
   }
@@ -102,5 +109,6 @@
   code {
     font-family: map-get(mn.$vars, font-monospace);
     line-height: 1.5;
+    letter-spacing: unset;
   }
 }
