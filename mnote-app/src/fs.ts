@@ -51,13 +51,15 @@ export class Watcher {
   }
 }
 
+const ANY_SLASH = /[\\/]/;
+
 export class FS implements FsInteropModule {
   protected watcher = new Watcher(); // at the bottom of the file
 
-  protected USES_BACKSLASH = false;
+  protected IS_WINDOWS = false;
 
   async init() {
-    this.USES_BACKSLASH = await invoke("is_windows");
+    this.IS_WINDOWS = await invoke("is_windows");
     return this;
   }
 
@@ -171,13 +173,13 @@ export class FS implements FsInteropModule {
     };
 
     return join(
-      this.USES_BACKSLASH ? "\\" : "/",
+      this.IS_WINDOWS ? "\\" : "/",
       items,
     );
   }
 
   splitPath(path: string) {
-    const delimiter = this.USES_BACKSLASH ? "\\" : "/";
+    const delimiter = this.IS_WINDOWS ? ANY_SLASH : "/";
     return path.split(delimiter);
   }
 
