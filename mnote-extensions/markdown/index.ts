@@ -94,7 +94,7 @@ class MarkdownEditor implements Editor {
 
   updateFontSize = () =>
     this.settings.getKeyWithDefault(
-      "md.font-size",
+      "markdown.font-size",
       "1em",
       (v) => typeof v === "string",
     ).then((value) => {
