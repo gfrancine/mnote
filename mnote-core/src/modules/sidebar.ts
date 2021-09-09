@@ -25,7 +25,7 @@ export class SidebarModule {
       element: this.element,
       handle: this.handle,
       vertical: false,
-      cursor: "col-resize",
+      cursor: "e-resize",
     });
 
     this.sidemenu = el("div")
