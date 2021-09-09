@@ -44,11 +44,23 @@ class PlaintextEditor implements Editor {
       .element;
   }
 
+  updateTabSize = () =>
+    this.app.modules.settings.getKeyWithDefault(
+      "plaintext.tab-size",
+      4,
+      (v) => typeof v === "number",
+    ).then((value) => {
+      this.textarea.style.tabSize = "" + value;
+    });
+
   async startup(containter: HTMLElement, ctx: EditorContext) {
     this.textarea.addEventListener("input", () => {
       this.contents = this.textarea.value;
       ctx.updateEdited();
     });
+
+    this.app.modules.settings.events.on("change", this.updateTabSize);
+    await this.updateTabSize();
 
     const { path } = ctx.getDocument();
     if (path) {
@@ -61,6 +73,8 @@ class PlaintextEditor implements Editor {
   }
 
   cleanup() {
+    this.app.modules.settings.events.off("change", this.updateTabSize);
+
     if (this.container) {
       this.container.removeChild(this.element);
     }
