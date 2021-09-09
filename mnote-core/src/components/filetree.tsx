@@ -122,6 +122,7 @@ function DirNode(props: {
   node: NodeWithChildren;
   draggable?: boolean;
   initExpanded?: boolean; // is the dir open at initialization?
+  overrideAutoExpand?: boolean; // should it expand when it has the focused path?
   focusedPath?: string; // path of the focused node
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
@@ -141,6 +142,7 @@ function DirNode(props: {
 
   useEffect(() => {
     if (!props.focusedPath) return;
+    if (props.overrideAutoExpand) return;
     if (props.focusedPath.search(props.node.path) > -1) {
       setExpanded(true);
     }
@@ -248,6 +250,7 @@ export default function (props: {
             initExpanded
             draggable={false}
             node={props.node}
+            overrideAutoExpand
             focusedPath={props.initFocusedNode}
             getFileIcon={props.getFileIcon}
             searchResults={searchResults}
