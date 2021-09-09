@@ -20,7 +20,6 @@ import { SystemModule } from "./system";
 import { getPathExtension, getPathName } from "mnote-util/path";
 import { EditorsModule } from "./editors";
 import { FileIconsModule } from "./fileicons";
-import { MatchRange } from "../../../mnote-util/search";
 
 const nothingHere = el("div")
   .inner("No opened folder")
