@@ -66,6 +66,7 @@ function FileNode(props: {
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
   searchResults?: Record<string, MatchRange[]>;
+  disableRename?: boolean;
 }) {
   const name = useMemo(() => getPathName(props.node.path), [props.node.path]);
 
@@ -111,6 +112,7 @@ function FileNode(props: {
         }}
         className="filetree-item" // used by context menu
         data-mn-file-path={props.node.path}
+        data-mn-disable-rename={props.disableRename}
       />
     )
     : <></>;
@@ -122,6 +124,7 @@ function DirNode(props: {
   draggable?: boolean;
   initExpanded?: boolean; // is the dir open at initialization?
   overrideAutoExpand?: boolean; // should it expand when it has the focused path?
+  disableRename?: boolean;
   focusedPath?: string; // path of the focused node
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
@@ -190,6 +193,7 @@ function DirNode(props: {
         className="filetree-item"
         hovered={isDraggedOver}
         data-mn-dir-path={props.node.path}
+        data-mn-disable-rename={props.disableRename}
       />
       <TreeChildren hidden={!(props.visible && expanded)}>
         {sortedChildren.map((node) =>
@@ -252,6 +256,7 @@ export default function (props: {
             focusedPath={props.initFocusedNode}
             getFileIcon={props.getFileIcon}
             searchResults={searchResults}
+            disableRename
           />
         )
         : <></>}

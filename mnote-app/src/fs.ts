@@ -176,6 +176,11 @@ export class FS implements FsInteropModule {
     );
   }
 
+  splitPath(path: string) {
+    const delimiter = this.USES_BACKSLASH ? "\\" : "/";
+    return path.split(delimiter);
+  }
+
   async watchInit(path: string) {
     if (this.watcher.isInitialized()) {
       throw new Error("watcher is alerady initialized");

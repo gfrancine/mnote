@@ -33,10 +33,14 @@ export class PromptsModule {
     }).prompt();
   }
 
-  async promptTextInput(message: string): Promise<string | undefined> {
+  async promptTextInput(
+    message: string,
+    initialValue?: string,
+  ): Promise<string | undefined> {
     const input = el("input")
       .class("prompt-input")
       .attr("spellcheck", "false")
+      .attr("value", initialValue || "")
       .element as HTMLInputElement;
 
     const prompt = new Prompt({

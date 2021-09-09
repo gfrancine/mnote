@@ -58,6 +58,9 @@ export class FS implements FsInteropModule {
   joinPath(items: string[]): string {
     return items.join("/");
   }
+  splitPath(path: string): string[] {
+    return path.split("/");
+  }
 
   watchInit(_path: string): Promise<void> {
     return Promise.resolve();

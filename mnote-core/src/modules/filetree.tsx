@@ -17,7 +17,7 @@ import FileTree from "../components/filetree";
 import { PromptsModule } from "./prompts";
 import { MenubarModule } from "./menubar";
 import { SystemModule } from "./system";
-import { getPathName } from "mnote-util/path";
+import { getPathExtension, getPathName } from "mnote-util/path";
 import { EditorsModule } from "./editors";
 import { FileIconsModule } from "./fileicons";
 import { MatchRange } from "../../../mnote-util/search";
@@ -202,7 +202,7 @@ export class FiletreeModule {
   //
 
   private bindToModules() {
-    const cmdOrCtrl = this.system.usesCmd() ? "Cmd" : "Ctrl";
+    // const cmdOrCtrl = this.system.usesCmd() ? "Cmd" : "Ctrl";
 
     // DRY
 
@@ -301,8 +301,11 @@ export class FiletreeModule {
 
       if (fileTreeItem) {
         const filePath = fileTreeItem.getAttribute("data-mn-file-path");
+        const disableRename =
+          fileTreeItem.getAttribute("data-mn-disable-rename") === "true";
+
         if (filePath) {
-          return [{
+          const buttons = [{
             name: "Open file",
             click: () => {
               this.updateEditorSelectedFile(filePath);
@@ -313,13 +316,47 @@ export class FiletreeModule {
               this.fs.removeFile(filePath);
             },
           }];
+
+          if (!disableRename) {
+            buttons.push({
+              name: "Rename file",
+              click: () => {
+                const fragments = this.fs.splitPath(filePath);
+                const extension = getPathExtension(filePath);
+                const dotExtension = extension.length > 0
+                  ? "." + extension
+                  : "";
+                const fullFileName = fragments.pop() || "";
+                const fileName = fullFileName.slice(
+                  0,
+                  dotExtension.length > 0
+                    ? -dotExtension.length
+                    : fullFileName.length,
+                );
+
+                this.prompts.promptTextInput(
+                  `Rename file "${fullFileName}"`,
+                  fileName,
+                )
+                  .then((newName) => {
+                    if (!newName) return;
+                    const newPath = this.fs.joinPath([
+                      ...fragments,
+                      newName + dotExtension,
+                    ]);
+                    this.log.info("rename file", filePath, "to", newPath);
+                    this.fs.renameFile(filePath, newPath);
+                  });
+              },
+            });
+          }
+
+          return buttons;
         } else {
-          // todo: add ability to hook on to new file? hook to file
-          // right click? hookTo("fileContextMenu")
-          // addFileContextMenuReducer, addDirContextMenuReducer
           const dirPath = fileTreeItem.getAttribute("data-mn-dir-path");
           if (dirPath) {
-            return [
+            // a directory
+            const buttons = [
               {
                 name: "Delete folder",
                 click: () => {
@@ -329,6 +366,29 @@ export class FiletreeModule {
               makeNewFolderButton(dirPath),
               makeNewFileButton(dirPath),
             ];
+
+            if (!disableRename) {
+              buttons.push({
+                name: "Rename folder",
+                click: () => {
+                  const fragments = this.fs.splitPath(dirPath);
+                  const dirName = fragments.pop();
+
+                  this.prompts.promptTextInput(
+                    `Rename folder "${dirName}"`,
+                    dirName,
+                  )
+                    .then((newName) => {
+                      if (!newName) return;
+                      const newPath = this.fs.joinPath([...fragments, newName]);
+                      this.log.info("rename dir", dirPath, "to", newPath);
+                      this.fs.renameDir(dirPath, newPath);
+                    });
+                },
+              });
+            }
+
+            return buttons;
           }
         }
       } else if (ctx.elements.includes(this.element) && this.directory) {
