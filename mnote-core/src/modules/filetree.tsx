@@ -300,7 +300,7 @@ export class FiletreeModule {
       const fileTreeItem = findFileTreeItem(ctx);
 
       if (fileTreeItem) {
-        const filePath = fileTreeItem.getAttribute("mn-file-path");
+        const filePath = fileTreeItem.getAttribute("data-mn-file-path");
         if (filePath) {
           return [{
             name: "Open file",
@@ -317,7 +317,7 @@ export class FiletreeModule {
           // todo: add ability to hook on to new file? hook to file
           // right click? hookTo("fileContextMenu")
           // addFileContextMenuReducer, addDirContextMenuReducer
-          const dirPath = fileTreeItem.getAttribute("mn-dir-path");
+          const dirPath = fileTreeItem.getAttribute("data-mn-dir-path");
           if (dirPath) {
             return [
               {

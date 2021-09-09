@@ -15,7 +15,7 @@ import { getMatchingRanges, MatchRange } from "mnote-util/search";
 import { sortChildren } from "mnote-util/nodes";
 import { Highlight } from "mnote-components/react/highlight";
 
-const DRAG_DATA_TYPE = "mn-filetree-drag-data";
+const DRAG_DATA_TYPE = "data-mn-filetree-drag-data";
 
 type FileTreeDragData = {
   kind: "file" | "dir";
@@ -110,8 +110,7 @@ function FileNode(props: {
           setDraggedOver(false);
         }}
         className="filetree-item" // used by context menu
-        //@ts-ignore: custom dom attribute
-        mn-file-path={props.node.path}
+        data-mn-file-path={props.node.path}
       />
     )
     : <></>;
@@ -190,8 +189,7 @@ function DirNode(props: {
           )}
         className="filetree-item"
         hovered={isDraggedOver}
-        //@ts-ignore: custom dom attribute
-        mn-dir-path={props.node.path}
+        data-mn-dir-path={props.node.path}
       />
       <TreeChildren hidden={!(props.visible && expanded)}>
         {sortedChildren.map((node) =>
