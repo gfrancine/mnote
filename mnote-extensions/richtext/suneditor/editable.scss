@@ -1,0 +1,190 @@
+@mixin editable {
+  .sun-editor-editable {
+    word-wrap: break-word;
+
+    * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    &.se-rtl * {
+      direction: rtl;
+    }
+
+    td,
+    th,
+    figure,
+    figcaption,
+    img,
+    iframe,
+    video,
+    audio {
+      position: relative;
+    }
+
+    .__se__float-left {
+      float: left;
+    }
+
+    .__se__float-right {
+      float: right;
+    }
+
+    .__se__float-center {
+      float: center;
+    }
+
+    .__se__float-none {
+      float: none;
+    }
+
+    span {
+      display: inline;
+      vertical-align: baseline;
+      margin: 0;
+      padding: 0;
+
+      &.katex {
+        display: inline-block;
+
+        * {
+          direction: ltr;
+        }
+      }
+    }
+
+    &.se-rtl blockquote {
+      padding-left: 5px;
+      padding-right: 20px;
+      border-left-width: 0px;
+      border-right-width: 5px;
+    }
+
+    hr {
+      display: flex;
+      border-width: 1px 0 0;
+      border-image: initial;
+      height: 1px;
+
+      &.__se__solid {
+        border-style: solid none none;
+      }
+
+      &.__se__dotted {
+        border-style: dotted none none;
+      }
+
+      &.__se__dashed {
+        border-style: dashed none none;
+      }
+    }
+
+    &.se-disabled * {
+      user-select: none;
+      -o-user-select: none;
+      -moz-user-select: none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+    }
+
+    .se-component {
+      display: flex;
+      padding: 1px;
+      margin: 0 0 10px;
+    }
+
+    img,
+    iframe,
+    video,
+    audio {
+      display: block;
+      margin: 0;
+      padding: 0;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+    }
+
+    .se-image-container,
+    .se-video-container {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+    }
+
+    .se-video-container {
+      iframe,
+      video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        border: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      figure {
+        left: 0px;
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    audio {
+      width: 300px;
+      height: 54px;
+
+      &.active {
+        outline: 2px solid #80bdff;
+      }
+    }
+
+    &.se-show-block {
+      p,
+      div,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      li,
+      ol,
+      ul,
+      pre {
+        border: 1px dashed #3f9dff !important;
+        padding: 14px 8px 8px 8px !important;
+      }
+
+      ol,
+      ul {
+        border: 1px dashed #d539ff !important;
+      }
+
+      pre {
+        border: 1px dashed #27c022 !important;
+      }
+    }
+  }
+
+  /** -- Paragraph styles custom -- */
+  /* Bordered */
+
+  /* Spaced */
+
+  .sun-editor-editable .__se__p-spaced,
+  .sun-editor .__se__p-spaced {
+    letter-spacing: 1px;
+  }
+
+  /* Neon (https://codepen.io/GeorgePark/pen/MrjbEr) */
+
+  /* -- Text styles custom -- */
+
+  /* Code */
+}

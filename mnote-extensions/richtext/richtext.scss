@@ -5,14 +5,71 @@
 // https://github.com/JiHong88/SunEditor/blob/da06c3c23b9b9cdee314f32067b094c60497d0fb/src/assets/css/suneditor.css
 
 @use "./suneditor/link-dialog.scss";
-@use "./suneditor/resizing-controller.scss";
+@use "./suneditor/controller.scss";
 @use "./suneditor/submenu.scss";
+@use "./suneditor/button.scss";
+@use "./suneditor/editable.scss";
 
 .richtext-extension {
   height: 100%;
+  display: flex;
+  flex-direction: column;
 
   * {
     box-sizing: border-box;
+  }
+
+  .richtext-toolbar {
+    padding: 0 2em;
+
+    .se-btn-tray {
+      .se-toolbar-separator-vertical {
+        height: 1.2em;
+        display: inline;
+        margin: auto 0.2em;
+        border-left: solid 2px;
+        color: map-get(mn.$vars, fg-dimmer);
+      }
+
+      .se-btn-module.se-btn-module-border {
+        display: inline-block;
+
+        ul.se-menu-list {
+          list-style: none;
+          width: auto;
+          height: auto;
+          padding: 0;
+          margin: 0;
+
+          li {
+            display: inline-block;
+
+            button.se-btn {
+              $theme: (
+                bg: none,
+                bg-hover: none,
+                icon: map-get(mn.$vars, fg-secondary),
+                icon-hover: map-get(mn.$vars, fg-main),
+                disabled-bg: none,
+                disabled-icon: map-get(mn.$vars, fg-dim),
+              );
+
+              @include button.button($theme);
+            }
+          }
+        }
+      }
+    }
+
+    @include submenu.submenu;
+
+    .se-menu-tray {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 0px;
+    }
   }
 
   // this file hould be reserved just for core styles
@@ -20,8 +77,12 @@
   // in the ./suneditor directory
 
   .sun-editor {
+    // fix the overflow issue
+    // https://stackoverflow.com/questions/36230944/
+    min-height: 0;
+
     @include link-dialog.link-dialog;
-    @include resizing-controller.resizing-controller;
+    @include controller.controller;
     @include submenu.submenu;
   }
 
@@ -35,103 +96,88 @@
   .se-container {
     display: flex;
     flex-direction: column;
-  }
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
 
-  .se-toolbar {
-    padding: 0 2em;
-  }
+    @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
 
-  .se-btn-tray {
-    .se-toolbar-separator-vertical {
-      height: 1.2em;
-      display: inline;
-      margin: auto 0.2em;
-      border-left: solid 2px;
-      color: map-get(mn.$vars, fg-dimmer);
+    // icons
+
+    .close > svg,
+    .se-dialog-close > svg {
+      width: 10px;
+      height: 10px;
     }
 
-    .se-btn-module.se-btn-module-border {
+    .se-btn-select > svg {
+      float: right;
+      width: 10px;
+      height: 10px;
+    }
+
+    .se-btn-list > .se-list-icon {
       display: inline-block;
+      width: 16px;
+      height: 16px;
+      margin: -1px 10px 0 0;
+      vertical-align: middle;
+    }
 
-      ul.se-menu-list {
-        list-style: none;
-        width: auto;
-        height: auto;
-        padding: 0;
-        margin: 0;
+    .se-line-breaker > button > svg {
+      width: 24px;
+      height: 24px;
+    }
 
-        li {
-          display: inline-block;
+    /** --- line breaker */
+    .se-line-breaker {
+      display: none; // disable
+      position: absolute;
+      display: none;
+      width: 100%;
+      height: 1px;
+      cursor: text;
+      border-top: 1px solid #3288ff;
+      z-index: 7;
 
-          button.se-btn {
-            height: 2em;
-            width: 2em;
-            background: 0;
-            border: 0;
-            padding: 0.5em;
-            cursor: pointer;
+      > button.se-btn {
+        position: relative;
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        top: -15px;
+        float: none;
+        left: -50%;
+        background-color: #fff;
+        border: 1px solid #0c2240;
+        opacity: 0.6;
+        cursor: pointer;
 
-            svg {
-              width: 100%;
-              height: 100%;
-              fill: map-get(mn.$vars, fg-secondary);
-            }
-
-            span.se-tooltip-inner {
-              position: absolute;
-              top: 100%;
-            }
-
-            &:hover {
-              svg {
-                fill: map-get(mn.$vars, fg-main);
-              }
-            }
-
-            &:disabled {
-              cursor: not-allowed;
-
-              svg,
-              &:hover svg {
-                fill: map-get(mn.$vars, fg-dim);
-              }
-            }
-
-            &.se-btn-select {
-              width: fit-content;
-              color: map-get(mn.$vars, fg-secondary);
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              transform: translateY(-8%); // correct the weird offset
-
-              span.txt {
-                font-size: 85%;
-              }
-
-              &:hover {
-                color: map-get(mn.$vars, fg-main);
-              }
-
-              svg {
-                width: 0.6em;
-                height: 0.6em;
-                display: block;
-                margin-left: 0.4em;
-              }
-            }
-          }
+        &:hover {
+          opacity: 0.9;
+          background-color: #fff;
+          border-color: #041b39;
         }
       }
     }
-  }
 
-  .se-menu-tray {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 0px;
+    .se-line-breaker-component {
+      display: none; // disable
+      position: absolute;
+      display: none;
+      width: 24px;
+      height: 24px;
+      background-color: #fff;
+      border: 1px solid #0c2240;
+      opacity: 0.6;
+      border-radius: 4px;
+      cursor: pointer;
+      z-index: 7;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
   }
 
   .se-tooltip {
@@ -218,13 +264,36 @@
     color: map-get(mn.$vars, fg-dim);
   }
 
-  .se-wrapper {
-    @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+  .sun-editor-editable {
+    * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
 
-    overflow-y: auto;
-    overflow-x: hidden;
+    figure {
+      display: block;
+      outline: none;
+      margin: 0;
+      padding: 0;
+
+      figcaption {
+        padding: 0.5em;
+        margin: 0.5em 0 0 0;
+        background-color: map-get(mn.$vars, bg-secondary);
+        outline: none;
+      }
+    }
+  }
+
+  .se-wrapper {
     height: 100%;
     position: relative;
+
+    @include editable.editable;
 
     .se-wrapper-inner.se-wrapper-wysiwyg.sun-editor-editable {
       @include richtext.prelude;
@@ -275,6 +344,47 @@
 
       pre {
         @include richtext.code-fence;
+      }
+
+      table {
+        display: table;
+        table-layout: auto;
+        border: 1px solid rgb(204, 204, 204);
+        width: 100%;
+        max-width: 100%;
+        margin: 0 0 10px;
+        background-color: transparent;
+        border-spacing: 0;
+        border-collapse: collapse;
+      }
+
+      &.se-rtl table {
+        margin: 0 0 10px auto;
+      }
+
+      table {
+        @include richtext.table;
+
+        &.se-table-size-auto {
+          width: auto !important;
+        }
+
+        &.se-table-size-100 {
+          width: 100% !important;
+        }
+
+        &.se-table-layout-auto {
+          table-layout: auto !important;
+        }
+
+        &.se-table-layout-fixed {
+          table-layout: fixed !important;
+        }
+
+        td.se-table-selected-cell,
+        th.se-table-selected-cell {
+          outline: 1px double #4592ff;
+        }
       }
     }
 

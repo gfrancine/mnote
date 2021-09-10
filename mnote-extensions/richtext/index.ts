@@ -9,6 +9,7 @@ import "./richtext.scss";
 class RichtextEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
+  toolbarElement: HTMLElement;
   editorElement: HTMLElement;
   container?: HTMLElement;
   fs: FSModule;
@@ -24,9 +25,16 @@ class RichtextEditor implements Editor {
       .class("richtext-editor")
       .element;
 
+    this.toolbarElement = el("div")
+      .class("richtext-toolbar")
+      .element;
+
     this.element = el("div")
       .class("richtext-extension")
-      .children(this.editorElement)
+      .children(
+        this.toolbarElement,
+        this.editorElement,
+      )
       .element;
 
     this.editor = suneditor.create(this.editorElement, {
@@ -54,7 +62,10 @@ class RichtextEditor implements Editor {
         ],
         ["outdent", "indent", "align"],
         ["list", "link", "image", "table"],
+        ["codeView"],
       ],
+      toolbarContainer: this.toolbarElement,
+      resizingBar: false,
     });
 
     this.editor.onChange = (contents) => {

@@ -18,7 +18,7 @@
     button {
       font-size: 14px;
       line-height: 1.5;
-      color: #111;
+      color: map-get(mn.$vars, fg-main);
       margin: 0;
     }
 
@@ -223,6 +223,7 @@
           font-size: 14px;
           line-height: 1.42857143;
           padding: 0 4px;
+          outline: none;
 
           &.se-input-url {
             direction: ltr;
