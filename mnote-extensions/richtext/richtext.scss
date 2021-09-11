@@ -139,27 +139,29 @@
       width: 100%;
       height: 1px;
       cursor: text;
-      border-top: 1px solid #3288ff;
+      border-top: 1px solid map-get(mn.$vars, fg-secondary);
       z-index: 7;
 
       > button.se-btn {
         position: relative;
         display: inline-block;
-        width: 30px;
-        height: 30px;
         top: -15px;
         float: none;
         left: -50%;
-        background-color: #fff;
-        border: 1px solid #0c2240;
-        opacity: 0.6;
         cursor: pointer;
 
-        &:hover {
-          opacity: 0.9;
-          background-color: #fff;
-          border-color: #041b39;
-        }
+        $theme: (
+          bg: map-get(mn.$vars, bg-secondary),
+          bg-hover: map-get(mn.$vars, bg-secondary),
+          bg-active: map-get(mn.$vars, bg-secondary),
+          bg-disabled: map-get(mn.$vars, bg-secondary),
+          fg: map-get(mn.$vars, fg-secondary),
+          fg-hover: map-get(mn.$vars, fg-main),
+          fg-active: map-get(mn.$vars, fg-main),
+          fg-disabled: map-get(mn.$vars, fg-dim),
+        );
+
+        @include button.button($theme);
       }
     }
 
