@@ -48,10 +48,12 @@
               $theme: (
                 bg: none,
                 bg-hover: none,
-                icon: map-get(mn.$vars, fg-secondary),
-                icon-hover: map-get(mn.$vars, fg-main),
-                disabled-bg: none,
-                disabled-icon: map-get(mn.$vars, fg-dim),
+                bg-active: none,
+                bg-disabled: none,
+                fg: map-get(mn.$vars, fg-secondary),
+                fg-hover: map-get(mn.$vars, fg-main),
+                fg-active: map-get(mn.$vars, fg-main),
+                fg-disabled: map-get(mn.$vars, fg-dim),
               );
 
               @include button.button($theme);

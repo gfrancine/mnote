@@ -2,11 +2,13 @@
 
 $a: (
   bg: none,
-  bg-hover: none,
-  icon: map-get(mn.$vars, fg-secondary),
-  icon-hover: map-get(mn.$vars, fg-main),
-  disabled-bg: none,
-  disabled-icon: map-get(mn.$vars, fg-dim),
+  bg-hover: map-get(mn.$vars, bg-secondary),
+  bg-active: map-get(mn.$vars, bg-secondary),
+  bg-disabled: none,
+  fg: map-get(mn.$vars, fg-main),
+  fg-hover: map-get(mn.$vars, fg-main),
+  fg-active: #4592ff,
+  fg-disabled: map-get(mn.$vars, fg-dim),
 );
 
 */
@@ -15,15 +17,17 @@ $a: (
   height: 2em;
   width: 2em;
   background: map-get($theme, bg);
+  border-radius: 5px;
   border: 0;
   padding: 0.5em;
   cursor: pointer;
-  color: map-get($theme, icon);
+  color: map-get($theme, fg);
 
   svg {
     width: 100%;
     height: 100%;
-    fill: map-get($theme, icon);
+    fill: map-get($theme, fg);
+    pointer-events: none;
   }
 
   span.se-tooltip-inner {
@@ -33,26 +37,35 @@ $a: (
 
   &:hover {
     background: map-get($theme, bg-hover);
-    color: map-get($theme, icon-hover);
+    color: map-get($theme, fg-hover);
     svg {
-      fill: map-get($theme, icon-hover);
+      fill: map-get($theme, fg-hover);
     }
   }
 
   &:disabled {
     cursor: not-allowed;
-    background: map-get($theme, disabled-bg);
-    color: map-get($theme, disabled-icon);
+    background: map-get($theme, bg-disabled);
+    color: map-get($theme, fg-disabled);
 
     svg,
     &:hover svg {
-      fill: map-get($theme, disabled-icon);
+      fill: map-get($theme, fg-disabled);
+    }
+  }
+
+  &:enabled {
+    &.active {
+      color: map-get($theme, fg-active);
+      svg {
+        fill: map-get($theme, fg-active);
+      }
     }
   }
 
   &.se-btn-select {
     width: fit-content;
-    color: map-get($theme, icon);
+    color: map-get($theme, fg);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -63,7 +76,7 @@ $a: (
     }
 
     &:hover {
-      color: map-get($theme, icon-hover);
+      color: map-get($theme, fg-hover);
     }
 
     svg {

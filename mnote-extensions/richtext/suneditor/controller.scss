@@ -19,8 +19,8 @@
     word-spacing: normal;
     word-wrap: normal;
     white-space: normal;
-    background-color: map-get(mn.$vars, bg-secondary);
-    color: map-get(mn.$vars, fg-secondary);
+    background-color: map-get(mn.$vars, bg-main);
+    color: map-get(mn.$vars, fg-main);
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
     -webkit-box-shadow: map-get(mn.$vars, shadow);
@@ -45,17 +45,18 @@
 
         button {
           margin: 0;
-          min-width: 72px;
         }
       }
 
       $btn-theme: (
         bg: none,
-        bg-hover: none,
-        icon: map-get(mn.$vars, fg-secondary),
-        icon-hover: map-get(mn.$vars, fg-main),
-        disabled-bg: none,
-        disabled-icon: map-get(mn.$vars, fg-dim),
+        bg-hover: map-get(mn.$vars, bg-secondary),
+        bg-active: map-get(mn.$vars, bg-secondary),
+        bg-disabled: none,
+        fg: map-get(mn.$vars, fg-main),
+        fg-hover: map-get(mn.$vars, fg-main),
+        fg-active: #4592ff,
+        fg-disabled: map-get(mn.$vars, fg-dim),
       );
 
       .se-tooltip._se_percentage {
@@ -89,10 +90,6 @@
     font-style: normal;
     font-weight: normal;
     line-height: 1.42857143;
-
-    .se-btn-group .se-btn-group-sub.se-resizing-align-list {
-      width: 74px;
-    }
   }
 
   .se-resizing-container {
