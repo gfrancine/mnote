@@ -1,4 +1,10 @@
-import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
+import {
+  Editor,
+  EditorContext,
+  Extension,
+  FSModule,
+  Mnote,
+} from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 import { getPathExtension } from "mnote-util/path";
 import suneditor from "suneditor";
@@ -68,10 +74,6 @@ class RichtextEditor implements Editor {
       resizingBar: false,
     });
 
-    this.editor.onChange = (contents) => {
-      this.contents = contents;
-    };
-
     // disable spell check
     // REWRITEME
     (this.element.querySelector(
@@ -92,7 +94,14 @@ class RichtextEditor implements Editor {
       const contents = await this.fs.readTextFile(path);
       this.contents = contents;
     }
+
     this.editor.setContents(this.contents);
+
+    this.editor.onChange = (contents) => {
+      this.contents = contents;
+      ctx.updateEdited();
+    };
+
     this.container = containter;
     containter.appendChild(this.element);
   }
