@@ -60,7 +60,7 @@
         .se-btn-primary {
           display: inline-block;
           padding: 6px 12px;
-          margin: 0 0 10px 0 !important;
+          margin: 0 0 10px !important;
           font-size: 1em;
           font-weight: normal;
           line-height: 1.5;
@@ -75,7 +75,7 @@
 
       .se-dialog-header {
         height: 50px;
-        padding: 6px 15px 6px 15px;
+        padding: 6px 15px;
         border-bottom: 1px solid map-get(mn.$vars, border-main);
 
         .se-dialog-close {
@@ -161,7 +161,7 @@
 
         label:first-child {
           margin-right: 16px;
-          margin-left: 0px;
+          margin-left: 0;
         }
       }
 
