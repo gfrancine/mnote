@@ -1,4 +1,5 @@
 prettier -w **.scss
+
 deno fmt `
   mnote-core/src `
   mnote-extensions/plaintext `
@@ -17,3 +18,7 @@ deno fmt `
   mnote-util `
   mnote-deps/kanban `
   mnote-deps/resizable
+
+cd mnote-app/src-tauri
+cargo fmt
+cd ../..

@@ -72,11 +72,10 @@ fn process_dialog_result(result: Option<PathBuf>) -> Option<String> {
     Some(pathbuf) => {
       if let Ok(path) = pathbuf.into_os_string().into_string() {
         return Some(path);
-      } else {
-        return None;
       }
+      None
     }
-    None => return None,
+    None => None,
   }
 }
 
@@ -87,7 +86,8 @@ fn fs_open_dialog(
   starting_directory: Option<String>,
   starting_file_name: Option<String>,
 ) -> Option<String> {
-  let dialog = dialog_from_opts(filters, starting_directory, starting_file_name);
+  let dialog =
+    dialog_from_opts(filters, starting_directory, starting_file_name);
 
   let result = if is_directory {
     dialog.pick_folder()
@@ -105,7 +105,8 @@ fn fs_save_dialog(
   starting_file_name: Option<String>,
 ) -> Option<String> {
   process_dialog_result(
-    dialog_from_opts(filters, starting_directory, starting_file_name).save_file(),
+    dialog_from_opts(filters, starting_directory, starting_file_name)
+      .save_file(),
   )
 }
 
@@ -161,7 +162,8 @@ use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu};
 fn make_menu() -> Menu {
   // https://docs.rs/tauri/1.0.0-beta.5/tauri/enum.MenuItem.html
 
-  let main_submenu = Submenu::new("Mnote", Menu::new().add_native_item(MenuItem::Quit));
+  let main_submenu =
+    Submenu::new("Mnote", Menu::new().add_native_item(MenuItem::Quit));
 
   let file_submenu = Submenu::new(
     "File",
@@ -169,10 +171,18 @@ fn make_menu() -> Menu {
       .add_item(CustomMenuItem::new("open-file", "Open File..."))
       .add_item(CustomMenuItem::new("open-folder", "Open Folder..."))
       .add_native_item(MenuItem::Separator)
-      .add_item(CustomMenuItem::new("save", "Save").accelerator("CmdOrControl+S"))
-      .add_item(CustomMenuItem::new("save-as", "Save As...").accelerator("CmdOrControl+Shift+S"))
+      .add_item(
+        CustomMenuItem::new("save", "Save").accelerator("CmdOrControl+S"),
+      )
+      .add_item(
+        CustomMenuItem::new("save-as", "Save As...")
+          .accelerator("CmdOrControl+Shift+S"),
+      )
       .add_native_item(MenuItem::Separator)
-      .add_item(CustomMenuItem::new("close-editor", "Close Editor").accelerator("CmdOrControl+W")),
+      .add_item(
+        CustomMenuItem::new("close-editor", "Close Editor")
+          .accelerator("CmdOrControl+W"),
+      ),
   );
 
   let edit_submenu = Submenu::new(
@@ -195,15 +205,16 @@ fn make_menu() -> Menu {
 }
 
 fn main() {
-  let builder = tauri::Builder::default().invoke_handler(tauri::generate_handler![
-    get_args,
-    is_mac,
-    is_windows,
-    watcher_init,
-    fs_rename,
-    fs_save_dialog,
-    fs_open_dialog
-  ]);
+  let builder =
+    tauri::Builder::default().invoke_handler(tauri::generate_handler![
+      get_args,
+      is_mac,
+      is_windows,
+      watcher_init,
+      fs_rename,
+      fs_save_dialog,
+      fs_open_dialog
+    ]);
 
   let builder = if cfg!(target_os = "macos") {
     builder.menu(make_menu()).on_menu_event(move |event| {
@@ -218,12 +229,11 @@ fn main() {
     .build(tauri::generate_context!())
     .expect("error building the app");
 
-  app.run(|app_handle, e| match e {
-    tauri::Event::CloseRequested { label, api, .. } => {
+  app.run(|app_handle, e| {
+    if let tauri::Event::CloseRequested { label, api, .. } = e {
       api.prevent_close();
       let window = app_handle.get_window(&label).unwrap();
       window.emit("close-requested", ()).unwrap();
     }
-    _ => (),
-  })
+  });
 }

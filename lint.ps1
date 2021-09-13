@@ -16,3 +16,13 @@ deno lint `
   mnote-util `
   mnote-deps/kanban `
   mnote-deps/resizable
+
+# call with ".\lint.ps1 full"
+# to avoid compiling
+
+if ($args[0] -eq "full") {
+  cd mnote-app/src-tauri
+  cargo clippy
+  cargo check
+  cd ../..
+}
