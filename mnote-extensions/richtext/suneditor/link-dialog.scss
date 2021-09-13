@@ -99,15 +99,6 @@
         padding: 1em;
       }
 
-      .se-dialog-form {
-        margin-bottom: 0.8em;
-      }
-
-      .se-dialog-form-footer {
-        margin-top: 1em;
-        margin-bottom: 0;
-      }
-
       input:disabled {
         background-color: #f3f3f3;
       }
@@ -154,6 +145,9 @@
       }
 
       .se-dialog-form-footer {
+        margin-top: 1em;
+        margin-bottom: 0;
+
         .se-dialog-btn-check {
           margin-left: 0;
           margin-right: 4px;
@@ -166,6 +160,8 @@
       }
 
       .se-dialog-form {
+        margin-bottom: 0.8em;
+        
         .se-dialog-form-files {
           position: relative;
           display: flex;

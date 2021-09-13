@@ -135,7 +135,6 @@
     .se-line-breaker {
       display: none; // disable
       position: absolute;
-      display: none;
       width: 100%;
       height: 1px;
       cursor: text;
@@ -168,7 +167,6 @@
     .se-line-breaker-component {
       display: none; // disable
       position: absolute;
-      display: none;
       width: 24px;
       height: 24px;
       background-color: #fff;
@@ -260,14 +258,6 @@
     color: map-get(mn.$vars, fg-dim);
   }
 
-  .se-resizing-bar.sun-editor-common.se-resizing-none {
-    height: 3em;
-    line-height: 3em;
-    padding: 0 2em;
-    font-size: 0.8em;
-    color: map-get(mn.$vars, fg-dim);
-  }
-
   .sun-editor-editable {
     * {
       -webkit-box-sizing: border-box;
@@ -318,10 +308,6 @@
         @include richtext.list;
       }
 
-      p {
-        @include richtext.paragraph;
-      }
-
       hr {
         @include richtext.hr;
       }
@@ -350,23 +336,19 @@
         @include richtext.code-fence;
       }
 
-      table {
-        display: table;
-        table-layout: auto;
-        border: 1px solid rgb(204, 204, 204);
-        width: 100%;
-        max-width: 100%;
-        margin: 0 0 10px;
-        background-color: transparent;
-        border-spacing: 0;
-        border-collapse: collapse;
-      }
-
       &.se-rtl table {
         margin: 0 0 10px auto;
       }
 
       table {
+        display: table;
+        table-layout: auto;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 0 10px;
+        border-spacing: 0;
+        border-collapse: collapse;
+
         @include richtext.table;
 
         &.se-table-size-auto {
