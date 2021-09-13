@@ -115,11 +115,20 @@ export class TabManager {
 
   async saveAs(): Promise<boolean> {
     const { editor, editorInfo, document } = this.ctx.getTabInfo();
+
     const newPath = editorInfo.disableSaveAs
       ? document.path
       : await this.fs.dialogSave({
         filters: editorInfo.saveAsFileTypes,
-        startingPath: document.path,
+        startingDirectory: (() => {
+          if (document.path) {
+            const dirFragments = this.fs.splitPath(document.path);
+            dirFragments.pop();
+            return this.fs.joinPath(dirFragments);
+          }
+          return undefined;
+        })(),
+        startingFileName: document.name,
       });
 
     this.log.info("editor tabs: saveAs - new path:", newPath);
@@ -144,8 +153,8 @@ export class TabManager {
   }
 
   private async cleanup() {
-    this.fs.onWatchEvent("rename", this.onWatcherRename);
-    this.fs.onWatchEvent("remove", this.onWatcherRemove);
+    this.fs.offWatchEvent("rename", this.onWatcherRename);
+    this.fs.offWatchEvent("remove", this.onWatcherRemove);
     const { editor } = this.ctx.getTabInfo();
     await editor.cleanup();
   }
