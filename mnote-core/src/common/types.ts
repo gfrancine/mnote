@@ -21,6 +21,7 @@ export type DialogFilter = { name: string; extensions: string[] };
 
 export type FsWatcherEvents = {
   event: () => void | Promise<void>;
+  create: (path: string) => void | Promise<void>;
   write: (path: string) => void | Promise<void>;
   remove: (path: string) => void | Promise<void>;
   rename: (path: string, targetPath: string) => void | Promise<void>;

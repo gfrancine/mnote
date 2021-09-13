@@ -125,7 +125,7 @@ struct WatcherPayload<'a> {
 #[tauri::command]
 async fn watcher_init(window: tauri::Window, path: String) {
   let (tx, rx) = channel();
-  let mut watcher = watcher(tx, Duration::from_secs(3)).unwrap();
+  let mut watcher = watcher(tx, Duration::from_secs(1)).unwrap();
   watcher.watch(path, RecursiveMode::Recursive).unwrap();
 
   loop {
@@ -136,6 +136,11 @@ async fn watcher_init(window: tauri::Window, path: String) {
       };
 
       match ev {
+        DebouncedEvent::Create(path) => emit(WatcherPayload {
+          kind: "create",
+          path: path.as_path().to_str(),
+          target_path: None,
+        }),
         DebouncedEvent::Write(path) => emit(WatcherPayload {
           kind: "write",
           path: path.as_path().to_str(),

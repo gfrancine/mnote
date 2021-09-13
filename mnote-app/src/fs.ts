@@ -14,7 +14,7 @@ import * as path from "@tauri-apps/api/path";
 // https://tauri.studio/en/docs/api/js/modules/fs
 
 type RustWatcherPayload = {
-  kind: "write" | "remove" | "rename";
+  kind: keyof Omit<FsWatcherEvents, "event">;
   path?: string; // conversion from PathBuf is an Option
   targetPath?: string;
 };
