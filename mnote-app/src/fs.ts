@@ -154,28 +154,26 @@ export class FS implements FsInteropModule {
   }
 
   joinPath(items: string[]) {
-    const join = (delimiter: string, items_: string[]) => {
-      let final = "";
-      items.forEach((item, i) => {
-        if (item.charAt(0) === delimiter) {
-          item = item.slice(1);
-        }
+    const delimiter = this.IS_WINDOWS ? "\\" : "/";
 
-        const length = item.length;
-        if (item.charAt(length - 1) === delimiter) {
-          item = item.slice(0, length - 1);
-        }
+    let final = "";
+    items.forEach((item, i) => {
+      if (
+        item.charAt(0) === delimiter &&
+        (this.IS_WINDOWS && item.charAt(1) !== delimiter) // allow \\ in the back
+      ) {
+        item = item.slice(1);
+      }
 
-        final += item + (i === items_.length - 1 ? "" : delimiter);
-      });
+      const length = item.length;
+      if (item.charAt(length - 1) === delimiter) {
+        item = item.slice(0, length - 1);
+      }
 
-      return final;
-    };
+      final += item + (i === items.length - 1 ? "" : delimiter);
+    });
 
-    return join(
-      this.IS_WINDOWS ? "\\" : "/",
-      items,
-    );
+    return final;
   }
 
   splitPath(path: string) {

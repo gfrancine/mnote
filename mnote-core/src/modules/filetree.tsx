@@ -275,7 +275,7 @@ export class FiletreeModule {
         );
         if (!name) return;
         const path = this.fs.joinPath([dir, name]);
-        this.log.info("filetree: New folder", path);
+        this.log.info("filetree: New folder", path, "from", [dir, name]);
         await this.fs.createDir(path);
       },
     });
