@@ -1,15 +1,10 @@
-import {
-  Editor,
-  EditorContext,
-  Extension,
-  FSModule,
-  Mnote,
-} from "mnote-core";
+import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 import { getPathExtension } from "mnote-util/path";
 import suneditor from "suneditor";
 import SunEditor from "suneditor/src/lib/core";
 import plugins from "suneditor/src/plugins";
+import { htmlIcon } from "./icon";
 import "./richtext.scss";
 
 class RichtextEditor implements Editor {
@@ -124,10 +119,17 @@ export class RichtextExtension implements Extension {
     const matchesExtension = (path: string) =>
       getPathExtension(path) === "html";
 
+    app.modules.fileicons.registerIcon({
+      factory: htmlIcon,
+      kind: "html",
+      shouldUse: matchesExtension,
+    });
+
     app.modules.editors.registerEditor({
       kind: "Rich Text",
       canOpenPath: matchesExtension,
       createNewEditor: () => new RichtextEditor(app),
+      registeredIconKind: "html",
       saveAsFileTypes: [{
         name: "HTML Document",
         extensions: ["html"],
