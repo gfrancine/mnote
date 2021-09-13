@@ -67,10 +67,10 @@
 
     .se-menu-tray {
       position: absolute;
-      top: 0px;
-      left: 0px;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: 0px;
+      height: 0;
     }
   }
 
@@ -286,7 +286,7 @@
 
       figcaption {
         padding: 0.5em;
-        margin: 0.5em 0 0 0;
+        margin: 0.5em 0 0;
         background-color: map-get(mn.$vars, bg-secondary);
         outline: none;
       }
