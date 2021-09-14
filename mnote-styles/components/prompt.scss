@@ -1,8 +1,10 @@
-@mixin prompt($theme) {
+@use "../mnote-vars.scss" as mn;
+
+@mixin prompt {
   .prompt-overlay {
     width: 100vw;
     height: 100vh;
-    background: map-get($theme, overlay-bg);
+    background: map-get(mn.$vars, overlay-bg);
     position: fixed;
     top: 0;
     left: 0;
@@ -14,8 +16,8 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    background: map-get($theme, bg-main);
-    color: map-get($theme, fg-main);
+    background: map-get(mn.$vars, bg-main);
+    color: map-get(mn.$vars, fg-main);
     padding: 0.8em;
     margin-top: 2em;
     border-radius: 5px;
@@ -28,40 +30,40 @@
       text-align: right;
 
       .prompt-button {
-        font-family: map-get($theme, font-main);
+        font-family: map-get(mn.$vars, font-main);
         font-size: 13px;
         display: inline-block;
         flex-direction: row;
-        color: map-get($theme, fg-main);
+        color: map-get(mn.$vars, fg-main);
         padding: 0.8em;
         margin-left: 0.5em;
         border-radius: 5px;
         cursor: pointer;
 
         &.normal {
-          background: map-get($theme, btn-main-bg);
-          color: map-get($theme, btn-main-fg);
+          background: map-get(mn.$vars, btn-main-bg);
+          color: map-get(mn.$vars, btn-main-fg);
 
           &:hover {
-            background: map-get($theme, btn-main-bg-hover);
-            color: map-get($theme, btn-main-fg-hover);
+            background: map-get(mn.$vars, btn-main-bg-hover);
+            color: map-get(mn.$vars, btn-main-fg-hover);
           }
         }
 
         &.emphasis {
-          background: map-get($theme, btn-emphasis-bg);
-          color: map-get($theme, btn-emphasis-fg);
+          background: map-get(mn.$vars, btn-emphasis-bg);
+          color: map-get(mn.$vars, btn-emphasis-fg);
 
           &:hover {
-            background: map-get($theme, btn-emphasis-bg-hover);
-            color: map-get($theme, btn-emphasis-fg-hover);
+            background: map-get(mn.$vars, btn-emphasis-bg-hover);
+            color: map-get(mn.$vars, btn-emphasis-fg-hover);
           }
         }
       }
     }
 
     .prompt-text {
-      font-family: map-get($theme, font-main);
+      font-family: map-get(mn.$vars, font-main);
       margin-bottom: 1em;
       font-size: 13px;
     }
@@ -73,11 +75,11 @@
       outline: none;
       border: none;
       border-radius: 5px;
-      background: map-get($theme, bg-secondary);
+      background: map-get(mn.$vars, bg-secondary);
       margin-bottom: 1em;
       padding: 0.8em;
-      color: map-get($theme, fg-main);
-      font-family: map-get($theme, font-main);
+      color: map-get(mn.$vars, fg-main);
+      font-family: map-get(mn.$vars, font-main);
       font-size: 13px;
       line-height: initial;
     }

@@ -51,7 +51,7 @@ export class Mnote {
 
   container: Element;
 
-  element: Element;
+  element: HTMLElement;
 
   modules: Modules = {} as Modules;
 

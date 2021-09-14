@@ -3,9 +3,9 @@
 @use "editor";
 @use "sidebar";
 
-@mixin modules($vars) {
-  @include layout.layout($vars);
-  @include menubar.menubar($vars);
-  @include editor.editor($vars);
-  @include sidebar.sidebar($vars);
+@mixin modules {
+  @include layout.layout;
+  @include menubar.menubar;
+  @include editor.editor;
+  @include sidebar.sidebar;
 }

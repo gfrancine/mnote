@@ -1,12 +1,13 @@
 @use "../util/scrollbar.scss";
+@use "../mnote-vars.scss" as mn;
 
 // styles for the filetree component (components/jsx)
 
-@mixin filetree($theme) {
+@mixin filetree {
   .filetree-main {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
-    font-family: map-get($theme, font-main);
+    font-family: map-get(mn.$vars, font-main);
   }
 }

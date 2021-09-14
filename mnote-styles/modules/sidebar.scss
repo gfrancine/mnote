@@ -1,4 +1,6 @@
-@mixin sidebar($theme) {
+@use "../mnote-vars.scss" as mn;
+
+@mixin sidebar {
   .sidemenu-main {
     width: 100%;
     height: 100%;
@@ -14,22 +16,22 @@
     height: 24px; // see layout styles
 
     .fill {
-      fill: map-get($theme, "fg-secondary");
+      fill: map-get(mn.$vars, "fg-secondary");
     }
 
     .stroke {
-      stroke: map-get($theme, "fg-secondary");
+      stroke: map-get(mn.$vars, "fg-secondary");
     }
 
     &:hover {
       cursor: pointer;
 
       .fill {
-        fill: map-get($theme, "fg-main");
+        fill: map-get(mn.$vars, "fg-main");
       }
 
       .stroke {
-        stroke: map-get($theme, "fg-main");
+        stroke: map-get(mn.$vars, "fg-main");
       }
     }
 

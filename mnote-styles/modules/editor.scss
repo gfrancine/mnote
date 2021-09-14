@@ -1,6 +1,7 @@
 @use "../util/scrollbar.scss";
+@use "../mnote-vars.scss" as mn;
 
-@mixin editor($theme) {
+@mixin editor {
   .editor-main,
   .editor-container {
     width: 100%;
@@ -10,6 +11,6 @@
 
   .editor-container {
     overflow: auto;
-    @include scrollbar.scrollbar(map-get($theme, bg-secondary));
+    @include scrollbar.scrollbar(map-get(mn.$vars, bg-secondary));
   }
 }

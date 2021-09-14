@@ -1,13 +1,14 @@
 @use "~mnote-components/vanilla/menu.scss";
+@use "../mnote-vars.scss" as mn;
 
-@mixin menu($theme) {
+@mixin menu {
   $menu-theme: (
-    bg-main: map-get($theme, bg-main),
-    bg-hover: map-get($theme, bg-secondary),
-    shadow: map-get($theme, shadow),
-    fg-main: map-get($theme, fg-main),
-    fg-shortcut: map-get($theme, fg-dim),
-    border-divider: map-get($theme, border-main),
+    bg-main: map-get(mn.$vars, bg-main),
+    bg-hover: map-get(mn.$vars, bg-secondary),
+    shadow: map-get(mn.$vars, shadow),
+    fg-main: map-get(mn.$vars, fg-main),
+    fg-shortcut: map-get(mn.$vars, fg-dim),
+    border-divider: map-get(mn.$vars, border-main),
   );
 
   @include menu.menu($menu-theme);

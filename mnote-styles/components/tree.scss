@@ -1,8 +1,9 @@
 @use "../util/scrollbar.scss";
+@use "../mnote-vars.scss" as mn;
 
 // styles for the filetree component (components/jsx)
 
-@mixin tree($theme) {
+@mixin tree {
   .tree-hidden {
     display: none !important;
   }
@@ -20,28 +21,28 @@
 
     &.tree-hovered,
     &:hover {
-      background: map-get($theme, sidebar-item-hover-bg);
-      color: map-get($theme, sidebar-item-hover-fg);
+      background: map-get(mn.$vars, sidebar-item-hover-bg);
+      color: map-get(mn.$vars, sidebar-item-hover-fg);
 
       .fill {
-        fill: map-get($theme, sidebar-item-icon-hover);
+        fill: map-get(mn.$vars, sidebar-item-icon-hover);
       }
 
       .stroke {
-        stroke: map-get($theme, sidebar-item-icon-hover);
+        stroke: map-get(mn.$vars, sidebar-item-icon-hover);
       }
     }
 
     &.tree-focused {
-      background: map-get($theme, sidebar-item-focused-bg);
-      color: map-get($theme, sidebar-item-hover-fg);
+      background: map-get(mn.$vars, sidebar-item-focused-bg);
+      color: map-get(mn.$vars, sidebar-item-hover-fg);
 
       .fill {
-        fill: map-get($theme, sidebar-item-focused-icon);
+        fill: map-get(mn.$vars, sidebar-item-focused-icon);
       }
 
       .stroke {
-        stroke: map-get($theme, sidebar-item-focused-icon);
+        stroke: map-get(mn.$vars, sidebar-item-focused-icon);
       }
     }
 
@@ -53,11 +54,11 @@
       box-sizing: border-box;
 
       .fill {
-        fill: map-get($theme, sidebar-item-icon);
+        fill: map-get(mn.$vars, sidebar-item-icon);
       }
 
       .stroke {
-        stroke: map-get($theme, sidebar-item-icon);
+        stroke: map-get(mn.$vars, sidebar-item-icon);
       }
 
       svg {

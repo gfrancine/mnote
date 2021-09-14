@@ -4,19 +4,8 @@ import { dark, light } from "../components/colors";
 import { ThemeInfo } from "./types";
 import { LogModule } from "./log";
 
-// colors are declared at bottom
-
-// variables are in an "mnote" namespace (--mnote-<key>)
-function setVar(key: string, value: string) {
-  document.documentElement.style.setProperty("--mnote-" + key, value);
-}
-
-// themes used to be loaded from plain tables, but it doesn't
-// work nicely when new keys are added / values are adjusted
-
-// themes module, binds the registry with the rest of the app
-
 export class ThemesModule {
+  private app: Mnote;
   private settings: SettingsModule;
   private log: LogModule;
   private themes: Record<string, ThemeInfo> = {
@@ -33,6 +22,7 @@ export class ThemesModule {
   // events: Emitter<{}> = new Emitter();
 
   constructor(app: Mnote) {
+    this.app = app;
     this.settings = app.modules.settings;
     this.log = app.modules.log;
 
@@ -73,6 +63,10 @@ export class ThemesModule {
     return this;
   }
 
+  private setVar(key: string, value: string) {
+    this.app.element.style.setProperty("--mnote-" + key, value);
+  }
+
   private async updateTheme() {
     let theme = await this.getSettingsValue();
     if (!this.hasTheme(theme)) theme = "system";
@@ -98,7 +92,7 @@ export class ThemesModule {
     if (!this.themes[theme]) theme = "light";
     const themeInfo = this.themes[theme];
     for (const k of Object.keys(themeInfo.colors)) {
-      setVar(k, themeInfo.colors[k]);
+      this.setVar(k, themeInfo.colors[k]);
     }
   }
 
