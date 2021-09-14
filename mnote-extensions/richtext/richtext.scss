@@ -4,7 +4,7 @@
 // https://css2sass.herokuapp.com/
 // https://github.com/JiHong88/SunEditor/blob/da06c3c23b9b9cdee314f32067b094c60497d0fb/src/assets/css/suneditor.css
 
-@use "./suneditor/link-dialog.scss";
+@use "./suneditor/dialog.scss";
 @use "./suneditor/controller.scss";
 @use "./suneditor/submenu.scss";
 @use "./suneditor/button.scss";
@@ -85,7 +85,7 @@
     // https://stackoverflow.com/questions/36230944/
     min-height: 0;
 
-    @include link-dialog.link-dialog;
+    @include dialog.dialog;
     @include controller.controller;
     @include submenu.submenu;
   }
