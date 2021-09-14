@@ -9,11 +9,10 @@ import {
 import { el } from "mnote-util/elbuilder";
 import React, { useState } from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { getPathExtension } from "mnote-util/path";
+
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import moment from "moment";
-import { nanoid } from "nanoid";
 
 import "./big-calendar/styles.scss";
 import "./big-calendar/dragAndDrop.scss";
@@ -280,7 +279,7 @@ class CalendarEditor implements Editor {
 export class CalendarExtension implements Extension {
   startup(app: Mnote) {
     const matchesExtension = (path: string) =>
-      getPathExtension(path) === "mncalendar";
+      app.modules.fs.getPathExtension(path) === "mncalendar";
 
     app.modules.editors.registerEditor({
       kind: "Calendar",

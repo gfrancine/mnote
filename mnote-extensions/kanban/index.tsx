@@ -3,7 +3,6 @@ import { el } from "mnote-util/elbuilder";
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import Board, { defaultValue, KanbanState } from "mnote-deps/kanban";
-import { getPathExtension } from "mnote-util/path";
 
 import "./kanban.scss";
 import { kanbanIcon } from "./icon";
@@ -37,7 +36,7 @@ class KanbanEditor implements Editor {
 
   constructor(app: Mnote) {
     this.app = app;
-    this.fs = (app.modules.fs as FSModule);
+    this.fs = app.modules.fs;
     this.element = el("div")
       .class("kanban-extension")
       .element;
@@ -84,7 +83,7 @@ class KanbanEditor implements Editor {
 export class KanbanExtension implements Extension {
   startup(app: Mnote) {
     const matchesExtension = (path: string) =>
-      getPathExtension(path) === "mnkanban";
+      app.modules.fs.getPathExtension(path) === "mnkanban";
 
     app.modules.editors.registerEditor({
       kind: "Kanban",

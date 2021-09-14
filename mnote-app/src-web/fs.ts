@@ -3,7 +3,11 @@ import {
   FsInteropModule,
   FsReadDirOptions,
 } from "mnote-core";
-import { getPathExtension } from "mnote-util/path";
+import {
+  getPathExtension,
+  getPathName,
+  getPathParent,
+} from "../../mnote-util/path";
 import { contents, tree } from "./mocks";
 
 export class FS implements FsInteropModule {
@@ -12,7 +16,7 @@ export class FS implements FsInteropModule {
   }
   readTextFile(path: string): Promise<string> {
     return Promise.resolve(
-      contents[getPathExtension(path)] ||
+      contents[this.getPathExtension(path)] ||
         "lorem ipsum",
     );
   }
@@ -55,11 +59,18 @@ export class FS implements FsInteropModule {
   getCurrentDir(): Promise<string> {
     return Promise.resolve("currentdir");
   }
-  joinPath(items: string[]): string {
-    return items.join("/");
+
+  getPathName(path: string) {
+    return getPathName(path);
   }
-  splitPath(path: string): string[] {
-    return path.split("/");
+  getPathParent(path: string) {
+    return getPathParent(path);
+  }
+  getPathExtension(path: string) {
+    return getPathExtension(path);
+  }
+  joinPath(fragments: string[]) {
+    return fragments.join("/");
   }
 
   watchInit(_path: string): Promise<void> {

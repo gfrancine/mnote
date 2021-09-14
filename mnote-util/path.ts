@@ -1,3 +1,6 @@
+// Only used as a fallback by src-web FS and default FS module
+// DO NOT USE
+
 const EXTENSION_REGEX = /(\.([^.\\/]+))[\\/]?$/;
 const NAME_REGEX = /([^\\/]+)[\\/]?$/;
 const PARENT_REGEX = /(.+)[\\/][^\\/]+[\\/]?$/;

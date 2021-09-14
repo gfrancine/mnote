@@ -17,7 +17,8 @@ deno fmt `
   mnote-app/bundle-scripts `
   mnote-util `
   mnote-deps/kanban `
-  mnote-deps/resizable
+  mnote-deps/resizable `
+  mnote-deps/path-browser
 
 cd mnote-app/src-tauri
 cargo fmt

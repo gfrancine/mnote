@@ -22,7 +22,6 @@ import { commonmark } from "@milkdown/preset-commonmark";
 import { history } from "@milkdown/plugin-history";
 import { clipboard } from "@milkdown/plugin-clipboard";
 
-import { getPathExtension } from "mnote-util/path";
 import { el } from "mnote-util/elbuilder";
 import "./markdown.scss";
 import { markdownIcon } from "./icon";
@@ -158,7 +157,8 @@ class MarkdownEditor implements Editor {
 
 export class MarkdownExtension implements Extension {
   startup(app: Mnote) {
-    const matchesExtension = (path: string) => getPathExtension(path) === "md";
+    const matchesExtension = (path: string) =>
+      app.modules.fs.getPathExtension(path) === "md";
 
     app.modules.fileicons.registerIcon({
       kind: "markdown",

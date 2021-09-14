@@ -2,7 +2,6 @@ import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { getPathExtension } from "mnote-util/path";
 
 import "./todo.scss";
 import Todo, { TodoData } from "./todo";
@@ -108,7 +107,7 @@ class TodoEditor implements Editor {
 export class TodoExtension implements Extension {
   startup(app: Mnote) {
     const matchesExtension = (path: string) =>
-      getPathExtension(path) === "mntodo";
+      app.modules.fs.getPathExtension(path) === "mntodo";
 
     app.modules.editors.registerEditor({
       kind: "Todo",

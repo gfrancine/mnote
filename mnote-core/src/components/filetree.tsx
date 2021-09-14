@@ -4,7 +4,6 @@ import {
   ChevronDown,
   ChevronRight,
 } from "mnote-components/react/icons-jsx";
-import { getPathName } from "mnote-util/path";
 import {
   FileTreeHooks,
   FileTreeNode as Node,
@@ -40,7 +39,11 @@ const makeDropHandler = (dirPath: string, hooks?: FileTreeHooks) =>
     }
   };
 
-function searchFileTree(tree: NodeWithChildren, searchTerm: string) {
+function searchFileTree(
+  tree: NodeWithChildren,
+  searchTerm: string,
+  getPathName: (path: string) => string,
+) {
   const results: Record<string, MatchRange[]> = {};
   if (searchTerm.length < 1) return results;
 
@@ -67,8 +70,11 @@ function FileNode(props: {
   getFileIcon?: FileIconFactory;
   searchResults?: Record<string, MatchRange[]>;
   disableRename?: boolean;
+  getPathName: (path: string) => string;
 }) {
-  const name = useMemo(() => getPathName(props.node.path), [props.node.path]);
+  const name = useMemo(() => props.getPathName(props.node.path), [
+    props.node.path,
+  ]);
 
   const onClick = () => props.hooks?.fileFocused?.(props.node.path);
 
@@ -129,8 +135,11 @@ function DirNode(props: {
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
   searchResults?: Record<string, MatchRange[]>;
+  getPathName: (path: string) => string;
 }) {
-  const name = useMemo(() => getPathName(props.node.path), [props.node.path]);
+  const name = useMemo(() => props.getPathName(props.node.path), [
+    props.node.path,
+  ]);
 
   // sort by name and by type (directories go first)
   const sortedChildren = useMemo(
@@ -207,6 +216,7 @@ function DirNode(props: {
                 focusedPath={props.focusedPath}
                 getFileIcon={props.getFileIcon}
                 searchResults={props.searchResults}
+                getPathName={props.getPathName}
               />
             )
             : (
@@ -219,6 +229,7 @@ function DirNode(props: {
                 focusedPath={props.focusedPath}
                 getFileIcon={props.getFileIcon}
                 searchResults={props.searchResults}
+                getPathName={props.getPathName}
               />
             )
         )}
@@ -235,10 +246,11 @@ export default function (props: {
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
   searchTerm?: string;
+  getPathName: (path: string) => string;
 }) {
   const searchResults = useMemo(() => {
     if (!props.searchTerm) return;
-    return searchFileTree(props.node, props.searchTerm);
+    return searchFileTree(props.node, props.searchTerm, props.getPathName);
   }, [props.searchTerm, props.node]);
 
   return (
@@ -257,6 +269,7 @@ export default function (props: {
             getFileIcon={props.getFileIcon}
             searchResults={searchResults}
             disableRename
+            getPathName={props.getPathName}
           />
         )
         : <></>}

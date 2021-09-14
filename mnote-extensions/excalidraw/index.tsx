@@ -1,7 +1,7 @@
 import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 import { Emitter } from "mnote-util/emitter";
-import { getPathExtension } from "mnote-util/path";
+
 import { render, unmountComponentAtNode } from "react-dom";
 import React from "react";
 
@@ -127,7 +127,7 @@ class ExcalidrawEditor implements Editor {
 export class ExcalidrawExtension implements Extension {
   startup(app: Mnote) {
     const matchesExtension = (path: string) =>
-      getPathExtension(path) === "excalidraw";
+      app.modules.fs.getPathExtension(path) === "excalidraw";
 
     app.modules.editors.registerEditor({
       kind: "Excalidraw",

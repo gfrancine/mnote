@@ -1,6 +1,6 @@
 import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
-import { getPathExtension } from "mnote-util/path";
+
 import { plaintextIcon } from "./icon";
 import "./plaintext.scss";
 
@@ -89,7 +89,8 @@ class PlaintextEditor implements Editor {
 
 export class PlaintextExtension implements Extension {
   startup(app: Mnote) {
-    const matchesExtension = (path: string) => getPathExtension(path) === "txt";
+    const matchesExtension = (path: string) =>
+      app.modules.fs.getPathExtension(path) === "txt";
 
     app.modules.fileicons.registerIcon({
       kind: "textFile",

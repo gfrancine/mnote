@@ -10,6 +10,7 @@ import { Event as TauriEvent, listen } from "@tauri-apps/api/event";
 import { Emitter } from "mnote-util/emitter";
 import * as fs from "@tauri-apps/api/fs";
 import * as path from "@tauri-apps/api/path";
+import { posix, win32 } from "mnote-deps/path-browser";
 
 // https://tauri.studio/en/docs/api/js/modules/fs
 
@@ -51,15 +52,20 @@ export class Watcher {
   }
 }
 
-const ANY_SLASH = /[\\/]/;
-
 export class FS implements FsInteropModule {
   protected watcher = new Watcher(); // at the bottom of the file
 
   protected IS_WINDOWS = false;
 
+  protected lib = posix;
+
   async init() {
     this.IS_WINDOWS = await invoke("is_windows");
+
+    if (this.IS_WINDOWS) {
+      this.lib = win32;
+    }
+
     return this;
   }
 
@@ -153,32 +159,23 @@ export class FS implements FsInteropModule {
     return path.currentDir();
   }
 
-  joinPath(items: string[]) {
-    const delimiter = this.IS_WINDOWS ? "\\" : "/";
-
-    let final = "";
-    items.forEach((item, i) => {
-      if (
-        item.charAt(0) === delimiter &&
-        (this.IS_WINDOWS && item.charAt(1) !== delimiter) // allow \\ in the back
-      ) {
-        item = item.slice(1);
-      }
-
-      const length = item.length;
-      if (item.charAt(length - 1) === delimiter) {
-        item = item.slice(0, length - 1);
-      }
-
-      final += item + (i === items.length - 1 ? "" : delimiter);
-    });
-
-    return final;
+  getPathName(path: string) {
+    const info = this.lib.parse(path);
+    return info.name + info.ext;
   }
 
-  splitPath(path: string) {
-    const delimiter = this.IS_WINDOWS ? ANY_SLASH : "/";
-    return path.split(delimiter);
+  getPathParent(path: string) {
+    return this.lib.dirname(path);
+  }
+
+  getPathExtension(path: string) {
+    const extension = this.lib.parse(path).ext;
+    return extension.length > 0 ? extension.slice(1) : "";
+    // parsed.ext has a leading period
+  }
+
+  joinPath(fragments: string[]) {
+    return this.lib.join(...fragments);
   }
 
   async watchInit(path: string) {

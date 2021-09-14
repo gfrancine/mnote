@@ -17,7 +17,6 @@ import FileTree from "../components/filetree";
 import { PromptsModule } from "./prompts";
 import { MenubarModule } from "./menubar";
 import { SystemModule } from "./system";
-import { getPathExtension, getPathName } from "mnote-util/path";
 import { EditorsModule } from "./editors";
 import { FileIconsModule } from "./fileicons";
 
@@ -151,7 +150,10 @@ export class FiletreeModule {
         this.updateEditorSelectedFile(path);
       },
       fileDroppedOnDir: (targetDir: string, droppedFile: string) => {
-        const newPath = this.fs.joinPath([targetDir, getPathName(droppedFile)]);
+        const newPath = this.fs.joinPath([
+          targetDir,
+          this.fs.getPathName(droppedFile),
+        ]);
         this.log.info(
           "filetree: file dropped on dir",
           droppedFile,
@@ -161,7 +163,10 @@ export class FiletreeModule {
         this.fs.renameFile(droppedFile, newPath);
       },
       dirDroppedOnDir: (targetDir: string, droppedDir: string) => {
-        const newPath = this.fs.joinPath([targetDir, getPathName(droppedDir)]);
+        const newPath = this.fs.joinPath([
+          targetDir,
+          this.fs.getPathName(droppedDir),
+        ]);
         this.log.info(
           "filetree: dir dropped on dir",
           droppedDir,
@@ -189,6 +194,7 @@ export class FiletreeModule {
           initFocusedNode={this.selectedFile}
           getFileIcon={getFileIcon}
           searchTerm={this.searchTerm}
+          getPathName={(path: string) => this.fs.getPathName(path)}
         />,
         this.element,
       );
@@ -322,12 +328,11 @@ export class FiletreeModule {
             buttons.push({
               name: "Rename file",
               click: () => {
-                const fragments = this.fs.splitPath(filePath);
-                const extension = getPathExtension(filePath);
+                const extension = this.fs.getPathExtension(filePath);
                 const dotExtension = extension.length > 0
                   ? "." + extension
                   : "";
-                const fullFileName = fragments.pop() || "";
+                const fullFileName = this.fs.getPathName(filePath);
                 const fileName = fullFileName.slice(
                   0,
                   dotExtension.length > 0
@@ -342,7 +347,7 @@ export class FiletreeModule {
                   .then((newName) => {
                     if (!newName) return;
                     const newPath = this.fs.joinPath([
-                      ...fragments,
+                      this.fs.getPathParent(filePath),
                       newName + dotExtension,
                     ]);
                     this.log.info("rename file", filePath, "to", newPath);
@@ -372,8 +377,7 @@ export class FiletreeModule {
               buttons.push({
                 name: "Rename folder",
                 click: () => {
-                  const fragments = this.fs.splitPath(dirPath);
-                  const dirName = fragments.pop();
+                  const dirName = this.fs.getPathName(dirPath);
 
                   this.prompts.promptTextInput(
                     `Rename folder "${dirName}"`,
@@ -381,7 +385,10 @@ export class FiletreeModule {
                   )
                     .then((newName) => {
                       if (!newName) return;
-                      const newPath = this.fs.joinPath([...fragments, newName]);
+                      const newPath = this.fs.joinPath([
+                        this.fs.getPathParent(dirPath),
+                        newName,
+                      ]);
                       this.log.info("rename dir", dirPath, "to", newPath);
                       this.fs.renameDir(dirPath, newPath);
                     });

@@ -1,4 +1,3 @@
-import { getPathName } from "mnote-util/path";
 import { strings } from "../common/strings";
 import { Mnote } from "..";
 import { FSModule } from "./fs";
@@ -46,7 +45,7 @@ export class TabManager {
       this.ctx.setDocument({
         ...document,
         path: targetPath,
-        name: getPathName(targetPath),
+        name: this.fs.getPathName(targetPath),
       });
     }
   };
@@ -120,21 +119,16 @@ export class TabManager {
       ? document.path
       : await this.fs.dialogSave({
         filters: editorInfo.saveAsFileTypes,
-        startingDirectory: (() => {
-          if (document.path) {
-            const dirFragments = this.fs.splitPath(document.path);
-            dirFragments.pop();
-            return this.fs.joinPath(dirFragments);
-          }
-          return undefined;
-        })(),
+        startingDirectory: document.path
+          ? this.fs.getPathParent(document.path)
+          : undefined,
         startingFileName: document.name,
       });
 
     this.log.info("editor tabs: saveAs - new path:", newPath);
     if (!newPath) return false;
 
-    const newPathName = getPathName(newPath);
+    const newPathName = this.fs.getPathName(newPath);
     const newDoc = {
       path: newPath,
       name: newPathName,

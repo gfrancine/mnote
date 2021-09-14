@@ -1,6 +1,6 @@
 import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
-import { getPathExtension } from "mnote-util/path";
+
 import suneditor from "suneditor";
 import SunEditor from "suneditor/src/lib/core";
 import plugins from "suneditor/src/plugins";
@@ -117,7 +117,7 @@ class RichtextEditor implements Editor {
 export class RichtextExtension implements Extension {
   startup(app: Mnote) {
     const matchesExtension = (path: string) =>
-      getPathExtension(path) === "html";
+      app.modules.fs.getPathExtension(path) === "html";
 
     app.modules.fileicons.registerIcon({
       factory: htmlIcon,

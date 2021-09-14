@@ -1,4 +1,9 @@
 import {
+  getPathExtension,
+  getPathName,
+  getPathParent,
+} from "../../../mnote-util/path";
+import {
   DialogFilter,
   FileItemWithChildren,
   FsInteropModule,
@@ -24,9 +29,7 @@ export class FSModule implements FsInteropModule {
   }
 
   readTextFile(path: string): Promise<string> {
-    if (this.fs) {
-      return this.fs.readTextFile(path);
-    }
+    if (this.fs) return this.fs.readTextFile(path);
     return Promise.resolve("");
   }
 
@@ -34,9 +37,7 @@ export class FSModule implements FsInteropModule {
     path: string,
     opts: FsReadDirOptions = { recursive: true },
   ): Promise<FileItemWithChildren> {
-    if (this.fs) {
-      return this.fs.readDir(path, opts);
-    }
+    if (this.fs) return this.fs.readDir(path, opts);
     return Promise.resolve({
       path: "TEMP",
       children: [],
@@ -64,16 +65,12 @@ export class FSModule implements FsInteropModule {
   }
 
   isFile(path: string): Promise<boolean> {
-    if (this.fs) {
-      return this.fs.isFile(path);
-    }
+    if (this.fs) return this.fs.isFile(path);
     return Promise.resolve(false);
   }
 
   isDir(path: string): Promise<boolean> {
-    if (this.fs) {
-      return this.fs.isDir(path);
-    }
+    if (this.fs) return this.fs.isDir(path);
     return Promise.resolve(false);
   }
 
@@ -95,31 +92,33 @@ export class FSModule implements FsInteropModule {
   }
 
   getConfigDir(): Promise<string> {
-    if (this.fs) {
-      return this.fs.getConfigDir();
-    }
+    if (this.fs) return this.fs.getConfigDir();
     return Promise.resolve(".");
   }
 
   getCurrentDir(): Promise<string> {
-    if (this.fs) {
-      return this.fs.getCurrentDir();
-    }
+    if (this.fs) return this.fs.getCurrentDir();
     return Promise.resolve(".");
   }
 
-  joinPath(items: string[]): string {
-    if (this.fs) {
-      return this.fs.joinPath(items);
-    }
-    return items.join("/");
+  getPathName(path: string) {
+    if (this.fs) return this.fs.getPathName(path);
+    return getPathName(path);
   }
 
-  splitPath(path: string): string[] {
-    if (this.fs) {
-      return this.fs.splitPath(path);
-    }
-    return path.split("/");
+  getPathParent(path: string) {
+    if (this.fs) return this.fs.getPathParent(path);
+    return getPathParent(path);
+  }
+
+  getPathExtension(path: string) {
+    if (this.fs) return this.fs.getPathExtension(path);
+    return getPathExtension(path);
+  }
+
+  joinPath(items: string[]): string {
+    if (this.fs) return this.fs.joinPath(items);
+    return items.join("/");
   }
 
   async watchInit(path: string) {

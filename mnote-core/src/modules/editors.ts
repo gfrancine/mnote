@@ -13,6 +13,7 @@ import { strings } from "../common/strings";
 import { Menu, MenuItem } from "mnote-components/vanilla/menu";
 import { TabManager } from "./editors-tab";
 import { createIcon } from "mnote-components/vanilla/icons";
+import { FSModule } from "./fs";
 
 // todo: a nicer placeholder
 const nothingHere = el("div")
@@ -32,6 +33,7 @@ export class EditorsModule {
   private system: SystemModule;
   private input: InputModule;
   private log: LogModule;
+  private fs: FSModule;
   private sidebar: SidebarModule;
   private prompts: PromptsModule;
 
@@ -54,6 +56,7 @@ export class EditorsModule {
     this.menubar = app.modules.menubar;
     this.system = app.modules.system;
     this.input = app.modules.input;
+    this.fs = app.modules.fs;
     this.log = app.modules.log;
     this.sidebar = app.modules.sidebar;
     this.prompts = app.modules.prompts;
@@ -199,7 +202,7 @@ export class EditorsModule {
     }
 
     const document = {
-      name: getPathName(path),
+      name: this.fs.getPathName(path),
       saved: true,
       path,
     };
