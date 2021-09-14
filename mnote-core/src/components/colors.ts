@@ -79,13 +79,13 @@ export const dark = {
 
   "btn-main-fg": "#B0B6BB", // buttons, assuming background is bg-main
   "btn-main-fg-hover": "#B0B6BB",
-  "btn-main-bg": "#5A6164",
-  "btn-main-bg-hover": "#656A70",
+  "btn-main-bg": "#3F4446",
+  "btn-main-bg-hover": "#4A5052",
 
   "btn-emphasis-fg": "#2B2D2E",
   "btn-emphasis-fg-hover": "#2B2D2E",
   "btn-emphasis-bg": "#B0B6BB",
-  "btn-emphasis-bg-hover": "#767E85",
+  "btn-emphasis-bg-hover": "#92989C",
 };
 
 /* oc dark theme
