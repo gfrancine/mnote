@@ -9,6 +9,10 @@
   height: 100%;
   font-size: var(--md-font-size);
 
+  * {
+    font-size: var(--md-font-size);
+  }
+
   .md-container {
     @include richtext.prelude;
 
