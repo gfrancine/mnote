@@ -1,21 +1,5 @@
-Split.js (https://github.com/nathancahill/split)
-Copyright (c) 2020 Nathan Cahill
-MIT License
-
 Ionicons (https://github.com/ionic-team/ionicons)
 Copyright (c) 2015-present Ionic (http://ionic.io/)
-MIT License
-
-Milkdown (https://github.com/Saul-Mirone/milkdown)
-Copyright (c) 2020-present Mirone
-MIT License
-
-Excalidraw (https://github.com/excalidraw/excalidraw)
-Copyright (c) 2020 Excalidraw
-MIT License
-
-react-big-calendar (https://github.com/jquense/react-big-calendar)
-Copyright (c) 2015-present Jason Quense
 MIT License
 
 trello-clone (https://github.com/marconunnari/trello-clone)
