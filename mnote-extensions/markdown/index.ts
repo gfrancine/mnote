@@ -25,21 +25,20 @@ import { clipboard } from "@milkdown/plugin-clipboard";
 import { el } from "mnote-util/elbuilder";
 import "./markdown.scss";
 import { markdownIcon } from "./icon";
-import { countChars, countWords } from "mnote-util/wordcount";
+import { WordStats } from "mnote-components/vanilla/word-stats";
 
 class MarkdownEditor implements Editor {
   app: Mnote;
   editorContainer: HTMLElement;
-  statsbar: HTMLElement;
   element: HTMLElement;
   container?: HTMLElement;
   settings: SettingsModule;
   fs: FSModule;
   ctx?: EditorContext;
 
+  wordstats = new WordStats();
   milkdown: MilkdownEditor;
   contents = "";
-  countMode: "words" | "characters" = "words";
 
   constructor(app: Mnote) {
     this.app = app;
@@ -51,19 +50,13 @@ class MarkdownEditor implements Editor {
       .attr("spellcheck", "false")
       .element;
 
-    this.statsbar = el("div")
-      .class("md-statsbar")
-      .on("click", () => {
-        this.countMode = this.countMode === "words" ? "characters" : "words";
-        this.updateStats();
-      })
-      .element;
+    this.wordstats.element.classList.add("md-wordstats");
 
     this.element = el("div")
       .class("md-extension")
       .children(
         this.editorContainer,
-        this.statsbar,
+        this.wordstats.element,
       )
       .element;
 
@@ -121,20 +114,7 @@ class MarkdownEditor implements Editor {
     await this.milkdown.create();
   }
 
-  protected updateStats() {
-    switch (this.countMode) {
-      case "words": {
-        const wordCount = countWords(this.contents);
-        this.statsbar.innerHTML = "W " + wordCount;
-        return;
-      }
-      case "characters": {
-        const charCount = countChars(this.contents);
-        this.statsbar.innerHTML = "C " + charCount;
-        return;
-      }
-    }
-  }
+  protected updateStats = () => this.wordstats.setText(this.contents);
 
   protected onUpdate() {
     this.ctx?.updateEdited();

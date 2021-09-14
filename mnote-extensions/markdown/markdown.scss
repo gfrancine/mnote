@@ -1,5 +1,6 @@
 @use "~mnote-styles/mnote-vars" as mn;
 @use "~mnote-styles/mnote-rich-text" as richtext;
+@use "~mnote-components/vanilla/word-stats";
 
 .md-extension {
   --md-font-size: 1em;
@@ -31,13 +32,9 @@
     user-select: text;
   }
 
-  .md-statsbar {
-    position: absolute;
-    right: 1em;
-    font-size: 12px;
-    bottom: 1em;
+  .md-wordstats {
+    @include word-stats.word-stats;
     color: map-get(mn.$vars, fg-dim);
-    cursor: pointer;
   }
 
   ul.bullet-list,

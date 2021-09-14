@@ -8,6 +8,7 @@ import katex from "katex";
 import { htmlIcon } from "./icon";
 import "./richtext.scss";
 import "katex/dist/katex.css";
+import { WordStats } from "mnote-components/vanilla/word-stats";
 
 class RichtextEditor implements Editor {
   app: Mnote;
@@ -18,14 +19,22 @@ class RichtextEditor implements Editor {
   fs: FSModule;
   editor: SunEditor;
 
+  wordstats = new WordStats();
   contents = "";
 
   constructor(app: Mnote) {
     this.app = app;
     this.fs = (app.modules.fs as FSModule);
 
-    this.editorElement = el("textarea")
+    this.wordstats.element.classList.add("richtext-wordstats");
+
+    const dummy = el("textarea")
+      .style("display", "none")
+      .element;
+
+    this.editorElement = el("div")
       .class("richtext-editor")
+      .children(dummy)
       .element;
 
     this.toolbarElement = el("div")
@@ -37,10 +46,11 @@ class RichtextEditor implements Editor {
       .children(
         this.toolbarElement,
         this.editorElement,
+        this.wordstats.element,
       )
       .element;
 
-    this.editor = suneditor.create(this.editorElement, {
+    this.editor = suneditor.create(dummy, {
       plugins: [
         plugins.image,
         plugins.link,
@@ -95,6 +105,10 @@ class RichtextEditor implements Editor {
     }
 
     this.editor.setContents(this.contents);
+
+    this.editor.onInput = () => {
+      this.wordstats.setText(this.editorElement.innerText);
+    };
 
     this.editor.onChange = (contents) => {
       this.contents = contents;

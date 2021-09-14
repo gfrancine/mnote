@@ -1,5 +1,6 @@
 @use "~mnote-styles/mnote-vars" as mn;
 @use "~mnote-styles/mnote-rich-text" as richtext;
+@use "~mnote-components/vanilla/word-stats";
 
 // https://css2sass.herokuapp.com/
 // https://github.com/JiHong88/SunEditor/blob/da06c3c23b9b9cdee314f32067b094c60497d0fb/src/assets/css/suneditor.css
@@ -19,6 +20,11 @@
 
   * {
     box-sizing: border-box;
+  }
+
+  .richtext-wordstats {
+    @include word-stats.word-stats;
+    color: map-get(mn.$vars, fg-dim);
   }
 
   .richtext-toolbar {
