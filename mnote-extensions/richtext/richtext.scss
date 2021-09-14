@@ -27,6 +27,15 @@
     color: map-get(mn.$vars, fg-dim);
   }
 
+  .richtext-editor {
+    // fix the overflow issue
+    // https://stackoverflow.com/questions/36230944/
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+  }
+
   .richtext-toolbar {
     padding: 0 2em;
 
@@ -87,10 +96,6 @@
   // in the ./suneditor directory
 
   .sun-editor {
-    // fix the overflow issue
-    // https://stackoverflow.com/questions/36230944/
-    min-height: 0;
-
     @include dialog.dialog;
     @include controller.controller;
     @include submenu.submenu;
