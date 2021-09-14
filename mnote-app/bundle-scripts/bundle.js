@@ -9,6 +9,11 @@ module.exports = function (entryPoints, isProduction) {
       minify: isProduction,
       sourcemap: !isProduction,
       outfile: "dist/bundle.js",
+      loader: {
+        ".ttf": "file",
+        ".woff": "file",
+        ".woff2": "file",
+      },
       plugins: [
         sassPlugin(),
       ],

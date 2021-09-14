@@ -4,8 +4,10 @@ import { el } from "mnote-util/elbuilder";
 import suneditor from "suneditor";
 import SunEditor from "suneditor/src/lib/core";
 import plugins from "suneditor/src/plugins";
+import katex from "katex";
 import { htmlIcon } from "./icon";
 import "./richtext.scss";
+import "katex/dist/katex.css";
 
 class RichtextEditor implements Editor {
   app: Mnote;
@@ -48,6 +50,7 @@ class RichtextEditor implements Editor {
         plugins.font,
         plugins.fontSize,
         plugins.formatBlock,
+        plugins.math,
       ],
       buttonList: [
         ["undo", "redo"],
@@ -62,9 +65,10 @@ class RichtextEditor implements Editor {
           "removeFormat",
         ],
         ["outdent", "indent", "align"],
-        ["list", "link", "image", "table"],
+        ["list", "link", "image", "table", "math"],
         ["codeView"],
       ],
+      katex,
       toolbarContainer: this.toolbarElement,
       resizingBar: false,
     });

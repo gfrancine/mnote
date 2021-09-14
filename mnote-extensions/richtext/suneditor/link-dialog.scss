@@ -15,6 +15,10 @@
     height: 100%;
     z-index: 2147483647;
 
+    a {
+      color: #4592ff;
+    }
+
     label,
     input,
     button {
@@ -233,33 +237,36 @@
           margin-left: 4px;
         }
 
-        // todo
-
         .se-input-form.se-math-exp {
+          @include richtext.code-fence;
+
           resize: vertical;
           height: 4rem;
-          border: 1px solid #ccc;
-          font-size: 13px;
-          padding: 4px;
+          font-size: 1em;
+          padding: 0.5em;
           direction: ltr;
         }
 
         .se-input-select.se-math-size {
           width: 6em;
-          height: 28px;
           margin-left: 1em;
+          background: map-get(mn.$vars, bg-secondary);
+          color: map-get(mn.$vars, fg-main);
+          border-radius: 0.2em;
+          padding: 0.5em 0.3em;
+          outline: none;
+          border: none;
         }
 
         .se-math-preview {
-          font-size: 13px;
+          font-size: 1em;
 
           > span {
+            color: inherit !important;
             display: inline-block;
-            -webkit-box-shadow: 0 0 0 0.1rem #c7deff;
-            box-shadow: 0 0 0 0.1rem #c7deff;
-
             * {
               direction: ltr;
+              color: inherit !important;
             }
           }
         }

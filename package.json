@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "dependencies": {
     "@excalidraw/excalidraw": "^0.9.0",
+    "@types/katex": "^0.11.1",
     "open-color": "^1.8.0",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",

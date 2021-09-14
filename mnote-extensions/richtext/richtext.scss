@@ -10,6 +10,8 @@
 @use "./suneditor/button.scss";
 @use "./suneditor/editable.scss";
 
+@include editable.editable;
+
 .richtext-extension {
   height: 100%;
   display: flex;
@@ -258,22 +260,9 @@
     color: map-get(mn.$vars, fg-dim);
   }
 
-  .sun-editor-editable {
-    * {
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      font-family: inherit;
-      font-size: inherit;
-      color: inherit;
-    }
-  }
-
   .se-wrapper {
     height: 100%;
     position: relative;
-
-    @include editable.editable;
 
     .se-wrapper-inner.se-wrapper-wysiwyg.sun-editor-editable {
       @include richtext.prelude;

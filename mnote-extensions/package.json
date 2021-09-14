@@ -7,6 +7,7 @@
     "@milkdown/plugin-history": "^4.11.1",
     "@milkdown/plugin-listener": "^4.11.1",
     "@milkdown/preset-commonmark": "^4.11.1",
+    "katex": "^0.13.18",
     "mnote-components": "file:../mnote-components",
     "mnote-core": "file:../mnote-core",
     "mnote-deps": "file:../mnote-deps",
