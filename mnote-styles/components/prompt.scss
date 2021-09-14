@@ -1,4 +1,5 @@
 @use "../mnote-vars.scss" as mn;
+@use "../mnote-inputs.scss" as inputs;
 
 @mixin prompt {
   .prompt-overlay {
@@ -30,34 +31,12 @@
       text-align: right;
 
       .prompt-button {
-        font-family: map-get(mn.$vars, font-main);
-        font-size: 13px;
-        display: inline-block;
-        flex-direction: row;
-        color: map-get(mn.$vars, fg-main);
-        padding: 0.8em;
-        margin-left: 0.5em;
-        border-radius: 5px;
-        cursor: pointer;
-
         &.normal {
-          background: map-get(mn.$vars, btn-main-bg);
-          color: map-get(mn.$vars, btn-main-fg);
-
-          &:hover {
-            background: map-get(mn.$vars, btn-main-bg-hover);
-            color: map-get(mn.$vars, btn-main-fg-hover);
-          }
+          @include inputs.button-normal;
         }
 
         &.emphasis {
-          background: map-get(mn.$vars, btn-emphasis-bg);
-          color: map-get(mn.$vars, btn-emphasis-fg);
-
-          &:hover {
-            background: map-get(mn.$vars, btn-emphasis-bg-hover);
-            color: map-get(mn.$vars, btn-emphasis-fg-hover);
-          }
+          @include inputs.button-emphasis;
         }
       }
     }
@@ -69,19 +48,8 @@
     }
 
     .prompt-input {
-      resize: none;
-      width: 100%;
-      box-sizing: border-box;
-      outline: none;
-      border: none;
-      border-radius: 5px;
-      background: map-get(mn.$vars, bg-secondary);
+      @include inputs.text-input;
       margin-bottom: 1em;
-      padding: 0.8em;
-      color: map-get(mn.$vars, fg-main);
-      font-family: map-get(mn.$vars, font-main);
-      font-size: 13px;
-      line-height: initial;
     }
   }
 }

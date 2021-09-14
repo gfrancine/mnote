@@ -1,0 +1,50 @@
+@use "./mnote-vars.scss" as mn;
+
+@mixin text-input {
+  resize: none;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  background: map-get(mn.$vars, bg-secondary);
+  padding: 0.8em;
+  color: map-get(mn.$vars, fg-main);
+  font-family: map-get(mn.$vars, font-main);
+  font-size: 13px;
+  line-height: initial;
+}
+
+@mixin button-base {
+  font-family: map-get(mn.$vars, font-main);
+  font-size: 13px;
+  display: inline-block;
+  flex-direction: row;
+  color: map-get(mn.$vars, fg-main);
+  padding: 0.8em;
+  margin-left: 0.5em;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@mixin button-normal {
+  @include button-base;
+  background: map-get(mn.$vars, btn-main-bg);
+  color: map-get(mn.$vars, btn-main-fg);
+
+  &:hover {
+    background: map-get(mn.$vars, btn-main-bg-hover);
+    color: map-get(mn.$vars, btn-main-fg-hover);
+  }
+}
+
+@mixin button-emphasis {
+  @include button-base;
+  background: map-get(mn.$vars, btn-emphasis-bg);
+  color: map-get(mn.$vars, btn-emphasis-fg);
+
+  &:hover {
+    background: map-get(mn.$vars, btn-emphasis-bg-hover);
+    color: map-get(mn.$vars, btn-emphasis-fg-hover);
+  }
+}
