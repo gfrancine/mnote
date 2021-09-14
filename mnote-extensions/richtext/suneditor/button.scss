@@ -38,6 +38,7 @@ $a: (
   &:hover {
     background: map-get($theme, bg-hover);
     color: map-get($theme, fg-hover);
+
     svg {
       fill: map-get($theme, fg-hover);
     }
@@ -47,6 +48,10 @@ $a: (
     cursor: not-allowed;
     background: map-get($theme, bg-disabled);
     color: map-get($theme, fg-disabled);
+
+    &:hover {
+      color: map-get($theme, fg-disabled);
+    }
 
     svg,
     &:hover svg {
@@ -65,7 +70,6 @@ $a: (
 
   &.se-btn-select {
     width: fit-content;
-    color: map-get($theme, fg);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -73,10 +77,6 @@ $a: (
 
     span.txt {
       font-size: 85%;
-    }
-
-    &:hover {
-      color: map-get($theme, fg-hover);
     }
 
     svg {
