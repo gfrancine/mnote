@@ -1,5 +1,7 @@
 @use "~mnote-styles/mnote-vars" as mn;
 @use "~mnote-styles/mnote-rich-text" as richtext;
+@use "~mnote-styles/mnote-inputs" as inputs;
+@use "./button";
 
 // todo
 
@@ -20,6 +22,20 @@
       line-height: 1.5;
       color: map-get(mn.$vars, fg-main);
       margin: 0;
+    }
+
+    .se-btn {
+      $btn-theme: (
+        bg: none,
+        bg-hover: none,
+        bg-active: none,
+        bg-disabled: none,
+        fg: map-get(mn.$vars, fg-secondary),
+        fg-hover: map-get(mn.$vars, fg-main),
+        fg-active: map-get(mn.$vars, fg-main),
+        fg-disabled: map-get(mn.$vars, fg-dim),
+      );
+      @include button.button($btn-theme);
     }
 
     .se-dialog-back {
@@ -58,18 +74,15 @@
         }
 
         .se-btn-primary {
+          @include inputs.button-emphasis;
+
           display: inline-block;
-          padding: 6px 12px;
-          margin: 0 0 10px !important;
-          font-size: 1em;
-          font-weight: normal;
-          line-height: 1.5;
+          margin: 0.5em 0;
           text-align: center;
           white-space: nowrap;
           vertical-align: middle;
           -ms-touch-action: manipulation;
           touch-action: manipulation;
-          border-radius: 4px;
         }
       }
 
@@ -97,6 +110,10 @@
       .se-dialog-body {
         position: relative;
         padding: 1em;
+
+        :first-child {
+          border-bottom: none !important; // somehow has a dashed border bottom
+        }
       }
 
       input:disabled {
@@ -108,7 +125,7 @@
 
         .size-w,
         .size-h {
-          width: 6em;
+          width: 5em;
           text-align: center;
         }
       }
@@ -124,6 +141,7 @@
         min-height: 1em;
         text-align: right;
         border-top: 1px solid map-get(mn.$vars, border-main);
+        padding: 0.5em;
 
         > div {
           float: left;
@@ -140,12 +158,10 @@
       }
 
       .se-dialog-btn-check {
-        margin-left: 12px;
         margin-right: 4px;
       }
 
       .se-dialog-form-footer {
-        margin-top: 1em;
         margin-bottom: 0;
 
         .se-dialog-btn-check {
@@ -162,6 +178,10 @@
       .se-dialog-form {
         margin-bottom: 0.8em;
 
+        label {
+          margin-top: 0.5em;
+        }
+
         .se-dialog-form-files {
           position: relative;
           display: flex;
@@ -171,26 +191,19 @@
             flex: auto;
           }
 
+          input[type="file"] {
+            @include inputs.button-normal;
+
+            &::-webkit-file-upload-button {
+              display: none;
+            }
+            &::-ms-browse {
+              display: none;
+            }
+          }
+
           .se-dialog-files-edge-button {
             flex: auto;
-            opacity: 0.8;
-            border: 1px solid #ccc;
-
-            &.se-file-remove > svg {
-              width: 8px;
-              height: 8px;
-            }
-
-            &:hover {
-              background-color: #f0f0f0;
-              outline: 0 none;
-            }
-
-            &:active {
-              background-color: #e9e9e9;
-              -webkit-box-shadow: inset 0 3px 5px #d6d6d6;
-              box-shadow: inset 0 3px 5px #d6d6d6;
-            }
           }
         }
 
@@ -204,31 +217,15 @@
         }
 
         .se-input-control {
+          @include inputs.text-input;
           display: inline-block;
           width: 70px;
           height: 34px;
-          font-size: 14px;
           text-align: center;
-          line-height: 1.42857143;
         }
 
         .se-input-form {
-          display: block;
-          width: 100%;
-          height: 34px;
-          font-size: 14px;
-          line-height: 1.42857143;
-          padding: 0 4px;
-          outline: none;
-
-          &.se-input-url {
-            direction: ltr;
-
-            &:disabled {
-              text-decoration: line-through;
-              color: #999;
-            }
-          }
+          @include inputs.text-input;
         }
 
         .se-video-ratio {
@@ -236,52 +233,92 @@
           margin-left: 4px;
         }
 
-        a {
-          color: #004cff;
+        // todo
+
+        .se-input-form.se-math-exp {
+          resize: vertical;
+          height: 4rem;
+          border: 1px solid #ccc;
+          font-size: 13px;
+          padding: 4px;
+          direction: ltr;
+        }
+
+        .se-input-select.se-math-size {
+          width: 6em;
+          height: 28px;
+          margin-left: 1em;
+        }
+
+        .se-math-preview {
+          font-size: 13px;
+
+          > span {
+            display: inline-block;
+            -webkit-box-shadow: 0 0 0 0.1rem #c7deff;
+            box-shadow: 0 0 0 0.1rem #c7deff;
+
+            * {
+              direction: ltr;
+            }
+          }
         }
       }
 
-      .se-dialog-btn-revert {
-        border: 1px solid #ccc;
+      .se-link-preview {
+        display: block;
+        height: auto;
+        font-size: 0.8em;
+        font-weight: normal;
+        font-family: inherit;
+        color: map-get(mn.$vars, fg-dim);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        white-space: pre;
+      }
 
-        &:hover {
-          background-color: #e1e1e1;
-          border-color: #d1d1d1;
-          outline: 0 none;
+      .se-anchor-preview-form {
+        width: 100%;
+        display: flex;
+        margin-top: 4px;
+
+        .se-svg.se-anchor-preview-icon {
+          flex: unset;
+          display: none;
+          line-height: 1.5;
+          // color: #4592ff;
         }
 
-        &:active {
-          background-color: #d1d1d1;
-          border-color: #c1c1c1;
-          -webkit-box-shadow: inset 0 3px 5px #c1c1c1;
-          box-shadow: inset 0 3px 5px #c1c1c1;
+        .se-link-preview {
+          flex: auto;
+          margin: 0;
         }
+      }
+
+      .se-anchor-rel {
+        height: 34px;
+      }
+
+      .se-anchor-rel-btn {
+        width: 46px;
+        // color: #3f9dff;
+      }
+
+      .se-anchor-rel-wrapper {
+        display: flex;
+        line-height: 1.5;
+        padding-top: 6px;
+      }
+
+      .se-anchor-rel-preview {
+        text-align: left;
       }
     }
   }
 
   .se-dialog-tabs {
-    width: 100%;
-    height: 25px;
-    border-bottom: 1px solid #e5e5e5;
-
-    button {
-      background-color: #e5e5e5;
-      border-right: 1px solid #e5e5e5;
-      float: left;
-      outline: none;
-      padding: 2px 13px;
-      transition: 0.3s;
-
-      &:hover {
-        background-color: #fff;
-      }
-
-      &.active {
-        background-color: #fff;
-        border-bottom: 0;
-      }
-    }
+    display: none;
   }
 }
 

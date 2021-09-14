@@ -22,9 +22,10 @@
   flex-direction: row;
   color: map-get(mn.$vars, fg-main);
   padding: 0.8em;
-  margin-left: 0.5em;
   border-radius: 5px;
   cursor: pointer;
+  border: none;
+  outline: none;
 }
 
 @mixin button-normal {

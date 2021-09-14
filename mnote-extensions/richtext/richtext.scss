@@ -267,20 +267,6 @@
       font-size: inherit;
       color: inherit;
     }
-
-    figure {
-      display: block;
-      outline: none;
-      margin: 0;
-      padding: 0;
-
-      figcaption {
-        padding: 0.5em;
-        margin: 0.5em 0 0;
-        background-color: map-get(mn.$vars, bg-secondary);
-        outline: none;
-      }
-    }
   }
 
   .se-wrapper {
@@ -370,6 +356,20 @@
         td.se-table-selected-cell,
         th.se-table-selected-cell {
           outline: 1px double #4592ff;
+        }
+      }
+
+      figure {
+        display: block;
+        outline: none;
+        margin: 0;
+        padding: 0;
+
+        figcaption {
+          padding: 0.5em;
+          margin: 0.5em 0 0;
+          background-color: map-get(mn.$vars, bg-secondary);
+          outline: none;
         }
       }
     }
