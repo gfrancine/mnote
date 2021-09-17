@@ -196,13 +196,17 @@
           }
 
           input[type="file"] {
-            @include inputs.button-normal;
+            // override
+            background: none;
+            padding: 0;
 
             &::-webkit-file-upload-button {
-              display: none;
+              @include inputs.button-normal;
+              margin-right: 0.5em;
             }
             &::-ms-browse {
-              display: none;
+              @include inputs.button-normal;
+              margin-right: 0.5em;
             }
           }
 
