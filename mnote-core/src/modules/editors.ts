@@ -16,10 +16,18 @@ import { createIcon } from "mnote-components/vanilla/icons";
 import { FSModule } from "./fs";
 
 // todo: a nicer placeholder
-const nothingHere = el("div")
-  .inner("Click the three dots on the top right to open a file or folder.")
-  .class("placeholder-nothing")
-  .element;
+const nothingHere = (() => {
+  const element = el("div")
+    .inner("Click the three dots on the top right to open a file or folder.")
+    .class("placeholder-nothing")
+    .element;
+
+  return {
+    element,
+    show: () => element.style.display = "block",
+    hide: () => element.style.display = "none",
+  };
+})();
 
 // editors keep the contents in their stae
 // this module communicates between all the other parts of the app, so
@@ -67,7 +75,7 @@ export class EditorsModule {
 
     app.modules.layout.mountToContents(this.element);
 
-    this.element.appendChild(nothingHere);
+    this.element.appendChild(nothingHere.element);
 
     // hook methods to the rest of the app
     this.hookToSidebar();
@@ -90,21 +98,18 @@ export class EditorsModule {
       .element;
   }
 
-  // todo?:
-  // tigger events on setters
-  // maybe once we implement a tabbed menu
+  // assumes the tab has already been mounted
   changeCurrentTab(tab: Tab | undefined) {
     if (this.currentTab) {
-      this.element.removeChild(this.currentTab.info.container);
+      this.currentTab.manager.setVisible(false);
     }
 
-    this.element.innerHTML = ""; // just to make sure
-
     if (tab) {
-      this.element.appendChild(tab.info.container);
+      nothingHere.hide();
+      tab.manager.setVisible(true);
     } else {
       delete this.currentTab;
-      this.element.appendChild(nothingHere);
+      nothingHere.show();
     }
 
     this.setCurrentTab(tab);
@@ -118,11 +123,13 @@ export class EditorsModule {
 
   private addActiveTab(tab: Tab) {
     this.activeTabs.push(tab);
+    tab.manager.mount(this.element);
     this.events.emit("activeTabsChanged");
   }
 
   private removeActiveTab(index: number) {
-    this.activeTabs.splice(index, 1);
+    const tabs = this.activeTabs.splice(index, 1);
+    tabs[0]?.manager.unmount(this.element);
     this.events.emit("activeTabsChanged");
   }
 

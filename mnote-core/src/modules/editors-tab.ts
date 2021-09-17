@@ -23,6 +23,7 @@ export class TabManager {
     this.fs = app.modules.fs;
     this.prompts = app.modules.prompts;
     this.log = app.modules.log;
+    this.setVisible(false);
   }
 
   // mark the document as unsaved, remove the path
@@ -55,6 +56,8 @@ export class TabManager {
 
     this.fs.onWatchEvent("rename", this.onWatcherRename);
     this.fs.onWatchEvent("remove", this.onWatcherRemove);
+
+    this.setVisible(true);
 
     await editor.startup(container, this.makeContext());
     return this;
@@ -146,7 +149,27 @@ export class TabManager {
     return true;
   }
 
+  setVisible(visible: boolean) {
+    const { container } = this.ctx.getTabInfo();
+    if (visible) {
+      container.style.display = "block";
+    } else {
+      container.style.display = "none";
+    }
+  }
+
+  mount(container: Element) {
+    const tab = this.ctx.getTabInfo();
+    container.appendChild(tab.container);
+  }
+
+  unmount(container: Element) {
+    const tab = this.ctx.getTabInfo();
+    container.removeChild(tab.container);
+  }
+
   private async cleanup() {
+    this.setVisible(false);
     this.fs.offWatchEvent("rename", this.onWatcherRename);
     this.fs.offWatchEvent("remove", this.onWatcherRemove);
     const { editor } = this.ctx.getTabInfo();
