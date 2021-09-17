@@ -14,7 +14,7 @@
     "action-publish": "npm run bundle-release && tauri"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.0.0-beta.9",
+    "@tauri-apps/cli": "^1.0.0-beta.10",
     "esbuild": "^0.12.22",
     "esbuild-plugin-alias": "^0.1.2",
     "esbuild-sass-plugin": "^1.4.4",
@@ -22,7 +22,7 @@
     "shx": "^0.3.3"
   },
   "dependencies": {
-    "@tauri-apps/api": "^1.0.0-beta.6",
+    "@tauri-apps/api": "^1.0.0-beta.8",
     "mnote-components": "file:../mnote-components",
     "mnote-core": "file:../mnote-core",
     "mnote-deps": "file:../mnote-deps",
