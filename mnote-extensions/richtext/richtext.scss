@@ -17,6 +17,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden; // prevent tooltips from expanding the element (https://stackoverflow.com/questions/36531708/)
 
   * {
     box-sizing: border-box;
@@ -40,6 +41,10 @@
     padding: 0 2em;
 
     .se-btn-tray {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
       .se-toolbar-separator-vertical {
         height: 1.2em;
         display: inline;
@@ -49,18 +54,17 @@
       }
 
       .se-btn-module.se-btn-module-border {
-        display: inline-block;
-
         ul.se-menu-list {
           list-style: none;
           width: auto;
           height: auto;
           padding: 0;
           margin: 0;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
 
           li {
-            display: inline-block;
-
             button.se-btn {
               $theme: (
                 bg: none,
