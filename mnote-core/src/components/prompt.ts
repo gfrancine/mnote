@@ -14,6 +14,7 @@ export class Prompt {
   buttonEls: HTMLElement[];
   overlay: HTMLElement;
   resolveSignal = new Signal<(command: string) => unknown>();
+  isShowing = false;
 
   constructor(opts: {
     container: Element;
@@ -75,9 +76,24 @@ export class Prompt {
     this.resolveSignal.emitSync(command);
   }
 
-  prompt(): Promise<string> {
+  show() {
+    if (this.isShowing) return;
+    this.isShowing = true;
     freeze();
     this.container.appendChild(this.overlay);
+  }
+
+  hide() {
+    if (!this.isShowing) return;
+    if (this.overlay.parentNode) {
+      this.overlay.parentNode.removeChild(this.overlay);
+    }
+    unfreeze();
+    this.isShowing = false;
+  }
+
+  prompt(): Promise<string> {
+    this.show();
 
     return new Promise((resolve) => {
       const listeners: Map<HTMLElement, () => void> = new Map();
@@ -87,8 +103,7 @@ export class Prompt {
           for (const [k, v] of listeners.entries()) {
             k.removeEventListener("click", v);
           }
-          (this.overlay.parentNode as HTMLElement).removeChild(this.overlay);
-          unfreeze();
+          this.hide();
           resolve(command);
         };
 

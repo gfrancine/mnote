@@ -37,10 +37,12 @@ export class PromptsModule {
     message: string,
     initialValue?: string,
   ): Promise<string | undefined> {
+    const value = initialValue || "";
+
     const input = el("input")
       .class("prompt-input")
       .attr("spellcheck", "false")
-      .attr("value", initialValue || "")
+      .attr("value", value)
       .element as HTMLInputElement;
 
     const prompt = new Prompt({
@@ -59,8 +61,15 @@ export class PromptsModule {
     });
 
     input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") prompt.resolveEarly("confirm");
+      if (e.key === "Enter") {
+        e.preventDefault();
+        prompt.resolveEarly("confirm");
+      }
     });
+
+    prompt.show();
+    input.focus();
+    input.selectionStart = input.selectionEnd = value.length; // focus at end
 
     const action = await prompt.prompt();
 
