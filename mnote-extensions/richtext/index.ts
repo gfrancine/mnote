@@ -13,7 +13,8 @@ import { WordStats } from "mnote-components/vanilla/word-stats";
 class RichtextEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
-  toolbarElement: HTMLElement;
+  toolbarContainer: HTMLElement;
+  editorContainer: HTMLElement;
   editorElement: HTMLElement;
   container?: HTMLElement;
   fs: FSModule;
@@ -32,20 +33,20 @@ class RichtextEditor implements Editor {
       .style("display", "none")
       .element;
 
-    this.editorElement = el("div")
+    this.editorContainer = el("div")
       .class("richtext-editor")
       .children(dummy)
       .element;
 
-    this.toolbarElement = el("div")
+    this.toolbarContainer = el("div")
       .class("richtext-toolbar")
       .element;
 
     this.element = el("div")
       .class("richtext-extension")
       .children(
-        this.toolbarElement,
-        this.editorElement,
+        this.toolbarContainer,
+        this.editorContainer,
         this.wordstats.element,
       )
       .element;
@@ -79,16 +80,20 @@ class RichtextEditor implements Editor {
         ["codeView"],
       ],
       katex,
-      toolbarContainer: this.toolbarElement,
+      toolbarContainer: this.toolbarContainer,
       resizingBar: false,
     });
 
+    this.editorElement = this.element.querySelector(
+      ".se-wrapper-inner.se-wrapper-wysiwyg.sun-editor-editable",
+    ) as HTMLDivElement;
+
+    // might be null if sun editor updates
+    this.app.modules.log.info("richtext: editorElement", this.editorElement);
+
     // disable spell check
     // REWRITEME
-    (this.element.querySelector(
-      ".se-wrapper-inner.se-wrapper-wysiwyg.sun-editor-editable",
-    ) as HTMLDivElement | null)
-      ?.setAttribute("spellcheck", "false");
+    this.editorElement.setAttribute("spellcheck", "false");
 
     // hacky way to get rid of the notice
     // REWRITEME
@@ -104,20 +109,23 @@ class RichtextEditor implements Editor {
       this.contents = contents;
     }
 
-    this.editor.setContents(this.contents);
-
-    this.editor.onInput = () => {
-      this.wordstats.setText(this.editorElement.innerText);
-    };
+    this.editor.onInput = this.updateWordStats;
 
     this.editor.onChange = (contents) => {
       this.contents = contents;
       ctx.updateEdited();
+      this.updateWordStats();
     };
+
+    this.editor.setContents(this.contents);
 
     this.container = containter;
     containter.appendChild(this.element);
   }
+
+  updateWordStats = () => {
+    this.wordstats.setText(this.editorElement.innerText);
+  };
 
   cleanup() {
     if (this.container) {
