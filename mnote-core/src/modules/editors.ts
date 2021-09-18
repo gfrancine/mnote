@@ -72,7 +72,7 @@ export class EditorsModule {
 
       return {
         element,
-        show: () => element.style.display = "block",
+        show: () => element.style.display = "flex",
         hide: () => element.style.display = "none",
       };
     })();
