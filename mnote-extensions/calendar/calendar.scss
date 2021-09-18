@@ -1,5 +1,4 @@
 @use "~mnote-styles/mnote-vars" as mn;
-@use "./big-calendar/variables.scss" as bc;
 
 .calendar-extension {
   width: 100%;
@@ -7,45 +6,5 @@
   box-sizing: border-box;
   padding: 1em 2.5em 2.5em;
 
-  /* .rbc-day-slot.rbc-time-column.rbc-now.rbc-today,
-  .rbc-day-bg.rbc-today {
-    background: map-get(mn.$vars, bg-main);
-  } */
-
-  .rbc-date-cell {
-    padding-right: 0.5em;
-    padding-top: 0.5em;
-    font-size: 12px;
-  }
-
-  .rbc-time-content {
-    @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
-  }
-
-  .rbc-time-header.rbc-overflowing {
-    margin-right: 5px !important; // scroll bar width
-  }
-
-  .rbc-time-header {
-    background-color: var(--mnote-bg-secondary);
-  }
-
-  .rbc-toolbar {
-    font-size: 14px;
-  }
-
-  .rbc-agenda-empty {
-    top: 50%;
-    position: absolute;
-    left: 50%;
-  }
-
-  .rbc-event-content,
-  .rbc-event-label {
-    font-size: 13px;
-  }
-
-  .rbc-agenda-table {
-    font-size: 13px;
-  }
+  // @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
 }
