@@ -1,15 +1,9 @@
-import { strings } from "../common/strings";
 import { Mnote } from "..";
 import { FSModule } from "./fs";
 import { PromptsModule } from "./prompts";
-import {
-  DocInfo,
-  Editor,
-  EditorContext,
-  PromptButton,
-  TabContext,
-} from "./types";
+import { DocInfo, Editor, EditorContext, TabContext } from "./types";
 import { LogModule } from "./log";
+import { StringsModule } from ".";
 
 export class TabManager {
   private ctx: TabContext;
@@ -17,12 +11,14 @@ export class TabManager {
   private fs: FSModule;
   private prompts: PromptsModule;
   private log: LogModule;
+  private strings: StringsModule;
 
   constructor(app: Mnote, ctx: TabContext) {
     this.ctx = ctx;
     this.fs = app.modules.fs;
     this.prompts = app.modules.prompts;
     this.log = app.modules.log;
+    this.strings = app.modules.strings;
     this.setVisible(false);
   }
 
@@ -84,7 +80,7 @@ export class TabManager {
       await editor.save(document.path);
       return true;
     } catch (e) {
-      this.prompts.notify(strings.saveError(e));
+      this.prompts.notify(this.strings.get("saveError")(e));
       this.log.err(
         "editor tab: error while saving document with trySaveEditor",
         document,
@@ -184,8 +180,24 @@ export class TabManager {
       return true;
     } else {
       const action = await this.prompts.promptButtons(
-        strings.confirmSaveBeforeClose(),
-        confirmCloseButtons, // see bottom of file
+        this.strings.get("confirmSaveBeforeClose"),
+        [
+          {
+            kind: "normal",
+            text: this.strings.get("cancel"),
+            command: "cancel",
+          },
+          {
+            kind: "normal",
+            text: this.strings.get("dontSave"),
+            command: "dontsave",
+          },
+          {
+            kind: "emphasis",
+            text: this.strings.get("save"),
+            command: "save",
+          },
+        ],
       );
 
       switch (action as "cancel" | "save" | "dontsave") {
@@ -205,20 +217,3 @@ export class TabManager {
     }
   }
 }
-const confirmCloseButtons: PromptButton[] = [
-  {
-    kind: "normal",
-    text: "Cancel",
-    command: "cancel",
-  },
-  {
-    kind: "normal",
-    text: "Don't save",
-    command: "dontsave",
-  },
-  {
-    kind: "emphasis",
-    text: "Save",
-    command: "save",
-  },
-];

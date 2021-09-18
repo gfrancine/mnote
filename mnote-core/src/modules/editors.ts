@@ -9,25 +9,12 @@ import { SystemModule } from "./system";
 import { el } from "mnote-util/elbuilder";
 import { Emitter } from "mnote-util/emitter";
 import { getPathName } from "mnote-util/path";
-import { strings } from "../common/strings";
+import { errorStrings } from "../common/strings";
 import { Menu, MenuItem } from "mnote-components/vanilla/menu";
 import { TabManager } from "./editors-tab";
 import { createIcon } from "mnote-components/vanilla/icons";
 import { FSModule } from "./fs";
-
-// todo: a nicer placeholder
-const nothingHere = (() => {
-  const element = el("div")
-    .inner("Click the three dots on the top right to open a file or folder.")
-    .class("placeholder-nothing")
-    .element;
-
-  return {
-    element,
-    show: () => element.style.display = "block",
-    hide: () => element.style.display = "none",
-  };
-})();
+import { StringsModule } from ".";
 
 // editors keep the contents in their stae
 // this module communicates between all the other parts of the app, so
@@ -44,6 +31,13 @@ export class EditorsModule {
   private fs: FSModule;
   private sidebar: SidebarModule;
   private prompts: PromptsModule;
+  private strings: StringsModule;
+
+  private nothingHere: {
+    element: HTMLElement;
+    show: () => void;
+    hide: () => void;
+  };
 
   events: Emitter<{
     currentTabSet: (tab?: Tab) => void; // menubar *Untitled text
@@ -68,14 +62,27 @@ export class EditorsModule {
     this.log = app.modules.log;
     this.sidebar = app.modules.sidebar;
     this.prompts = app.modules.prompts;
+    this.strings = app.modules.strings;
+
+    this.nothingHere = (() => {
+      const element = el("div")
+        .inner(this.strings.get("editorPlaceholder"))
+        .class("placeholder-nothing")
+        .element;
+
+      return {
+        element,
+        show: () => element.style.display = "block",
+        hide: () => element.style.display = "none",
+      };
+    })();
 
     this.element = el("div")
       .class("editor-main")
+      .children(this.nothingHere.element)
       .element;
 
     app.modules.layout.mountToContents(this.element);
-
-    this.element.appendChild(nothingHere.element);
 
     // hook methods to the rest of the app
     this.hookToSidebar();
@@ -86,7 +93,7 @@ export class EditorsModule {
 
   registerEditor(opts: EditorInfo) {
     if (this.editorKinds[opts.kind]) {
-      throw new Error(strings.editorAlreadyExists(opts.kind));
+      throw new Error(errorStrings.editorAlreadyExists(opts.kind));
     }
     this.editorKinds[opts.kind] = opts;
     this.editors.push(opts);
@@ -105,11 +112,11 @@ export class EditorsModule {
     }
 
     if (tab) {
-      nothingHere.hide();
+      this.nothingHere.hide();
       tab.manager.setVisible(true);
     } else {
       delete this.currentTab;
-      nothingHere.show();
+      this.nothingHere.show();
     }
 
     this.setCurrentTab(tab);
@@ -157,7 +164,7 @@ export class EditorsModule {
     try {
       await manager.startup();
     } catch (e) {
-      this.prompts.notify(strings.loadError(e));
+      this.prompts.notify(this.strings.get("loadError")(e));
       this.log.err("editors: trySetupTab error", info, e);
       return;
     }
@@ -204,7 +211,7 @@ export class EditorsModule {
     // this should not happen because we have a plaintext editor
     // but it's good to have this
     if (!selectedEditorInfo) {
-      this.prompts.notify(strings.openErrorUnsupported(path));
+      this.prompts.notify(this.strings.get("openErrorUnsupported")(path));
       return;
     }
 
@@ -257,7 +264,7 @@ export class EditorsModule {
   async newTab(editorKind: string) {
     const editorInfo = this.editorKinds[editorKind];
     if (!editorInfo) {
-      throw new Error(strings.editorDoesNotExist(editorKind));
+      throw new Error(errorStrings.editorDoesNotExist(editorKind));
     }
 
     const info: TabInfo = {
@@ -323,7 +330,12 @@ export class EditorsModule {
   private hookToSidebar() {
     // the "New File" button and menu
     const button = this.sidebar.createSidemenuButton((fillClass, strokeClass) =>
-      createIcon("add", fillClass, strokeClass, "Create a new file")
+      createIcon(
+        "add",
+        fillClass,
+        strokeClass,
+        this.strings.get("createNewFileTip"),
+      )
     );
 
     let menu: Menu | undefined;
@@ -413,21 +425,21 @@ export class EditorsModule {
       if (tab) {
         const buttons = [];
         buttons.push({
-          name: "Save",
+          name: this.strings.get("save"),
           shortcut: cmdOrCtrl + "+S",
           click: this.actions.save,
         });
 
         if (!tab.info.editorInfo.disableSaveAs) {
           buttons.push({
-            name: "Save As...",
+            name: this.strings.get("dialogSaveAs"),
             shortcut: cmdOrCtrl + "+Shift+S",
             click: this.actions.saveAs,
           });
         }
 
         buttons.push({
-          name: "Close Editor",
+          name: this.strings.get("closeEditor"),
           shortcut: cmdOrCtrl + "+W",
           click: this.actions.closeEditor,
         });

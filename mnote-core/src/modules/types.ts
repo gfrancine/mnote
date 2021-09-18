@@ -1,5 +1,6 @@
 import { DialogFilter } from "../common/types";
 import type { TabManager } from "./editors-tab";
+import { enStrings } from "../common/strings";
 import type { Mnote } from "..";
 
 // used by the extension module
@@ -84,3 +85,5 @@ export type ThemeInfo = {
   name: string;
   colors: Record<string, string>;
 };
+
+export type StringsDictionary = typeof enStrings;

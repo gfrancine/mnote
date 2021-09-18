@@ -21,12 +21,14 @@ import {
   PromptsModule,
   SettingsModule,
   SidebarModule,
+  StringsModule,
   SystemModule,
   ThemesModule,
 } from "./modules";
 
 type Modules = {
   log: LogModule;
+  strings: StringsModule;
   fs: FSModule;
   system: SystemModule;
   input: InputModule;
@@ -79,6 +81,7 @@ export class Mnote {
     const m = this.modules;
 
     m.log = new LogModule(this);
+    m.strings = new StringsModule(this);
     m.fs = new FSModule(this.options.fs);
     m.system = new SystemModule(this.options.system);
     m.input = new InputModule(this);

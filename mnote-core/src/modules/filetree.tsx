@@ -19,15 +19,13 @@ import { MenubarModule } from "./menubar";
 import { SystemModule } from "./system";
 import { EditorsModule } from "./editors";
 import { FileIconsModule } from "./fileicons";
-
-const nothingHere = el("div")
-  .inner("No opened folder")
-  .class("placeholder-nothing")
-  .element;
+import { StringsModule } from ".";
 
 export class FiletreeModule {
   private app: Mnote;
   private element: HTMLElement;
+  private nothingHere: HTMLElement;
+
   private fs: FSModule;
   private layout: LayoutModule;
   private ctxmenu: CtxmenuModule;
@@ -37,6 +35,7 @@ export class FiletreeModule {
   private system: SystemModule;
   private editors: EditorsModule;
   private fileicons: FileIconsModule;
+  private strings: StringsModule;
 
   private selectedFile?: string;
   private directory?: string;
@@ -45,12 +44,6 @@ export class FiletreeModule {
 
   constructor(app: Mnote) {
     this.app = app;
-
-    this.element = el("div")
-      .class("filetree-container")
-      .children(nothingHere)
-      .element;
-
     this.fs = app.modules.fs;
     this.system = app.modules.system;
     this.layout = app.modules.layout;
@@ -60,6 +53,17 @@ export class FiletreeModule {
     this.menubar = app.modules.menubar;
     this.editors = app.modules.editors;
     this.fileicons = app.modules.fileicons;
+    this.strings = app.modules.strings;
+
+    this.nothingHere = el("div")
+      .inner(this.strings.get("fileTreePlaceholder"))
+      .class("placeholder-nothing")
+      .element;
+
+    this.element = el("div")
+      .class("filetree-container")
+      .children(this.nothingHere)
+      .element;
 
     this.bindToModules();
     this.app.hooks.on("startup", () => this.startup());
@@ -200,7 +204,7 @@ export class FiletreeModule {
       );
     } else {
       unmountComponentAtNode(this.element);
-      this.element.appendChild(nothingHere);
+      this.element.appendChild(this.nothingHere);
     }
   }
 
@@ -210,6 +214,8 @@ export class FiletreeModule {
 
   private bindToModules() {
     // const cmdOrCtrl = this.system.usesCmd() ? "Cmd" : "Ctrl";
+
+    const sget = this.strings.get;
 
     // DRY
 
@@ -235,20 +241,20 @@ export class FiletreeModule {
       const buttons = [];
 
       buttons.push({
-        name: "Open File...",
+        name: sget("dialogOpenFile"),
         click: openFile,
       });
 
       if (!this.directory) {
         buttons.push({
-          name: "Open Folder...",
+          name: sget("dialogOpenFolder"),
           click: openFolder,
         });
       }
 
       if (this.directory) {
         buttons.push({
-          name: "Refresh Folder",
+          name: sget("refreshFolder"),
           click: () => {
             this.refreshTree();
           },
@@ -276,10 +282,10 @@ export class FiletreeModule {
     };
 
     const makeNewFolderButton = (dir: string) => ({
-      name: "New folder",
+      name: sget("newFolder"),
       click: async () => {
         const name = await this.prompts.promptTextInput(
-          "Create new folder",
+          sget("createNewFolder"),
         );
         if (!name) return;
         const path = this.fs.joinPath([dir, name]);
@@ -289,10 +295,10 @@ export class FiletreeModule {
     });
 
     const makeNewFileButton = (dir: string) => ({
-      name: "New file",
+      name: sget("newFile"),
       click: async () => {
         const name = await this.prompts.promptTextInput(
-          "Create new file",
+          sget("createNewFolder"),
         );
         if (!name) return;
         const path = this.fs.joinPath([dir, name]);
@@ -313,12 +319,12 @@ export class FiletreeModule {
 
         if (filePath) {
           const buttons = [{
-            name: "Open file",
+            name: sget("openFile"),
             click: () => {
               this.updateEditorSelectedFile(filePath);
             },
           }, {
-            name: "Delete file",
+            name: sget("deleteFile"),
             click: () => {
               this.fs.removeFile(filePath);
             },
@@ -326,7 +332,7 @@ export class FiletreeModule {
 
           if (!disableRename) {
             buttons.push({
-              name: "Rename file",
+              name: sget("renameFile"),
               click: () => {
                 const extension = this.fs.getPathExtension(filePath);
                 const dotExtension = extension.length > 0
@@ -341,7 +347,7 @@ export class FiletreeModule {
                 );
 
                 this.prompts.promptTextInput(
-                  `Rename file "${fullFileName}"`,
+                  sget("renameFilePrompt")(fullFileName),
                   fileName,
                 )
                   .then((newName) => {
@@ -364,7 +370,7 @@ export class FiletreeModule {
             // a directory
             const buttons = [
               {
-                name: "Delete folder",
+                name: sget("deleteFolder"),
                 click: () => {
                   this.fs.removeDir(dirPath);
                 },
@@ -375,12 +381,12 @@ export class FiletreeModule {
 
             if (!disableRename) {
               buttons.push({
-                name: "Rename folder",
+                name: sget("renameFolder"),
                 click: () => {
                   const dirName = this.fs.getPathName(dirPath);
 
                   this.prompts.promptTextInput(
-                    `Rename folder "${dirName}"`,
+                    sget("renameFolderPrompt")(dirName),
                     dirName,
                   )
                     .then((newName) => {
