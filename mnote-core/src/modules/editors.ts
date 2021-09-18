@@ -108,12 +108,12 @@ export class EditorsModule {
   // assumes the tab has already been mounted
   changeCurrentTab(tab: Tab | undefined) {
     if (this.currentTab) {
-      this.currentTab.manager.setVisible(false);
+      this.currentTab.manager.hide();
     }
 
     if (tab) {
       this.nothingHere.hide();
-      tab.manager.setVisible(true);
+      tab.manager.show();
     } else {
       delete this.currentTab;
       this.nothingHere.show();

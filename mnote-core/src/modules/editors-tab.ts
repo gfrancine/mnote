@@ -1,9 +1,10 @@
-import { Mnote } from "..";
+import { EditorContextEvents, Mnote } from "..";
 import { FSModule } from "./fs";
 import { PromptsModule } from "./prompts";
 import { DocInfo, Editor, EditorContext, TabContext } from "./types";
 import { LogModule } from "./log";
 import { StringsModule } from ".";
+import { Emitter } from "mnote-util/emitter";
 
 export class TabManager {
   private ctx: TabContext;
@@ -13,13 +14,15 @@ export class TabManager {
   private log: LogModule;
   private strings: StringsModule;
 
+  private ctxEvents = new Emitter<EditorContextEvents>();
+
   constructor(app: Mnote, ctx: TabContext) {
     this.ctx = ctx;
     this.fs = app.modules.fs;
     this.prompts = app.modules.prompts;
     this.log = app.modules.log;
     this.strings = app.modules.strings;
-    this.setVisible(false);
+    this.hide();
   }
 
   // mark the document as unsaved, remove the path
@@ -53,7 +56,7 @@ export class TabManager {
     this.fs.onWatchEvent("rename", this.onWatcherRename);
     this.fs.onWatchEvent("remove", this.onWatcherRemove);
 
-    this.setVisible(true);
+    this.show();
 
     await editor.startup(container, this.makeContext());
     return this;
@@ -68,6 +71,7 @@ export class TabManager {
       },
       getDocument: () => this.ctx.getTabInfo().document,
       setDocument: (doc: DocInfo) => this.ctx.setDocument(doc),
+      events: this.ctxEvents,
     };
   }
 
@@ -145,27 +149,32 @@ export class TabManager {
     return true;
   }
 
-  setVisible(visible: boolean) {
+  show() {
     const { container } = this.ctx.getTabInfo();
-    if (visible) {
-      container.style.display = "block";
-    } else {
-      container.style.display = "none";
-    }
+    container.style.display = "block";
+    this.ctxEvents.emit("tabShow");
+  }
+
+  hide() {
+    const { container } = this.ctx.getTabInfo();
+    container.style.display = "none";
+    this.ctxEvents.emit("tabHide");
   }
 
   mount(container: Element) {
     const tab = this.ctx.getTabInfo();
     container.appendChild(tab.container);
+    this.ctxEvents.emit("tabMount");
   }
 
   unmount(container: Element) {
     const tab = this.ctx.getTabInfo();
     container.removeChild(tab.container);
+    this.ctxEvents.emit("tabUnmount");
   }
 
   private async cleanup() {
-    this.setVisible(false);
+    this.hide();
     this.fs.offWatchEvent("rename", this.onWatcherRename);
     this.fs.offWatchEvent("remove", this.onWatcherRemove);
     const { editor } = this.ctx.getTabInfo();

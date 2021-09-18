@@ -2,6 +2,7 @@ import { DialogFilter } from "../common/types";
 import type { TabManager } from "./editors-tab";
 import { enStrings } from "../common/strings";
 import type { Mnote } from "..";
+import { Emitter } from "mnote-util/emitter";
 
 // used by the extension module
 export interface Extension {
@@ -18,10 +19,18 @@ export type DocInfo = {
   saved: boolean;
 };
 
+export type EditorContextEvents = {
+  tabShow: () => unknown;
+  tabHide: () => unknown;
+  tabMount: () => unknown;
+  tabUnmount: () => unknown;
+};
+
 export type EditorContext = {
   updateEdited(): void; // notify the app that the document has changed
   getDocument(): DocInfo;
   setDocument(doc: DocInfo): void;
+  events: Emitter<EditorContextEvents>;
 };
 
 export interface Editor {
