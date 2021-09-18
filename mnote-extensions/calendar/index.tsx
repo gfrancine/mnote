@@ -111,14 +111,18 @@ class CalendarEditor implements Editor {
 
     cal.on("eventsSet", this.handleChange);
 
-    cal.render();
-    cal.updateSize();
+    this.render();
+    ctx.events.on("tabShow", this.render);
+    ctx.events.on("tabMount", this.render);
+
     this.calendar = cal;
   }
 
   handleChange = () => {
     this.ctx?.updateEdited();
   };
+
+  render = () => this.calendar?.render();
 
   serializeData() {
     if (!this.calendar) {
@@ -142,6 +146,8 @@ class CalendarEditor implements Editor {
 
   cleanup() {
     this.container?.removeChild(this.element);
+    this.ctx?.events.off("tabShow", this.render);
+    this.ctx?.events.off("tabMount", this.render);
   }
 
   async save(path: string) {
