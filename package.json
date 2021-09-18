@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "dependencies": {
     "@excalidraw/excalidraw": "^0.9.0",
+    "@fullcalendar/core": "^5.9.0",
+    "@fullcalendar/daygrid": "^5.9.0",
+    "@fullcalendar/interaction": "^5.9.0",
+    "@fullcalendar/react": "^5.9.0",
+    "@fullcalendar/timegrid": "^5.9.0",
     "@types/katex": "^0.11.1",
     "open-color": "^1.8.0",
     "react": "^17.0.2",

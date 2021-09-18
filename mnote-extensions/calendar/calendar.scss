@@ -6,5 +6,45 @@
   box-sizing: border-box;
   padding: 1em 2.5em 2.5em;
 
-  // @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+  .fc-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .fc-scroller {
+    @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+  }
+
+  // correct sizes
+
+  .fc-view {
+    position: static;
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .fc-daygrid-body {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  table.fc-scrollgrid-sync-table {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  table.fc-col-header {
+    width: 100% !important;
+  }
+
+  .fc-timegrid-body {
+    width: 100% !important;
+  }
+
+  .fc-timegrid-body,
+  .fc-timegrid-cols {
+    table {
+      width: 100% !important;
+    }
+  }
 }

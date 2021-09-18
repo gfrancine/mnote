@@ -44,9 +44,9 @@ export const contents: Record<string, string> = {
   \`\`\`js
   code fence
   \`\`\``,
-  mncalendar: `{"events":[{"start":"2021-07-11T19:00:00.000Z","end":
-  "2021-07-11T21:30:00.000Z","title":"a","allDay":false,"id":null}],
-  "view":"day"}`,
+  mncalendar: `{"view":"dayGridMonth","events":[{"id":"_da8uCArt2UXUq3Kyu2aS",
+  "title":"dgfs'","start":"2021-08-31T17:00:00.000Z",
+  "end":"2021-09-17T17:00:00.000Z"}]}`,
   mnkanban: `{"board":{"lists":[]},"listsById":{},"cardsById":{}}`,
   excalidraw: `{"elements":[{"id":"H_6ROOV6mTGcLrQqWBi4v","type":"rectangle",
   "x":336.5,"y":298,"width":158,"height":241,"angle":0,"strokeColor":"#000000",

@@ -7,8 +7,32 @@ import {
   PromptsModule,
 } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
+
+import { Calendar } from "@fullcalendar/core";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+
 import "./calendar.scss";
 import { calendarIcon } from "./icon";
+import { nanoid } from "nanoid";
+
+// https://github.com/fullcalendar/fullcalendar-example-projects/blob/master/react-typescript/src/DemoApp.tsx
+// https://github.com/fullcalendar/fullcalendar-example-projects/blob/master/typescript/src/main.ts
+// https://fullcalendar.io/
+// https://fullcalendar.io/docs
+
+type DeserializedEvent = {
+  id: string;
+  title: string;
+  start: string;
+  end: string;
+};
+
+type Data = {
+  view: string;
+  events: DeserializedEvent[];
+};
 
 class CalendarEditor implements Editor {
   app: Mnote;
@@ -17,6 +41,9 @@ class CalendarEditor implements Editor {
   fs: FSModule;
   prompts: PromptsModule;
   ctx?: EditorContext;
+
+  calendar?: Calendar;
+  view = "dayGridMonth";
 
   constructor(app: Mnote) {
     this.app = app;
@@ -32,16 +59,85 @@ class CalendarEditor implements Editor {
     this.container = containter;
     this.container.appendChild(this.element);
 
+    let initialData: Data | undefined;
+
     const { path } = ctx.getDocument();
     if (path) {
-      const _contents = await this.fs.readTextFile(path);
+      const contents = await this.fs.readTextFile(path);
+      initialData = JSON.parse(contents);
     }
 
-    // this.renderWrapper();
+    const cal = new Calendar(this.element, {
+      plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+      selectable: true,
+      editable: true,
+      dayMaxEvents: true,
+      unselectAuto: true,
+      nowIndicator: true,
+      headerToolbar: {
+        left: "title",
+        center: "prev,next",
+        right: "dayGridMonth,timeGridWeek,timeGridDay",
+      },
+      initialView: initialData?.view || this.view,
+      initialEvents: initialData?.events,
+      viewDidMount: (arg) => {
+        const didChange = arg.view.type !== this.view;
+        this.view = arg.view.type;
+        if (didChange) this.handleChange();
+      },
+    });
+
+    // https://fullcalendar.io/docs/date-clicking-selecting
+    // https://fullcalendar.io/docs/event-model
+
+    cal.on("select", (arg) => {
+      this.app.modules.prompts.promptTextInput("Create a new event")
+        .then((title) => {
+          if (!title) return;
+          cal.addEvent({
+            title,
+            id: nanoid(),
+            start: arg.startStr,
+            end: arg.endStr,
+          });
+        })
+        .finally(() => cal.unselect());
+    });
+
+    cal.on("eventClick", (arg) => {
+      arg.event.remove();
+    });
+
+    cal.on("eventsSet", this.handleChange);
+
+    cal.render();
+    cal.updateSize();
+    this.calendar = cal;
   }
 
-  handleChange() {
+  handleChange = () => {
     this.ctx?.updateEdited();
+  };
+
+  serializeData() {
+    if (!this.calendar) {
+      throw new Error(
+        "Attempted to serialize data before calendar initialized",
+      );
+    }
+
+    const events = this.calendar.getEvents().map((eventApi) => ({
+      id: eventApi.id,
+      title: eventApi.title,
+      start: eventApi.start,
+      end: eventApi.end,
+    }));
+
+    return {
+      view: this.view,
+      events: events,
+    };
   }
 
   cleanup() {
@@ -49,7 +145,8 @@ class CalendarEditor implements Editor {
   }
 
   async save(path: string) {
-    await this.fs.writeTextFile(path, "todo");
+    const contents = JSON.stringify(this.serializeData());
+    await this.fs.writeTextFile(path, contents);
   }
 }
 
