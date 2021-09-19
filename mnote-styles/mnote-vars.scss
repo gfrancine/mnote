@@ -19,7 +19,7 @@ $default-theme: (
   "fg-dimmer": oc.$oc-gray-3,
   "bg-main": #fff,
   "bg-secondary": oc.$oc-gray-1,
-  "shadow": 0 2px 5px oc.$oc-gray-3,
+  "shadow": 0 2px 5px #{oc.$oc-gray-7}32,
   "overlay-bg": #{oc.$oc-gray-7}32,
   "border-main": oc.$oc-gray-4,
   "border-dim": oc.$oc-gray-2,

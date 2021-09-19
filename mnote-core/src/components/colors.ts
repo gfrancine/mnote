@@ -16,10 +16,10 @@ export const light = {
   "bg-main": "#fff",
   "bg-secondary": gray[1],
 
-  "shadow": "0px 2px 5px " + gray[3],
+  "shadow": "0px 2px 5px " + gray[7] + "32",
   "overlay-bg": gray[7] + "32",
 
-  "border-main": gray[3],
+  "border-main": gray[4],
   "border-dim": gray[2],
 
   "sidebar-bg-main": gray[1],

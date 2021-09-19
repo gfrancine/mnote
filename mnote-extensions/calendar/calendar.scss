@@ -14,6 +14,11 @@
     @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
   }
 
+  // selection
+  .fc-daygrid-bg-harness {
+    opacity: 0.5;
+  }
+
   // correct sizes
 
   .fc-view {
@@ -79,7 +84,7 @@
   --fc-non-business-color: rgba(215, 215, 215, 0.3);
   --fc-bg-event-color: rgb(143, 223, 130);
   --fc-bg-event-opacity: 0.3;
-  --fc-highlight-color: #{map-get(mn.$vars, btn-main-bg-hover)}; // todo: use main background colors
+  --fc-highlight-color: #{map-get(mn.$vars, btn-main-bg)}; // todo: use main background colors
   --fc-today-bg-color: #{map-get(mn.$vars, btn-main-bg)};
   --fc-now-indicator-color: #f66;
 }
