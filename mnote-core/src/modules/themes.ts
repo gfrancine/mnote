@@ -50,7 +50,6 @@ export class ThemesModule {
       title: "Theme",
       description: "The app theme color",
       key: "theme",
-      category: "core",
       subcategory: "appearance",
     }, {
       default: "system",

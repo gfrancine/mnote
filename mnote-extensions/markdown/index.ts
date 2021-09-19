@@ -167,7 +167,6 @@ export class MarkdownExtension implements Extension {
     app.modules.settings.registerInput("string", {
       key: "md.font-size",
       title: "Font size",
-      category: "extensions",
       subcategory: "markdown",
       description:
         "Base font size of a markdown editor in a CSS unit (e.g. 12px, 1em, etc...)",

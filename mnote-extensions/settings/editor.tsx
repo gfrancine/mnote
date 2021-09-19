@@ -3,8 +3,8 @@ import {
   Settings,
   SettingsInputIndex,
   settingsInputs,
-  SettingsInputSubcategory,
-  SettingsInputSubcategoryIndex,
+  SettingsSubcategory,
+  SettingsSubcategoryInfo,
 } from "mnote-core";
 import { ElementToReact, TreeItem } from "mnote-components/react/tree";
 import React, { useMemo, useState } from "react";
@@ -31,35 +31,37 @@ function InputRow(props: {
 
 export function SettingsEditor(props: {
   inputIndex: SettingsInputIndex;
-  subcategories: Record<string, SettingsInputSubcategory>;
+  subcategories: Record<string, SettingsSubcategory>;
   initialSettings: Settings;
   placeholder: string;
   onChange?: (value: Settings) => void;
 }) {
-  const sortSubcategories = (
-    subcategories: Record<string, SettingsInputSubcategoryIndex>,
+  const sortSubcategoryInfos = (
+    subcategoryInfos: Record<string, SettingsSubcategoryInfo>,
   ) =>
-    Object.values(subcategories).sort((a, b) =>
+    Object.values(subcategoryInfos).sort((a, b) =>
       a.subcategory.title < b.subcategory.title ? -1 : 1
     );
 
-  const coreSubcategories = useMemo(
-    () => sortSubcategories(props.inputIndex.core),
+  const coreSubcategoryInfos = useMemo(
+    () => sortSubcategoryInfos(props.inputIndex.core),
     [props.inputIndex.core],
   );
-  const extensionSubcategories = useMemo(
-    () => sortSubcategories(props.inputIndex.extensions),
+  const extensionSubcategoryInfos = useMemo(
+    () => sortSubcategoryInfos(props.inputIndex.extensions),
     [props.inputIndex.extensions],
   );
 
-  const [currentSubcategory, setCurrentSubcategory] = useState<string | null>(
-    coreSubcategories[0]?.subcategory.key || /* */ null,
+  const [currentSubcategoryKey, setCurrentSubcategoryKey] = useState<
+    string | null
+  >(
+    coreSubcategoryInfos[0]?.subcategory.key || /* */ null,
   );
 
   const [_settings, _setSettings] = useState(props.initialSettings);
 
   const subcategoriesToTreeItem = (
-    subcategories: SettingsInputSubcategoryIndex[],
+    subcategories: SettingsSubcategoryInfo[],
   ) =>
     subcategories.map((subcategory) => (
       <TreeItem
@@ -75,8 +77,8 @@ export function SettingsEditor(props: {
             />
           )
           : <Nothing />}
-        focused={subcategory.subcategory.key === currentSubcategory}
-        onClick={() => setCurrentSubcategory(subcategory.subcategory.key)}
+        focused={subcategory.subcategory.key === currentSubcategoryKey}
+        onClick={() => setCurrentSubcategoryKey(subcategory.subcategory.key)}
       />
     ));
 
@@ -85,14 +87,14 @@ export function SettingsEditor(props: {
       {/* .settings-main */}
       <div className="settings-contents">
         {(() => {
-          if (!currentSubcategory) {
+          if (!currentSubcategoryKey) {
             return (
               <div className="placeholder-nothing">
                 {props.placeholder}
               </div>
             );
           }
-          const subcategory = props.subcategories[currentSubcategory];
+          const subcategory = props.subcategories[currentSubcategoryKey];
           const subcategoryIndex =
             props.inputIndex[subcategory.category][subcategory.key];
           return (
@@ -109,11 +111,11 @@ export function SettingsEditor(props: {
         <div className="settings-navbar-category">
           <strong>General</strong>
         </div>
-        {subcategoriesToTreeItem(coreSubcategories)}
+        {subcategoriesToTreeItem(coreSubcategoryInfos)}
         <div className="settings-navbar-category">
           <strong>Others</strong>
         </div>
-        {subcategoriesToTreeItem(extensionSubcategories)}
+        {subcategoriesToTreeItem(extensionSubcategoryInfos)}
       </div>
     </>
   );

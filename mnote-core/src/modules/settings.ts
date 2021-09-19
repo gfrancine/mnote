@@ -2,7 +2,7 @@ import {
   Mnote,
   Settings,
   SettingsInputIndex,
-  SettingsInputSubcategory,
+  SettingsSubcategory,
   SettingsValue,
 } from "..";
 import { FSModule } from "./fs";
@@ -34,7 +34,7 @@ export class SettingsModule {
     inputIndexChanged: (index: SettingsInputIndex) => void | Promise<void>;
   }> = new Emitter();
 
-  private subcategories: Record<string, SettingsInputSubcategory> = {};
+  private subcategories: Record<string, SettingsSubcategory> = {};
   private inputsIndex: SettingsInputIndex = {
     core: {},
     extensions: {},
@@ -159,22 +159,24 @@ export class SettingsModule {
     // deno-lint-ignore no-explicit-any
     const input = new constructor(generalOpts, opts as any);
 
-    const subcategoryIndex =
-      this.inputsIndex[generalOpts.category][generalOpts.subcategory];
-    if (!subcategoryIndex) {
+    const subcategory = this.subcategories[generalOpts.subcategory];
+    if (!subcategory) {
       throw new Error(`Cannot find subcategory "${generalOpts.subcategory}"`);
     }
 
+    const subcategoryInfo =
+      this.inputsIndex[subcategory.category][generalOpts.subcategory];
+
     this.inputsIndex = set(
       this.inputsIndex,
-      generalOpts.category,
+      subcategory.category,
       set(
-        this.inputsIndex[generalOpts.category],
+        this.inputsIndex[subcategory.category],
         generalOpts.subcategory,
         set(
-          subcategoryIndex,
+          subcategoryInfo,
           "inputs",
-          set(subcategoryIndex.inputs, generalOpts.key, input),
+          set(subcategoryInfo.inputs, generalOpts.key, input),
         ),
       ),
     );
@@ -182,7 +184,7 @@ export class SettingsModule {
     this.events.emit("inputIndexChanged", this.inputsIndex);
   }
 
-  registerSubcategory(subcategory: SettingsInputSubcategory) {
+  registerSubcategory(subcategory: SettingsSubcategory) {
     if (this.inputsIndex[subcategory.category][subcategory.key]) return;
 
     this.inputsIndex = set(

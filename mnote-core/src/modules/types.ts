@@ -3,7 +3,7 @@ import type { TabManager } from "./editors-tab";
 import { enStrings } from "../common/strings";
 import type { Mnote } from "..";
 import { Emitter } from "mnote-util/emitter";
-import { Categories, Inputs } from "./settings-inputs";
+import { Inputs } from "./settings-inputs";
 
 // used by the extension module
 export interface Extension {
@@ -98,10 +98,12 @@ export type ThemeInfo = {
 
 export type StringsDictionary = typeof enStrings;
 
-export type SettingsInputSubcategory = {
+export type SettingsCategories = "core" | "extensions";
+
+export type SettingsSubcategory = {
   title: string;
   key: string;
-  category: Categories;
+  category: SettingsCategories;
   iconFactory?: (fillClass: string, strokeClass: string) => Element;
 };
 
@@ -123,12 +125,12 @@ export type Settings = Record<string, SettingsValue>;
 // the settings module keeps an index that changes every time  an
 // input/category is added so it maps directly to the UI layout
 
-export type SettingsInputSubcategoryIndex = {
-  subcategory: SettingsInputSubcategory;
+export type SettingsSubcategoryInfo = {
+  subcategory: SettingsSubcategory;
   inputs: Record<string, Inputs>;
 };
 
 export type SettingsInputIndex = {
-  core: Record<string, SettingsInputSubcategoryIndex>;
-  extensions: Record<string, SettingsInputSubcategoryIndex>;
+  core: Record<string, SettingsSubcategoryInfo>;
+  extensions: Record<string, SettingsSubcategoryInfo>;
 };
