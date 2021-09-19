@@ -50,7 +50,7 @@
       @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
     }
 
-    .settings-navbar {
+    .settings-toc {
       width: fit-content;
       padding: 0 1em;
       font-size: 0.9em;
@@ -77,7 +77,7 @@
     }
   }
 
-  .settings-navbar-category {
+  .settings-toc-category {
     margin: 1em 0;
   }
 

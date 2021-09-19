@@ -107,12 +107,12 @@ export function SettingsEditor(props: {
           );
         })()}
       </div>
-      <div className="settings-navbar">
-        <div className="settings-navbar-category">
+      <div className="settings-toc">
+        <div className="settings-toc-category">
           <strong>General</strong>
         </div>
         {subcategoriesToTreeItem(coreSubcategoryInfos)}
-        <div className="settings-navbar-category">
+        <div className="settings-toc-category">
           <strong>Others</strong>
         </div>
         {subcategoriesToTreeItem(extensionSubcategoryInfos)}
