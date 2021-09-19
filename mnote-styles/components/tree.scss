@@ -10,8 +10,8 @@
     item-hover-bg: map-get(mn.$vars, sidebar-item-hover-bg),
     item-hover-fg: map-get(mn.$vars, sidebar-item-hover-fg),
     item-hover-icon: map-get(mn.$vars, sidebar-item-icon-hover),
-    item-focused-bg: map-get(mn.$vars, sidebar-item-hover-bg),
-    item-focused-fg: map-get(mn.$vars, sidebar-item-hover-fg),
+    item-focused-bg: map-get(mn.$vars, sidebar-item-focused-bg),
+    item-focused-fg: map-get(mn.$vars, sidebar-item-focused-fg),
     item-focused-icon: map-get(mn.$vars, sidebar-item-icon-focused),
   );
 

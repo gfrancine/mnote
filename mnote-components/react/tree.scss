@@ -44,7 +44,8 @@ $a: (
       }
     }
 
-    &.tree-focused {
+    &.tree-focused,
+    &.tree-enable-hover.tree-focused {
       background: map-get($theme, item-focused-bg);
       color: map-get($theme, item-focused-fg);
 
