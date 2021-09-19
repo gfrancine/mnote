@@ -51,26 +51,26 @@
   // variables
 
   --fc-small-font-size: 0.85em;
-  --fc-page-bg-color: #fff;
-  --fc-neutral-bg-color: rgba(208, 208, 208, 0.3);
-  --fc-neutral-text-color: #808080;
-  --fc-border-color: #ddd;
+  --fc-page-bg-color: #{map-get(mn.$vars, border-main)};
+  --fc-neutral-bg-color: #{map-get(mn.$vars, bg-secondary)};
+  --fc-neutral-text-color: #{map-get(mn.$vars, fg-secondary)};
+  --fc-border-color: #{map-get(mn.$vars, border-main)};
 
-  --fc-button-text-color: #fff;
-  --fc-button-bg-color: #2c3e50;
-  --fc-button-border-color: #2c3e50;
-  --fc-button-hover-bg-color: #1e2b37;
-  --fc-button-hover-border-color: #1a252f;
-  --fc-button-active-bg-color: #1a252f;
-  --fc-button-active-border-color: #151e27;
+  --fc-button-text-color: #{map-get(mn.$vars, btn-main-fg)};
+  --fc-button-bg-color: #{map-get(mn.$vars, btn-main-bg)};
+  --fc-button-border-color: transparent;
+  --fc-button-hover-bg-color: #{map-get(mn.$vars, btn-main-bg-hover)};
+  --fc-button-hover-border-color: transparent;
+  --fc-button-active-bg-color: #{map-get(mn.$vars, btn-main-bg-hover)};
+  --fc-button-active-border-color: transparent;
 
-  --fc-event-bg-color: #3788d8;
-  --fc-event-border-color: #3788d8;
-  --fc-event-text-color: #fff;
+  --fc-event-bg-color: #{map-get(mn.$vars, btn-emphasis-bg)};
+  --fc-event-border-color: #{map-get(mn.$vars, btn-emphasis-bg)};
+  --fc-event-text-color: #{map-get(mn.$vars, btn-emphasis-fg)};
   --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
 
-  --fc-more-link-bg-color: #d0d0d0;
-  --fc-more-link-text-color: inherit;
+  --fc-more-link-bg-color: #{map-get(mn.$vars, bg-main)};
+  --fc-more-link-text-color: #{map-get(mn.$vars, fg-main)};
 
   --fc-event-resizer-thickness: 8px;
   --fc-event-resizer-dot-total-width: 8px;
@@ -79,7 +79,7 @@
   --fc-non-business-color: rgba(215, 215, 215, 0.3);
   --fc-bg-event-color: rgb(143, 223, 130);
   --fc-bg-event-opacity: 0.3;
-  --fc-highlight-color: rgba(188, 232, 241, 0.3);
-  --fc-today-bg-color: rgba(255, 220, 40, 0.15);
-  --fc-now-indicator-color: red;
+  --fc-highlight-color: #{map-get(mn.$vars, btn-main-bg-hover)}; // todo: use main background colors
+  --fc-today-bg-color: #{map-get(mn.$vars, btn-main-bg)};
+  --fc-now-indicator-color: #f66;
 }
