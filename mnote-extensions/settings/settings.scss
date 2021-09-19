@@ -1,5 +1,6 @@
 @use "~mnote-styles/mnote-vars" as mn;
 @use "~mnote-components/vanilla/word-stats.scss";
+@use "~mnote-components/react/tree.scss";
 
 .settings-editor {
   width: 100%;
@@ -59,6 +60,20 @@
       height: 100%;
       overflow-y: auto;
       @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+
+      $theme: (
+        item-bg: map-get(mn.$vars, bg-main),
+        item-fg: map-get(mn.$vars, fg-main),
+        item-icon: map-get(mn.$vars, fg-dim),
+        item-hover-bg: map-get(mn.$vars, bg-secondary),
+        item-hover-fg: map-get(mn.$vars, fg-main),
+        item-hover-icon: map-get(mn.$vars, fg-dim),
+        item-focused-bg: map-get(mn.$vars, bg-secondary),
+        item-focused-fg: map-get(mn.$vars, fg-main),
+        item-focused-icon: map-get(mn.$vars, fg-dim),
+      );
+
+      @include tree.tree($theme);
     }
   }
 
