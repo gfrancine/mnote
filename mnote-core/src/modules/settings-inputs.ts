@@ -1,9 +1,12 @@
 // input types for settings
 
+export type Categories = "core" | "extensions";
+
 export type GeneralOptions = {
   title: string;
   key: string;
-  category: string;
+  category: Categories;
+  subcategory: string;
   description?: string;
 };
 

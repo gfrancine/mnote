@@ -39,10 +39,18 @@ export class ThemesModule {
       this.updateTheme();
     });
 
+    this.settings.registerSubcategory({
+      key: "appearance",
+      title: "Appearance",
+      category: "core",
+      // todo: icon
+    });
+
     this.settings.registerInput("select", {
       title: "Theme",
       key: "theme",
-      category: "Appearance",
+      category: "core",
+      subcategory: "appearance",
     }, {
       default: "system",
       getItems: () => [

@@ -1,4 +1,4 @@
-import { Mnote } from "..";
+import { Mnote, SettingsInputIndex, SettingsInputSubcategory } from "..";
 import { FSModule } from "./fs";
 import { LogModule } from "./log";
 import { Emitter } from "mnote-util/emitter";
@@ -7,8 +7,8 @@ import {
   constructorMap,
   GeneralOptions,
   InputOptionsMap,
-  Inputs,
 } from "./settings-inputs";
+import { set } from "mnote-util/immutable";
 
 // the file is only read once at initialization. as long as the
 // app is running state is kept here and persisted based on the
@@ -27,9 +27,13 @@ export class SettingsModule {
 
   events: Emitter<{
     change: (settings: Settings) => void | Promise<void>;
+    inputIndexChanged: (index: SettingsInputIndex) => void | Promise<void>;
   }> = new Emitter();
 
-  private inputs: Record<string, Inputs> = {}; // [settings key]: input class
+  private inputsIndex: SettingsInputIndex = {
+    core: {},
+    extensions: {},
+  };
 
   constructor(app: Mnote) {
     this.fs = app.modules.fs;
@@ -132,8 +136,10 @@ export class SettingsModule {
   // inputs
   // the settings module only collects the input data assuming that an editor
   // will pick it up and use it
+  // registering is immutable because the settings editor will be written in React
+  // todo: find an immutable library
 
-  getInputs = () => this.inputs;
+  getInputsIndex = () => this.inputsIndex;
 
   registerInput<T extends keyof InputOptionsMap & keyof typeof constructorMap>(
     type: T,
@@ -141,14 +147,51 @@ export class SettingsModule {
     opts: InputOptionsMap[T],
   ) {
     const constructor = constructorMap[type];
-    if (!constructor) throw new Error(`Input type ${type} does not exist!`);
+    if (!constructor) throw new Error(`Input type "${type}" does not exist!`);
+
     // this is safe but I can't get typescript to resolve it
     // deno-lint-ignore no-explicit-any
     const input = new constructor(generalOpts, opts as any);
-    this.inputs[generalOpts.key] = input;
+
+    const subcategoryIndex =
+      this.inputsIndex[generalOpts.category][generalOpts.subcategory];
+    if (!subcategoryIndex) {
+      throw new Error(`Cannot find subcategory "${generalOpts.subcategory}"`);
+    }
+
+    this.inputsIndex = set(
+      this.inputsIndex,
+      generalOpts.category,
+      set(
+        this.inputsIndex[generalOpts.category],
+        generalOpts.subcategory,
+        set(
+          subcategoryIndex,
+          "inputs",
+          set(subcategoryIndex.inputs, generalOpts.key, input),
+        ),
+      ),
+    );
+
+    this.events.emit("inputIndexChanged", this.inputsIndex);
   }
 
-  removeInput(key: string) {
-    if (this.inputs[key]) delete this.inputs[key];
+  registerSubcategory(subcategory: SettingsInputSubcategory) {
+    if (this.inputsIndex[subcategory.category][subcategory.key]) return;
+
+    this.inputsIndex = set(
+      this.inputsIndex,
+      subcategory.category,
+      set(
+        this.inputsIndex[subcategory.category],
+        subcategory.key,
+        {
+          subcategory,
+          inputs: {},
+        },
+      ),
+    );
+
+    this.events.emit("inputIndexChanged", this.inputsIndex);
   }
 }
