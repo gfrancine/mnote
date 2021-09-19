@@ -1,4 +1,5 @@
 @use "~mnote-styles/mnote-vars" as mn;
+@use "~mnote-components/vanilla/word-stats.scss";
 
 .settings-editor {
   width: 100%;
@@ -6,6 +7,11 @@
 
   * {
     box-sizing: border-box;
+  }
+
+  .settings-view-toggle {
+    @include word-stats.word-stats;
+    color: map-get(mn.$vars, fg-dim);
   }
 
   .settings-textarea {
@@ -48,7 +54,7 @@
       padding: 0 1em;
       font-size: 0.9em;
       border-left: solid 1px var(--mnote-border-main);
-      max-width: 12em;;
+      max-width: 12em;
 
       height: 100%;
       overflow-y: auto;

@@ -26,6 +26,7 @@ class SettingsEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
   editorMain: HTMLElement;
+  viewToggle: HTMLElement;
   textarea: HTMLTextAreaElement;
   container?: HTMLElement;
   settings: SettingsModule;
@@ -39,6 +40,15 @@ class SettingsEditor implements Editor {
     this.app = app;
     this.settings = app.modules.settings;
     this.log = app.modules.log;
+
+    this.viewToggle = el("div")
+      .class("settings-view-toggle")
+      .inner("Raw view")
+      .on("click", () => {
+        this.setView(this.view === "editor" ? "raw" : "editor");
+      })
+      .element;
+
     this.textarea = el("textarea")
       .class("settings-textarea")
       .class("mousetrap") // enable shortcuts
@@ -54,6 +64,7 @@ class SettingsEditor implements Editor {
       .children(
         this.textarea,
         this.editorMain,
+        this.viewToggle,
       )
       .element;
 
