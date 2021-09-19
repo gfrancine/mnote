@@ -7,7 +7,11 @@ import {
   Circle,
   Close,
 } from "mnote-components/react/icons-jsx";
-import { ElementToReact, TreeChildren, TreeItem } from "./tree";
+import {
+  ElementToReact,
+  TreeChildren,
+  TreeItem,
+} from "mnote-components/react/tree";
 import { Highlight } from "mnote-components/react/highlight";
 import { getMatchingRanges, MatchRange } from "mnote-util/search";
 

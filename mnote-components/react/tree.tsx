@@ -23,6 +23,7 @@ export function TreeItem(
     text: ReactNode;
     icon: ReactNode;
     hovered?: boolean;
+    disableHover?: boolean;
     focused?: boolean;
     hidden?: boolean;
     ref?: React.Ref<HTMLDivElement>;
@@ -35,6 +36,7 @@ export function TreeItem(
         (props.hovered ? " tree-hovered" : "") +
         (props.focused ? " tree-focused" : "") +
         (props.hidden ? " tree-hidden" : "") +
+        (props.disableHover ? "" : " tree-enable-hover") +
         (props.className ? " " + props.className : "")}
       {...omit(
         props,

@@ -9,7 +9,11 @@ import {
   FileTreeNode as Node,
   FileTreeNodeWithChildren as NodeWithChildren,
 } from "../common/types";
-import { ElementToReact, TreeChildren, TreeItem } from "./tree";
+import {
+  ElementToReact,
+  TreeChildren,
+  TreeItem,
+} from "mnote-components/react/tree";
 import { getMatchingRanges, MatchRange } from "mnote-util/search";
 import { sortChildren } from "mnote-util/nodes";
 import { Highlight } from "mnote-components/react/highlight";

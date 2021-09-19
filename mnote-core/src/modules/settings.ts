@@ -1,4 +1,10 @@
-import { Mnote, SettingsInputIndex, SettingsInputSubcategory } from "..";
+import {
+  Mnote,
+  Settings,
+  SettingsInputIndex,
+  SettingsInputSubcategory,
+  SettingsValue,
+} from "..";
 import { FSModule } from "./fs";
 import { LogModule } from "./log";
 import { Emitter } from "mnote-util/emitter";
@@ -14,8 +20,6 @@ import { set } from "mnote-util/immutable";
 // app is running state is kept here and persisted based on the
 // data in this module
 
-type Settings = Record<string, unknown>;
-
 export class SettingsModule {
   private fs: FSModule;
   private appdir: AppDirModule;
@@ -30,6 +34,7 @@ export class SettingsModule {
     inputIndexChanged: (index: SettingsInputIndex) => void | Promise<void>;
   }> = new Emitter();
 
+  private subcategories: Record<string, SettingsInputSubcategory> = {};
   private inputsIndex: SettingsInputIndex = {
     core: {},
     extensions: {},
@@ -93,20 +98,20 @@ export class SettingsModule {
     return true;
   }
 
-  getKey(key: string): unknown {
+  getKey(key: string): SettingsValue {
     return this.settings[key];
   }
 
-  setKey(key: string, value: unknown): Promise<void> {
+  setKey(key: string, value: SettingsValue): Promise<void> {
     this.settings[key] = value;
     return this.persistSettings()
       .then(() => this.events.emit("change", this.settings));
   }
 
-  async getKeyWithDefault<T>(
+  async getKeyWithDefault<T extends SettingsValue>(
     key: string,
     default_: T,
-    isValid: (value: unknown) => boolean, /* value is T */
+    isValid: (value: SettingsValue) => boolean, /* value is T */
   ): Promise<T> {
     const value = this.getKey(key);
     if (isValid(value)) {
@@ -140,6 +145,7 @@ export class SettingsModule {
   // todo: find an immutable library
 
   getInputsIndex = () => this.inputsIndex;
+  getSubcategories = () => this.subcategories;
 
   registerInput<T extends keyof InputOptionsMap & keyof typeof constructorMap>(
     type: T,
@@ -191,6 +197,8 @@ export class SettingsModule {
         },
       ),
     );
+
+    this.subcategories = set(this.subcategories, subcategory.key, subcategory);
 
     this.events.emit("inputIndexChanged", this.inputsIndex);
   }

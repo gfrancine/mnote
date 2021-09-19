@@ -105,6 +105,21 @@ export type SettingsInputSubcategory = {
   iconFactory?: (fillClass: string, strokeClass: string) => Element;
 };
 
+// settings are kept in JSON
+
+export type SettingsPrimitive =
+  | string
+  | number
+  | boolean
+  | null;
+
+export type SettingsValue =
+  | SettingsPrimitive
+  | SettingsPrimitive[]
+  | Record<string, SettingsPrimitive>;
+
+export type Settings = Record<string, SettingsValue>;
+
 // the settings module keeps an index that changes every time  an
 // input/category is added so it maps directly to the UI layout
 

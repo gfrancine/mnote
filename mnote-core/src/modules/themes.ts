@@ -48,6 +48,7 @@ export class ThemesModule {
 
     this.settings.registerInput("select", {
       title: "Theme",
+      description: "The app theme color",
       key: "theme",
       category: "core",
       subcategory: "appearance",
@@ -56,7 +57,7 @@ export class ThemesModule {
       getItems: () => [
         {
           value: "system",
-          text: "System",
+          text: "Use system theme",
         },
         ...Object.keys(this.themes).map((key) => ({
           value: key,

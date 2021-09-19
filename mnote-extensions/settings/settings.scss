@@ -4,6 +4,10 @@
   width: 100%;
   height: 100%;
 
+  * {
+    box-sizing: border-box;
+  }
+
   .settings-textarea {
     padding: 2em 3em 3em;
     box-sizing: border-box;
@@ -19,5 +23,57 @@
     background: inherit;
 
     @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+  }
+
+  .settings-main {
+    width: 90%;
+    height: 100%;
+    max-width: 1080px;
+    margin: auto;
+    padding: 1.2em 0;
+
+    display: flex;
+    flex-direction: row;
+
+    .settings-contents {
+      flex: 1;
+      padding: 0 1em;
+      height: 100%;
+      overflow-y: auto;
+      @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+    }
+
+    .settings-navbar {
+      width: fit-content;
+      padding: 0 1em;
+      font-size: 0.9em;
+      border-left: solid 1px var(--mnote-border-main);
+
+      height: 100%;
+      overflow-y: auto;
+      @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+    }
+  }
+
+  .settings-navbar-category {
+    margin: 1em 0;
+  }
+
+  .settings-input-row {
+    margin: 2em 0;
+    display: flex;
+    flex-direction: row;
+
+    .left {
+      .title {
+        margin: 0.5em 0;
+        font-weight: bold;
+      }
+
+      .description {
+        color: map-get(mn.$vars, fg-secondary);
+        font-size: 0.85em;
+      }
+    }
   }
 }

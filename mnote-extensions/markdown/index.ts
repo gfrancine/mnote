@@ -166,7 +166,7 @@ export class MarkdownExtension implements Extension {
 
     app.modules.settings.registerInput("string", {
       key: "md.font-size",
-      title: "Markdown font size",
+      title: "Font size",
       category: "extensions",
       subcategory: "markdown",
       description:

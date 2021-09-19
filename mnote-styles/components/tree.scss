@@ -1,76 +1,19 @@
 @use "../util/scrollbar.scss";
 @use "../mnote-vars.scss" as mn;
-
-// styles for the filetree component (components/jsx)
+@use "~mnote-components/react/tree.scss" as react-tree;
 
 @mixin tree {
-  .tree-hidden {
-    display: none !important;
-  }
+  $theme: (
+    item-bg: map-get(mn.$vars, sidebar-bg-main),
+    item-fg: map-get(mn.$vars, sidebar-fg-main),
+    item-icon: map-get(mn.$vars, sidebar-item-icon),
+    item-hover-bg: map-get(mn.$vars, sidebar-item-hover-bg),
+    item-hover-fg: map-get(mn.$vars, sidebar-item-hover-fg),
+    item-hover-icon: map-get(mn.$vars, sidebar-item-icon-hover),
+    item-focused-bg: map-get(mn.$vars, sidebar-item-hover-bg),
+    item-focused-fg: map-get(mn.$vars, sidebar-item-hover-fg),
+    item-focused-icon: map-get(mn.$vars, sidebar-item-icon-focused),
+  );
 
-  .tree-item {
-    box-sizing: border-box;
-    cursor: pointer;
-    font-size: 13px;
-    display: flex;
-    flex-direction: row;
-    padding: 0.5em;
-    margin: 0 0 0.2em;
-    border-radius: 5px;
-    word-break: break-all;
-
-    &.tree-hovered,
-    &:hover {
-      background: map-get(mn.$vars, sidebar-item-hover-bg);
-      color: map-get(mn.$vars, sidebar-item-hover-fg);
-
-      .fill {
-        fill: map-get(mn.$vars, sidebar-item-icon-hover);
-      }
-
-      .stroke {
-        stroke: map-get(mn.$vars, sidebar-item-icon-hover);
-      }
-    }
-
-    &.tree-focused {
-      background: map-get(mn.$vars, sidebar-item-focused-bg);
-      color: map-get(mn.$vars, sidebar-item-hover-fg);
-
-      .fill {
-        fill: map-get(mn.$vars, sidebar-item-focused-icon);
-      }
-
-      .stroke {
-        stroke: map-get(mn.$vars, sidebar-item-focused-icon);
-      }
-    }
-
-    .tree-item-icon {
-      width: 14px;
-      height: 14px;
-      min-width: 14px;
-      margin: auto 0.5em auto 0;
-      box-sizing: border-box;
-
-      .fill {
-        fill: map-get(mn.$vars, sidebar-item-icon);
-      }
-
-      .stroke {
-        stroke: map-get(mn.$vars, sidebar-item-icon);
-      }
-
-      svg {
-        box-sizing: border-box;
-        width: 100%;
-        height: 100%;
-      }
-    }
-  }
-
-  .tree-children {
-    box-sizing: border-box;
-    padding-left: 0.8em;
-  }
+  @include react-tree.tree($theme);
 }

@@ -2,12 +2,18 @@ import {
   Editor,
   EditorContext,
   Extension,
+  LogModule,
   Mnote,
+  Settings,
   SettingsModule,
 } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
+import { render, unmountComponentAtNode } from "react-dom";
+import React from "react";
+import { SettingsEditor as ReactSettingsEditor } from "./editor";
 import { settingsIcon } from "./icon";
 import "./settings.scss";
+import { debounce } from "debounce";
 
 // instead of saving to file, the settings editor will
 // invoke the Settings.setSettings module
@@ -19,30 +25,48 @@ export const SETTINGS_ALIAS_PATH = "Settings *.[]:;|,_";
 class SettingsEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
+  editorMain: HTMLElement;
   textarea: HTMLTextAreaElement;
   container?: HTMLElement;
   settings: SettingsModule;
+  log: LogModule;
 
-  contents = "";
+  ctx?: EditorContext;
+  value: Settings;
+  view: "editor" | "raw" = "editor";
 
   constructor(app: Mnote) {
     this.app = app;
-    this.settings = (app.modules.settings as SettingsModule);
+    this.settings = app.modules.settings;
+    this.log = app.modules.log;
     this.textarea = el("textarea")
       .class("settings-textarea")
       .class("mousetrap") // enable shortcuts
       .attr("spellcheck", "false")
       .element as HTMLTextAreaElement;
 
+    this.editorMain = el("div")
+      .class("settings-main")
+      .element;
+
     this.element = el("div")
       .class("settings-editor")
       .children(
         this.textarea,
+        this.editorMain,
       )
       .element;
+
+    this.value = this.settings.getSettings();
+
+    this.renderEditor();
+    this.updateView();
   }
 
+  markUnsaved = () => this.ctx?.updateEdited();
+
   startup(containter: HTMLElement, ctx: EditorContext) {
+    this.ctx = ctx;
     ctx.setDocument({
       name: "Settings",
       path: SETTINGS_ALIAS_PATH,
@@ -50,35 +74,85 @@ class SettingsEditor implements Editor {
     });
 
     this.textarea.value = JSON.stringify(
-      this.settings.getSettings(),
+      this.value,
       undefined,
       2,
     );
 
-    this.textarea.addEventListener("input", () => {
-      this.contents = this.textarea.value;
-      ctx.updateEdited();
-    });
+    this.textarea.addEventListener(
+      "input",
+      debounce(() => {
+        let parsed: Settings;
+
+        try {
+          parsed = JSON.parse(this.textarea.value);
+        } catch {
+          return;
+        }
+
+        if (!this.settings.isValidSettings(parsed)) {
+          this.log.warn(
+            "settings extension: invalid raw input settings",
+            parsed,
+          );
+          return;
+        }
+
+        this.value = parsed;
+        ctx.updateEdited();
+      }, 200),
+    );
 
     this.container = containter;
     containter.appendChild(this.element);
   }
 
+  renderEditor = () => {
+    render(
+      <ReactSettingsEditor
+        inputIndex={this.settings.getInputsIndex()}
+        subcategories={this.settings.getSubcategories()}
+        initialSettings={this.value}
+        // todo: localize
+        placeholder="Choose a category from the sidebar on the right."
+        onChange={(value) => {
+          this.value = value;
+          this.ctx?.updateEdited();
+          this.textarea.value = JSON.stringify(
+            this.value,
+            undefined,
+            2,
+          );
+        }}
+      />,
+      this.editorMain,
+    );
+  };
+
+  setView = (view: "editor" | "raw") => {
+    this.view = view;
+    this.updateView();
+  };
+
+  updateView = () => {
+    if (this.view === "editor") {
+      this.editorMain.style.display = "flex";
+      this.textarea.style.display = "none";
+    } else {
+      this.editorMain.style.display = "none";
+      this.textarea.style.display = "block";
+    }
+  };
+
   cleanup() {
+    unmountComponentAtNode(this.editorMain);
     if (this.container) {
       this.container.removeChild(this.element);
     }
   }
 
   async save(_path: string) {
-    const parsed = JSON.parse(this.contents);
-    if (!this.settings.isValidSettings(parsed)) {
-      // throw when error so the editor module
-      // can catch it with a prompt
-      throw new Error("invalid settings");
-    }
-
-    await this.settings.setSettings(parsed);
+    await this.settings.setSettings(this.value);
   }
 }
 
