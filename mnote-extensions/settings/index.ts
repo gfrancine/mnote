@@ -2,7 +2,6 @@ import {
   Editor,
   EditorContext,
   Extension,
-  MenuItem,
   Mnote,
   SettingsModule,
 } from "mnote-core";
@@ -94,7 +93,7 @@ export class SettingsExtension implements Extension {
     };
 
     app.modules.menubar.addSectionReducer(() => {
-      const button: MenuItem = {
+      const button = {
         name: "Settings",
         click: openSettings,
       };
