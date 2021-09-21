@@ -29,6 +29,21 @@ function InputRow(props: {
   );
 }
 
+function SubcategoryPage(props: {
+  subcategoryInfo: SettingsSubcategoryInfo;
+}) {
+  const { subcategoryInfo } = props;
+
+  return (
+    <div className="subcategory-main">
+      <h1>{subcategoryInfo.subcategory.title}</h1>
+      {Object.values(subcategoryInfo.inputs).map((input) =>
+        <InputRow key={input.generalOpts.key} input={input} />
+      )}
+    </div>
+  );
+}
+
 export function SettingsEditor(props: {
   inputIndex: SettingsInputIndex;
   subcategories: Record<string, SettingsSubcategory>;
@@ -95,16 +110,9 @@ export function SettingsEditor(props: {
             );
           }
           const subcategory = props.subcategories[currentSubcategoryKey];
-          const subcategoryIndex =
+          const subcategoryInfo =
             props.inputIndex[subcategory.category][subcategory.key];
-          return (
-            <div className="category-main">
-              <h1>{subcategory.title}</h1>
-              {Object.values(subcategoryIndex.inputs).map((input) =>
-                <InputRow key={input.generalOpts.key} input={input} />
-              )}
-            </div>
-          );
+          return <SubcategoryPage subcategoryInfo={subcategoryInfo} />;
         })()}
       </div>
       <div className="settings-toc">
