@@ -12,6 +12,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import useWidth from "./useWidth";
 import Menu from "mnote-components/react/dropdowns/Menu";
 import Select from "mnote-components/react/dropdowns/Select";
+import { useListener } from "mnote-util/useListener";
 
 const NEW_ITEM_MOCK_ID = "_$*!(@)#%*!$@()#$NEWITEM";
 
@@ -35,14 +36,7 @@ export default function Todo(props: {
 
   const [filterType, setFilterType] = useState<TodoListFilterType>("all");
 
-  const [hasInitialized, setHasInitialized] = useState(false);
-
-  useEffect(() => {
-    if (!hasInitialized) {
-      setHasInitialized(true);
-      return;
-    }
-
+  useListener(() => {
     props.onChange?.({
       title,
       items,

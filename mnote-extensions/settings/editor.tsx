@@ -10,6 +10,7 @@ import {
 } from "mnote-core";
 import { ElementToReact, TreeItem } from "mnote-components/react/tree";
 import React, { useEffect, useMemo, useState } from "react";
+import { useListener } from "mnote-util/useListener";
 
 function BooleanInput(props: {
   initialValue?: SettingsValue; // must be generic, because JSON values are not guaranteed
@@ -26,7 +27,8 @@ function BooleanInput(props: {
     if (!props.initialValue) props.onChange?.(value);
   }, []);
 
-  useEffect(() => {
+  useListener(() => {
+    console.log("propsonchange");
     props.onChange?.(value);
   }, [value]);
 
@@ -130,7 +132,7 @@ export function SettingsEditor(props: {
 
   const [settings, setSettings] = useState(props.initialSettings);
 
-  useEffect(() => {
+  useListener(() => {
     props.onChange?.(settings);
   }, [settings]);
 
