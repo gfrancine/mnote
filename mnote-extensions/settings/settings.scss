@@ -35,7 +35,7 @@
   .settings-main {
     width: 90%;
     height: 100%;
-    max-width: 1080px;
+    max-width: 720px;
     margin: auto;
     padding: 1.2em 0;
 
@@ -44,7 +44,7 @@
 
     .settings-contents {
       flex: 1;
-      padding: 0 1em;
+      padding: 0 1.2em;
       height: 100%;
       overflow-y: auto;
       @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
@@ -52,10 +52,9 @@
 
     .settings-toc {
       width: fit-content;
-      padding: 0 1em;
+      padding: 0 1.2em;
       font-size: 0.9em;
       border-left: solid 1px var(--mnote-border-main);
-      max-width: 12em;
 
       height: 100%;
       overflow-y: auto;
@@ -74,6 +73,11 @@
       );
 
       @include tree.tree($theme);
+
+      .tree-item {
+        min-width: 10em;
+        max-width: 12em;
+      }
     }
   }
 
