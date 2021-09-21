@@ -3,7 +3,7 @@ import type { TabManager } from "./editors-tab";
 import { enStrings } from "../common/strings";
 import type { Mnote } from "..";
 import { Emitter } from "mnote-util/emitter";
-import { Inputs } from "./settings-inputs";
+import * as SettingsInputs from "./settings-inputs";
 
 // used by the extension module
 export interface Extension {
@@ -122,12 +122,20 @@ export type SettingsValue =
 
 export type Settings = Record<string, SettingsValue>;
 
+export { SettingsInputs };
+
+export type SettingsInput =
+  | SettingsInputs.Boolean
+  | SettingsInputs.String
+  | SettingsInputs.Number
+  | SettingsInputs.Select;
+
 // the settings module keeps an index that changes every time  an
 // input/category is added so it maps directly to the UI layout
 
 export type SettingsSubcategoryInfo = {
   subcategory: SettingsSubcategory;
-  inputs: Record<string, Inputs>;
+  inputs: Record<string, SettingsInput>;
 };
 
 export type SettingsInputIndex = {

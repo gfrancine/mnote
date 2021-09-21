@@ -46,12 +46,12 @@ export class ThemesModule {
       // todo: icon
     });
 
-    this.settings.registerInput("select", {
+    this.settings.registerInput({
+      type: "select",
       title: "Theme",
       description: "The app theme color",
       key: "theme",
       subcategory: "appearance",
-    }, {
       default: "system",
       getItems: () => [
         {

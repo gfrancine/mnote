@@ -1,27 +1,73 @@
 import { Nothing } from "mnote-components/react/icons-jsx";
 import {
   Settings,
+  SettingsInput,
   SettingsInputIndex,
-  settingsInputs,
+  SettingsInputs,
   SettingsSubcategory,
   SettingsSubcategoryInfo,
+  SettingsValue,
 } from "mnote-core";
 import { ElementToReact, TreeItem } from "mnote-components/react/tree";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
-function InputRow(props: {
-  input: settingsInputs.Inputs;
-  // value
-  // setvalue
+function BooleanInput(props: {
+  initialValue?: SettingsValue; // must be generic, because JSON values are not guaranteed
+  input: SettingsInputs.Boolean;
+  onChange?: (value: boolean) => void;
+}) {
+  const [value, setValue] = useState(
+    typeof props.initialValue === "boolean"
+      ? props.initialValue
+      : props.input.default,
+  );
+
+  useEffect(() => {
+    if (!props.initialValue) props.onChange?.(value);
+  }, []);
+
+  useEffect(() => {
+    props.onChange?.(value);
+  }, [value]);
+
+  return (
+    <div
+      className={"inputs-boolean " + (value ? "on" : "off")}
+      onClick={() => setValue(!value)}
+    >
+      <svg viewBox="0 0 48 24">
+        <circle cx="12" cy="12" r="12" className="bg" />
+        <circle cx="36" cy="12" r="12" className="bg" />
+        <rect x="12" y="0" width="24" height="24" className="bg" />
+        <circle cx={value ? "36" : "12"} cy="12" r="10" className="handle" />
+      </svg>
+    </div>
+  );
+}
+
+function InputRow<T extends SettingsInput>(props: {
+  input: T;
+  initialValue?: SettingsValue;
+  setValue: (value: SettingsValue) => void;
 }) {
   return (
     <div className="settings-input-row">
       <div className="left">
-        <div className="title">{props.input.generalOpts.title}</div>
-        <div className="description">{props.input.generalOpts.description}</div>
+        <div className="title">{props.input.title}</div>
+        <div className="description">{props.input.description}</div>
       </div>
       <div className="right">
         {(() => {
+          if (props.input.type === "boolean") {
+            return (
+              <BooleanInput
+                initialValue={props.initialValue}
+                onChange={props.setValue}
+                input={props.input}
+              />
+            );
+          }
+
           return "";
         })()}
       </div>
@@ -31,15 +77,24 @@ function InputRow(props: {
 
 function SubcategoryPage(props: {
   subcategoryInfo: SettingsSubcategoryInfo;
+  settings: Settings;
+  setSettings: (value: Settings) => void;
 }) {
   const { subcategoryInfo } = props;
 
   return (
     <div className="subcategory-main">
       <h1>{subcategoryInfo.subcategory.title}</h1>
-      {Object.values(subcategoryInfo.inputs).map((input) =>
-        <InputRow key={input.generalOpts.key} input={input} />
-      )}
+      {Object.values(subcategoryInfo.inputs).map((input) => (
+        <InputRow
+          key={input.key}
+          input={input}
+          initialValue={props.settings[input.key]}
+          setValue={(value: SettingsValue) => {
+            props.setSettings({ ...props.settings, [input.key]: value });
+          }}
+        />
+      ))}
     </div>
   );
 }
@@ -73,7 +128,11 @@ export function SettingsEditor(props: {
     coreSubcategoryInfos[0]?.subcategory.key || /* */ null,
   );
 
-  const [_settings, _setSettings] = useState(props.initialSettings);
+  const [settings, setSettings] = useState(props.initialSettings);
+
+  useEffect(() => {
+    props.onChange?.(settings);
+  }, [settings]);
 
   const subcategoriesToTreeItem = (
     subcategories: SettingsSubcategoryInfo[],
@@ -112,7 +171,13 @@ export function SettingsEditor(props: {
           const subcategory = props.subcategories[currentSubcategoryKey];
           const subcategoryInfo =
             props.inputIndex[subcategory.category][subcategory.key];
-          return <SubcategoryPage subcategoryInfo={subcategoryInfo} />;
+          return (
+            <SubcategoryPage
+              subcategoryInfo={subcategoryInfo}
+              setSettings={setSettings}
+              settings={settings}
+            />
+          );
         })()}
       </div>
       <div className="settings-toc">

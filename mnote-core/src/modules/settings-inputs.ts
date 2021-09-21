@@ -7,73 +7,29 @@ export type GeneralOptions = {
   description?: string;
 };
 
-function withDefault<T>(value: T | undefined, default_: T): T {
-  return value === undefined ? default_ : value;
-}
+export type Boolean = GeneralOptions & {
+  type: "boolean";
+  default: boolean;
+};
 
-export type StringInputOptions = {
+export type String = GeneralOptions & {
+  type: "string";
   default: string;
   getInvalidMessage?: (value: string) => string | void;
 };
 
-export class StringInput {
-  generalOpts: GeneralOptions;
-  opts: StringInputOptions;
-  constructor(generalOpts: GeneralOptions, opts: StringInputOptions) {
-    this.generalOpts = generalOpts;
-    this.opts = opts;
-  }
-}
-
-export type NumberInputOptions = {
+export type Number = GeneralOptions & {
+  type: "number";
   default: number;
   max?: number;
   min?: number;
 };
 
-export class NumberInput {
-  generalOpts: GeneralOptions;
-  opts: Required<NumberInputOptions>;
-  constructor(generalOpts: GeneralOptions, opts: NumberInputOptions) {
-    this.generalOpts = generalOpts;
-    this.opts = {
-      ...opts,
-      max: withDefault(opts.max, Infinity),
-      min: withDefault(opts.min, -Infinity),
-    };
-  }
-}
-
-export type SelectInputOptions = {
+export type Select = GeneralOptions & {
+  type: "select";
   default: string;
   getItems: () => {
     value: string;
     text: string;
   }[];
 };
-
-export class SelectInput {
-  generalOpts: GeneralOptions;
-  opts: SelectInputOptions;
-  constructor(generalOpts: GeneralOptions, opts: SelectInputOptions) {
-    this.generalOpts = generalOpts;
-    this.opts = opts;
-  }
-}
-
-export type InputOptionsMap = {
-  string: StringInputOptions;
-  number: NumberInputOptions;
-  select: SelectInputOptions;
-};
-
-export const constructorMap = {
-  string: StringInput,
-  number: NumberInput,
-  select: SelectInput,
-};
-
-export type Inputs =
-  | StringInput
-  | NumberInput
-  | SelectInput;

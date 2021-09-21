@@ -1,6 +1,7 @@
 import {
   Mnote,
   Settings,
+  SettingsInput,
   SettingsInputIndex,
   SettingsSubcategory,
   SettingsValue,
@@ -9,11 +10,6 @@ import { FSModule } from "./fs";
 import { LogModule } from "./log";
 import { Emitter } from "mnote-util/emitter";
 import { AppDirModule } from "./appdir";
-import {
-  constructorMap,
-  GeneralOptions,
-  InputOptionsMap,
-} from "./settings-inputs";
 import { set } from "mnote-util/immutable";
 
 // the file is only read once at initialization. as long as the
@@ -147,36 +143,25 @@ export class SettingsModule {
   getInputsIndex = () => this.inputsIndex;
   getSubcategories = () => this.subcategories;
 
-  registerInput<T extends keyof InputOptionsMap & keyof typeof constructorMap>(
-    type: T,
-    generalOpts: GeneralOptions,
-    opts: InputOptionsMap[T],
-  ) {
-    const constructor = constructorMap[type];
-    if (!constructor) throw new Error(`Input type "${type}" does not exist!`);
-
-    // this is safe but I can't get typescript to resolve it
-    // deno-lint-ignore no-explicit-any
-    const input = new constructor(generalOpts, opts as any);
-
-    const subcategory = this.subcategories[generalOpts.subcategory];
+  registerInput(input: SettingsInput) {
+    const subcategory = this.subcategories[input.subcategory];
     if (!subcategory) {
-      throw new Error(`Cannot find subcategory "${generalOpts.subcategory}"`);
+      throw new Error(`Cannot find subcategory "${input.subcategory}"`);
     }
 
     const subcategoryInfo =
-      this.inputsIndex[subcategory.category][generalOpts.subcategory];
+      this.inputsIndex[subcategory.category][input.subcategory];
 
     this.inputsIndex = set(
       this.inputsIndex,
       subcategory.category,
       set(
         this.inputsIndex[subcategory.category],
-        generalOpts.subcategory,
+        input.subcategory,
         set(
           subcategoryInfo,
           "inputs",
-          set(subcategoryInfo.inputs, generalOpts.key, input),
+          set(subcategoryInfo.inputs, input.key, input),
         ),
       ),
     );

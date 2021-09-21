@@ -164,13 +164,13 @@ export class MarkdownExtension implements Extension {
       iconFactory: markdownIcon,
     });
 
-    app.modules.settings.registerInput("string", {
+    app.modules.settings.registerInput({
+      type: "string",
       key: "md.font-size",
       title: "Font size",
       subcategory: "markdown",
       description:
         "Base font size of a markdown editor in a CSS unit (e.g. 12px, 1em, etc...)",
-    }, {
       default: "1em",
     });
   }

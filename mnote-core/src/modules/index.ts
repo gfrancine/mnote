@@ -21,4 +21,3 @@ export { StringsModule } from "./strings";
 // non-module exports
 
 export { TabManager } from "./editors-tab";
-export * as settingsInputs from "./settings-inputs";
