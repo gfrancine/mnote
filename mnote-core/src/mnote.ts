@@ -95,9 +95,9 @@ export class Mnote {
     m.sidebar = new SidebarModule(this);
     m.editors = new EditorsModule(this);
     m.fileicons = new FileIconsModule(this);
+    m.filesearch = new FileSearchModule(this);
     m.filetree = new FiletreeModule(this);
     m.openfiles = new OpenFilesModule(this);
-    m.filesearch = new FileSearchModule(this);
     m.themes = await new ThemesModule(this).init();
   }
 

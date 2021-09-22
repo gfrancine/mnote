@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
-import { LayoutModule, StringsModule } from ".";
+import { FileSearchModule, LayoutModule, StringsModule } from ".";
 import { el } from "mnote-util/elbuilder";
 import { Mnote } from "..";
 import { OpenFile } from "../common/types";
@@ -19,6 +19,7 @@ export class OpenFilesModule {
   private ctxmenu: CtxmenuModule;
   private fileicons: FileIconsModule;
   private strings: StringsModule;
+  private filesearch: FileSearchModule;
 
   private openFiles: OpenFile[] = [];
   private searchTerm?: string;
@@ -31,6 +32,7 @@ export class OpenFilesModule {
     this.ctxmenu = app.modules.ctxmenu;
     this.fileicons = app.modules.fileicons;
     this.strings = app.modules.strings;
+    this.filesearch = app.modules.filesearch;
 
     this.element = el("div")
       .class("openfiles-main")
@@ -50,6 +52,15 @@ export class OpenFilesModule {
     this.editors.events.on("activeTabsChanged", onEditorTabChange);
     this.editors.events.on("currentTabSet", onEditorTabChange);
     // click > action up > event down > render
+
+    const setSearchTerm = (searchTerm?: string) => {
+      this.log.info("open files: set search term", searchTerm);
+      this.searchTerm = searchTerm;
+      this.updateComponent();
+    };
+
+    this.filesearch.events.on("search", setSearchTerm);
+    this.filesearch.events.on("searchClear", setSearchTerm);
 
     const ctxmenuReducer = (ctx: CtxmenuContext) => {
       // find a file tree item
@@ -93,12 +104,6 @@ export class OpenFilesModule {
     this.log.info("open files: set open files", files, activeIndex);
     this.openFiles = [...files];
     this.activeIndex = activeIndex;
-    this.updateComponent();
-  }
-
-  setSearchTerm(searchTerm?: string) {
-    this.log.info("open files: set search term", searchTerm);
-    this.searchTerm = searchTerm;
     this.updateComponent();
   }
 

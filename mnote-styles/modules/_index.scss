@@ -2,10 +2,12 @@
 @use "menubar";
 @use "editor";
 @use "sidebar";
+@use "filesearch";
 
 @mixin modules {
   @include layout.layout;
   @include menubar.menubar;
   @include editor.editor;
   @include sidebar.sidebar;
+  @include filesearch.filesearch;
 }

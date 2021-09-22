@@ -19,7 +19,7 @@ import { MenubarModule } from "./menubar";
 import { SystemModule } from "./system";
 import { EditorsModule } from "./editors";
 import { FileIconsModule } from "./fileicons";
-import { StringsModule } from ".";
+import { FileSearchModule, StringsModule } from ".";
 
 export class FiletreeModule {
   private app: Mnote;
@@ -36,6 +36,7 @@ export class FiletreeModule {
   private editors: EditorsModule;
   private fileicons: FileIconsModule;
   private strings: StringsModule;
+  private filesearch: FileSearchModule;
 
   private selectedFile?: string;
   private directory?: string;
@@ -54,6 +55,7 @@ export class FiletreeModule {
     this.editors = app.modules.editors;
     this.fileicons = app.modules.fileicons;
     this.strings = app.modules.strings;
+    this.filesearch = app.modules.filesearch;
 
     this.nothingHere = el("div")
       .inner(this.strings.get("fileTreePlaceholder"))
@@ -137,12 +139,6 @@ export class FiletreeModule {
     this.directory = path;
     this.fs.watchInit(path);
     this.refreshTree();
-  }
-
-  setSearchTerm(searchTerm?: string) {
-    this.log.info("filetree: set search term", searchTerm);
-    this.searchTerm = searchTerm;
-    this.updateTree();
   }
 
   private updateTree() {
@@ -428,5 +424,14 @@ export class FiletreeModule {
 
     this.editors.events.on("activeTabsChanged", onEditorTabChange);
     this.editors.events.on("currentTabSet", onEditorTabChange);
+
+    const setSearchTerm = (searchTerm?: string) => {
+      this.log.info("filetree: set search term", searchTerm);
+      this.searchTerm = searchTerm;
+      this.updateTree();
+    };
+
+    this.filesearch.events.on("search", setSearchTerm);
+    this.filesearch.events.on("searchClear", setSearchTerm);
   }
 }
