@@ -46,7 +46,7 @@
 
     .layout-sidebar {
       width: 240px;
-      min-height: 120px;
+      min-width: 120px;
       background-color: map-get(mn.$vars, sidebar-bg-main);
       color: map-get(mn.$vars, sidebar-fg-main);
       display: flex;
