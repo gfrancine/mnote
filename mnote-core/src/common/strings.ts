@@ -26,6 +26,7 @@ export const enStrings = {
   fileTreePlaceholder: "No Opened Folder",
   editorPlaceholder:
     "Click the three dots on the top right to open a file or folder.",
+  searchPlaceholder: "Search...",
   // context menu & menu
   openEditor: "Open Editor",
   closeEditor: "Close Editor",
@@ -49,4 +50,6 @@ export const enStrings = {
   createNewFileTip: "Create a new file",
   toggleSidebarTip: "Toggle the sidebar",
   menuTip: "Menu",
+  clearSearchTip: "Clear search",
+  searchFilesTip: "Search files",
 };

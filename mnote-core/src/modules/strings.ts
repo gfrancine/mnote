@@ -6,7 +6,9 @@ import { LogModule } from "./log";
 /* Note
 localization support for the app is incomplete and will not be worked on anytime
 soon because I'm the only user and I don't plan to release this app openly. The
-purpose of this module is just to make it *possible* */
+purpose of this module is just to organize long strings into a separate place and
+to make localization *possible* */
+// todo: some strings are retrieved only once and don't update, e.g. in tooltips
 
 export class StringsModule {
   private log: LogModule;

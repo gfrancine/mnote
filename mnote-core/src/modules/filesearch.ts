@@ -18,12 +18,12 @@ export class FileSearchModule {
   }> = new Emitter();
 
   constructor(app: Mnote) {
-    const { layout } = app.modules;
+    const { layout, strings } = app.modules;
     this.layout = layout;
 
     this.input = el("input")
       .class("filesearch-input")
-      .attr("placeholder", "Search...")
+      .attr("placeholder", strings.get("searchPlaceholder"))
       .element as HTMLInputElement;
 
     this.input.addEventListener("keydown", (e) => {
@@ -38,11 +38,16 @@ export class FileSearchModule {
       "search",
       "fill",
       "stroke",
-      "Search for files",
+      strings.get("searchFilesTip"),
     );
     searchIcon.classList.add("icon", "search");
 
-    const closeIcon = createIcon("close", "fill", "stroke", "Stop searching");
+    const closeIcon = createIcon(
+      "close",
+      "fill",
+      "stroke",
+      strings.get("clearSearchTip"),
+    );
     closeIcon.classList.add("icon", "close");
 
     this.button = el("div")
