@@ -26,6 +26,8 @@
 
     .filesearch-button {
       width: fit-content;
+      min-width: fit-content;
+      flex-shrink: 0;
       height: 100%;
       padding: 4px;
       cursor: pointer;
@@ -60,6 +62,7 @@
       background: none;
       outline: none;
       border: none;
+      overflow-x: hidden;
 
       &::-webkit-input-placeholder {
         color: map-get(mn.$vars, fg-dim);
