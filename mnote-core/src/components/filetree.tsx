@@ -147,7 +147,7 @@ function DirNode(props: {
 
   // sort by name and by type (directories go first)
   const sortedChildren = useMemo(
-    () => sortChildren(props.node),
+    () => sortChildren(props.getPathName, props.node),
     [props.node.children],
   );
 

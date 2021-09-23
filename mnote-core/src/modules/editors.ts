@@ -8,7 +8,6 @@ import { PromptsModule } from "./prompts";
 import { SystemModule } from "./system";
 import { el } from "mnote-util/elbuilder";
 import { Emitter } from "mnote-util/emitter";
-import { getPathName } from "mnote-util/path";
 import { errorStrings } from "../common/strings";
 import { Menu, MenuItem } from "mnote-components/vanilla/menu";
 import { TabManager } from "./editors-tab";
@@ -240,7 +239,7 @@ export class EditorsModule {
     }
 
     const document = {
-      name: getPathName(path),
+      name: this.fs.getPathName(path),
       saved: false,
     };
 
