@@ -10,8 +10,8 @@ import { Node, NodeWithChildren } from "mnote-util/nodes";
 //    functionality
 export type MnoteOptions = {
   startPath?: string;
-  fs?: FsInteropModule;
-  system?: SystemInteropModule;
+  fs?: Partial<FsInteropModule>;
+  system?: Partial<SystemInteropModule>;
   isProduction?: boolean;
   appDirectoryName?: string;
   appSettingsFileName?: string;

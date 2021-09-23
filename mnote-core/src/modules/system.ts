@@ -5,27 +5,27 @@ import {
 } from "../common/types";
 
 export class SystemModule implements SystemInteropModule {
-  private system?: SystemInteropModule;
+  private system?: Partial<SystemInteropModule>;
 
-  constructor(system?: SystemInteropModule) {
+  constructor(system?: Partial<SystemInteropModule>) {
     this.system = system;
   }
 
   // todo: can we use a browser api?
   usesCmd() {
-    if (this.system) return this.system.usesCmd();
+    if (this.system?.usesCmd) return this.system.usesCmd();
     return false;
   }
 
   hookToQuit(hook: SystemCancelQuitHook) {
-    this.system?.hookToQuit(hook);
+    this.system?.hookToQuit?.(hook);
   }
 
   onAppMenuClick(listener: SystemAppMenuListener) {
-    this.system?.onAppMenuClick(listener);
+    this.system?.onAppMenuClick?.(listener);
   }
 
   offAppMenuClick(listener: SystemAppMenuListener) {
-    this.system?.offAppMenuClick(listener);
+    this.system?.offAppMenuClick?.(listener);
   }
 }

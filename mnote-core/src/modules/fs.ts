@@ -1,9 +1,4 @@
 import {
-  getPathExtension,
-  getPathName,
-  getPathParent,
-} from "../../../mnote-util/path";
-import {
   DialogFilter,
   FileItemWithChildren,
   FsInteropModule,
@@ -15,21 +10,47 @@ import {
 // todo: mock
 // https://tauri.studio/en/docs/api/js/modules/fs
 
-// todo: DRY void methods
+// path fallback implementation
+
+const EXTENSION_REGEX = /(\.([^.\\/]+))[\\/]?$/;
+const NAME_REGEX = /([^\\/]+)[\\/]?$/;
+const PARENT_REGEX = /(.+)[\\/][^\\/]+[\\/]?$/;
+
+/** returns the entire path if not found */
+function getPathName(path: string): string {
+  const matches = path.match(NAME_REGEX);
+  if (matches) return matches[1];
+  return path;
+}
+
+/** without the leading ".", returns a blank string if not found */
+function getPathExtension(path: string): string {
+  const matches = path.match(EXTENSION_REGEX);
+  if (matches) return matches[2];
+  return "";
+}
+
+/** returns the parent directory path */
+function getPathParent(path: string): string {
+  const matches = path.match(PARENT_REGEX);
+  if (matches) return matches[1];
+  return path;
+}
 
 export class FSModule implements FsInteropModule {
-  private fs?: FsInteropModule;
+  private fs?: Partial<FsInteropModule>;
 
-  constructor(fs?: FsInteropModule) {
+  constructor(fs?: Partial<FsInteropModule>) {
     if (fs) this.fs = fs;
   }
 
   writeTextFile(path: string, contents: string): Promise<void> {
-    return this.fs ? this.fs.writeTextFile(path, contents) : Promise.resolve();
+    if (this.fs?.writeTextFile) return this.fs.writeTextFile(path, contents);
+    return Promise.resolve();
   }
 
   readTextFile(path: string): Promise<string> {
-    if (this.fs) return this.fs.readTextFile(path);
+    if (this.fs?.readTextFile) return this.fs.readTextFile(path);
     return Promise.resolve("");
   }
 
@@ -37,7 +58,7 @@ export class FSModule implements FsInteropModule {
     path: string,
     opts: FsReadDirOptions = { recursive: true },
   ): Promise<FileItemWithChildren> {
-    if (this.fs) return this.fs.readDir(path, opts);
+    if (this.fs?.readDir) return this.fs.readDir(path, opts);
     return Promise.resolve({
       path: "TEMP",
       children: [],
@@ -45,32 +66,32 @@ export class FSModule implements FsInteropModule {
   }
 
   async renameFile(path: string, newPath: string): Promise<void> {
-    await this.fs?.renameFile(path, newPath);
+    await this.fs?.renameFile?.(path, newPath);
   }
 
   async renameDir(path: string, newPath: string): Promise<void> {
-    await this.fs?.renameDir(path, newPath);
+    await this.fs?.renameDir?.(path, newPath);
   }
 
   async removeFile(path: string): Promise<void> {
-    await this.fs?.removeFile(path);
+    await this.fs?.removeFile?.(path);
   }
 
   async removeDir(path: string): Promise<void> {
-    await this.fs?.removeDir(path);
+    await this.fs?.removeDir?.(path);
   }
 
   async createDir(path: string): Promise<void> {
-    await this.fs?.createDir(path);
+    await this.fs?.createDir?.(path);
   }
 
   isFile(path: string): Promise<boolean> {
-    if (this.fs) return this.fs.isFile(path);
+    if (this.fs?.isFile) return this.fs.isFile(path);
     return Promise.resolve(false);
   }
 
   isDir(path: string): Promise<boolean> {
-    if (this.fs) return this.fs.isDir(path);
+    if (this.fs?.isDir) return this.fs.isDir(path);
     return Promise.resolve(false);
   }
 
@@ -80,7 +101,8 @@ export class FSModule implements FsInteropModule {
     startingDirectory?: string;
     startingFileName?: string;
   }): Promise<string | void> {
-    return this.fs ? this.fs.dialogOpen(opts) : Promise.resolve();
+    if (this.fs?.dialogOpen) return this.fs.dialogOpen(opts);
+    return Promise.resolve();
   }
 
   dialogSave(opts: {
@@ -88,54 +110,55 @@ export class FSModule implements FsInteropModule {
     startingDirectory?: string;
     startingFileName?: string;
   }): Promise<string | void> {
-    return this.fs ? this.fs.dialogSave(opts) : Promise.resolve();
+    if (this.fs?.dialogSave) return this.fs.dialogSave(opts);
+    return Promise.resolve();
   }
 
   getConfigDir(): Promise<string> {
-    if (this.fs) return this.fs.getConfigDir();
+    if (this.fs?.getConfigDir) return this.fs.getConfigDir();
     return Promise.resolve(".");
   }
 
   getCurrentDir(): Promise<string> {
-    if (this.fs) return this.fs.getCurrentDir();
+    if (this.fs?.getCurrentDir) return this.fs.getCurrentDir();
     return Promise.resolve(".");
   }
 
   getPathName(path: string) {
-    if (this.fs) return this.fs.getPathName(path);
+    if (this.fs?.getPathName) return this.fs.getPathName(path);
     return getPathName(path);
   }
 
   getPathParent(path: string) {
-    if (this.fs) return this.fs.getPathParent(path);
+    if (this.fs?.getPathParent) return this.fs.getPathParent(path);
     return getPathParent(path);
   }
 
   getPathExtension(path: string) {
-    if (this.fs) return this.fs.getPathExtension(path);
+    if (this.fs?.getPathExtension) return this.fs.getPathExtension(path);
     return getPathExtension(path);
   }
 
   joinPath(items: string[]): string {
-    if (this.fs) return this.fs.joinPath(items);
+    if (this.fs?.joinPath) return this.fs.joinPath(items);
     return items.join("/");
   }
 
   async watchInit(path: string) {
-    await this.fs?.watchInit(path);
+    await this.fs?.watchInit?.(path);
   }
 
   onWatchEvent<K extends keyof FsWatcherEvents>(
     event: K,
     handler: FsWatcherEvents[K],
   ) {
-    this.fs?.onWatchEvent(event, handler);
+    return this.fs?.onWatchEvent?.(event, handler);
   }
 
   offWatchEvent<K extends keyof FsWatcherEvents>(
     event: K,
     handler: FsWatcherEvents[K],
   ) {
-    this.fs?.offWatchEvent(event, handler);
+    return this.fs?.offWatchEvent?.(event, handler);
   }
 }

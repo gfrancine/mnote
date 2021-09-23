@@ -3,14 +3,12 @@ import {
   FsInteropModule,
   FsReadDirOptions,
 } from "mnote-core";
-import {
-  getPathExtension,
-  getPathName,
-  getPathParent,
-} from "../../mnote-util/path";
+
 import { contents, tree } from "./mocks";
 
-export class FS implements FsInteropModule {
+const EXTENSION_REGEX = /(\.([^.\\/]+))[\\/]?$/;
+
+export class FS implements Partial<FsInteropModule> {
   writeTextFile(_path: string, _contents: string): Promise<void> {
     return Promise.resolve();
   }
@@ -20,26 +18,16 @@ export class FS implements FsInteropModule {
         "lorem ipsum",
     );
   }
+  getPathExtension(path: string) {
+    const matches = path.match(EXTENSION_REGEX);
+    if (matches) return matches[2];
+    return "";
+  }
   readDir(
     _path: string,
     _opts: FsReadDirOptions,
   ): Promise<FileItemWithChildren> {
     return Promise.resolve(tree);
-  }
-  renameFile(_path: string, _newPath: string): Promise<void> {
-    return Promise.resolve();
-  }
-  renameDir(_path: string, _newPath: string): Promise<void> {
-    return Promise.resolve();
-  }
-  removeFile(_path: string): Promise<void> {
-    return Promise.resolve();
-  }
-  removeDir(_path: string): Promise<void> {
-    return Promise.resolve();
-  }
-  createDir(_path: string): Promise<void> {
-    return Promise.resolve();
   }
   isFile(_path: string): Promise<boolean> {
     return Promise.resolve(true);
@@ -59,24 +47,4 @@ export class FS implements FsInteropModule {
   getCurrentDir(): Promise<string> {
     return Promise.resolve("currentdir");
   }
-
-  getPathName(path: string) {
-    return getPathName(path);
-  }
-  getPathParent(path: string) {
-    return getPathParent(path);
-  }
-  getPathExtension(path: string) {
-    return getPathExtension(path);
-  }
-  joinPath(fragments: string[]) {
-    return fragments.join("/");
-  }
-
-  watchInit(_path: string): Promise<void> {
-    return Promise.resolve();
-  }
-
-  onWatchEvent(_event: string, _handler: () => void | Promise<void>): void {}
-  offWatchEvent(_event: string, _handler: () => void | Promise<void>): void {}
 }
