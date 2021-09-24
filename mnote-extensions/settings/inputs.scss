@@ -65,6 +65,7 @@
     .dropdown-container {
       font-size: 0.9em;
       width: 100%;
+      margin-left: 0;
 
       .dropdown-toggle {
         width: 100%;
@@ -72,13 +73,10 @@
     }
   }
 
-  .inputs-string {
+  .inputs-string,
+  .inputs-number {
     .input {
-      @include inputs.text-input-base;
-      font-size: 0.9em;
-      padding: 0.5em 0.3em;
-      border: solid 1px transparent;
-      border-radius: 0.2em;
+      @include inputs.text-input-small;
 
       &.invalid {
         border: solid 1px #f66;

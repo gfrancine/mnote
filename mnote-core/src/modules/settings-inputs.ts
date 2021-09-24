@@ -23,6 +23,7 @@ export type Number = GeneralOptions & {
   default: number;
   max?: number;
   min?: number;
+  getInvalidMessage?: (value: number) => string | void;
 };
 
 type NonEmptyArray<T> = [T, ...T[]];

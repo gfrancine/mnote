@@ -10,7 +10,7 @@ import {
 import { ElementToReact, TreeItem } from "mnote-components/react/tree";
 import React, { useMemo, useState } from "react";
 import { useListener } from "mnote-util/useListener";
-import { BooleanInput, SelectInput, StringInput } from "./inputs";
+import { BooleanInput, NumberInput, SelectInput, StringInput } from "./inputs";
 
 function InputRow<T extends SettingsInput>(props: {
   input: T;
@@ -46,6 +46,14 @@ function InputRow<T extends SettingsInput>(props: {
             case "string":
               return (
                 <StringInput
+                  initialValue={props.initialValue}
+                  input={props.input}
+                  onChange={props.setValue}
+                />
+              );
+            case "number":
+              return (
+                <NumberInput
                   initialValue={props.initialValue}
                   input={props.input}
                   onChange={props.setValue}

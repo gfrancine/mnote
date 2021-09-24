@@ -106,3 +106,59 @@ export function StringInput(props: {
     </div>
   );
 }
+
+export function NumberInput(props: {
+  initialValue?: SettingsValue;
+  input: SettingsInputs.Number;
+  onChange?: (value: number) => void;
+}) {
+  const [value, setValue] = useState<null | number>(
+    typeof props.initialValue === "number"
+      ? props.initialValue
+      : props.input.default,
+  );
+
+  const [invalidMessage, setInvalidMessage] = useState<string | void>();
+
+  useEffect(() => {
+    if (typeof props.initialValue !== "number") props.onChange?.(value || 0);
+  }, []);
+
+  const getInvalidMessage = (value: null | number) => {
+    if (typeof value !== "number") return "Value must be a number";
+    if (props.input.min !== undefined && value < props.input.min) {
+      return `Value must be at least ${props.input.min}`;
+    }
+    if (props.input.max !== undefined && value > props.input.max) {
+      return `Value must not be greater than ${props.input.max}`;
+    }
+    return props.input.getInvalidMessage?.(value);
+  };
+
+  useListener(() => {
+    const message = getInvalidMessage(value);
+    if (message) {
+      setInvalidMessage(message);
+      return;
+    }
+
+    if (invalidMessage) setInvalidMessage();
+    props.onChange?.(value as number);
+  }, [value]);
+
+  return (
+    <div className="inputs-number">
+      <input
+        value={value === null ? "" : value}
+        type="number"
+        onChange={(e) => {
+          const value = parseInt(e.target.value, 10);
+          setValue(Number.isNaN(value) ? null : value);
+        }}
+        className={"input " + (invalidMessage ? "invalid" : "")}
+      />
+      {invalidMessage &&
+        <div className="invalid-message">{invalidMessage}</div>}
+    </div>
+  );
+}

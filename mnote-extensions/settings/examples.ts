@@ -41,6 +41,9 @@ export class SettingsInputsExamples implements Extension {
       default: 2,
       min: 0,
       max: 5,
+      getInvalidMessage: (value) => {
+        if (value === 5) return "Error message";
+      },
     });
 
     settings.registerInput({

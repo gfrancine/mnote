@@ -19,6 +19,14 @@
   font-size: 13px;
 }
 
+@mixin text-input-small {
+  @include text-input-base;
+  font-size: 0.9em;
+  padding: 0.5em 0.3em;
+  border: solid 1px transparent;
+  border-radius: 0.2em;
+}
+
 @mixin button-base {
   font-family: map-get(mn.$vars, font-main);
   font-size: 13px;
