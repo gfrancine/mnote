@@ -54,8 +54,8 @@
     "windows": [
       {
         "title": "Mnote",
-        "width": 1400,
-        "height": 800,
+        "width": 1080,
+        "height": 720,
         "resizable": true,
         "fullscreen": false,
         "fileDropEnabled": false
