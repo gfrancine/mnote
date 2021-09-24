@@ -137,14 +137,16 @@ export class TabManager {
       name: newPathName,
       saved: false,
     };
-    this.ctx.setDocument(newDoc);
 
     const success = await this.trySaveEditor(editor, newDoc);
     if (!success) return false;
-    this.ctx.setDocument({
-      ...newDoc,
-      saved: true,
-    });
+
+    if (editorInfo.canOpenPath(newPath)) {
+      this.ctx.setDocument({
+        ...newDoc,
+        saved: true,
+      });
+    }
 
     return true;
   }
