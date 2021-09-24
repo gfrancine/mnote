@@ -1,6 +1,6 @@
 @use "./mnote-vars.scss" as mn;
 
-@use "normalize";
+@use "~mnote-deps/normalize.scss";
 @use "modules";
 @use "components";
 
