@@ -3,6 +3,7 @@ import { SettingsModule } from "./settings";
 import { dark, light } from "../components/colors";
 import { ThemeInfo } from "./types";
 import { LogModule } from "./log";
+import { createIcon } from "mnote-components/vanilla/icons";
 
 export class ThemesModule {
   private app: Mnote;
@@ -43,7 +44,8 @@ export class ThemesModule {
       key: "appearance",
       title: "Appearance",
       category: "core",
-      // todo: icon
+      iconFactory: (fillClass, strokeClass) =>
+        createIcon("appearance", fillClass, strokeClass),
     });
 
     this.settings.registerInput({

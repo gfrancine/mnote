@@ -10,6 +10,28 @@
     box-sizing: border-box;
   }
 
+  .subcategory-main {
+    .subcategory-title {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .subcategory-icon {
+      margin-right: 1em;
+      width: 2em;
+      height: 2em;
+      flex-shrink: 0;
+
+      .fill {
+        fill: map-get(mn.$vars, fg-secondary);
+      }
+      .stroke {
+        stroke: map-get(mn.$vars, fg-secondary);
+      }
+    }
+  }
+
   .settings-view-toggle {
     @include word-stats.word-stats;
     color: map-get(mn.$vars, fg-dim);

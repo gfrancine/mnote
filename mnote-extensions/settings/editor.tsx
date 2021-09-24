@@ -83,10 +83,20 @@ function SubcategoryPage(props: {
   setSettings: (value: Settings) => void;
 }) {
   const { subcategoryInfo } = props;
+  const icon = subcategoryInfo.subcategory.iconFactory;
 
   return (
     <div className="subcategory-main">
-      <h1>{subcategoryInfo.subcategory.title}</h1>
+      <div className="subcategory-title">
+        {icon
+          ? (
+            <div className="subcategory-icon">
+              <ElementToReact element={icon("fill", "stroke")} />
+            </div>
+          )
+          : <></>}
+        <h1>{subcategoryInfo.subcategory.title}</h1>
+      </div>
       {Object.values(subcategoryInfo.inputs).map((input) => (
         <InputRow
           key={input.key}
