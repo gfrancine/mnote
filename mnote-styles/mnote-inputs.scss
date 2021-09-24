@@ -1,6 +1,6 @@
 @use "./mnote-vars.scss" as mn;
 
-@mixin text-input {
+@mixin text-input-base {
   resize: none;
   width: 100%;
   box-sizing: border-box;
@@ -8,11 +8,15 @@
   border: none;
   border-radius: 5px;
   background: map-get(mn.$vars, bg-secondary);
-  padding: 0.8em;
   color: map-get(mn.$vars, fg-main);
   font-family: map-get(mn.$vars, font-main);
-  font-size: 13px;
   line-height: initial;
+}
+
+@mixin text-input {
+  @include text-input-base;
+  padding: 0.8em;
+  font-size: 13px;
 }
 
 @mixin button-base {

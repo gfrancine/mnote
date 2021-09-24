@@ -15,7 +15,7 @@ export function BooleanInput(props: {
   );
 
   useEffect(() => {
-    if (!props.initialValue) props.onChange?.(value);
+    if (typeof props.initialValue !== "boolean") props.onChange?.(value);
   }, []);
 
   useListener(() => {
@@ -58,6 +58,51 @@ export function SelectInput(props: {
         options={items}
         onChange={props.onChange}
       />
+    </div>
+  );
+}
+
+export function StringInput(props: {
+  initialValue?: SettingsValue;
+  input: SettingsInputs.String;
+  onChange?: (value: string) => void;
+}) {
+  const [value, setValue] = useState(
+    typeof props.initialValue === "string" &&
+      (props.input.getInvalidMessage &&
+        props.input.getInvalidMessage(props.initialValue) !== undefined)
+      ? props.initialValue
+      : props.input.default,
+  );
+
+  const [invalidMessage, setInvalidMessage] = useState<string | void>();
+
+  useEffect(() => {
+    if (typeof props.initialValue !== "string") props.onChange?.(value);
+  }, []);
+
+  useListener(() => {
+    if (props.input.getInvalidMessage) {
+      const message = props.input.getInvalidMessage(value);
+      if (message) {
+        setInvalidMessage(message);
+        return;
+      }
+    }
+
+    if (invalidMessage) setInvalidMessage();
+    props.onChange?.(value);
+  }, [value]);
+
+  return (
+    <div className="inputs-string">
+      <input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        className={"input " + (invalidMessage ? "invalid" : "")}
+      />
+      {invalidMessage &&
+        <div className="invalid-message">{invalidMessage}</div>}
     </div>
   );
 }

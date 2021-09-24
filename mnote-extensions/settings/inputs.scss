@@ -1,5 +1,6 @@
 @use "~mnote-styles/mnote-vars" as mn;
 @use "~mnote-components/react/dropdowns/dropdowns.scss";
+@use "~mnote-styles/mnote-inputs.scss" as inputs;
 
 @mixin inputs {
   .inputs-boolean {
@@ -48,6 +49,8 @@
   }
 
   .inputs-select {
+    width: 100%;
+
     $dropdown-colors: (
       bg: map-get(mn.$vars, bg-secondary),
       bg-selected: map-get(mn.$vars, fg-dimmer),
@@ -58,5 +61,34 @@
 
     @include dropdowns.base;
     @include dropdowns.styled($dropdown-colors);
+
+    .dropdown-container {
+      font-size: 0.9em;
+      width: 100%;
+
+      .dropdown-toggle {
+        width: 100%;
+      }
+    }
+  }
+
+  .inputs-string {
+    .input {
+      @include inputs.text-input-base;
+      font-size: 0.9em;
+      padding: 0.5em 0.3em;
+      border: solid 1px transparent;
+      border-radius: 0.2em;
+
+      &.invalid {
+        border: solid 1px #f66;
+      }
+    }
+
+    .invalid-message {
+      color: #f66;
+      font-size: 0.8em;
+      margin-top: 0.2em;
+    }
   }
 }
