@@ -67,10 +67,13 @@ export function StringInput(props: {
   input: SettingsInputs.String;
   onChange?: (value: string) => void;
 }) {
+  const getInvalidMessage = props.input.getInvalidMessage;
+
   const [value, setValue] = useState(
     typeof props.initialValue === "string" &&
-      (props.input.getInvalidMessage &&
-        props.input.getInvalidMessage(props.initialValue) !== undefined)
+      (getInvalidMessage
+        ? getInvalidMessage(props.initialValue) !== undefined
+        : true)
       ? props.initialValue
       : props.input.default,
   );
@@ -112,18 +115,6 @@ export function NumberInput(props: {
   input: SettingsInputs.Number;
   onChange?: (value: number) => void;
 }) {
-  const [value, setValue] = useState<null | number>(
-    typeof props.initialValue === "number"
-      ? props.initialValue
-      : props.input.default,
-  );
-
-  const [invalidMessage, setInvalidMessage] = useState<string | void>();
-
-  useEffect(() => {
-    if (typeof props.initialValue !== "number") props.onChange?.(value || 0);
-  }, []);
-
   const getInvalidMessage = (value: null | number) => {
     if (typeof value !== "number") return "Value must be a number";
     if (props.input.min !== undefined && value < props.input.min) {
@@ -134,6 +125,19 @@ export function NumberInput(props: {
     }
     return props.input.getInvalidMessage?.(value);
   };
+
+  const [value, setValue] = useState<null | number>(
+    typeof props.initialValue === "number" &&
+      getInvalidMessage(props.initialValue) !== undefined
+      ? props.initialValue
+      : props.input.default,
+  );
+
+  const [invalidMessage, setInvalidMessage] = useState<string | void>();
+
+  useEffect(() => {
+    if (typeof props.initialValue !== "number") props.onChange?.(value || 0);
+  }, []);
 
   useListener(() => {
     const message = getInvalidMessage(value);
