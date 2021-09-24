@@ -108,6 +108,23 @@ export class PlaintextExtension implements Extension {
         extensions: ["txt"],
       }],
     });
+
+    app.modules.settings.registerSubcategory({
+      category: "extensions",
+      key: "plaintext",
+      title: "Plaintext",
+      iconFactory: plaintextIcon,
+    });
+
+    app.modules.settings.registerInput({
+      subcategory: "plaintext",
+      key: "plaintext.tab-size",
+      title: "Tab size",
+      description: "The number of characters a tab is equal to",
+      default: 2,
+      min: 1,
+      type: "number",
+    });
   }
 
   cleanup(_app: Mnote) {}
