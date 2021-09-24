@@ -20,6 +20,8 @@
 
   .board {
     @include mn.scrollbar(map-get(mn.$vars, fg-dimmer));
+    width: 100%;
+    padding: 10px 1em;
   }
 
   // @import "./styles/AddList.css";

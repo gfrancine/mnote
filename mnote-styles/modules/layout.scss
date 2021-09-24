@@ -98,7 +98,8 @@
     }
 
     .layout-container {
-      width: -webkit-fill-available;
+      width: 0;
+      flex: 1; // fixes the overflow bug
       box-sizing: border-box;
       height: 100%;
       display: flex;
