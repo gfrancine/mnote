@@ -3,49 +3,14 @@ import {
   Settings,
   SettingsInput,
   SettingsInputIndex,
-  SettingsInputs,
   SettingsSubcategory,
   SettingsSubcategoryInfo,
   SettingsValue,
 } from "mnote-core";
 import { ElementToReact, TreeItem } from "mnote-components/react/tree";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useListener } from "mnote-util/useListener";
-
-function BooleanInput(props: {
-  initialValue?: SettingsValue; // must be generic, because JSON values are not guaranteed
-  input: SettingsInputs.Boolean;
-  onChange?: (value: boolean) => void;
-}) {
-  const [value, setValue] = useState(
-    typeof props.initialValue === "boolean"
-      ? props.initialValue
-      : props.input.default,
-  );
-
-  useEffect(() => {
-    if (!props.initialValue) props.onChange?.(value);
-  }, []);
-
-  useListener(() => {
-    console.log("propsonchange");
-    props.onChange?.(value);
-  }, [value]);
-
-  return (
-    <div
-      className={"inputs-boolean " + (value ? "on" : "off")}
-      onClick={() => setValue(!value)}
-    >
-      <svg viewBox="0 0 48 24">
-        <circle cx="12" cy="12" r="12" className="bg" />
-        <circle cx="36" cy="12" r="12" className="bg" />
-        <rect x="12" y="0" width="24" height="24" className="bg" />
-        <circle cx={value ? "36" : "12"} cy="12" r="10" className="handle" />
-      </svg>
-    </div>
-  );
-}
+import { BooleanInput, SelectInput } from "./inputs";
 
 function InputRow<T extends SettingsInput>(props: {
   input: T;
@@ -60,14 +25,23 @@ function InputRow<T extends SettingsInput>(props: {
       </div>
       <div className="right">
         {(() => {
-          if (props.input.type === "boolean") {
-            return (
-              <BooleanInput
-                initialValue={props.initialValue}
-                onChange={props.setValue}
-                input={props.input}
-              />
-            );
+          switch (props.input.type) {
+            case "boolean":
+              return (
+                <BooleanInput
+                  initialValue={props.initialValue}
+                  onChange={props.setValue}
+                  input={props.input}
+                />
+              );
+            case "select":
+              return (
+                <SelectInput
+                  initialValue={props.initialValue}
+                  input={props.input}
+                  onChange={props.setValue}
+                />
+              );
           }
 
           return "";

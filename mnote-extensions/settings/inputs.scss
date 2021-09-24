@@ -1,0 +1,62 @@
+@use "~mnote-styles/mnote-vars" as mn;
+@use "~mnote-components/react/dropdowns/dropdowns.scss";
+
+@mixin inputs {
+  .inputs-boolean {
+    width: 2.8em;
+    height: 1.4em;
+    cursor: pointer;
+
+    svg {
+      pointer-events: none;
+    }
+
+    &.off {
+      .bg {
+        fill: map-get(mn.$vars, btn-main-bg);
+      }
+      .handle {
+        fill: map-get(mn.$vars, btn-main-fg);
+      }
+
+      &:hover {
+        .bg {
+          fill: map-get(mn.$vars, btn-main-bg-hover);
+        }
+        .handle {
+          fill: map-get(mn.$vars, btn-main-fg-hover);
+        }
+      }
+    }
+
+    &.on {
+      .bg {
+        fill: map-get(mn.$vars, btn-emphasis-bg);
+      }
+      .handle {
+        fill: map-get(mn.$vars, btn-emphasis-fg);
+      }
+      &:hover {
+        .bg {
+          fill: map-get(mn.$vars, btn-emphasis-bg-hover);
+        }
+        .handle {
+          fill: map-get(mn.$vars, btn-emphasis-fg-hover);
+        }
+      }
+    }
+  }
+
+  .inputs-select {
+    $dropdown-colors: (
+      bg: map-get(mn.$vars, bg-secondary),
+      bg-selected: map-get(mn.$vars, fg-dimmer),
+      bg-hover: map-get(mn.$vars, bg-main),
+      shadow: map-get(mn.$vars, shadow),
+      fg: map-get(mn.$vars, fg-main),
+    );
+
+    @include dropdowns.base;
+    @include dropdowns.styled($dropdown-colors);
+  }
+}

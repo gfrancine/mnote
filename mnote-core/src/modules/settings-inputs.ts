@@ -25,11 +25,13 @@ export type Number = GeneralOptions & {
   min?: number;
 };
 
+type NonEmptyArray<T> = [T, ...T[]];
+
 export type Select = GeneralOptions & {
   type: "select";
   default: string;
-  getItems: () => {
+  getItems: () => NonEmptyArray<{
     value: string;
     text: string;
-  }[];
+  }>;
 };

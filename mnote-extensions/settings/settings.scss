@@ -1,6 +1,7 @@
 @use "~mnote-styles/mnote-vars" as mn;
 @use "~mnote-components/vanilla/word-stats.scss";
 @use "~mnote-components/react/tree.scss";
+@use "./inputs.scss";
 
 .settings-editor {
   width: 100%;
@@ -128,54 +129,11 @@
     }
 
     .right {
-      flex: 0.3;
+      flex: 0.5;
       display: flex;
       align-items: center;
     }
   }
 
-  .inputs-boolean {
-    width: 2.8em;
-    height: 1.4em;
-    cursor: pointer;
-
-    svg {
-      pointer-events: none;
-    }
-
-    &.off {
-      .bg {
-        fill: map-get(mn.$vars, btn-main-bg);
-      }
-      .handle {
-        fill: map-get(mn.$vars, btn-main-fg);
-      }
-
-      &:hover {
-        .bg {
-          fill: map-get(mn.$vars, btn-main-bg-hover);
-        }
-        .handle {
-          fill: map-get(mn.$vars, btn-main-fg-hover);
-        }
-      }
-    }
-
-    &.on {
-      .bg {
-        fill: map-get(mn.$vars, btn-emphasis-bg);
-      }
-      .handle {
-        fill: map-get(mn.$vars, btn-emphasis-fg);
-      }
-      &:hover {
-        .bg {
-          fill: map-get(mn.$vars, btn-emphasis-bg-hover);
-        }
-        .handle {
-          fill: map-get(mn.$vars, btn-emphasis-fg-hover);
-        }
-      }
-    }
-  }
+  @include inputs.inputs;
 }
