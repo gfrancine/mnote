@@ -256,6 +256,8 @@ export class EditorsModule {
         ...document,
         path,
       });
+
+      await tab.manager.save();
     }
   }
 
