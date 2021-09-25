@@ -110,8 +110,8 @@ fn fs_save_dialog(
   )
 }
 
-use notify::{watcher, DebouncedEvent, RecursiveMode, Watcher};
-use std::sync::mpsc::channel;
+use hotwatch::{Event, Hotwatch};
+use std::sync::Mutex;
 use std::time::Duration;
 
 #[derive(Serialize)]
@@ -122,44 +122,54 @@ struct WatcherPayload<'a> {
   target_path: Option<&'a str>,
 }
 
-#[tauri::command]
-async fn watcher_init(window: tauri::Window, path: String) {
-  let (tx, rx) = channel();
-  let mut watcher = watcher(tx, Duration::from_secs(1)).unwrap();
-  watcher.watch(path, RecursiveMode::Recursive).unwrap();
+struct Watcher(Mutex<Hotwatch>);
 
-  loop {
-    if let Ok(ev) = rx.recv() {
+#[tauri::command]
+fn watch(
+  path: String,
+  window: tauri::Window,
+  watcher: tauri::State<'_, Watcher>,
+) {
+  watcher
+    .0
+    .lock()
+    .unwrap()
+    .watch(path, move |ev| {
       println!("Event: {:?}", ev);
       let emit = |payload: WatcherPayload| {
         window.emit("watcher_event", payload).unwrap();
       };
 
       match ev {
-        DebouncedEvent::Create(path) => emit(WatcherPayload {
+        Event::Create(path) => emit(WatcherPayload {
           kind: "create",
           path: path.as_path().to_str(),
           target_path: None,
         }),
-        DebouncedEvent::Write(path) => emit(WatcherPayload {
+        Event::Write(path) => emit(WatcherPayload {
           kind: "write",
           path: path.as_path().to_str(),
           target_path: None,
         }),
-        DebouncedEvent::Rename(path, target) => emit(WatcherPayload {
+        Event::Rename(path, target) => emit(WatcherPayload {
           kind: "rename",
           path: path.as_path().to_str(),
           target_path: target.as_path().to_str(),
         }),
-        DebouncedEvent::Remove(path) => emit(WatcherPayload {
+        Event::Remove(path) => emit(WatcherPayload {
           kind: "remove",
           path: path.as_path().to_str(),
           target_path: None,
         }),
         _ => (),
       };
-    }
-  }
+    })
+    .unwrap();
+}
+
+#[tauri::command]
+fn unwatch(path: String, watcher: tauri::State<'_, Watcher>) {
+  watcher.0.lock().unwrap().unwatch(path).unwrap();
 }
 
 use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu};
@@ -175,6 +185,8 @@ fn make_menu() -> Menu {
     Menu::new()
       .add_item(CustomMenuItem::new("open-file", "Open File..."))
       .add_item(CustomMenuItem::new("open-folder", "Open Folder..."))
+      .add_item(CustomMenuItem::new("close-folder", "Close Folder"))
+      .add_item(CustomMenuItem::new("refresh-folder", "Refresh Folder"))
       .add_native_item(MenuItem::Separator)
       .add_item(
         CustomMenuItem::new("save", "Save").accelerator("CmdOrControl+S"),
@@ -210,16 +222,23 @@ fn make_menu() -> Menu {
 }
 
 fn main() {
-  let builder =
-    tauri::Builder::default().invoke_handler(tauri::generate_handler![
+  let builder = tauri::Builder::default()
+    .invoke_handler(tauri::generate_handler![
       get_args,
       is_mac,
       is_windows,
-      watcher_init,
+      watch,
+      unwatch,
       fs_rename,
       fs_save_dialog,
       fs_open_dialog
-    ]);
+    ])
+    .setup(|app| {
+      app.manage(Watcher(Mutex::new(
+        Hotwatch::new_with_custom_delay(Duration::from_millis(500)).unwrap(),
+      )));
+      Ok(())
+    });
 
   let builder = if cfg!(target_os = "macos") {
     builder.menu(make_menu()).on_menu_event(move |event| {

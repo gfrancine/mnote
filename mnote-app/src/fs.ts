@@ -21,15 +21,11 @@ type RustWatcherPayload = {
 };
 
 export class Watcher {
-  protected initialized = false;
+  hasInitialized = false;
   events = new Emitter<FsWatcherEvents>();
 
-  isInitialized() {
-    return this.initialized;
-  }
-
-  async init(path: string) {
-    this.initialized = true;
+  async init() {
+    this.hasInitialized = true;
 
     await listen("watcher_event", (event: TauriEvent<RustWatcherPayload>) => {
       this.events.emit("event");
@@ -47,8 +43,15 @@ export class Watcher {
         this.events.emit(event.payload.kind, event.payload.path);
       }
     });
+  }
 
-    invoke("watcher_init", { path }); // do NOT await
+  watch(path: string) {
+    invoke("watch", { path }); // do NOT await
+    return Promise.resolve();
+  }
+
+  unwatch(path: string) {
+    return invoke("unwatch", { path });
   }
 }
 
@@ -178,11 +181,13 @@ export class FS implements FsInteropModule {
     return this.lib.join(...fragments);
   }
 
-  async watchInit(path: string) {
-    if (this.watcher.isInitialized()) {
-      throw new Error("watcher is alerady initialized");
-    }
-    await this.watcher.init(path);
+  async watch(path: string) {
+    if (!this.watcher.hasInitialized) await this.watcher.init();
+    return this.watcher.watch(path);
+  }
+
+  async unwatch(path: string) {
+    await this.watcher.unwatch(path);
   }
 
   onWatchEvent<K extends keyof FsWatcherEvents>(

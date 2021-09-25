@@ -33,6 +33,7 @@ export const enStrings = {
   saveEditor: "Save Editor",
   dialogOpenFile: "Open File...",
   dialogOpenFolder: "Open Folder...",
+  closeFolder: "Close Folder",
   refreshFolder: "Refresh Folder",
   newFolder: "New Folder", // displayed on context menu
   createNewFolder: "Create new folder", // displayed on prompt

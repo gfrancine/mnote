@@ -144,8 +144,12 @@ export class FSModule implements FsInteropModule {
     return items.join("/");
   }
 
-  async watchInit(path: string) {
-    await this.fs?.watchInit?.(path);
+  async watch(path: string) {
+    await this.fs?.watch?.(path);
+  }
+
+  async unwatch(path: string) {
+    await this.fs?.unwatch?.(path);
   }
 
   onWatchEvent<K extends keyof FsWatcherEvents>(

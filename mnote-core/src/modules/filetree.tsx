@@ -131,13 +131,26 @@ export class FiletreeModule {
     this.updateTree();
   }
 
-  setDirectory(path: string) {
+  async closeDirectory() {
+    this.log.info("filetree: closeDirectory");
+    if (!this.directory) {
+      this.log.warn(
+        "filetree: called closeDirectory when there is no current directory",
+      );
+      return;
+    }
+
+    await this.fs.unwatch(this.directory);
+    delete this.directory;
+    delete this.tree;
+    this.updateTree();
+  }
+
+  async setDirectory(path: string) {
     this.log.info("filetree: setDirectory", path);
-    //
-    // todo: close the existing watcher
-    //
+    if (this.directory) await this.closeDirectory();
     this.directory = path;
-    this.fs.watchInit(path);
+    await this.fs.watch(path);
     this.refreshTree();
   }
 
@@ -225,7 +238,6 @@ export class FiletreeModule {
     };
 
     const openFolder = async () => {
-      if (this.directory) return;
       const maybePath = await this.fs.dialogOpen({
         isDirectory: true,
       });
@@ -241,19 +253,20 @@ export class FiletreeModule {
         click: openFile,
       });
 
-      if (!this.directory) {
-        buttons.push({
-          name: sget("dialogOpenFolder"),
-          click: openFolder,
-        });
-      }
+      buttons.push({
+        name: sget("dialogOpenFolder"),
+        click: openFolder,
+      });
 
       if (this.directory) {
         buttons.push({
+          name: sget("closeFolder"),
+          click: () => this.closeDirectory(),
+        });
+
+        buttons.push({
           name: sget("refreshFolder"),
-          click: () => {
-            this.refreshTree();
-          },
+          click: () => this.refreshTree(),
         });
       }
 
@@ -266,6 +279,10 @@ export class FiletreeModule {
           return openFile();
         case "open-folder":
           return openFolder();
+        case "close-folder":
+          return this.closeDirectory();
+        case "refresh-folder":
+          return this.refreshTree();
       }
     });
 

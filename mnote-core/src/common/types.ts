@@ -62,7 +62,8 @@ export interface FsInteropModule {
   getPathExtension: (path: string) => string;
   joinPath: (fragments: string[]) => string;
 
-  watchInit(path: string): Promise<void>;
+  watch(path: string): Promise<void>;
+  unwatch(path: string): Promise<void>;
   onWatchEvent<K extends keyof FsWatcherEvents>(
     event: K,
     handler: FsWatcherEvents[K],
@@ -123,6 +124,8 @@ export type OpenFile = {
 export type SystemAppMenuId =
   | "open-file"
   | "open-folder"
+  | "close-folder"
+  | "refresh-folder"
   | "save"
   | "save-as"
   | "close-editor"; // todo
