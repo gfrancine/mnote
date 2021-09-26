@@ -72,7 +72,7 @@ export function StringInput(props: {
   const [value, setValue] = useState(
     typeof props.initialValue === "string" &&
       (getInvalidMessage
-        ? getInvalidMessage(props.initialValue) !== undefined
+        ? getInvalidMessage(props.initialValue) === undefined
         : true)
       ? props.initialValue
       : props.input.default,
@@ -128,7 +128,7 @@ export function NumberInput(props: {
 
   const [value, setValue] = useState<null | number>(
     typeof props.initialValue === "number" &&
-      getInvalidMessage(props.initialValue) !== undefined
+      getInvalidMessage(props.initialValue) === undefined
       ? props.initialValue
       : props.input.default,
   );
