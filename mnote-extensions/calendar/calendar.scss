@@ -15,8 +15,9 @@
   }
 
   // selection
-  .fc-daygrid-bg-harness {
-    opacity: 0.5;
+  .fc-daygrid-bg-harness,
+  .fc-timegrid-bg-harness {
+    opacity: 0.3;
   }
 
   // correct sizes
@@ -84,7 +85,7 @@
   --fc-non-business-color: rgba(215, 215, 215, 0.3);
   --fc-bg-event-color: rgb(143, 223, 130);
   --fc-bg-event-opacity: 0.3;
-  --fc-highlight-color: #{map-get(mn.$vars, btn-main-bg)}; // todo: use main background colors
+  --fc-highlight-color: #{map-get(mn.$vars, btn-emphasis-bg)};
   --fc-today-bg-color: #{map-get(mn.$vars, btn-main-bg)};
   --fc-now-indicator-color: #f66;
 }
