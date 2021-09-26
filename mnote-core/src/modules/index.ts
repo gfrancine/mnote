@@ -16,7 +16,6 @@ export { OpenFilesModule } from "./openfiles";
 export { FileIconsModule } from "./fileicons";
 export { AppDirModule } from "./appdir";
 export { FileSearchModule } from "./filesearch";
-export { StringsModule } from "./strings";
 
 // non-module exports
 

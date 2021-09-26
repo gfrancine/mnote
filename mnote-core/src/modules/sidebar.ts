@@ -4,12 +4,10 @@ import { createIcon } from "mnote-components/vanilla/icons";
 import { LayoutModule } from "./layout";
 import { MenubarModule } from "./menubar";
 import makeResizable from "mnote-deps/resizable";
-import { StringsModule } from ".";
 
 export class SidebarModule {
   private layout: LayoutModule;
   private menubar: MenubarModule;
-  private strings: StringsModule;
   private element: HTMLElement;
   private handle: HTMLElement;
   private sidemenu: HTMLElement;
@@ -19,7 +17,6 @@ export class SidebarModule {
   constructor(app: Mnote) {
     this.layout = app.modules.layout;
     this.menubar = app.modules.menubar;
-    this.strings = app.modules.strings;
 
     this.element = this.layout.sidebar;
     this.handle = this.layout.sidebarHandle;
@@ -45,7 +42,7 @@ export class SidebarModule {
         "leftSidebar",
         fillClass,
         strokeClass,
-        this.strings.get("toggleSidebarTip"),
+        "Toggle the sidebar",
       )
     );
     this.toggleSidebarButton.addEventListener(

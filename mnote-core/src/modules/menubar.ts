@@ -4,7 +4,6 @@ import { el, Elbuilder } from "mnote-util/elbuilder";
 import { Menu, MenuItem } from "mnote-components/vanilla/menu";
 import { LogModule } from "./log";
 import { createIcon } from "mnote-components/vanilla/icons";
-import { StringsModule } from ".";
 
 // https://quilljs.com/docs/modules/toolbar/
 
@@ -13,7 +12,6 @@ type SectionReducer = () => MenuItem[] | void;
 export class MenubarModule /* implements Module */ {
   private layout: LayoutModule;
   private log: LogModule;
-  private strings: StringsModule;
 
   private element: HTMLElement;
   private left: HTMLElement;
@@ -26,7 +24,6 @@ export class MenubarModule /* implements Module */ {
 
   constructor(app: Mnote) {
     this.app = app;
-    this.strings = app.modules.strings;
 
     this.left = el("div")
       .class("menubar-left")
@@ -39,7 +36,7 @@ export class MenubarModule /* implements Module */ {
             "kebabMenu",
             fillClass,
             strokeClass,
-            this.strings.get("menuTip"),
+            "Menu",
           )),
       ),
     )

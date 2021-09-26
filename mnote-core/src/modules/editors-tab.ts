@@ -3,7 +3,6 @@ import { FSModule } from "./fs";
 import { PromptsModule } from "./prompts";
 import { DocInfo, Editor, EditorContext, TabContext } from "./types";
 import { LogModule } from "./log";
-import { StringsModule } from ".";
 import { Emitter } from "mnote-util/emitter";
 
 export class TabManager {
@@ -12,7 +11,6 @@ export class TabManager {
   private fs: FSModule;
   private prompts: PromptsModule;
   private log: LogModule;
-  private strings: StringsModule;
 
   private ctxEvents = new Emitter<EditorContextEvents>();
 
@@ -21,7 +19,6 @@ export class TabManager {
     this.fs = app.modules.fs;
     this.prompts = app.modules.prompts;
     this.log = app.modules.log;
-    this.strings = app.modules.strings;
     this.hide();
   }
 
@@ -84,7 +81,7 @@ export class TabManager {
       await editor.save(document.path);
       return true;
     } catch (e) {
-      this.prompts.notify(this.strings.get("saveError")(e));
+      this.prompts.notify(`An error occurred while saving: ${e}`);
       this.log.err(
         "editor tab: error while saving document with trySaveEditor",
         document,
@@ -191,21 +188,21 @@ export class TabManager {
       return true;
     } else {
       const action = await this.prompts.promptButtons(
-        this.strings.get("confirmSaveBeforeClose"),
+        "Would you like to save the current document before closing?",
         [
           {
             kind: "normal",
-            text: this.strings.get("cancel"),
+            text: "Cancel",
             command: "cancel",
           },
           {
             kind: "normal",
-            text: this.strings.get("dontSave"),
+            text: "Don't save",
             command: "dontsave",
           },
           {
             kind: "emphasis",
-            text: this.strings.get("save"),
+            text: "Save",
             command: "save",
           },
         ],

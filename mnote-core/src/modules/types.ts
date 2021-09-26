@@ -1,6 +1,5 @@
 import { DialogFilter } from "../common/types";
 import type { TabManager } from "./editors-tab";
-import { enStrings } from "../common/strings";
 import type { Mnote } from "..";
 import { Emitter } from "mnote-util/emitter";
 import * as SettingsInputs from "./settings-inputs";
@@ -95,8 +94,6 @@ export type ThemeInfo = {
   name: string;
   colors: Record<string, string>;
 };
-
-export type StringsDictionary = typeof enStrings;
 
 export type SettingsCategories = "core" | "extensions";
 

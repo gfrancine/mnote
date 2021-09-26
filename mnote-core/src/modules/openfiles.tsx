@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
-import { FileSearchModule, LayoutModule, StringsModule } from ".";
+import { FileSearchModule, LayoutModule } from ".";
 import { el } from "mnote-util/elbuilder";
 import { Mnote } from "..";
 import { OpenFile } from "../common/types";
@@ -18,7 +18,6 @@ export class OpenFilesModule {
   private element: HTMLElement;
   private ctxmenu: CtxmenuModule;
   private fileicons: FileIconsModule;
-  private strings: StringsModule;
   private filesearch: FileSearchModule;
 
   private openFiles: OpenFile[] = [];
@@ -31,7 +30,6 @@ export class OpenFilesModule {
     this.editors = app.modules.editors;
     this.ctxmenu = app.modules.ctxmenu;
     this.fileicons = app.modules.fileicons;
-    this.strings = app.modules.strings;
     this.filesearch = app.modules.filesearch;
 
     this.element = el("div")
@@ -81,13 +79,13 @@ export class OpenFilesModule {
         if (!file) return;
 
         return [{
-          name: this.strings.get("openEditor"),
+          name: "Open Editor",
           click: () => file.onOpen(file),
         }, {
-          name: this.strings.get("closeEditor"),
+          name: "Close Editor",
           click: () => file.onClose(file),
         }, {
-          name: this.strings.get("saveEditor"),
+          name: "Save Editor",
           click: () => file.onSave(file),
         }];
       }
