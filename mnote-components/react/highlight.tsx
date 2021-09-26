@@ -21,5 +21,5 @@ export function Highlight({ text, ranges }: {
     <span key={nodes.length}>{text.slice(lastEnd, text.length)}</span>,
   );
 
-  return <>{nodes}</>;
+  return <span>{nodes}</span>;
 }
