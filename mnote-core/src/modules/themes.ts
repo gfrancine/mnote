@@ -1,6 +1,6 @@
 import { Mnote } from "..";
 import { SettingsModule } from "./settings";
-import { dark, light } from "../components/colors";
+import { dark, light } from "./themes-colors";
 import { ThemeInfo } from "./types";
 import { LogModule } from "./log";
 import { createIcon } from "mnote-components/vanilla/icons";

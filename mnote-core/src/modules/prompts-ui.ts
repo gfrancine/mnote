@@ -3,7 +3,7 @@
 
 import { el } from "mnote-util/elbuilder";
 import { freeze, unfreeze } from "mnote-util/dom";
-import { PromptButton } from "../modules/types";
+import { PromptButton } from "./types";
 import { Signal } from "mnote-util/signal";
 
 export class Prompt {

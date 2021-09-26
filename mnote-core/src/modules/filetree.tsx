@@ -13,7 +13,7 @@ import { LogModule } from "./log";
 
 import { render, unmountComponentAtNode } from "react-dom";
 import React from "react";
-import FileTree from "../components/filetree";
+import FileTree from "./filetree-component";
 import { PromptsModule } from "./prompts";
 import { MenubarModule } from "./menubar";
 import { SystemModule } from "./system";

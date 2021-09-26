@@ -4,7 +4,7 @@ import { FileSearchModule, LayoutModule, StringsModule } from ".";
 import { el } from "mnote-util/elbuilder";
 import { Mnote } from "..";
 import { OpenFile } from "../common/types";
-import OpenFiles from "../components/openfiles";
+import OpenFiles from "./openfiles-component";
 import { EditorsModule } from "./editors";
 import { CtxmenuContext, Tab } from "./types";
 import { CtxmenuModule } from "./ctxmenu";

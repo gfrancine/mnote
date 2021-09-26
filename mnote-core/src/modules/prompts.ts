@@ -1,6 +1,6 @@
 import { Mnote } from "..";
 import { PromptButton } from "./types";
-import { Prompt } from "../components/prompt";
+import { Prompt } from "./prompts-ui";
 import { el } from "mnote-util/elbuilder";
 
 export class PromptsModule {
