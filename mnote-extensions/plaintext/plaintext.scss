@@ -3,13 +3,17 @@
 .plaintext-editor {
   width: 100%;
   height: 100%;
+  display: flex;
 
   .plaintext-textarea {
     tab-size: 4;
     padding: 2em 3em 3em;
     box-sizing: border-box;
     width: 100%;
-    height: 100%;
+    // textarea height 100% overflows parent in safari
+    // but flexbox solves the problem
+    // https://stackoverflow.com/questions/59010380
+    flex: 1 1 auto;
     resize: none;
     outline: none;
     border: none;
