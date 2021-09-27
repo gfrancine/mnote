@@ -58,10 +58,10 @@ export class AppDirModule {
   getDirectory = () => this.directory;
 
   async closeDirectory() {
-    this.log.info("filetree: closeDirectory");
+    this.log.info("appdir: closeDirectory");
     if (!this.directory) {
       this.log.warn(
-        "filetree: called closeDirectory when there is no current directory",
+        "appdir: called closeDirectory when there is no current directory",
       );
       return;
     }
@@ -73,7 +73,7 @@ export class AppDirModule {
   }
 
   async setDirectory(path: string) {
-    this.log.info("filetree: setDirectory", path);
+    this.log.info("appdir: setDirectory", path);
     if (this.directory) await this.closeDirectory();
     this.directory = path;
     await this.fs.watch(path);
