@@ -77,8 +77,11 @@ class MarkdownEditor implements Editor {
     };
 
     const resolveImageSrc = (src: string) => {
+      if (!this.ctx) return src; // satisfy the type check
+      const { path } = this.ctx.getDocument();
+      if (!path) return src;
       const isWeb = src.startsWith("https://") || src.startsWith("http://");
-      return isWeb ? src : "halo bandung"; // todo
+      return isWeb ? src : this.fs.resolveImageSrcPath(path, src);
     };
 
     return MilkdownEditor.make()

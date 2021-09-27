@@ -144,6 +144,13 @@ export class FSModule implements FsInteropModule {
     return items.join("/");
   }
 
+  resolveImageSrcPath(basePath: string, imagePath: string) {
+    if (this.fs?.resolveImageSrcPath) {
+      return this.fs.resolveImageSrcPath(basePath, imagePath);
+    }
+    return imagePath;
+  }
+
   async watch(path: string) {
     await this.fs?.watch?.(path);
   }

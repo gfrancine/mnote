@@ -47,4 +47,7 @@ export class FS implements Partial<FsInteropModule> {
   getCurrentDir(): Promise<string> {
     return Promise.resolve("currentdir");
   }
+  resolveImageSrcPath() {
+    return "halo bandung";
+  }
 }

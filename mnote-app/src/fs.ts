@@ -5,7 +5,7 @@ import {
   FsReadDirOptions,
   FsWatcherEvents,
 } from "mnote-core";
-import { invoke } from "@tauri-apps/api/tauri";
+import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { Event as TauriEvent, listen } from "@tauri-apps/api/event";
 import { Emitter } from "mnote-util/emitter";
 import * as fs from "@tauri-apps/api/fs";
@@ -179,6 +179,12 @@ export class FS implements FsInteropModule {
 
   joinPath(fragments: string[]) {
     return this.lib.join(...fragments);
+  }
+
+  resolveImageSrcPath(basePath: string, imagePath: string) {
+    const dir = this.getPathParent(basePath);
+    const path = this.lib.resolve(dir, imagePath);
+    return convertFileSrc(path);
   }
 
   async watch(path: string) {

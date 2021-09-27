@@ -62,6 +62,11 @@ export interface FsInteropModule {
   getPathExtension: (path: string) => string;
   joinPath: (fragments: string[]) => string;
 
+  // markdown images can take relative file paths
+  // this method resolves it into URL that can be fetched
+  resolveImageSrcPath: (basePath: string, imagePath: string) => string;
+
+  // watcher
   watch(path: string): Promise<void>;
   unwatch(path: string): Promise<void>;
   onWatchEvent<K extends keyof FsWatcherEvents>(

@@ -1,6 +1,13 @@
 /* Copyright 2021, Milkdown by Mirone. */
-/* Fork of https://github.com/Saul-Mirone/milkdown/blob/ce8634b783c3608651d06a6d368d7973f713ccc2
-/packages/preset-commonmark/src/index.ts */
+/*
+
+Fork of https://github.com/Saul-Mirone/milkdown/blob/ce8634b783c3608651d06a6d36
+8d7973f713ccc2/packages/preset-commonmark/src/index.ts
+- add ability to resolve image paths
+- removed styled divs
+- removed loading and error states
+
+*/
 
 import { createCmd, createCmdKey } from "@milkdown/core";
 import { createNode, findSelectedNodeOfType } from "@milkdown/utils";
@@ -47,12 +54,17 @@ export function makeImageNode(resolveImageSrc: (src: string) => string) {
           },
         ],
         toDOM: (node) => {
+          // note to self:
+          // this is what prosemirror checks the actual DOM node with, whether its
+          // attributes are correct. if it doesn't match, it creates a DOM node
+          // based on this and replaces it
           const sourceUrl = node.attrs.src as string;
           return [
             "img",
             {
               ...node.attrs,
-              src: sourceUrl,
+              "data-original-src": sourceUrl,
+              src: resolveImageSrc(sourceUrl),
             },
           ];
         },
