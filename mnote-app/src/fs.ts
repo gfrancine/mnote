@@ -83,6 +83,17 @@ export class FS implements FsInteropModule {
     return fs.readTextFile(path);
   }
 
+  writeBinaryFile(path: string, contents: ArrayBuffer): Promise<void> {
+    return fs.writeBinaryFile({
+      path,
+      contents,
+    });
+  }
+
+  async readBinaryFile(path: string): Promise<ArrayBuffer> {
+    return new Uint8Array(await fs.readBinaryFile(path));
+  }
+
   async readDir(
     path: string,
     opts?: FsReadDirOptions,

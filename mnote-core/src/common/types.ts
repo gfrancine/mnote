@@ -31,6 +31,8 @@ export interface FsInteropModule {
   //todo
   writeTextFile(path: string, contents: string): Promise<void>;
   readTextFile(path: string): Promise<string>;
+  writeBinaryFile(path: string, contents: ArrayBuffer): Promise<void>;
+  readBinaryFile(path: string): Promise<ArrayBuffer>;
   readDir(
     path: string,
     options?: FsReadDirOptions,

@@ -44,14 +44,22 @@ export class FSModule implements FsInteropModule {
     if (fs) this.fs = fs;
   }
 
-  writeTextFile(path: string, contents: string): Promise<void> {
-    if (this.fs?.writeTextFile) return this.fs.writeTextFile(path, contents);
-    return Promise.resolve();
+  async writeTextFile(path: string, contents: string): Promise<void> {
+    await this.fs?.writeTextFile?.(path, contents);
   }
 
   readTextFile(path: string): Promise<string> {
     if (this.fs?.readTextFile) return this.fs.readTextFile(path);
     return Promise.resolve("");
+  }
+
+  async writeBinaryFile(path: string, contents: ArrayBuffer): Promise<void> {
+    await this.fs?.writeBinaryFile?.(path, contents);
+  }
+
+  readBinaryFile(path: string): Promise<ArrayBuffer> {
+    if (this.fs?.readBinaryFile) return this.fs.readBinaryFile(path);
+    return Promise.resolve(new Uint8Array());
   }
 
   readDir(
