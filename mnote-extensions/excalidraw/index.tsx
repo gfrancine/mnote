@@ -5,7 +5,7 @@ import { Emitter } from "mnote-util/emitter";
 import { render, unmountComponentAtNode } from "react-dom";
 import React from "react";
 
-import Excalidraw from "@excalidraw/excalidraw";
+import Excalidraw, { exportToCanvas } from "@excalidraw/excalidraw";
 import { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
 import { AppState as ExcalidrawAppState } from "@excalidraw/excalidraw/types/types";
 
@@ -13,8 +13,8 @@ import "./styles.scss";
 import { excalidrawIcon } from "./icon";
 
 type ExcalidrawData = {
-  readonly elements?: ExcalidrawElement[];
-  appState?: ExcalidrawAppState;
+  readonly elements: ExcalidrawElement[];
+  appState: ExcalidrawAppState;
 };
 
 type EventBus = Emitter<{
@@ -24,7 +24,7 @@ type EventBus = Emitter<{
 function Wrapper(
   props: {
     emitter: EventBus;
-    initialData: ExcalidrawData;
+    initialData: Partial<ExcalidrawData>;
   },
 ) {
   // select only a few elements from the appstate
@@ -80,7 +80,7 @@ class ExcalidrawEditor implements Editor {
   fs: FSModule;
   emitter: EventBus;
 
-  data: ExcalidrawData = {};
+  data: Partial<ExcalidrawData> = {};
 
   constructor(app: Mnote) {
     this.app = app;
@@ -118,7 +118,24 @@ class ExcalidrawEditor implements Editor {
   }
 
   async save(path: string) {
-    await this.fs.writeTextFile(path, JSON.stringify(this.data));
+    const extension = this.fs.getPathExtension(path);
+    if (extension === "excalidraw") {
+      await this.fs.writeTextFile(path, JSON.stringify(this.data));
+    } else if (extension === "png") {
+      const canvas = exportToCanvas({
+        elements: this.data.elements || [],
+        appState: this.data.appState,
+      });
+
+      canvas.toBlob(
+        async (blob) => {
+          if (!blob) return;
+          await this.fs.writeBinaryFile(path, await blob.arrayBuffer());
+        },
+        "image/png",
+        1,
+      );
+    }
   }
 }
 
@@ -136,6 +153,9 @@ export class ExcalidrawExtension implements Extension {
       saveAsFileTypes: [{
         name: "Excalidraw",
         extensions: ["excalidraw"],
+      }, {
+        name: "Portable Network Graphics",
+        extensions: ["png"],
       }],
       registeredIconKind: "excalidraw",
     });
