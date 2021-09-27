@@ -21,7 +21,6 @@ import React from "react";
 import FileTree from "./filetree-component";
 
 export class FiletreeModule {
-  private app: Mnote;
   private element: HTMLElement;
   private nothingHere: HTMLElement;
 
@@ -40,7 +39,6 @@ export class FiletreeModule {
   private searchTerm?: string;
 
   constructor(app: Mnote) {
-    this.app = app;
     this.fs = app.modules.fs;
     this.layout = app.modules.layout;
     this.ctxmenu = app.modules.ctxmenu;
