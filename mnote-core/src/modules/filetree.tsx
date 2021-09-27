@@ -10,16 +10,15 @@ import { FSModule } from "./fs";
 import { LayoutModule } from "./layout";
 import { CtxmenuModule } from "./ctxmenu";
 import { LogModule } from "./log";
+import { PromptsModule } from "./prompts";
+import { AppDirModule } from "./appdir";
+import { EditorsModule } from "./editors";
+import { FileIconsModule } from "./fileicons";
+import { FileSearchModule } from "./filesearch";
 
 import { render, unmountComponentAtNode } from "react-dom";
 import React from "react";
 import FileTree from "./filetree-component";
-import { PromptsModule } from "./prompts";
-import { MenubarModule } from "./menubar";
-import { SystemModule } from "./system";
-import { EditorsModule } from "./editors";
-import { FileIconsModule } from "./fileicons";
-import { FileSearchModule } from ".";
 
 export class FiletreeModule {
   private app: Mnote;
@@ -30,27 +29,24 @@ export class FiletreeModule {
   private layout: LayoutModule;
   private ctxmenu: CtxmenuModule;
   private log: LogModule;
-  private menubar: MenubarModule;
+  private appdir: AppDirModule;
   private prompts: PromptsModule;
-  private system: SystemModule;
   private editors: EditorsModule;
   private fileicons: FileIconsModule;
   private filesearch: FileSearchModule;
 
   private selectedFile?: string;
-  private directory?: string;
   private tree?: FileTreeNodeWithChildren;
   private searchTerm?: string;
 
   constructor(app: Mnote) {
     this.app = app;
     this.fs = app.modules.fs;
-    this.system = app.modules.system;
     this.layout = app.modules.layout;
     this.ctxmenu = app.modules.ctxmenu;
     this.log = app.modules.log;
     this.prompts = app.modules.prompts;
-    this.menubar = app.modules.menubar;
+    this.appdir = app.modules.appdir;
     this.editors = app.modules.editors;
     this.fileicons = app.modules.fileicons;
     this.filesearch = app.modules.filesearch;
@@ -65,52 +61,28 @@ export class FiletreeModule {
       .children(this.nothingHere)
       .element;
 
-    this.bindToModules();
-    this.app.hooks.on("startup", () => this.startup());
-  }
-
-  async startup() {
-    // initialize with the startpath option
-    const startPath = this.app.options.startPath;
-    let startFile: string | undefined;
-    let startDirectory: string | undefined;
-
-    if (startPath) {
-      if (await this.fs.isDir(startPath)) {
-        startDirectory = startPath;
-      } else if (await this.fs.isFile(startPath)) {
-        startFile = startPath;
-      }
-    }
-
     this.fs.onWatchEvent("event", () => {
       this.refreshTree();
     });
 
-    if (startDirectory) this.setDirectory(startDirectory);
-    if (startFile) this.updateEditorSelectedFile(startFile);
+    this.bindToModules();
   }
 
   async refreshTree() {
-    if (!this.directory) {
+    const dir = this.appdir.getDirectory();
+
+    if (!dir) {
       this.log.warn("filetree: refreshed empty directory");
       return;
     }
 
-    const tree = await this.fs.readDir(this.directory);
+    const tree = await this.fs.readDir(dir);
 
     if (tree.children) {
       this.setFileTree(tree as FileTreeNodeWithChildren);
     } else {
-      this.log.err(
-        "filetree: read directory - no children, Dir:",
-        this.directory,
-      );
+      this.log.err("filetree: read directory - no children, Dir:", dir);
     }
-  }
-
-  updateEditorSelectedFile(path: string) {
-    this.editors.open(path);
   }
 
   getFileTree() {
@@ -129,36 +101,13 @@ export class FiletreeModule {
     this.updateTree();
   }
 
-  async closeDirectory() {
-    this.log.info("filetree: closeDirectory");
-    if (!this.directory) {
-      this.log.warn(
-        "filetree: called closeDirectory when there is no current directory",
-      );
-      return;
-    }
-
-    await this.fs.unwatch(this.directory);
-    delete this.directory;
-    delete this.tree;
-    this.updateTree();
-  }
-
-  async setDirectory(path: string) {
-    this.log.info("filetree: setDirectory", path);
-    if (this.directory) await this.closeDirectory();
-    this.directory = path;
-    await this.fs.watch(path);
-    this.refreshTree();
-  }
-
   private updateTree() {
     this.log.info("filetree: updateTree", this.tree, this.selectedFile);
 
     const hooks: FileTreeHooks = {
       fileFocused: (path: string) => {
         this.log.info("filetree: file focused", path);
-        this.updateEditorSelectedFile(path);
+        this.editors.open(path);
       },
       fileDroppedOnDir: (targetDir: string, droppedFile: string) => {
         const newPath = this.fs.joinPath([
@@ -220,67 +169,13 @@ export class FiletreeModule {
   //
 
   private bindToModules() {
-    // const cmdOrCtrl = this.system.usesCmd() ? "Cmd" : "Ctrl";
-
-    // DRY
-
-    const openFile = async () => {
-      const maybePath = await this.fs.dialogOpen({
-        isDirectory: false,
-        startingDirectory: this.directory,
-      });
-      if (!maybePath) return;
-      this.updateEditorSelectedFile(maybePath);
-    };
-
-    const openFolder = async () => {
-      const maybePath = await this.fs.dialogOpen({
-        isDirectory: true,
-      });
-      if (!maybePath) return;
-      this.setDirectory(maybePath);
-    };
-
-    const menuReducer = () => {
-      const buttons = [];
-
-      buttons.push({
-        name: "Open File...",
-        click: openFile,
-      });
-
-      buttons.push({
-        name: "Open Folder...",
-        click: openFolder,
-      });
-
-      if (this.directory) {
-        buttons.push({
-          name: "Close Folder",
-          click: () => this.closeDirectory(),
-        });
-
-        buttons.push({
-          name: "Refresh Folder",
-          click: () => this.refreshTree(),
-        });
-      }
-
-      return buttons;
-    };
-
-    this.system.onAppMenuClick((menuId) => {
-      switch (menuId) {
-        case "open-file":
-          return openFile();
-        case "open-folder":
-          return openFolder();
-        case "close-folder":
-          return this.closeDirectory();
-        case "refresh-folder":
-          return this.refreshTree();
-      }
+    this.appdir.events.on("directorySet", () => this.refreshTree());
+    this.appdir.events.on("directoryClosed", () => {
+      delete this.tree;
+      this.updateTree();
     });
+
+    this.appdir.hooks.on("refreshDirectoryRequested", () => this.refreshTree());
 
     const findFileTreeItem = (ctx: CtxmenuContext) => {
       for (const el of ctx.elements) {
@@ -320,6 +215,7 @@ export class FiletreeModule {
     const ctxmenuReducer = (ctx: CtxmenuContext) => {
       // find a file tree item
       const fileTreeItem = findFileTreeItem(ctx);
+      const dir = this.appdir.getDirectory();
 
       if (fileTreeItem) {
         const filePath = fileTreeItem.getAttribute("data-mn-file-path");
@@ -330,7 +226,7 @@ export class FiletreeModule {
           const buttons = [{
             name: "Open file",
             click: () => {
-              this.updateEditorSelectedFile(filePath);
+              this.editors.open(filePath);
             },
           }, {
             name: "Delete file",
@@ -414,16 +310,15 @@ export class FiletreeModule {
             return buttons;
           }
         }
-      } else if (ctx.elements.includes(this.element) && this.directory) {
+      } else if (ctx.elements.includes(this.element) && dir) {
         // right clicked directly on the file tree
         return [
-          makeNewFolderButton(this.directory as string),
-          makeNewFileButton(this.directory as string),
+          makeNewFolderButton(dir as string),
+          makeNewFileButton(dir as string),
         ];
       }
     };
 
-    this.menubar.addSectionReducer(menuReducer);
     this.ctxmenu.addSectionReducer(ctxmenuReducer);
     this.layout.mountToFiletree(this.element);
 

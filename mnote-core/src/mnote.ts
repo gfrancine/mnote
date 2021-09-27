@@ -5,8 +5,9 @@ import { Emitter } from "mnote-util/emitter";
 import { el } from "mnote-util/elbuilder";
 
 import {
-  DataDirModule,
+  AppDirModule,
   CtxmenuModule,
+  DataDirModule,
   EditorsModule,
   ExtensionsModule,
   FileIconsModule,
@@ -31,6 +32,7 @@ type Modules = {
   system: SystemModule;
   input: InputModule;
   extensions: ExtensionsModule;
+  appdir: AppDirModule;
   datadir: DataDirModule;
   settings: SettingsModule;
   layout: LayoutModule;
@@ -89,6 +91,7 @@ export class Mnote {
     m.prompts = new PromptsModule(this);
     m.ctxmenu = new CtxmenuModule(this);
     m.menubar = new MenubarModule(this);
+    m.appdir = new AppDirModule(this);
     m.sidebar = new SidebarModule(this);
     m.editors = new EditorsModule(this);
     m.fileicons = new FileIconsModule(this);

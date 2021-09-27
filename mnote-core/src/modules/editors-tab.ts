@@ -4,11 +4,13 @@ import { PromptsModule } from "./prompts";
 import { DocInfo, Editor, EditorContext, TabContext } from "./types";
 import { LogModule } from "./log";
 import { Emitter } from "mnote-util/emitter";
+import { AppDirModule } from "./appdir";
 
 export class TabManager {
   private ctx: TabContext;
 
   private fs: FSModule;
+  private appdir: AppDirModule;
   private prompts: PromptsModule;
   private log: LogModule;
 
@@ -17,6 +19,7 @@ export class TabManager {
   constructor(app: Mnote, ctx: TabContext) {
     this.ctx = ctx;
     this.fs = app.modules.fs;
+    this.appdir = app.modules.appdir;
     this.prompts = app.modules.prompts;
     this.log = app.modules.log;
     this.hide();
@@ -121,7 +124,7 @@ export class TabManager {
         filters: editorInfo.saveAsFileTypes,
         startingDirectory: document.path
           ? this.fs.getPathParent(document.path)
-          : undefined,
+          : this.appdir.getDirectory(),
         startingFileName: document.name,
       });
 

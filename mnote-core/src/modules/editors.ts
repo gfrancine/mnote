@@ -12,6 +12,7 @@ import { Menu, MenuItem } from "mnote-components/vanilla/menu";
 import { TabManager } from "./editors-tab";
 import { createIcon } from "mnote-components/vanilla/icons";
 import { FSModule } from "./fs";
+import { AppDirModule } from "./appdir";
 
 // editors keep the contents in their stae
 // this module communicates between all the other parts of the app, so
@@ -24,6 +25,7 @@ export class EditorsModule {
   private menubar: MenubarModule;
   private system: SystemModule;
   private input: InputModule;
+  private appdir: AppDirModule;
   private log: LogModule;
   private fs: FSModule;
   private sidebar: SidebarModule;
@@ -54,6 +56,7 @@ export class EditorsModule {
     this.menubar = app.modules.menubar;
     this.system = app.modules.system;
     this.input = app.modules.input;
+    this.appdir = app.modules.appdir;
     this.fs = app.modules.fs;
     this.log = app.modules.log;
     this.sidebar = app.modules.sidebar;
@@ -81,11 +84,26 @@ export class EditorsModule {
 
     app.modules.layout.mountToContents(this.element);
 
+    this.app.hooks.on("startup", () => this.startup());
+
     // hook methods to the rest of the app
     this.hookToSidebar();
+    this.hookToAppdir();
     this.hookToMenubar();
     this.hookToInputs();
     this.hookToSystem();
+  }
+
+  async startup() {
+    // initialize with the startpath option
+    const startPath = this.app.options.startPath;
+    let startFile: string | undefined;
+
+    if (startPath && await this.fs.isFile(startPath)) {
+      startFile = startPath;
+    }
+
+    if (startFile) await this.open(startFile);
   }
 
   registerEditor(opts: EditorInfo) {
@@ -400,6 +418,17 @@ export class EditorsModule {
     });
 
     this.sidebar.addSidemenuButton(button);
+  }
+
+  private hookToAppdir() {
+    this.appdir.hooks.on("openFileRequested", async () => {
+      const maybePath = await this.fs.dialogOpen({
+        isDirectory: false,
+        startingDirectory: this.appdir.getDirectory(),
+      });
+      if (!maybePath) return;
+      this.open(maybePath);
+    });
   }
 
   private hookToMenubar() {
