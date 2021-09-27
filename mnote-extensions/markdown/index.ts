@@ -26,6 +26,7 @@ import { el } from "mnote-util/elbuilder";
 import "./markdown.scss";
 import { markdownIcon } from "./icon";
 import { WordStats } from "mnote-components/vanilla/word-stats";
+import { makeImageNode } from "./image";
 
 class MarkdownEditor implements Editor {
   app: Mnote;
@@ -75,9 +76,15 @@ class MarkdownEditor implements Editor {
       });
     };
 
+    const resolveImageSrc = (src: string) => {
+      const isWeb = src.startsWith("https://") || src.startsWith("http://");
+      return isWeb ? src : "halo bandung"; // todo
+    };
+
     return MilkdownEditor.make()
       .use(themeFactory({}))
       .use(commonmark)
+      .use(makeImageNode(resolveImageSrc)())
       .use(listener)
       .use(clipboard)
       .use(history)
