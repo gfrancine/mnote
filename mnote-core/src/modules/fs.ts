@@ -68,7 +68,7 @@ export class FSModule implements FsInteropModule {
   ): Promise<FileItemWithChildren> {
     if (this.fs?.readDir) return this.fs.readDir(path, opts);
     return Promise.resolve({
-      path: "TEMP",
+      path: "",
       children: [],
     });
   }
@@ -124,12 +124,12 @@ export class FSModule implements FsInteropModule {
 
   getConfigDir(): Promise<string> {
     if (this.fs?.getConfigDir) return this.fs.getConfigDir();
-    return Promise.resolve(".");
+    return Promise.resolve("");
   }
 
   getCurrentDir(): Promise<string> {
     if (this.fs?.getCurrentDir) return this.fs.getCurrentDir();
-    return Promise.resolve(".");
+    return Promise.resolve("");
   }
 
   getPathName(path: string) {
