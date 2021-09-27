@@ -14,7 +14,7 @@ export { InputModule } from "./input";
 export { PromptsModule } from "./prompts";
 export { OpenFilesModule } from "./openfiles";
 export { FileIconsModule } from "./fileicons";
-export { AppDirModule } from "./appdir";
+export { DataDirModule } from "./datadir";
 export { FileSearchModule } from "./filesearch";
 
 // non-module exports

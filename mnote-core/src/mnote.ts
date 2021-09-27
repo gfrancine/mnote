@@ -5,7 +5,7 @@ import { Emitter } from "mnote-util/emitter";
 import { el } from "mnote-util/elbuilder";
 
 import {
-  AppDirModule,
+  DataDirModule,
   CtxmenuModule,
   EditorsModule,
   ExtensionsModule,
@@ -31,7 +31,7 @@ type Modules = {
   system: SystemModule;
   input: InputModule;
   extensions: ExtensionsModule;
-  appdir: AppDirModule;
+  datadir: DataDirModule;
   settings: SettingsModule;
   layout: LayoutModule;
   prompts: PromptsModule;
@@ -83,7 +83,7 @@ export class Mnote {
     m.system = new SystemModule(this.options.system);
     m.input = new InputModule(this);
     m.extensions = new ExtensionsModule(this);
-    m.appdir = await new AppDirModule(this).init();
+    m.datadir = await new DataDirModule(this).init();
     m.settings = await new SettingsModule(this).init();
     m.layout = new LayoutModule(this);
     m.prompts = new PromptsModule(this);

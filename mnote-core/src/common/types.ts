@@ -13,7 +13,7 @@ export type MnoteOptions = {
   fs?: Partial<FsInteropModule>;
   system?: Partial<SystemInteropModule>;
   isProduction?: boolean;
-  appDirectoryName?: string;
+  dataDirectoryName?: string;
   appSettingsFileName?: string;
 };
 
