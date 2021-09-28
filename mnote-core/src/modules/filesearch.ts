@@ -38,7 +38,7 @@ export class FileSearchModule {
       "search",
       "fill",
       "stroke",
-      "Search files",
+      "Search for files or folders",
     );
     searchIcon.classList.add("icon", "search");
 

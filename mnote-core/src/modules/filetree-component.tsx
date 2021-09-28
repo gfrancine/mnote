@@ -52,12 +52,10 @@ function searchFileTree(
   if (searchTerm.length < 1) return results;
 
   const recurse = (node: Node) => {
+    const ranges = getMatchingRanges(getPathName(node.path), searchTerm);
+    if (ranges.length > 0) results[node.path] = ranges;
     if (node.children) {
       node.children.forEach(recurse);
-    } else {
-      const ranges = getMatchingRanges(getPathName(node.path), searchTerm);
-      if (ranges.length < 1) return;
-      results[node.path] = ranges;
     }
   };
 
@@ -163,24 +161,38 @@ function DirNode(props: {
     }
   }, [props.focusedPath]);
 
-  useEffect(() => {
-    if (!props.searchResults) return;
+  const hasSearchResult = useMemo(() => {
+    if (!props.searchResults) return false;
     for (const path of Object.keys(props.searchResults)) {
-      if (path.search(props.node.path) > -1) {
-        setExpanded(true);
-        return;
+      if (path !== props.node.path && path.search(props.node.path) > -1) {
+        return true;
       }
     }
+    return false;
   }, [props.searchResults]);
+
+  useEffect(() => {
+    if (hasSearchResult) setExpanded(true);
+  }, [hasSearchResult]);
+
+  const searchResultRanges = props.searchResults?.[props.node.path];
 
   const onClick = expanded ? () => setExpanded(false) : () => setExpanded(true);
 
   const [isDraggedOver, setDraggedOver] = useState(false);
 
+  // hide the directory if it's not a search result or doesn't contain one
+  // const isOrHasSearchResult = props.searchResults
+  //  ? (hasSearchResult || (searchResultRanges !== undefined))
+  //  : true;
+
   return (
     <div className="filetree-dir">
       <TreeItem
-        text={name}
+        hidden={!(props.visible /* && isOrHasSearchResult */)}
+        text={searchResultRanges
+          ? <Highlight text={name} ranges={searchResultRanges} />
+          : name}
         icon={expanded
           ? <ChevronDown fillClass="fill" strokeClass="stroke" />
           : <ChevronRight fillClass="fill" strokeClass="stroke" />}
