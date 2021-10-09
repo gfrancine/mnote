@@ -30,6 +30,7 @@ export type EditorContext = {
   updateEdited(): void; // notify the app that the document has changed
   getDocument(): DocInfo;
   setDocument(doc: DocInfo): void;
+  save(): void;
   events: Emitter<EditorContextEvents>;
 };
 

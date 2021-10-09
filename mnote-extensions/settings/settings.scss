@@ -1,4 +1,5 @@
 @use "~mnote-styles/mnote-vars" as mn;
+@use "~mnote-styles/mnote-inputs" as mn-inputs;
 @use "~mnote-components/vanilla/word-stats.scss";
 @use "~mnote-components/react/tree.scss";
 @use "./inputs.scss";
@@ -70,7 +71,24 @@
       padding: 0 1.2em;
       height: 100%;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
       @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+
+      .subcategory-main {
+        flex: 1;
+      }
+
+      .settings-contents-bottom {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin: 1.2em 0 0.5em;
+
+        .settings-save-button {
+          @include mn-inputs.button-normal;
+        }
+      }
     }
 
     .settings-toc {

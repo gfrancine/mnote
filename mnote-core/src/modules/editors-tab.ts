@@ -71,6 +71,7 @@ export class TabManager {
       },
       getDocument: () => this.ctx.getTabInfo().document,
       setDocument: (doc: DocInfo) => this.ctx.setDocument(doc),
+      save: () => this.save(),
       events: this.ctxEvents,
     };
   }

@@ -124,8 +124,10 @@ class SettingsEditor implements Editor {
         inputIndex={this.settings.getInputsIndex()}
         subcategories={this.settings.getSubcategories()}
         initialSettings={this.value}
-        // todo: localize
         placeholder="Choose a category from the sidebar on the right."
+        saveSettings={() => {
+          this.ctx?.save();
+        }}
         onChange={(value) => {
           this.value = value;
           this.ctx?.updateEdited();

@@ -106,6 +106,7 @@ export function SettingsEditor(props: {
   initialSettings: Settings;
   placeholder: string;
   onChange?: (value: Settings) => void;
+  saveSettings: () => void;
 }) {
   const sortSubcategoryInfos = (
     subcategoryInfos: Record<string, SettingsSubcategoryInfo>,
@@ -180,6 +181,11 @@ export function SettingsEditor(props: {
             />
           );
         })()}
+        <div className="settings-contents-bottom">
+          <button className="settings-save-button" onClick={props.saveSettings}>
+            Save Settings
+          </button>
+        </div>
       </div>
       <div className="settings-toc">
         <div className="settings-toc-category">
