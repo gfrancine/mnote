@@ -22,6 +22,7 @@
   width: 100%;
   height: 100%;
   font-family: map-get($vars, font-main);
+  overflow: hidden;
 
   @include normalize.normalize;
   @include modules.modules;
