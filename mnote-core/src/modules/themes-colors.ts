@@ -32,6 +32,7 @@ export const light = {
   "sidebar-item-focused-bg": gray[3],
   "sidebar-item-focused-fg": gray[9],
   "sidebar-item-focused-icon": gray[6],
+  "sidebar-filetree-border": gray[3],
 
   "btn-main-fg": gray[9], // buttons, assuming background is bg-main
   "btn-main-fg-hover": gray[9],
@@ -76,6 +77,7 @@ export const dark = {
   "sidebar-item-focused-bg": "#303233",
   "sidebar-item-focused-fg": "#B0B6BB",
   "sidebar-item-focused-icon": "#767E85",
+  "sidebar-filetree-border": "#404345",
 
   "btn-main-fg": "#B0B6BB", // buttons, assuming background is bg-main
   "btn-main-fg-hover": "#B0B6BB",
