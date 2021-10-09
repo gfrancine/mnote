@@ -21,6 +21,8 @@ import { RichtextExtension } from "mnote-extensions/richtext";
     fs: new FS(),
   });
 
+  (window as unknown as { app: Mnote }).app = app;
+
   await app.init();
 
   await app.modules.extensions.addAll([
