@@ -127,7 +127,7 @@ class MarkdownEditor implements Editor {
   protected updateStats = () => this.wordstats.setText(this.contents);
 
   protected onUpdate() {
-    this.ctx?.updateEdited();
+    this.ctx?.markUnsaved();
     this.updateStats();
   }
 

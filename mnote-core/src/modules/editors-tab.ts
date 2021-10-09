@@ -64,7 +64,7 @@ export class TabManager {
 
   private makeContext(): EditorContext {
     return {
-      updateEdited: () => {
+      markUnsaved: () => {
         const doc = this.ctx.getTabInfo().document;
         doc.saved = false;
         this.ctx.setDocument(doc);

@@ -74,7 +74,7 @@ class KanbanEditor implements Editor {
 
   handleChange(board: KanbanState) {
     this.board = board;
-    this.ctx?.updateEdited();
+    this.ctx?.markUnsaved();
   }
 }
 

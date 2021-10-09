@@ -98,7 +98,7 @@ class TodoEditor implements Editor {
 
   handleChange(todo: TodoData) {
     this.todo.data = todo;
-    this.ctx?.updateEdited();
+    this.ctx?.markUnsaved();
   }
 }
 

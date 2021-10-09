@@ -119,7 +119,7 @@ class CalendarEditor implements Editor {
   }
 
   handleChange = () => {
-    this.ctx?.updateEdited();
+    this.ctx?.markUnsaved();
   };
 
   render = () => this.calendar?.render();

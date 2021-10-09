@@ -56,7 +56,7 @@ class PlaintextEditor implements Editor {
   async startup(containter: HTMLElement, ctx: EditorContext) {
     this.textarea.addEventListener("input", () => {
       this.contents = this.textarea.value;
-      ctx.updateEdited();
+      ctx.markUnsaved();
     });
 
     this.app.modules.settings.events.on("change", this.updateTabSize);

@@ -113,7 +113,7 @@ class RichtextEditor implements Editor {
 
     this.editor.onChange = (contents) => {
       this.contents = contents;
-      ctx.updateEdited();
+      ctx.markUnsaved();
       this.updateWordStats();
     };
 

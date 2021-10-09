@@ -69,7 +69,7 @@ function Wrapper(
 const makeCallback = (self: ExcalidrawEditor) =>
   (data: ExcalidrawData) => {
     self.data = data;
-    self.ctx?.updateEdited();
+    self.ctx?.markUnsaved();
   };
 
 class ExcalidrawEditor implements Editor {

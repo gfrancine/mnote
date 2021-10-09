@@ -74,7 +74,7 @@ class SettingsEditor implements Editor {
     this.updateView();
   }
 
-  markUnsaved = () => this.ctx?.updateEdited();
+  markUnsaved = () => this.ctx?.markUnsaved();
 
   startup(containter: HTMLElement, ctx: EditorContext) {
     this.ctx = ctx;
@@ -110,7 +110,7 @@ class SettingsEditor implements Editor {
         }
 
         this.value = parsed;
-        ctx.updateEdited();
+        ctx.markUnsaved();
       }, 200),
     );
 
@@ -130,7 +130,7 @@ class SettingsEditor implements Editor {
         }}
         onChange={(value) => {
           this.value = value;
-          this.ctx?.updateEdited();
+          this.ctx?.markUnsaved();
           this.textarea.value = JSON.stringify(
             this.value,
             undefined,
