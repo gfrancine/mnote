@@ -1,3 +1,5 @@
+import { naturalCompare } from "../mnote-deps/natural-compare";
+
 export type Node = {
   path: string;
   children?: Node[];
@@ -9,7 +11,8 @@ export type NodeWithChildren = Required<Node>;
 // (file/directory) and alphabetically
 
 const makeSort = (getPathName: (path: string) => string) =>
-  (a: Node, b: Node) => getPathName(a.path) > getPathName(b.path) ? 1 : -1;
+  (a: Node, b: Node) =>
+    naturalCompare(getPathName(a.path), getPathName(b.path));
 
 export function sortChildren(
   getPathName: (path: string) => string,

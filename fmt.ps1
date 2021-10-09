@@ -18,6 +18,7 @@ deno fmt `
   mnote-util `
   mnote-deps/kanban `
   mnote-deps/resizable `
+  mnote-deps/natural-compare `
   mnote-deps/path-browser
 
 cd mnote-app/src-tauri
