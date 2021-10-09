@@ -13,6 +13,10 @@ export const tree = {
         { path: "dir-a/dir-d/file-f.txt" },
       ],
     },
+    {
+      path: "dir-a/dir-",
+      children: [],
+    },
     { path: "dir-a/zzzzzthisshouldbesorted" },
     {
       path: "dir-a/zzzzzthisshouldbeabovefiles",

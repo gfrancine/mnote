@@ -63,6 +63,7 @@ export interface FsInteropModule {
   getPathParent: (path: string) => string;
   getPathExtension: (path: string) => string;
   joinPath: (fragments: string[]) => string;
+  ensureSeparatorAtEnd: (path: string) => string;
 
   // markdown images can take relative file paths
   // this method resolves it into URL that can be fetched

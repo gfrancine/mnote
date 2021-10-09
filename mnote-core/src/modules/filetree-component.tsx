@@ -138,10 +138,9 @@ function DirNode(props: {
   getFileIcon?: FileIconFactory;
   searchResults?: Record<string, MatchRange[]>;
   getPathName: (path: string) => string;
+  ensureSeparatorAtEnd: (path: string) => string;
 }) {
-  const name = useMemo(() => props.getPathName(props.node.path), [
-    props.node.path,
-  ]);
+  const name = props.getPathName(props.node.path);
 
   // sort by name and by type (directories go first)
   const sortedChildren = useMemo(
@@ -156,7 +155,9 @@ function DirNode(props: {
   useEffect(() => {
     if (!props.focusedPath) return;
     if (props.overrideAutoExpand) return;
-    if (props.focusedPath.search(props.node.path) > -1) {
+    if (
+      props.focusedPath.search(props.ensureSeparatorAtEnd(props.node.path)) > -1
+    ) {
       setExpanded(true);
     }
   }, [props.focusedPath]);
@@ -233,6 +234,7 @@ function DirNode(props: {
                 getFileIcon={props.getFileIcon}
                 searchResults={props.searchResults}
                 getPathName={props.getPathName}
+                ensureSeparatorAtEnd={props.ensureSeparatorAtEnd}
               />
             )
             : (
@@ -263,6 +265,7 @@ export default function (props: {
   getFileIcon?: FileIconFactory;
   searchTerm?: string;
   getPathName: (path: string) => string;
+  ensureSeparatorAtEnd: (path: string) => string;
 }) {
   const searchResults = useMemo(() => {
     if (!props.searchTerm) return;
@@ -286,6 +289,7 @@ export default function (props: {
             searchResults={searchResults}
             disableRename
             getPathName={props.getPathName}
+            ensureSeparatorAtEnd={props.ensureSeparatorAtEnd}
           />
         )
         : <></>}

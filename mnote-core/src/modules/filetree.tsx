@@ -153,6 +153,8 @@ export class FiletreeModule {
           getFileIcon={getFileIcon}
           searchTerm={this.searchTerm}
           getPathName={(path: string) => this.fs.getPathName(path)}
+          ensureSeparatorAtEnd={(path: string) =>
+            this.fs.ensureSeparatorAtEnd(path)}
         />,
         this.element,
       );

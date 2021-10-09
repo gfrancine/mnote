@@ -152,6 +152,14 @@ export class FSModule implements FsInteropModule {
     return items.join("/");
   }
 
+  ensureSeparatorAtEnd(path: string) {
+    if (this.fs?.ensureSeparatorAtEnd) {
+      return this.fs.ensureSeparatorAtEnd(path);
+    }
+    if (path.charAt(path.length - 1) !== "/") return path + "/";
+    return path;
+  }
+
   resolveImageSrcPath(basePath: string, imagePath: string) {
     if (this.fs?.resolveImageSrcPath) {
       return this.fs.resolveImageSrcPath(basePath, imagePath);

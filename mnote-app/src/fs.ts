@@ -192,6 +192,13 @@ export class FS implements FsInteropModule {
     return this.lib.join(...fragments);
   }
 
+  ensureSeparatorAtEnd(path: string) {
+    if (path.charAt(path.length - 1) !== this.lib.sep) {
+      return path + this.lib.sep;
+    }
+    return path;
+  }
+
   resolveImageSrcPath(basePath: string, imagePath: string) {
     const dir = this.getPathParent(basePath);
     const path = this.lib.resolve(dir, imagePath);
