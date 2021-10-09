@@ -56,7 +56,7 @@ export const dark = {
   "fg-dimmer": "#404345",
 
   "bg-main": "#2B2D2E",
-  "bg-secondary": "#242627",
+  "bg-secondary": "#212324",
 
   "shadow": "0px 2px 5px " + "#111",
   "overlay-bg": "#11111132",
@@ -64,7 +64,7 @@ export const dark = {
   "border-main": "#111",
   "border-dim": "#222",
 
-  "sidebar-bg-main": "#242627",
+  "sidebar-bg-main": "#212324",
   "sidebar-bg-hover": "#2B2D2E",
   "sidebar-fg-main": "#B0B6BB",
   "sidebar-fg-secondary": "#767E85",
