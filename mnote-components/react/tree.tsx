@@ -61,7 +61,7 @@ export function TreeChildren(props: {
   hidden?: boolean;
   children?: ReactNode;
 }) {
-  return props.hidden ? <></> : (
+  return (
     <div
       className={"tree-children" +
         (props.hidden ? "tree-hidden" : "")}
