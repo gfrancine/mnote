@@ -60,8 +60,6 @@ function InputRow<T extends SettingsInput>(props: {
                 />
               );
           }
-
-          return "";
         })()}
       </div>
     </div>
