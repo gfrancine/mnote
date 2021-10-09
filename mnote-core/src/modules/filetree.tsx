@@ -187,7 +187,7 @@ export class FiletreeModule {
       name: "New folder",
       click: async () => {
         const name = await this.prompts.promptTextInput(
-          "Create new folder",
+          `Create new folder inside "${this.fs.getPathName(dir)}"`,
         );
         if (!name) return;
         const path = this.fs.joinPath([dir, name]);
@@ -200,7 +200,7 @@ export class FiletreeModule {
       name: "New file",
       click: async () => {
         const name = await this.prompts.promptTextInput(
-          "Create new file",
+          `Create new folder inside "${this.fs.getPathName(dir)}"`,
         );
         if (!name) return;
         const path = this.fs.joinPath([dir, name]);
