@@ -19,7 +19,7 @@ import {
   LogModule,
   MenubarModule,
   OpenFilesModule,
-  PromptsModule,
+  PopupsModule,
   SettingsModule,
   SidebarModule,
   SystemModule,
@@ -36,7 +36,7 @@ type Modules = {
   datadir: DataDirModule;
   settings: SettingsModule;
   layout: LayoutModule;
-  prompts: PromptsModule;
+  popups: PopupsModule;
   ctxmenu: CtxmenuModule;
   menubar: MenubarModule;
   sidebar: SidebarModule;
@@ -88,7 +88,7 @@ export class Mnote {
     m.datadir = await new DataDirModule(this).init();
     m.settings = await new SettingsModule(this).init();
     m.layout = new LayoutModule(this);
-    m.prompts = new PromptsModule(this);
+    m.popups = new PopupsModule(this);
     m.ctxmenu = new CtxmenuModule(this);
     m.menubar = new MenubarModule(this);
     m.appdir = new AppDirModule(this);

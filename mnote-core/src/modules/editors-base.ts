@@ -1,7 +1,7 @@
 import { Mnote } from "..";
 import { DocInfo, EditorInfo, Tab, TabContext, TabInfo } from "./types";
 import { LogModule } from "./log";
-import { PromptsModule } from "./prompts";
+import { PopupsModule } from "./popups";
 import { el } from "mnote-util/elbuilder";
 import { Emitter } from "mnote-util/emitter";
 import { TabManager } from "./editors-tab";
@@ -17,7 +17,7 @@ export class EditorsBaseModule {
   protected app: Mnote;
   protected log: LogModule;
   protected fs: FSModule;
-  private prompts: PromptsModule;
+  private popups: PopupsModule;
 
   protected nothingHere: {
     element: HTMLElement;
@@ -43,7 +43,7 @@ export class EditorsBaseModule {
     this.app = app;
     this.fs = app.modules.fs;
     this.log = app.modules.log;
-    this.prompts = app.modules.prompts;
+    this.popups = app.modules.popups;
 
     this.nothingHere = (() => {
       const element = el("div")
@@ -155,7 +155,7 @@ export class EditorsBaseModule {
     try {
       await manager.startup();
     } catch (e) {
-      this.prompts.notify(`An error occurred while loading: ${e}`);
+      this.popups.notify(`An error occurred while loading: ${e}`);
       this.log.err("editors: trySetupTab error", info, e);
       return;
     }
@@ -202,7 +202,7 @@ export class EditorsBaseModule {
     // this should not happen because we have a plaintext editor
     // but it's good to have this
     if (!selectedEditorInfo) {
-      this.prompts.notify(
+      this.popups.notify(
         `Cannot open file ${path} because its document type is not supported.`,
       );
       return;

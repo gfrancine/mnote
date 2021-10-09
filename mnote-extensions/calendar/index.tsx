@@ -4,7 +4,7 @@ import {
   Extension,
   FSModule,
   Mnote,
-  PromptsModule,
+  PopupsModule,
 } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 
@@ -39,7 +39,7 @@ class CalendarEditor implements Editor {
   element: HTMLElement;
   container?: HTMLElement;
   fs: FSModule;
-  prompts: PromptsModule;
+  popups: PopupsModule;
   ctx?: EditorContext;
 
   calendar?: Calendar;
@@ -48,7 +48,7 @@ class CalendarEditor implements Editor {
   constructor(app: Mnote) {
     this.app = app;
     this.fs = (app.modules.fs as FSModule);
-    this.prompts = app.modules.prompts as PromptsModule;
+    this.popups = app.modules.popups as PopupsModule;
     this.element = el("div")
       .class("calendar-extension")
       .element;
@@ -92,7 +92,7 @@ class CalendarEditor implements Editor {
     // https://fullcalendar.io/docs/event-model
 
     cal.on("select", (arg) => {
-      this.app.modules.prompts.promptTextInput("Create a new event")
+      this.app.modules.popups.promptTextInput("Create a new event")
         .then((title) => {
           if (!title) return;
           cal.addEvent({

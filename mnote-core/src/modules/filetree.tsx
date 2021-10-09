@@ -10,7 +10,7 @@ import { FSModule } from "./fs";
 import { LayoutModule } from "./layout";
 import { CtxmenuModule } from "./ctxmenu";
 import { LogModule } from "./log";
-import { PromptsModule } from "./prompts";
+import { PopupsModule } from "./popups";
 import { AppDirModule } from "./appdir";
 import { EditorsModule } from "./editors";
 import { FileIconsModule } from "./fileicons";
@@ -29,7 +29,7 @@ export class FiletreeModule {
   private ctxmenu: CtxmenuModule;
   private log: LogModule;
   private appdir: AppDirModule;
-  private prompts: PromptsModule;
+  private popups: PopupsModule;
   private editors: EditorsModule;
   private fileicons: FileIconsModule;
   private filesearch: FileSearchModule;
@@ -43,7 +43,7 @@ export class FiletreeModule {
     this.layout = app.modules.layout;
     this.ctxmenu = app.modules.ctxmenu;
     this.log = app.modules.log;
-    this.prompts = app.modules.prompts;
+    this.popups = app.modules.popups;
     this.appdir = app.modules.appdir;
     this.editors = app.modules.editors;
     this.fileicons = app.modules.fileicons;
@@ -188,7 +188,7 @@ export class FiletreeModule {
     const makeNewFolderButton = (dir: string) => ({
       name: "New folder",
       click: async () => {
-        const name = await this.prompts.promptTextInput(
+        const name = await this.popups.promptTextInput(
           `Create new folder inside "${this.fs.getPathName(dir)}"`,
         );
         if (!name) return;
@@ -201,7 +201,7 @@ export class FiletreeModule {
     const makeNewFileButton = (dir: string) => ({
       name: "New file",
       click: async () => {
-        const name = await this.prompts.promptTextInput(
+        const name = await this.popups.promptTextInput(
           `Create new folder inside "${this.fs.getPathName(dir)}"`,
         );
         if (!name) return;
@@ -251,7 +251,7 @@ export class FiletreeModule {
                     : fullFileName.length,
                 );
 
-                this.prompts.promptTextInput(
+                this.popups.promptTextInput(
                   `Rename file "${fullFileName}"`,
                   fileName,
                 )
@@ -290,7 +290,7 @@ export class FiletreeModule {
                 click: () => {
                   const dirName = this.fs.getPathName(dirPath);
 
-                  this.prompts.promptTextInput(
+                  this.popups.promptTextInput(
                     `Rename folder "${dirName}"`,
                     dirName,
                   )

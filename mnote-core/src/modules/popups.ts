@@ -1,9 +1,9 @@
 import { Mnote } from "..";
 import { PromptButton } from "./types";
-import { Prompt } from "./prompts-ui";
+import { Prompt } from "./popups-prompt";
 import { el } from "mnote-util/elbuilder";
 
-export class PromptsModule {
+export class PopupsModule {
   private app: Mnote;
 
   constructor(app: Mnote) {

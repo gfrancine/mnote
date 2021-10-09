@@ -11,7 +11,7 @@ export { FiletreeModule } from "./filetree";
 export { SettingsModule } from "./settings";
 export { ThemesModule } from "./themes";
 export { InputModule } from "./input";
-export { PromptsModule } from "./prompts";
+export { PopupsModule } from "./popups";
 export { OpenFilesModule } from "./openfiles";
 export { FileIconsModule } from "./fileicons";
 export { DataDirModule } from "./datadir";
