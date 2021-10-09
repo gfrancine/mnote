@@ -33,8 +33,8 @@
   // @import "./styles/Board.css";
 
   .add-list-button {
-    background-color: map-get(mn.$vars, fg-dimmer);
-    color: map-get(mn.$vars, fg-secondary);
+    background-color: map-get(mn.$vars, btn-main-bg);
+    color: map-get(mn.$vars, btn-main-fg);
     opacity: 0.8;
 
     &:hover {
