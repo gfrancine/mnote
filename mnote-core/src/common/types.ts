@@ -139,11 +139,18 @@ export type SystemAppMenuId =
 
 export type SystemAppMenuListener = (menuId: SystemAppMenuId) => unknown;
 
+export type SystemTheme = "light" | "dark";
+
+export type SystemThemeListener = (theme: SystemTheme) => unknown;
+
 export interface SystemInteropModule {
   usesCmd: () => boolean;
   hookToQuit: (hook: SystemCancelQuitHook) => void;
   onAppMenuClick: (listener: SystemAppMenuListener) => void;
   offAppMenuClick: (listener: SystemAppMenuListener) => void;
+  getPreferredTheme: () => SystemTheme;
+  onPreferredThemeChange: (listener: SystemThemeListener) => void;
+  offPreferredThemeChange: (listener: SystemThemeListener) => void;
 }
 
 export type SystemCancelQuitHook = (cancel: () => void) => void | Promise<void>;

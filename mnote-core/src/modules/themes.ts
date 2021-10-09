@@ -4,10 +4,12 @@ import { dark, light } from "./themes-colors";
 import { ThemeInfo } from "./types";
 import { LogModule } from "./log";
 import { createIcon } from "mnote-components/vanilla/icons";
+import { SystemModule } from "./system";
 
 export class ThemesModule {
   private app: Mnote;
   private settings: SettingsModule;
+  private system: SystemModule;
   private log: LogModule;
   private themes: Record<string, ThemeInfo> = {
     dark: {
@@ -25,6 +27,7 @@ export class ThemesModule {
   constructor(app: Mnote) {
     this.app = app;
     this.settings = app.modules.settings;
+    this.system = app.modules.system;
     this.log = app.modules.log;
 
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener(
@@ -35,6 +38,12 @@ export class ThemesModule {
         this.updateSystemTheme();
       },
     );
+
+    this.system.onPreferredThemeChange(async () => {
+      const theme = await this.getSettingsValue();
+      if (theme !== "system") return;
+      this.updateSystemTheme();
+    });
 
     this.settings.events.on("change", () => {
       this.updateTheme();
@@ -89,13 +98,7 @@ export class ThemesModule {
   }
 
   private updateSystemTheme() {
-    const perfersDark =
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (perfersDark) {
-      this.updateWithRegisteredTheme("dark");
-    } else {
-      this.updateWithRegisteredTheme("light");
-    }
+    this.updateWithRegisteredTheme(this.system.getPreferredTheme());
   }
 
   private updateWithRegisteredTheme(theme: string) {
