@@ -63,7 +63,7 @@ export function TreeChildren(props: {
 }) {
   return (
     <div
-      className={"tree-children" +
+      className={"tree-children " +
         (props.hidden ? "tree-hidden" : "")}
     >
       {props.children}
