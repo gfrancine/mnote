@@ -27,6 +27,7 @@ type DeserializedEvent = {
   title: string;
   start: string;
   end: string;
+  allDay: boolean;
 };
 
 type Data = {
@@ -100,6 +101,7 @@ class CalendarEditor implements Editor {
             id: nanoid(),
             start: arg.startStr,
             end: arg.endStr,
+            allDay: arg.allDay,
           });
         })
         .finally(() => cal.unselect());
@@ -136,6 +138,7 @@ class CalendarEditor implements Editor {
       title: eventApi.title,
       start: eventApi.start,
       end: eventApi.end,
+      allDay: eventApi.allDay,
     }));
 
     return {
