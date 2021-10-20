@@ -90,6 +90,7 @@ export class KanbanExtension implements Extension {
       canOpenPath: matchesExtension,
       createNewEditor: () => new KanbanEditor(app),
       registeredIconKind: "kanban",
+      createNewFileExtension: "mnkanban",
       saveAsFileTypes: [{
         name: "Mnote Kanban",
         extensions: ["mnkanban"],

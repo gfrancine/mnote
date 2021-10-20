@@ -155,6 +155,7 @@ export class RichtextExtension implements Extension {
       kind: "Rich Text",
       canOpenPath: matchesExtension,
       createNewEditor: () => new RichtextEditor(app),
+      createNewFileExtension: "html",
       registeredIconKind: "html",
       saveAsFileTypes: [{
         name: "HTML Document",

@@ -114,6 +114,7 @@ export class TodoExtension implements Extension {
       canOpenPath: matchesExtension,
       createNewEditor: () => new TodoEditor(app),
       registeredIconKind: "todo",
+      createNewFileExtension: "mntodo",
       saveAsFileTypes: [{
         name: "Mnote Todo",
         extensions: ["mntodo"],

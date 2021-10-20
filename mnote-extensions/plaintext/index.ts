@@ -103,6 +103,7 @@ export class PlaintextExtension implements Extension {
       canOpenPath: matchesExtension,
       createNewEditor: () => new PlaintextEditor(app),
       registeredIconKind: "textFile",
+      createNewFileExtension: "txt",
       saveAsFileTypes: [{
         name: "Plain Text",
         extensions: ["txt"],

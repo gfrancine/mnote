@@ -150,6 +150,7 @@ export class ExcalidrawExtension implements Extension {
       kind: "Excalidraw",
       canOpenPath: matchesExtension,
       createNewEditor: () => new ExcalidrawEditor(app),
+      createNewFileExtension: "excalidraw",
       saveAsFileTypes: [{
         name: "Excalidraw",
         extensions: ["excalidraw"],

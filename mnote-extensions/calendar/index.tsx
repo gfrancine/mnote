@@ -168,6 +168,7 @@ export class CalendarExtension implements Extension {
       canOpenPath: matchesExtension,
       createNewEditor: () => new CalendarEditor(app),
       registeredIconKind: "calendar",
+      createNewFileExtension: "mncalendar",
       saveAsFileTypes: [{
         name: "Mnote Calendar",
         extensions: ["mncalendar"],

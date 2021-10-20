@@ -265,7 +265,10 @@ export class EditorsBaseModule {
     const info: TabInfo = {
       editor: await editorInfo.createNewEditor(),
       document: {
-        name: "Untitled",
+        name: "Untitled" +
+          (editorInfo.createNewFileExtension
+            ? "." + editorInfo.createNewFileExtension
+            : ""),
         // no path
         saved: false,
       },

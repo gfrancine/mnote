@@ -160,6 +160,7 @@ export class MarkdownExtension implements Extension {
       kind: "Markdown",
       canOpenPath: matchesExtension,
       createNewEditor: () => new MarkdownEditor(app),
+      createNewFileExtension: "md",
       registeredIconKind: "markdown",
       saveAsFileTypes: [{
         name: "Markdown",

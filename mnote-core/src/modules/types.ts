@@ -52,6 +52,8 @@ export type EditorInfo = {
   disableSaveAs?: boolean;
   /** Get the editor's icon registered from the file icons module */
   registeredIconKind?: string;
+  /** Extensions used when prompting to create a new file */
+  createNewFileExtension?: string;
 };
 
 export type TabInfo = {
