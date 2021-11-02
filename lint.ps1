@@ -6,6 +6,7 @@ deno lint `
   mnote-extensions/calendar `
   mnote-extensions/kanban `
   mnote-extensions/markdown `
+  mnote-extensions/image-viewer `
   mnote-extensions/excalidraw `
   mnote-extensions/todo `
   mnote-components/react `

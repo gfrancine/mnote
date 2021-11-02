@@ -9,6 +9,7 @@ deno fmt `
   mnote-extensions/kanban `
   mnote-extensions/markdown `
   mnote-extensions/excalidraw `
+  mnote-extensions/image-viewer `
   mnote-extensions/todo `
   mnote-components/react `
   mnote-components/vanilla `

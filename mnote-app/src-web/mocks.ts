@@ -28,6 +28,7 @@ export const tree = {
     { path: "dir-a/file-j.mncalendar" },
     { path: "dir-a/file-j.mntodo" },
     { path: "dir-a/file-j.html" },
+    { path: "dir-a/file-j.png" },
   ],
 };
 
@@ -69,7 +70,7 @@ export const contents: Record<string, string> = {
   "editingElement":null,"editingGroupId":null,"editingLinearElement":null,
   "elementLocked":false,"elementType":"selection","errorMessage":null,
   "exportBackground":true,"exportScale":1,"exportEmbedScene":false,
-  "exportWithDarkMode":false,"fileHandle":null,"gridSize":null,"isBindingEnabled":true,
+  "exportWthDarkMode":false,"fileHandle":null,"gridSize":null,"isBindingEnabled":true,
   "isLibraryOpen":false,"isLoading":false,"isResizing":false,"isRotating":false,
   "lastPointerDownWith":"mouse","multiElement":null,"name":"Untitled-2021-07-11-1340",
   "openMenu":null,"openPopup":null,"pasteDialog":{"shown":false,"data":null},
@@ -85,4 +86,6 @@ export const contents: Record<string, string> = {
   "Do something useful","depth":0}},"itemsOrder":["1"]}}`,
   html:
     `<p><br></p><p><br></p><p>Lorem&nbsp;<strong><u><em>Ipsum</em></u></strong></p><p>Dolor<sup>sit </sup><sub>amet</sub>​</p>`,
+  png:
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAWSURBVBhXY1Da6PNWRoXh/0k+e48zACTuBXYvab1wAAAAAElFTkSuQmCC",
 };

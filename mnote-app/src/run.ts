@@ -12,6 +12,7 @@ import { KanbanExtension } from "mnote-extensions/kanban";
 import { CalendarExtension } from "mnote-extensions/calendar";
 import { TodoExtension } from "mnote-extensions/todo";
 import { RichtextExtension } from "mnote-extensions/richtext";
+import { ImageViewerExtension } from "mnote-extensions/image-viewer";
 
 export const run = async (isProduction: boolean) => {
   const args: string[] = await invoke("get_args");
@@ -24,6 +25,10 @@ export const run = async (isProduction: boolean) => {
     isProduction,
   });
 
+  if (!isProduction) {
+    (window as unknown as { app: Mnote }).app = app;
+  }
+
   await app.init();
 
   await app.modules.extensions.addAll([
@@ -35,6 +40,7 @@ export const run = async (isProduction: boolean) => {
     new CalendarExtension(),
     new TodoExtension(),
     new RichtextExtension(),
+    new ImageViewerExtension(),
   ]);
 
   await app.startup();

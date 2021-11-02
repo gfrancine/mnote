@@ -11,6 +11,8 @@ import { KanbanExtension } from "mnote-extensions/kanban";
 import { CalendarExtension } from "mnote-extensions/calendar";
 import { TodoExtension } from "mnote-extensions/todo";
 import { RichtextExtension } from "mnote-extensions/richtext";
+import { ImageViewerExtension } from "mnote-extensions/image-viewer";
+import { contents } from "./mocks";
 
 // web build
 // for quick visual debugging
@@ -35,6 +37,7 @@ import { RichtextExtension } from "mnote-extensions/richtext";
     new CalendarExtension(),
     new TodoExtension(),
     new RichtextExtension(),
+    new ImageViewerExtension(contents.png),
   ]);
 
   await app.startup();
