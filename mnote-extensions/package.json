@@ -9,6 +9,7 @@
     "@milkdown/preset-commonmark": "^4.11.1",
     "@milkdown/utils": "^4.11.1",
     "debounce": "^1.2.1",
+    "iv-viewer": "^2.0.1",
     "katex": "^0.13.18",
     "mnote-components": "file:../mnote-components",
     "mnote-core": "file:../mnote-core",
