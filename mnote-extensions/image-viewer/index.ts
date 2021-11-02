@@ -60,6 +60,11 @@ class ImageViewer implements Editor {
   }
 }
 
+// source: https://www.w3schools.com/html/html_images.asp
+const IMAGE_EXTENSIONS = new Set(
+  "png,jpeg,jpg,jfif,pjpeg,pjp,gif,svg,ico,cur,apng".split(","),
+);
+
 // extension
 
 export class ImageViewerExtension implements Extension {
@@ -69,8 +74,10 @@ export class ImageViewerExtension implements Extension {
   }
 
   startup(app: Mnote) {
-    const matchesExtension = (path: string) =>
-      app.modules.fs.getPathExtension(path) === "png";
+    const matchesExtension = (path: string) => {
+      const extension = app.modules.fs.getPathExtension(path).toLowerCase();
+      return IMAGE_EXTENSIONS.has(extension);
+    };
 
     app.modules.fileicons.registerIcon({
       kind: "image",
