@@ -192,6 +192,10 @@ export class FS implements FsInteropModule {
     return this.lib.join(...fragments);
   }
 
+  resolvePath(basePath: string, relativePath: string) {
+    return this.lib.resolve(basePath, relativePath);
+  }
+
   ensureSeparatorAtEnd(path: string) {
     if (path.charAt(path.length - 1) !== this.lib.sep) {
       return path + this.lib.sep;
@@ -199,10 +203,8 @@ export class FS implements FsInteropModule {
     return path;
   }
 
-  resolveImageSrcPath(basePath: string, imagePath: string) {
-    const dir = this.getPathParent(basePath);
-    const path = this.lib.resolve(dir, imagePath);
-    return convertFileSrc(path);
+  convertImageSrc(src: string) {
+    return convertFileSrc(src);
   }
 
   async watch(path: string) {

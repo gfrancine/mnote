@@ -160,11 +160,16 @@ export class FSModule implements FsInteropModule {
     return path;
   }
 
-  resolveImageSrcPath(basePath: string, imagePath: string) {
-    if (this.fs?.resolveImageSrcPath) {
-      return this.fs.resolveImageSrcPath(basePath, imagePath);
+  resolvePath(basePath: string, relativePath: string) {
+    if (this.fs?.resolvePath) {
+      return this.fs.resolvePath(basePath, relativePath);
     }
-    return imagePath;
+    return relativePath;
+  }
+
+  convertImageSrc(src: string) {
+    if (this.fs?.convertImageSrc) return this.fs.convertImageSrc(src);
+    return src;
   }
 
   async watch(path: string) {
