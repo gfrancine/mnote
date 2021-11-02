@@ -34,6 +34,9 @@ export const tree = {
 
 // extensions and their test data
 
+const exampleImage =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAWSURBVBhXY1Da6PNWRoXh/0k+e48zACTuBXYvab1wAAAAAElFTkSuQmCC";
+
 export const contents: Record<string, string> = {
   md: `# lorem ipsum
   > quote
@@ -41,6 +44,8 @@ export const contents: Record<string, string> = {
   paragraph \`inline code\`
 
   <!---->
+
+  ![](${exampleImage})
 
   - bullet
     - list
@@ -86,6 +91,5 @@ export const contents: Record<string, string> = {
   "Do something useful","depth":0}},"itemsOrder":["1"]}}`,
   html:
     `<p><br></p><p><br></p><p>Lorem&nbsp;<strong><u><em>Ipsum</em></u></strong></p><p>Dolor<sup>sit </sup><sub>amet</sub>​</p>`,
-  png:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAWSURBVBhXY1Da6PNWRoXh/0k+e48zACTuBXYvab1wAAAAAElFTkSuQmCC",
+  png: exampleImage,
 };

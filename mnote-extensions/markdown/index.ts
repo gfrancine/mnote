@@ -27,6 +27,7 @@ import "./markdown.scss";
 import { markdownIcon } from "./icon";
 import { WordStats } from "mnote-components/vanilla/word-stats";
 import { makeImageNode } from "./image";
+import { isData, isWeb } from "mnote-util/url";
 
 class MarkdownEditor implements Editor {
   app: Mnote;
@@ -80,8 +81,7 @@ class MarkdownEditor implements Editor {
       if (!this.ctx) return src; // satisfy the type check
       const { path } = this.ctx.getDocument();
       if (!path) return src;
-      const isWeb = src.startsWith("https://") || src.startsWith("http://");
-      if (isWeb) return src;
+      if (isWeb(src) || isData(src)) return src;
       const dir = this.fs.getPathParent(path);
       return this.fs.convertImageSrc(this.fs.resolvePath(dir, src));
     };
