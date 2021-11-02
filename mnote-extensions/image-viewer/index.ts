@@ -1,7 +1,7 @@
 import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 
-import { plaintextIcon } from "./icon";
+import { imageIcon } from "./icon";
 import "./image-viewer.scss";
 
 class ImageViewer implements Editor {
@@ -74,7 +74,7 @@ export class ImageViewerExtension implements Extension {
 
     app.modules.fileicons.registerIcon({
       kind: "image",
-      factory: plaintextIcon,
+      factory: imageIcon,
       shouldUse: matchesExtension,
     });
 
