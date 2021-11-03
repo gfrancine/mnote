@@ -1,9 +1,6 @@
 import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 
-import IvViewer from "iv-viewer";
-import "iv-viewer/dist/iv-viewer.css";
-
 import { imageIcon } from "./icon";
 import "./image-viewer.scss";
 
@@ -45,10 +42,6 @@ class ImageViewer implements Editor {
     if (this.mockSrc) {
       this.imageElement.src = this.mockSrc;
     }
-
-    new IvViewer(this.imageElement, {
-      snapView: false,
-    });
 
     this.container = containter;
     containter.appendChild(this.element);
