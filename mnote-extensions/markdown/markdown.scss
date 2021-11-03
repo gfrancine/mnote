@@ -41,6 +41,10 @@
     color: map-get(mn.$vars, fg-dim);
   }
 
+  p img {
+    max-width: 100%;
+  }
+
   ul.bullet-list,
   ol.ordered-list {
     @include richtext.list;
