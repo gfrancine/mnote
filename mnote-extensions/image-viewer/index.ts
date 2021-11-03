@@ -93,7 +93,8 @@ export class ImageViewerExtension implements Extension {
     });
 
     app.modules.editors.registerEditor({
-      kind: "Image Viewer",
+      kind: "image-viewer",
+      name: "Image Viewer",
       canOpenPath: matchesExtension,
       createNewEditor: () => new ImageViewer(app, this.mockSrc),
       registeredIconKind: "image",

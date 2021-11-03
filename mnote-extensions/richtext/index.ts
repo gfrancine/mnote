@@ -152,7 +152,8 @@ export class RichtextExtension implements Extension {
     });
 
     app.modules.editors.registerEditor({
-      kind: "Rich Text",
+      kind: "richtext",
+      name: "Rich Text",
       canOpenPath: matchesExtension,
       createNewEditor: () => new RichtextEditor(app),
       createNewFileExtension: "html",

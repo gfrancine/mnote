@@ -86,7 +86,8 @@ export class KanbanExtension implements Extension {
       app.modules.fs.getPathExtension(path) === "mnkanban";
 
     app.modules.editors.registerEditor({
-      kind: "Kanban",
+      kind: "kanban",
+      name: "Kanban",
       canOpenPath: matchesExtension,
       createNewEditor: () => new KanbanEditor(app),
       registeredIconKind: "kanban",

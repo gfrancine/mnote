@@ -74,7 +74,7 @@ export class EditorsModule extends EditorsBaseModule {
       for (const editorInfo of this.editors) {
         if (!editorInfo.hideFromNewMenu) {
           result.push({
-            name: editorInfo.kind,
+            name: editorInfo.name,
             click: () => {
               this.newTab(editorInfo.kind);
               hideMenu();

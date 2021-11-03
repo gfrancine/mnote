@@ -167,7 +167,8 @@ export class CalendarExtension implements Extension {
       app.modules.fs.getPathExtension(path) === "mncalendar";
 
     app.modules.editors.registerEditor({
-      kind: "Calendar",
+      kind: "calendar",
+      name: "Calendar",
       canOpenPath: matchesExtension,
       createNewEditor: () => new CalendarEditor(app),
       registeredIconKind: "calendar",

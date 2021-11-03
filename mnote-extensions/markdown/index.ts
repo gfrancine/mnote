@@ -159,7 +159,8 @@ export class MarkdownExtension implements Extension {
     });
 
     app.modules.editors.registerEditor({
-      kind: "Markdown",
+      kind: "markdown",
+      name: "Markdown",
       canOpenPath: matchesExtension,
       createNewEditor: () => new MarkdownEditor(app),
       createNewFileExtension: "md",

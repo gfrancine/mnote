@@ -110,7 +110,8 @@ export class TodoExtension implements Extension {
       app.modules.fs.getPathExtension(path) === "mntodo";
 
     app.modules.editors.registerEditor({
-      kind: "Todo",
+      kind: "todo",
+      name: "To-Do List",
       canOpenPath: matchesExtension,
       createNewEditor: () => new TodoEditor(app),
       registeredIconKind: "todo",

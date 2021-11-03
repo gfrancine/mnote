@@ -194,7 +194,8 @@ export class SettingsExtension implements Extension {
     });
 
     app.modules.editors.registerEditor({
-      kind: "Settings",
+      kind: "settings",
+      name: "Settings",
       canOpenPath: isSettingsPath,
       createNewEditor: () => new SettingsEditor(app),
       hideFromNewMenu: true,

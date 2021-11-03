@@ -42,6 +42,7 @@ export interface Editor {
 
 export type EditorInfo = {
   kind: string;
+  name: string;
   canOpenPath: (path: string) => boolean | Promise<boolean>;
   createNewEditor: () => Editor | Promise<Editor>;
   /** Hide the editor from the "+" (new) menu */

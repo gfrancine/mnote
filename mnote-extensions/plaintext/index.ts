@@ -99,7 +99,8 @@ export class PlaintextExtension implements Extension {
     });
 
     app.modules.editors.registerEditor({
-      kind: "Plaintext",
+      kind: "plaintext",
+      name: "Plain Text",
       canOpenPath: matchesExtension,
       createNewEditor: () => new PlaintextEditor(app),
       registeredIconKind: "textFile",
@@ -113,7 +114,7 @@ export class PlaintextExtension implements Extension {
     app.modules.settings.registerSubcategory({
       category: "extensions",
       key: "plaintext",
-      title: "Plaintext",
+      title: "Plain Text",
       iconFactory: plaintextIcon,
     });
 

@@ -147,7 +147,8 @@ export class ExcalidrawExtension implements Extension {
       app.modules.fs.getPathExtension(path) === "excalidraw";
 
     app.modules.editors.registerEditor({
-      kind: "Excalidraw",
+      kind: "excalidraw",
+      name: "Excalidraw",
       canOpenPath: matchesExtension,
       createNewEditor: () => new ExcalidrawEditor(app),
       createNewFileExtension: "excalidraw",
