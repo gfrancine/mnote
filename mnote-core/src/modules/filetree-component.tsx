@@ -156,7 +156,7 @@ function DirNode(props: {
     if (!props.focusedPath) return;
     if (props.overrideAutoExpand) return;
     if (
-      props.focusedPath.search(props.ensureSeparatorAtEnd(props.node.path)) > -1
+      props.focusedPath.startsWith(props.ensureSeparatorAtEnd(props.node.path))
     ) {
       setExpanded(true);
     }
@@ -165,7 +165,7 @@ function DirNode(props: {
   const hasSearchResult = useMemo(() => {
     if (!props.searchResults) return false;
     for (const path of Object.keys(props.searchResults)) {
-      if (path !== props.node.path && path.search(props.node.path) > -1) {
+      if (path !== props.node.path && path.startsWith(props.node.path)) {
         return true;
       }
     }
