@@ -11,10 +11,7 @@
     box-sizing: border-box;
   }
 
-  .image {
-    width: 90%;
-    height: 90%;
-    object-fit: contain;
-    margin: auto;
+  .iv-image {
+    image-rendering: pixelated;
   }
 }

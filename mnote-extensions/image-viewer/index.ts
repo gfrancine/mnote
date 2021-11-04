@@ -1,12 +1,15 @@
 import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 
+import IvViewer from "iv-viewer";
+import "iv-viewer/dist/iv-viewer.css";
+
 import { imageIcon } from "./icon";
 import "./image-viewer.scss";
 
 class ImageViewer implements Editor {
   app: Mnote;
-  imageElement: HTMLImageElement;
+  ivViewer: IvViewer;
   element: HTMLElement;
   container?: HTMLElement;
   fs: FSModule;
@@ -19,32 +22,34 @@ class ImageViewer implements Editor {
 
     this.fs = (app.modules.fs as FSModule);
 
-    this.imageElement = el("img")
-      .class("image")
-      .element as HTMLImageElement;
-
     this.element = el("div")
       .class("image-viewer-editor")
-      .children(
-        this.imageElement,
-      )
       .element;
+
+    this.ivViewer = new IvViewer(this.element, {
+      snapView: false,
+    });
 
     this.mockSrc = mockSrc;
   }
 
   startup(containter: HTMLElement, ctx: EditorContext) {
     const { path } = ctx.getDocument();
-    if (path) {
-      this.imageElement.src = this.fs.convertImageSrc(path);
-    }
-
-    if (this.mockSrc) {
-      this.imageElement.src = this.mockSrc;
-    }
 
     this.container = containter;
     containter.appendChild(this.element);
+
+    if (path) {
+      this.ivViewer.load(this.fs.convertImageSrc(path));
+    }
+
+    if (this.mockSrc) {
+      this.ivViewer.load(this.mockSrc);
+    }
+
+    // the viewer manually calculates its position
+    setTimeout(() => this.ivViewer.refresh(), 20);
+    ctx.events.on("tabShow", () => this.ivViewer.refresh());
 
     return Promise.resolve();
   }
