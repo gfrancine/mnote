@@ -66,6 +66,11 @@ export class TabManager {
     return {
       markUnsaved: () => {
         const doc = this.ctx.getTabInfo().document;
+
+        // setDocument is too expensive to be called on every change (esp.
+        // if it's per frame) because it updates the react file tree
+        if (!doc.saved) return;
+
         doc.saved = false;
         this.ctx.setDocument(doc);
       },
