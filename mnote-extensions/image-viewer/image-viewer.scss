@@ -13,5 +13,6 @@
 
   .iv-image {
     image-rendering: pixelated;
+    box-shadow: map-get(mn.$vars, shadow);
   }
 }
