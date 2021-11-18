@@ -1,6 +1,8 @@
 @use "~mnote-styles/mnote-vars" as mn;
 @import "./todo/todo";
 
+// component hierarchy > component > state > color > color variant
+
 $colors: (
   icon-fg: map-get(mn.$vars, main-fg-dim),
   icon-hover-fg: map-get(mn.$vars, main-fg-secondary),
