@@ -11,7 +11,7 @@
   }
 
   .fc-scroller {
-    @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+    @include mn.scrollbar(map-get(mn.$vars, main-bg-secondary));
   }
 
   // selection
@@ -57,10 +57,10 @@
   // variables
 
   --fc-small-font-size: 0.85em;
-  --fc-page-bg-color: #{map-get(mn.$vars, border-main)};
-  --fc-neutral-bg-color: #{map-get(mn.$vars, bg-secondary)};
-  --fc-neutral-text-color: #{map-get(mn.$vars, fg-secondary)};
-  --fc-border-color: #{map-get(mn.$vars, border-main)};
+  --fc-page-bg-color: #{map-get(mn.$vars, main-border)};
+  --fc-neutral-bg-color: #{map-get(mn.$vars, main-bg-secondary)};
+  --fc-neutral-text-color: #{map-get(mn.$vars, main-fg-secondary)};
+  --fc-border-color: #{map-get(mn.$vars, main-border)};
 
   --fc-button-text-color: #{map-get(mn.$vars, btn-main-fg)};
   --fc-button-bg-color: #{map-get(mn.$vars, btn-main-bg)};
@@ -75,8 +75,8 @@
   --fc-event-text-color: #{map-get(mn.$vars, btn-emphasis-fg)};
   --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
 
-  --fc-more-link-bg-color: #{map-get(mn.$vars, bg-main)};
-  --fc-more-link-text-color: #{map-get(mn.$vars, fg-main)};
+  --fc-more-link-bg-color: #{map-get(mn.$vars, main-bg)};
+  --fc-more-link-text-color: #{map-get(mn.$vars, main-fg)};
 
   --fc-event-resizer-thickness: 8px;
   --fc-event-resizer-dot-total-width: 8px;

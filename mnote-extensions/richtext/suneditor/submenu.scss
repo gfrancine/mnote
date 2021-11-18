@@ -5,7 +5,7 @@
   .se-submenu {
     overflow-x: hidden;
     overflow-y: auto;
-    @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+    @include mn.scrollbar(map-get(mn.$vars, main-bg-secondary));
   }
 
   .se-menu-container {
@@ -22,7 +22,7 @@
     z-index: 5;
     border-radius: 4px;
     padding: 6px 0;
-    background-color: map-get(mn.$vars, bg-main);
+    background-color: map-get(mn.$vars, main-bg);
     -webkit-box-shadow: map-get(mn.$vars, shadow);
     box-shadow: map-get(mn.$vars, shadow);
     outline: 0 none;
@@ -127,7 +127,7 @@
       }
 
       button.active {
-        background: map-get(mn.$vars, bg-secondary);
+        background: map-get(mn.$vars, main-bg-secondary);
       }
     }
 
@@ -183,25 +183,25 @@
     text-decoration: none;
     text-align: left;
     border: 0;
-    background: map-get(mn.$vars, bg-main);
-    color: map-get(mn.$vars, fg-main);
+    background: map-get(mn.$vars, main-bg);
+    color: map-get(mn.$vars, main-fg);
 
     svg {
-      fill: map-get(mn.$vars, fg-main);
+      fill: map-get(mn.$vars, main-fg);
     }
 
     &.default_value {
-      background-color: map-get(mn.$vars, bg-main);
+      background-color: map-get(mn.$vars, main-bg);
     }
 
     &:hover,
     &:focus {
-      background-color: map-get(mn.$vars, bg-secondary);
+      background-color: map-get(mn.$vars, main-bg-secondary);
       outline: 0 none;
     }
 
     &:active {
-      background-color: map-get(mn.$vars, bg-secondary);
+      background-color: map-get(mn.$vars, main-bg-secondary);
     }
   }
 
@@ -217,7 +217,7 @@
     font-size: 0.9em;
     text-align: left;
     list-style: none;
-    background-color: map-get(mn.$vars, bg-main);
+    background-color: map-get(mn.$vars, main-bg);
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
     border-radius: 4px;
@@ -261,16 +261,16 @@
       background-size: 18px 18px;
       background-image: linear-gradient(
           to right,
-          map-get(mn.$vars, fg-dim) 1px,
+          map-get(mn.$vars, main-fg-dim) 1px,
           transparent 1px
         ),
         linear-gradient(
           to bottom,
-          map-get(mn.$vars, fg-dim) 1px,
+          map-get(mn.$vars, main-fg-dim) 1px,
           transparent 1px
         );
-      border-right: solid 1px map-get(mn.$vars, fg-dim);
-      border-bottom: solid 1px map-get(mn.$vars, fg-dim);
+      border-right: solid 1px map-get(mn.$vars, main-fg-dim);
+      border-bottom: solid 1px map-get(mn.$vars, main-fg-dim);
       box-sizing: content-box;
     }
 

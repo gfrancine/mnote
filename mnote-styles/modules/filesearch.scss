@@ -31,22 +31,22 @@
       padding: 4px;
       cursor: pointer;
 
-      // todo: sidebar-fg-secondary
+      // todo: sidebar-main-fg-secondary
       // with sidebar.scss's .sidemenu-button
 
       .fill {
-        fill: map-get(mn.$vars, fg-secondary);
+        fill: map-get(mn.$vars, main-fg-secondary);
       }
       .stroke {
-        stroke: map-get(mn.$vars, fg-secondary);
+        stroke: map-get(mn.$vars, main-fg-secondary);
       }
 
       &:hover {
         .fill {
-          fill: map-get(mn.$vars, sidebar-fg-main);
+          fill: map-get(mn.$vars, sidebar-fg);
         }
         .stroke {
-          stroke: map-get(mn.$vars, sidebar-fg-main);
+          stroke: map-get(mn.$vars, sidebar-fg);
         }
       }
     }
@@ -54,8 +54,8 @@
     .filesearch-input {
       display: none;
       flex: 1;
-      color: map-get(mn.$vars, fg-main);
-      font-family: map-get(mn.$vars, font-main);
+      color: map-get(mn.$vars, main-fg);
+      font-family: map-get(mn.$vars, main-font);
       font-size: 13px;
       line-height: initial;
       background: none;
@@ -64,15 +64,15 @@
       overflow-x: hidden;
 
       &::-webkit-input-placeholder {
-        color: map-get(mn.$vars, fg-dim);
+        color: map-get(mn.$vars, main-fg-dim);
       }
 
       &:-ms-input-placeholder {
-        color: map-get(mn.$vars, fg-dim);
+        color: map-get(mn.$vars, main-fg-dim);
       }
 
       &::placeholder {
-        color: map-get(mn.$vars, fg-dim);
+        color: map-get(mn.$vars, main-fg-dim);
       }
     }
 

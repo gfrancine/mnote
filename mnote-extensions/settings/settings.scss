@@ -26,17 +26,17 @@
       flex-shrink: 0;
 
       .fill {
-        fill: map-get(mn.$vars, fg-secondary);
+        fill: map-get(mn.$vars, main-fg-secondary);
       }
       .stroke {
-        stroke: map-get(mn.$vars, fg-secondary);
+        stroke: map-get(mn.$vars, main-fg-secondary);
       }
     }
   }
 
   .settings-view-toggle {
     @include word-stats.word-stats;
-    color: map-get(mn.$vars, fg-dim);
+    color: map-get(mn.$vars, main-fg-dim);
   }
 
   .settings-textarea {
@@ -47,13 +47,13 @@
     resize: none;
     outline: none;
     border: none;
-    font-family: map-get(mn.$vars, font-monospace);
+    font-family: map-get(mn.$vars, main-font-monospace);
     font-size: 13px;
     line-height: 1.5;
     color: inherit;
     background: inherit;
 
-    @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+    @include mn.scrollbar(map-get(mn.$vars, main-bg-secondary));
   }
 
   .settings-main {
@@ -73,7 +73,7 @@
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+      @include mn.scrollbar(map-get(mn.$vars, main-bg-secondary));
 
       .subcategory-main {
         flex: 1;
@@ -95,22 +95,22 @@
       width: fit-content;
       padding: 0 1.2em;
       font-size: 0.9em;
-      border-left: solid 1px var(--mnote-border-main);
+      border-left: solid 1px var(--mnote-main-border);
 
       height: 100%;
       overflow-y: auto;
-      @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+      @include mn.scrollbar(map-get(mn.$vars, main-bg-secondary));
 
       $theme: (
-        item-bg: map-get(mn.$vars, bg-main),
-        item-fg: map-get(mn.$vars, fg-main),
-        item-icon: map-get(mn.$vars, fg-dim),
-        item-hover-bg: map-get(mn.$vars, bg-secondary),
-        item-hover-fg: map-get(mn.$vars, fg-main),
-        item-hover-icon: map-get(mn.$vars, fg-dim),
-        item-focused-bg: map-get(mn.$vars, bg-secondary),
-        item-focused-fg: map-get(mn.$vars, fg-main),
-        item-focused-icon: map-get(mn.$vars, fg-dim),
+        item-bg: map-get(mn.$vars, main-bg),
+        item-fg: map-get(mn.$vars, main-fg),
+        item-icon: map-get(mn.$vars, main-fg-dim),
+        item-hover-bg: map-get(mn.$vars, main-bg-secondary),
+        item-hover-fg: map-get(mn.$vars, main-fg),
+        item-hover-icon: map-get(mn.$vars, main-fg-dim),
+        item-focused-bg: map-get(mn.$vars, main-bg-secondary),
+        item-focused-fg: map-get(mn.$vars, main-fg),
+        item-focused-icon: map-get(mn.$vars, main-fg-dim),
       );
 
       @include tree.tree($theme);
@@ -141,7 +141,7 @@
       }
 
       .description {
-        color: map-get(mn.$vars, fg-secondary);
+        color: map-get(mn.$vars, main-fg-secondary);
         font-size: 0.85em;
       }
     }

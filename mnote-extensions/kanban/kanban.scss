@@ -15,11 +15,11 @@
   padding: 0 0 0 1em;
   box-sizing: border-box;
 
-  color: map-get(mn.$vars, fg-main);
-  font-family: map-get(mn.$vars, font-main);
+  color: map-get(mn.$vars, main-fg);
+  font-family: map-get(mn.$vars, main-font);
 
   .board {
-    @include mn.scrollbar(map-get(mn.$vars, fg-dimmer));
+    @include mn.scrollbar(map-get(mn.$vars, main-main-fg-dimmer));
     width: 100%;
     padding: 10px 1em 10px 0;
   }
@@ -27,7 +27,7 @@
   // @import "./styles/AddList.css";
 
   .add-list-editor {
-    background: map-get(mn.$vars, bg-secondary);
+    background: map-get(mn.$vars, main-bg-secondary);
   }
 
   // @import "./styles/Board.css";
@@ -46,16 +46,16 @@
 
   .card {
     box-shadow: map-get(mn.$vars, shadow);
-    background: map-get(mn.$vars, bg-main);
+    background: map-get(mn.$vars, main-bg);
     border: 0;
 
     textarea {
-      background: map-get(mn.$vars, bg-main);
+      background: map-get(mn.$vars, main-bg);
     }
   }
 
   .card:hover {
-    background: map-get(mn.$vars, bg-main);
+    background: map-get(mn.$vars, main-bg);
   }
 
   .card-icon {
@@ -63,22 +63,22 @@
   }
 
   .icon-class {
-    fill: map-get(mn.$vars, fg-secondary);
-    stroke: map-get(mn.$vars, fg-secondary);
+    fill: map-get(mn.$vars, main-fg-secondary);
+    stroke: map-get(mn.$vars, main-fg-secondary);
   }
 
   .card-icon:hover {
-    background: map-get(mn.$vars, fg-dimmer);
+    background: map-get(mn.$vars, main-main-fg-dimmer);
   }
 
   .card-text {
-    color: map-get(mn.$vars, fg-secondary);
+    color: map-get(mn.$vars, main-fg-secondary);
   }
 
   // import "./styles/CardEditor.css";
 
   .edit-card .card:hover {
-    background: map-get(mn.$vars, bg-main);
+    background: map-get(mn.$vars, main-bg);
   }
 
   // @import "./styles/EditButtons.css";
@@ -89,8 +89,8 @@
     color: map-get(mn.$vars, btn-emphasis-fg);
 
     &:hover {
-      background: map-get(mn.$vars, btn-emphasis-bg-hover);
-      color: map-get(mn.$vars, btn-emphasis-fg-hover);
+      background: map-get(mn.$vars, btn-emphasis-hover-bg);
+      color: map-get(mn.$vars, btn-emphasis-hover-fg);
     }
   }
 
@@ -98,39 +98,39 @@
   // @import "./styles/List.css";
 
   .list {
-    background: map-get(mn.$vars, bg-secondary);
+    background: map-get(mn.$vars, main-bg-secondary);
     border: none;
   }
 
   .lists-cards {
-    @include mn.scrollbar(map-get(mn.$vars, fg-dimmer));
+    @include mn.scrollbar(map-get(mn.$vars, main-main-fg-dimmer));
   }
 
   .toggle-add-card {
-    color: map-get(mn.$vars, fg-secondary);
+    color: map-get(mn.$vars, main-fg-secondary);
   }
 
   .toggle-add-card:hover {
-    background-color: map-get(mn.$vars, fg-dimmer);
-    color: map-get(mn.$vars, fg-secondary);
+    background-color: map-get(mn.$vars, main-main-fg-dimmer);
+    color: map-get(mn.$vars, main-fg-secondary);
   }
 
   // @import "./styles/ListEditor.css";
 
   .list-title-edit .icon-class {
-    fill: map-get(mn.$vars, fg-secondary);
-    stroke: map-get(mn.$vars, fg-secondary);
+    fill: map-get(mn.$vars, main-fg-secondary);
+    stroke: map-get(mn.$vars, main-fg-secondary);
   }
 
   .list-title-edit .icon-wrapper:hover {
-    background: map-get(mn.$vars, fg-dimmer);
+    background: map-get(mn.$vars, main-main-fg-dimmer);
   }
 
   .list-title-textarea {
-    background: map-get(mn.$vars, bg-main);
+    background: map-get(mn.$vars, main-bg);
   }
 
   .list-title-textarea:focus {
-    box-shadow: inset 0 0 0 2px map-get(mn.$vars, border-main);
+    box-shadow: inset 0 0 0 2px map-get(mn.$vars, main-border);
   }
 }

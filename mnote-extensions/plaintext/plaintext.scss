@@ -17,12 +17,12 @@
     resize: none;
     outline: none;
     border: none;
-    font-family: map-get(mn.$vars, font-monospace);
+    font-family: map-get(mn.$vars, main-font-monospace);
     font-size: 13px;
     line-height: 1.5;
     color: inherit;
     background: inherit;
 
-    @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+    @include mn.scrollbar(map-get(mn.$vars, main-bg-secondary));
   }
 }

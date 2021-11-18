@@ -11,21 +11,21 @@
 // the exported $vars map instead
 
 $default-theme: (
-  "font-main": "Open Sans",
-  "font-monospace": "Fira Mono",
-  "fg-main": oc.$oc-gray-9,
-  "fg-secondary": oc.$oc-gray-6,
-  "fg-dim": oc.$oc-gray-5,
-  "fg-dimmer": oc.$oc-gray-3,
-  "bg-main": #fff,
-  "bg-secondary": oc.$oc-gray-1,
+  "main-font": "Open Sans",
+  "main-font-monospace": "Fira Mono",
+  "main-fg": oc.$oc-gray-9,
+  "main-fg-secondary": oc.$oc-gray-6,
+  "main-fg-dim": oc.$oc-gray-5,
+  "main-main-fg-dimmer": oc.$oc-gray-3,
+  "main-bg": #fff,
+  "main-bg-secondary": oc.$oc-gray-1,
   "shadow": 0 2px 5px #{oc.$oc-gray-7}32,
-  "overlay-bg": #{oc.$oc-gray-7}32,
-  "border-main": oc.$oc-gray-4,
-  "border-dim": oc.$oc-gray-2,
+  "main-overlay-bg": #{oc.$oc-gray-7}32,
+  "main-border": oc.$oc-gray-4,
+  "main-border-dim": oc.$oc-gray-2,
   // sidebar
-  "sidebar-bg-main": oc.$oc-gray-1,
-  "sidebar-fg-main": oc.$oc-gray-9,
+  "sidebar-bg": oc.$oc-gray-1,
+  "sidebar-fg": oc.$oc-gray-9,
   "sidebar-item-icon": oc.$oc-gray-6,
   "sidebar-item-hover-bg": oc.$oc-gray-2,
   "sidebar-item-hover-fg": oc.$oc-gray-9,
@@ -34,15 +34,15 @@ $default-theme: (
   "sidebar-item-focused-fg": oc.$oc-gray-9,
   "sidebar-item-focused-icon": oc.$oc-gray-6,
   "sidebar-filetree-border": oc.$oc-gray-3,
-  // buttons, assuming background is bg-main
+  // buttons, assuming background is main-bg
   "btn-main-fg": oc.$oc-gray-9,
   "btn-main-fg-hover": oc.$oc-gray-9,
   "btn-main-bg": oc.$oc-gray-2,
   "btn-main-bg-hover": oc.$oc-gray-3,
   "btn-emphasis-fg": #fff,
-  "btn-emphasis-fg-hover": #fff,
+  "btn-emphasis-hover-fg": #fff,
   "btn-emphasis-bg": oc.$oc-gray-6,
-  "btn-emphasis-bg-hover": oc.$oc-gray-7,
+  "btn-emphasis-hover-bg": oc.$oc-gray-7,
 );
 
 // map of root variables

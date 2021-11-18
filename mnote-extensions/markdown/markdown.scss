@@ -21,7 +21,7 @@
     height: 100%;
     margin: 0 auto;
     box-sizing: border-box;
-    background: map-get(mn.$vars, bg-main);
+    background: map-get(mn.$vars, main-bg);
 
     .editor {
       box-sizing: border-box;
@@ -38,7 +38,7 @@
 
   .md-wordstats {
     @include word-stats.word-stats;
-    color: map-get(mn.$vars, fg-dim);
+    color: map-get(mn.$vars, main-fg-dim);
   }
 
   p img {
@@ -67,7 +67,7 @@
   /// mikldown
   // decorators
 
-  --font-code: #{map-get(mn.$vars, font-monospace)};
+  --font-code: #{map-get(mn.$vars, main-font-monospace)};
 
   .strong {
     font-weight: 600;
@@ -106,12 +106,12 @@
       grid-template-areas: select;
       align-items: center;
       cursor: pointer;
-      background-color: map-get(mn.$vars, bg-secondary);
+      background-color: map-get(mn.$vars, main-bg-secondary);
       position: relative;
 
       &:hover::after {
-        background: map-get(mn.$vars, bg-secondary);
-        color: map-get(mn.$vars, fg-secondary);
+        background: map-get(mn.$vars, main-bg-secondary);
+        color: map-get(mn.$vars, main-fg-secondary);
       }
 
       .code-fence_select {
@@ -119,7 +119,7 @@
         font-family: var(--font);
         font-weight: 500;
         line-height: 1.5;
-        color: map-get(mn.$vars, fg-dim);
+        color: map-get(mn.$vars, main-fg-dim);
         grid-area: select;
         font-size: 0.85em;
         outline: none;
@@ -132,7 +132,7 @@
       }
 
       option {
-        background-color: map-get(mn.$vars, bg-secondary);
+        background-color: map-get(mn.$vars, main-bg-secondary);
         font-weight: normal;
         display: block;
         white-space: nowrap;

@@ -1,9 +1,9 @@
 /*
 $theme: (
-  bg-main: #eee,
+  main-bg: #eee,
   bg-hover: #ddd,
   shadow: 0 2px 5px #000,
-  fg-main: #222,
+  main-fg: #222,
   fg-shortcut: #222,
   border-divider: 1px solid #ccc,
 );
@@ -13,7 +13,7 @@ $theme: (
   .menu {
     position: absolute;
     z-index: 50;
-    background: map-get($theme, bg-main);
+    background: map-get($theme, main-bg);
     padding: 0.5em 0;
     border-radius: 5px;
     box-sizing: border-box;
@@ -23,7 +23,7 @@ $theme: (
 
     .menu-item {
       font-family: inherit;
-      color: map-get($theme, fg-main);
+      color: map-get($theme, main-fg);
       font-size: 13px;
       display: flex;
       flex-direction: row;

@@ -2,13 +2,13 @@
 
 $a: (
   bg: none,
-  bg-hover: map-get(mn.$vars, bg-secondary),
-  bg-active: map-get(mn.$vars, bg-secondary),
+  bg-hover: map-get(mn.$vars, main-bg-secondary),
+  bg-active: map-get(mn.$vars, main-bg-secondary),
   bg-disabled: none,
-  fg: map-get(mn.$vars, fg-main),
-  fg-hover: map-get(mn.$vars, fg-main),
+  fg: map-get(mn.$vars, main-fg),
+  fg-hover: map-get(mn.$vars, main-fg),
   fg-active: #4592ff,
-  fg-disabled: map-get(mn.$vars, fg-dim),
+  fg-disabled: map-get(mn.$vars, main-fg-dim),
 );
 
 */

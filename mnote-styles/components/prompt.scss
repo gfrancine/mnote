@@ -5,7 +5,7 @@
   .prompt-overlay {
     width: 100vw;
     height: 100vh;
-    background: map-get(mn.$vars, overlay-bg);
+    background: map-get(mn.$vars, main-overlay-bg);
     position: fixed;
     top: 0;
     left: 0;
@@ -17,8 +17,8 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    background: map-get(mn.$vars, bg-main);
-    color: map-get(mn.$vars, fg-main);
+    background: map-get(mn.$vars, main-bg);
+    color: map-get(mn.$vars, main-fg);
     padding: 0.8em;
     margin-top: 2em;
     border-radius: 5px;
@@ -44,7 +44,7 @@
     }
 
     .prompt-text {
-      font-family: map-get(mn.$vars, font-main);
+      font-family: map-get(mn.$vars, main-font);
       margin-bottom: 1em;
       font-size: 13px;
     }

@@ -3,12 +3,12 @@
 
 @mixin menu {
   $menu-theme: (
-    bg-main: map-get(mn.$vars, bg-main),
-    bg-hover: map-get(mn.$vars, bg-secondary),
+    main-bg: map-get(mn.$vars, main-bg),
+    bg-hover: map-get(mn.$vars, main-bg-secondary),
     shadow: map-get(mn.$vars, shadow),
-    fg-main: map-get(mn.$vars, fg-main),
-    fg-shortcut: map-get(mn.$vars, fg-dim),
-    border-divider: map-get(mn.$vars, border-main),
+    main-fg: map-get(mn.$vars, main-fg),
+    fg-shortcut: map-get(mn.$vars, main-fg-dim),
+    border-divider: map-get(mn.$vars, main-border),
   );
 
   @include menu.menu($menu-theme);

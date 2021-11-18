@@ -6,8 +6,8 @@
   .menubar {
     width: 100%;
     height: 100%;
-    color: map-get(mn.$vars, fg-dim);
-    font-family: map-get(mn.$vars, font-main);
+    color: map-get(mn.$vars, main-fg-dim);
+    font-family: map-get(mn.$vars, main-font);
     display: flex;
     padding: 0 0.5em;
     flex-direction: row;
@@ -42,10 +42,10 @@
         width: 100%;
 
         .fill {
-          fill: map-get(mn.$vars, fg-dim);
+          fill: map-get(mn.$vars, main-fg-dim);
         }
         .stroke {
-          stroke: map-get(mn.$vars, fg-dim);
+          stroke: map-get(mn.$vars, main-fg-dim);
         }
 
         svg {
@@ -56,10 +56,10 @@
 
         &:hover {
           .fill {
-            fill: map-get(mn.$vars, fg-secondary);
+            fill: map-get(mn.$vars, main-fg-secondary);
           }
           .stroke {
-            stroke: map-get(mn.$vars, fg-secondary);
+            stroke: map-get(mn.$vars, main-fg-secondary);
           }
         }
       }

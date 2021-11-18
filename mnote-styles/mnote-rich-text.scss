@@ -1,7 +1,7 @@
 @use "./mnote-vars.scss" as mn;
 
 @mixin prelude {
-  color: map-get(mn.$vars, fg-main);
+  color: map-get(mn.$vars, main-fg);
 }
 
 @mixin paragraph {
@@ -45,7 +45,7 @@
 
 @mixin link {
   word-break: break-word;
-  color: map-get(mn.$vars, fg-secondary);
+  color: map-get(mn.$vars, main-fg-secondary);
   cursor: pointer;
   font-weight: normal;
   transition: all 0.2s ease-in-out;
@@ -58,14 +58,14 @@
 
 @mixin hr {
   border: none;
-  border-top: solid 1px map-get(mn.$vars, border-main);
+  border-top: solid 1px map-get(mn.$vars, main-border);
 }
 
 @mixin blockquote {
   padding-left: 1em;
   border-left: 4px solid;
-  border-left-color: map-get(mn.$vars, fg-dimmer);
-  color: map-get(mn.$vars, fg-secondary);
+  border-left-color: map-get(mn.$vars, main-main-fg-dimmer);
+  color: map-get(mn.$vars, main-fg-secondary);
   letter-spacing: unset;
   margin: 0;
   * {
@@ -75,13 +75,13 @@
 }
 
 @mixin code-inline {
-  background-color: map-get(mn.$vars, bg-secondary);
+  background-color: map-get(mn.$vars, main-bg-secondary);
   border-radius: 2px;
   font-weight: 500;
-  font-family: map-get(mn.$vars, font-monospace);
+  font-family: map-get(mn.$vars, main-font-monospace);
   font-size: 0.9em;
   padding: 0 0.2em;
-  color: map-get(mn.$vars, fg-main);
+  color: map-get(mn.$vars, main-fg);
   letter-spacing: unset;
 }
 
@@ -90,10 +90,10 @@
   font-size: 0.85em;
   padding: 1.2em;
   overflow: hidden;
-  background-color: map-get(mn.$vars, bg-secondary);
-  color: map-get(mn.$vars, fg-main);
+  background-color: map-get(mn.$vars, main-bg-secondary);
+  color: map-get(mn.$vars, main-fg);
   letter-spacing: unset;
-  font-family: map-get(mn.$vars, font-monospace);
+  font-family: map-get(mn.$vars, main-font-monospace);
   line-height: 1.5;
 
   * {
@@ -101,14 +101,14 @@
   }
 
   pre {
-    font-family: map-get(mn.$vars, font-monospace);
+    font-family: map-get(mn.$vars, main-font-monospace);
     letter-spacing: unset;
     margin: 0 1em;
     line-height: 1.5;
   }
 
   code {
-    font-family: map-get(mn.$vars, font-monospace);
+    font-family: map-get(mn.$vars, main-font-monospace);
     line-height: 1.5;
     letter-spacing: unset;
   }
@@ -117,7 +117,7 @@
 @mixin table {
   display: table;
   table-layout: auto;
-  border: 1px solid map-get(mn.$vars, border-main);
+  border: 1px solid map-get(mn.$vars, main-border);
   width: 100%;
   max-width: 100%;
   background-color: transparent;
@@ -125,22 +125,22 @@
   border-collapse: collapse;
 
   thead {
-    border-bottom: 1px solid map-get(mn.$vars, border-main);
+    border-bottom: 1px solid map-get(mn.$vars, main-border);
   }
 
   tr {
-    border: 1px solid map-get(mn.$vars, border-main);
+    border: 1px solid map-get(mn.$vars, main-border);
   }
 
   th {
-    background-color: map-get(mn.$vars, bg-secondary);
-    border: 1px solid map-get(mn.$vars, border-main);
+    background-color: map-get(mn.$vars, main-bg-secondary);
+    border: 1px solid map-get(mn.$vars, main-border);
     padding: 0.4em;
     background-clip: padding-box;
   }
 
   td {
-    border: 1px solid map-get(mn.$vars, border-main);
+    border: 1px solid map-get(mn.$vars, main-border);
     padding: 0.4em;
     background-clip: padding-box;
   }

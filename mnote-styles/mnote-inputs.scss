@@ -7,9 +7,9 @@
   outline: none;
   border: none;
   border-radius: 5px;
-  background: map-get(mn.$vars, bg-secondary);
-  color: map-get(mn.$vars, fg-main);
-  font-family: map-get(mn.$vars, font-main);
+  background: map-get(mn.$vars, main-bg-secondary);
+  color: map-get(mn.$vars, main-fg);
+  font-family: map-get(mn.$vars, main-font);
   line-height: initial;
 }
 
@@ -28,11 +28,11 @@
 }
 
 @mixin button-base {
-  font-family: map-get(mn.$vars, font-main);
+  font-family: map-get(mn.$vars, main-font);
   font-size: 13px;
   display: inline-block;
   flex-direction: row;
-  color: map-get(mn.$vars, fg-main);
+  color: map-get(mn.$vars, main-fg);
   padding: 0.8em;
   border-radius: 5px;
   cursor: pointer;
@@ -57,7 +57,7 @@
   color: map-get(mn.$vars, btn-emphasis-fg);
 
   &:hover {
-    background: map-get(mn.$vars, btn-emphasis-bg-hover);
-    color: map-get(mn.$vars, btn-emphasis-fg-hover);
+    background: map-get(mn.$vars, btn-emphasis-hover-bg);
+    color: map-get(mn.$vars, btn-emphasis-hover-fg);
   }
 }

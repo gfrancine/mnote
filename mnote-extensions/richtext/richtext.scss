@@ -25,7 +25,7 @@
 
   .richtext-wordstats {
     @include word-stats.word-stats;
-    color: map-get(mn.$vars, fg-dim);
+    color: map-get(mn.$vars, main-fg-dim);
   }
 
   .richtext-editor {
@@ -50,7 +50,7 @@
         display: inline;
         margin: auto 0.2em;
         border-left: solid 2px;
-        color: map-get(mn.$vars, fg-dimmer);
+        color: map-get(mn.$vars, main-main-fg-dimmer);
       }
 
       .se-btn-module.se-btn-module-border {
@@ -71,10 +71,10 @@
                 bg-hover: none,
                 bg-active: none,
                 bg-disabled: none,
-                fg: map-get(mn.$vars, fg-secondary),
-                fg-hover: map-get(mn.$vars, fg-main),
-                fg-active: map-get(mn.$vars, fg-main),
-                fg-disabled: map-get(mn.$vars, fg-dim),
+                fg: map-get(mn.$vars, main-fg-secondary),
+                fg-hover: map-get(mn.$vars, main-fg),
+                fg-active: map-get(mn.$vars, main-fg),
+                fg-disabled: map-get(mn.$vars, main-fg-dim),
               );
 
               @include button.button($theme);
@@ -119,7 +119,7 @@
     overflow-y: auto;
     overflow-x: hidden;
 
-    @include mn.scrollbar(map-get(mn.$vars, bg-secondary));
+    @include mn.scrollbar(map-get(mn.$vars, main-bg-secondary));
 
     // icons
 
@@ -155,7 +155,7 @@
       width: 100%;
       height: 1px;
       cursor: text;
-      border-top: 1px solid map-get(mn.$vars, fg-secondary);
+      border-top: 1px solid map-get(mn.$vars, main-fg-secondary);
       z-index: 7;
 
       > button.se-btn {
@@ -167,14 +167,14 @@
         cursor: pointer;
 
         $theme: (
-          bg: map-get(mn.$vars, bg-secondary),
-          bg-hover: map-get(mn.$vars, bg-secondary),
-          bg-active: map-get(mn.$vars, bg-secondary),
-          bg-disabled: map-get(mn.$vars, bg-secondary),
-          fg: map-get(mn.$vars, fg-secondary),
-          fg-hover: map-get(mn.$vars, fg-main),
-          fg-active: map-get(mn.$vars, fg-main),
-          fg-disabled: map-get(mn.$vars, fg-dim),
+          bg: map-get(mn.$vars, main-bg-secondary),
+          bg-hover: map-get(mn.$vars, main-bg-secondary),
+          bg-active: map-get(mn.$vars, main-bg-secondary),
+          bg-disabled: map-get(mn.$vars, main-bg-secondary),
+          fg: map-get(mn.$vars, main-fg-secondary),
+          fg-hover: map-get(mn.$vars, main-fg),
+          fg-active: map-get(mn.$vars, main-fg),
+          fg-disabled: map-get(mn.$vars, main-fg-dim),
         );
 
         @include button.button($theme);
@@ -276,7 +276,7 @@
     line-height: 3em;
     padding: 0 2em;
     font-size: 0.8em;
-    color: map-get(mn.$vars, fg-dim);
+    color: map-get(mn.$vars, main-fg-dim);
   }
 
   .se-wrapper {
@@ -376,7 +376,7 @@
         figcaption {
           padding: 0.5em;
           margin: 0.5em 0 0;
-          background-color: map-get(mn.$vars, bg-secondary);
+          background-color: map-get(mn.$vars, main-bg-secondary);
           outline: none;
         }
       }
