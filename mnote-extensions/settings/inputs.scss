@@ -53,7 +53,7 @@
 
     $dropdown-colors: (
       bg: map-get(mn.$vars, main-bg-secondary),
-      bg-selected: map-get(mn.$vars, main-main-fg-dimmer),
+      bg-selected: map-get(mn.$vars, main-fg-dimmer),
       bg-hover: map-get(mn.$vars, main-bg),
       shadow: map-get(mn.$vars, shadow),
       fg: map-get(mn.$vars, main-fg),

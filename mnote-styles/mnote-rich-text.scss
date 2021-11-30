@@ -64,7 +64,7 @@
 @mixin blockquote {
   padding-left: 1em;
   border-left: 4px solid;
-  border-left-color: map-get(mn.$vars, main-main-fg-dimmer);
+  border-left-color: map-get(mn.$vars, main-fg-dimmer);
   color: map-get(mn.$vars, main-fg-secondary);
   letter-spacing: unset;
   margin: 0;

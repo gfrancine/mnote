@@ -50,7 +50,7 @@
         display: inline;
         margin: auto 0.2em;
         border-left: solid 2px;
-        color: map-get(mn.$vars, main-main-fg-dimmer);
+        color: map-get(mn.$vars, main-fg-dimmer);
       }
 
       .se-btn-module.se-btn-module-border {

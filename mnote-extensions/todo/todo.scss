@@ -7,7 +7,7 @@ $colors: (
   icon-fg: map-get(mn.$vars, main-fg-dim),
   icon-hover-fg: map-get(mn.$vars, main-fg-secondary),
   dropdown-bg: map-get(mn.$vars, main-bg-secondary),
-  dropdown-bg-selected: map-get(mn.$vars, main-main-fg-dimmer),
+  dropdown-bg-selected: map-get(mn.$vars, main-fg-dimmer),
   dropdown-bg-hover: map-get(mn.$vars, main-bg),
   dropdown-shadow: map-get(mn.$vars, shadow),
   dropdown-fg: map-get(mn.$vars, main-fg),
