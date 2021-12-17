@@ -14,9 +14,7 @@ module.exports = function (entryPoints, isProduction) {
         ".woff": "file",
         ".woff2": "file",
       },
-      plugins: [
-        sassPlugin(),
-      ],
+      plugins: [sassPlugin()],
     })
     .catch(console.error);
 };

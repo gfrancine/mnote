@@ -17,8 +17,7 @@ export class WordStats {
       .on("click", () => {
         this.countMode = this.countMode === "words" ? "characters" : "words";
         this.update();
-      })
-      .element;
+      }).element;
 
     this.update();
   }

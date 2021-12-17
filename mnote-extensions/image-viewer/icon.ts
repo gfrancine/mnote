@@ -1,9 +1,6 @@
 import { toHtml } from "mnote-util/dom";
 
-export const imageIcon = (
-  _fillClass: string,
-  strokeClass: string,
-) =>
+export const imageIcon = (_fillClass: string, strokeClass: string) =>
   toHtml(`
   <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
     <rect x="48" y="80" width="416" height="352" rx="48" ry="48" style="fill:none;stroke-linejoin:round;stroke-width:32px" class="${strokeClass}" />

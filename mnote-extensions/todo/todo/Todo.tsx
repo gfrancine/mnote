@@ -20,17 +20,17 @@ export default function Todo(props: {
   initialState?: Partial<TodoData>;
   onChange?: (state: TodoData) => unknown;
 }) {
-  const [items, setItems] = useState<
-    TodoData["items"]
-  >(props.initialState?.items || {});
+  const [items, setItems] = useState<TodoData["items"]>(
+    props.initialState?.items || {}
+  );
 
-  const [itemsOrder, setItemsOrder] = useState<
-    TodoData["itemsOrder"]
-  >(props.initialState?.itemsOrder || []);
+  const [itemsOrder, setItemsOrder] = useState<TodoData["itemsOrder"]>(
+    props.initialState?.itemsOrder || []
+  );
 
-  const [title, setTitle] = useState<
-    TodoData["title"]
-  >(props.initialState?.title || "");
+  const [title, setTitle] = useState<TodoData["title"]>(
+    props.initialState?.title || ""
+  );
 
   const [currentlyEditing, setCurrentlyEditing] = useState<string | null>(null);
 
@@ -90,18 +90,14 @@ export default function Todo(props: {
         ...items,
         [item.id]: item,
       });
-      setItemsOrder([
-        ...itemsOrder,
-        item.id,
-      ]);
+      setItemsOrder([...itemsOrder, item.id]);
     },
     setCurrentlyEditing: (id: string | null) => {
       setCurrentlyEditing(id);
     },
     editItemByIndex: (index: number) => {
-      const id = index === itemsOrder.length
-        ? NEW_ITEM_MOCK_ID
-        : itemsOrder[index];
+      const id =
+        index === itemsOrder.length ? NEW_ITEM_MOCK_ID : itemsOrder[index];
 
       if (!id) return;
       setCurrentlyEditing(id);
@@ -134,12 +130,9 @@ export default function Todo(props: {
     setItemsOrder([]);
   };
 
-  const amountCompleted: number = useMemo(
-    () => {
-      return Object.values(items).filter((item) => item.done).length;
-    },
-    [items],
-  );
+  const amountCompleted: number = useMemo(() => {
+    return Object.values(items).filter((item) => item.done).length;
+  }, [items]);
 
   return (
     <div className="todo">
@@ -156,8 +149,7 @@ export default function Todo(props: {
           />
         </div>
         <div
-          className={"statsbar" +
-            (isStatsbarSmall ? " small" : "")}
+          className={"statsbar" + (isStatsbarSmall ? " small" : "")}
           ref={statsbarRef}
         >
           <div className="left">
@@ -167,43 +159,50 @@ export default function Todo(props: {
             <Select
               placeholder="Filter..."
               onChange={(value) => setFilterType(value)}
-              options={[{
-                text: "All",
-                value: "all",
-              }, {
-                text: "Active",
-                value: "active",
-              }, {
-                text: "Completed",
-                value: "completed",
-              }]}
+              options={[
+                {
+                  text: "All",
+                  value: "all",
+                },
+                {
+                  text: "Active",
+                  value: "active",
+                },
+                {
+                  text: "Completed",
+                  value: "completed",
+                },
+              ]}
             />
             <Menu
               text="More Actions"
-              items={[{
-                text: "Clear completed",
-                onClick: () => clearCompleted(),
-              }, {
-                text: "Clear all",
-                onClick: () => clearAll(),
-              }]}
+              items={[
+                {
+                  text: "Clear completed",
+                  onClick: () => clearCompleted(),
+                },
+                {
+                  text: "Clear all",
+                  onClick: () => clearAll(),
+                },
+              ]}
             />
           </div>
         </div>
       </div>
       <div className="todo-list">
         {itemsOrder.map((id, index) => {
-          return filters[filterType || "all"](items[id])
-            ? (
-              <TodoItem
-                index={index}
-                key={id}
-                item={items[id]}
-                isEditing={id === currentlyEditing}
-                ctx={ctx}
-              />
-            )
-            : <Fragment key={id} />;
+          return filters[filterType || "all"](items[id]) ? (
+            <TodoItem
+              index={index}
+              key={id}
+              item={items[id]}
+              isEditing={id === currentlyEditing}
+              ctx={ctx}
+            />
+          ) : (
+            <Fragment key={id} />
+          );
         })}
         <NewTodo
           ctx={ctx}

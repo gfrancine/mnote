@@ -28,26 +28,16 @@ export class SidebarModule {
       cursor: "ew-resize",
     });
 
-    this.sidemenu = el("div")
-      .class("sidemenu-main")
-      .element;
+    this.sidemenu = el("div").class("sidemenu-main").element;
 
     this.layout.mountToSidebarMenu(this.sidemenu);
 
-    this.toggleSidebarButton = this.menubar.createMenubarButton((
-      fillClass,
-      strokeClass,
-    ) =>
-      createIcon(
-        "leftSidebar",
-        fillClass,
-        strokeClass,
-        "Toggle the sidebar",
-      )
+    this.toggleSidebarButton = this.menubar.createMenubarButton(
+      (fillClass, strokeClass) =>
+        createIcon("leftSidebar", fillClass, strokeClass, "Toggle the sidebar")
     );
-    this.toggleSidebarButton.addEventListener(
-      "click",
-      () => this.setSidebarVisible(!this.sidebarVisible),
+    this.toggleSidebarButton.addEventListener("click", () =>
+      this.setSidebarVisible(!this.sidebarVisible)
     );
 
     this.menubar.addMenubarButton(this.toggleSidebarButton);
@@ -56,14 +46,11 @@ export class SidebarModule {
   }
 
   createSidemenuButton(
-    iconFactory: (fillClass: string, strokeClass: string) => Element,
+    iconFactory: (fillClass: string, strokeClass: string) => Element
   ): HTMLElement {
     return el("div")
       .class("sidemenu-button")
-      .children(
-        iconFactory("fill", "stroke"),
-      )
-      .element;
+      .children(iconFactory("fill", "stroke")).element;
   }
 
   addSidemenuButton(button: HTMLElement) {

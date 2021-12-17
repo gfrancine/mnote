@@ -49,18 +49,13 @@ class MarkdownEditor implements Editor {
 
     this.editorContainer = el("div")
       .class("md-container")
-      .attr("spellcheck", "false")
-      .element;
+      .attr("spellcheck", "false").element;
 
     this.wordstats.element.classList.add("md-wordstats");
 
     this.element = el("div")
       .class("md-extension")
-      .children(
-        this.editorContainer,
-        this.wordstats.element,
-      )
-      .element;
+      .children(this.editorContainer, this.wordstats.element).element;
 
     this.milkdown = this.createMilkdown({ contents: "" });
   }
@@ -70,10 +65,12 @@ class MarkdownEditor implements Editor {
       ctx.set(rootCtx, this.editorContainer);
       ctx.set(defaultValueCtx, opts.contents);
       ctx.set(listenerCtx, {
-        markdown: [(getMarkdown) => {
-          this.contents = getMarkdown();
-          this.onUpdate();
-        }],
+        markdown: [
+          (getMarkdown) => {
+            this.contents = getMarkdown();
+            this.onUpdate();
+          },
+        ],
       });
     };
 
@@ -97,13 +94,15 @@ class MarkdownEditor implements Editor {
   }
 
   updateFontSize = () =>
-    this.settings.getKeyWithDefault(
-      "markdown.font-size",
-      "1em",
-      (v) => typeof v === "string",
-    ).then((value) => {
-      this.element.style.setProperty("--md-font-size", value);
-    });
+    this.settings
+      .getKeyWithDefault(
+        "markdown.font-size",
+        "1em",
+        (v) => typeof v === "string"
+      )
+      .then((value) => {
+        this.element.style.setProperty("--md-font-size", value);
+      });
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
     this.settings.events.on("change", this.updateFontSize);
@@ -165,10 +164,12 @@ export class MarkdownExtension implements Extension {
       createNewEditor: () => new MarkdownEditor(app),
       createNewFileExtension: "md",
       registeredIconKind: "markdown",
-      saveAsFileTypes: [{
-        name: "Markdown",
-        extensions: ["md"],
-      }],
+      saveAsFileTypes: [
+        {
+          name: "Markdown",
+          extensions: ["md"],
+        },
+      ],
     });
 
     app.modules.settings.registerSubcategory({

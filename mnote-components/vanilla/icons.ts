@@ -5,24 +5,20 @@ import { toHtml } from "mnote-util/dom";
 
 export type IconsList = typeof icons;
 
-export const titleAlt = (alt?: string) => alt ? `<title>${alt}</title>` : "";
+export const titleAlt = (alt?: string) => (alt ? `<title>${alt}</title>` : "");
 
 export function createIcon(
   name: keyof IconsList,
   fillClass: string,
   strokeClass: string,
-  alt?: string,
+  alt?: string
 ) {
   return icons[name](fillClass, strokeClass, alt);
 }
 
 const icons = {
   //
-  kebabMenu: (
-    _fillClass: string,
-    strokeClass: string,
-    alt?: string,
-  ) =>
+  kebabMenu: (_fillClass: string, strokeClass: string, alt?: string) =>
     toHtml(`
     <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
       ${titleAlt(alt)}
@@ -32,11 +28,7 @@ const icons = {
     </svg>
   `),
   //
-  add: (
-    _fillClass: string,
-    strokeClass: string,
-    alt?: string,
-  ) =>
+  add: (_fillClass: string, strokeClass: string, alt?: string) =>
     toHtml(`
     <svg viewBox="0 0 512 512" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
       ${titleAlt(alt)}
@@ -58,11 +50,7 @@ const icons = {
     </svg>
   `),
   //
-  leftSidebar: (
-    fillClass: string,
-    strokeClass: string,
-    alt?: string,
-  ) =>
+  leftSidebar: (fillClass: string, strokeClass: string, alt?: string) =>
     toHtml(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
       ${titleAlt(alt)}
@@ -73,11 +61,7 @@ const icons = {
     </svg>
   `),
   //
-  close: (
-    _fillClass: string,
-    strokeClass: string,
-    alt?: string,
-  ) =>
+  close: (_fillClass: string, strokeClass: string, alt?: string) =>
     toHtml(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
       ${titleAlt(alt)}
@@ -88,11 +72,7 @@ const icons = {
     </svg>
   `),
   //
-  search: (
-    _fillClass: string,
-    strokeClass: string,
-    alt?: string,
-  ) =>
+  search: (_fillClass: string, strokeClass: string, alt?: string) =>
     toHtml(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
       ${titleAlt(alt)}
@@ -103,11 +83,7 @@ const icons = {
     </svg>
   `),
   //
-  appearance: (
-    fillClass: string,
-    strokeClass: string,
-    alt?: string,
-  ) =>
+  appearance: (fillClass: string, strokeClass: string, alt?: string) =>
     toHtml(`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
       ${titleAlt(alt)}

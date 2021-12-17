@@ -71,9 +71,7 @@ export class Mnote {
 
     this.container = element;
 
-    this.element = el("div")
-      .class("mnote")
-      .element;
+    this.element = el("div").class("mnote").element;
   }
 
   async init() {

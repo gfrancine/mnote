@@ -11,7 +11,7 @@ export function BooleanInput(props: {
   const [value, setValue] = useState(
     typeof props.initialValue === "boolean"
       ? props.initialValue
-      : props.input.default,
+      : props.input.default
   );
 
   useEffect(() => {
@@ -44,12 +44,13 @@ export function SelectInput(props: {
 }) {
   const items = props.input.getItems();
 
-  const initialValue = typeof props.initialValue === "string" &&
-      Object.values(items)
-        .map((item) => item.value)
-        .includes(props.initialValue)
-    ? props.initialValue
-    : props.input.default;
+  const initialValue =
+    typeof props.initialValue === "string" &&
+    Object.values(items)
+      .map((item) => item.value)
+      .includes(props.initialValue)
+      ? props.initialValue
+      : props.input.default;
 
   return (
     <div className="inputs-select">
@@ -75,7 +76,7 @@ export function StringInput(props: {
         ? getInvalidMessage(props.initialValue) === undefined
         : true)
       ? props.initialValue
-      : props.input.default,
+      : props.input.default
   );
 
   const [invalidMessage, setInvalidMessage] = useState<string | void>();
@@ -104,8 +105,9 @@ export function StringInput(props: {
         onChange={(e) => setValue(e.target.value)}
         className={"input " + (invalidMessage ? "invalid" : "")}
       />
-      {invalidMessage &&
-        <div className="invalid-message">{invalidMessage}</div>}
+      {invalidMessage && (
+        <div className="invalid-message">{invalidMessage}</div>
+      )}
     </div>
   );
 }
@@ -130,7 +132,7 @@ export function NumberInput(props: {
     typeof props.initialValue === "number" &&
       getInvalidMessage(props.initialValue) === undefined
       ? props.initialValue
-      : props.input.default,
+      : props.input.default
   );
 
   const [invalidMessage, setInvalidMessage] = useState<string | void>();
@@ -161,8 +163,9 @@ export function NumberInput(props: {
         }}
         className={"input " + (invalidMessage ? "invalid" : "")}
       />
-      {invalidMessage &&
-        <div className="invalid-message">{invalidMessage}</div>}
+      {invalidMessage && (
+        <div className="invalid-message">{invalidMessage}</div>
+      )}
     </div>
   );
 }

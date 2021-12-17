@@ -28,11 +28,12 @@ type FileTreeDragData = {
 type FileIconFactory = (
   node: Node,
   fillClass: string,
-  strokeClass: string,
+  strokeClass: string
 ) => Element | void;
 
 // dry for the drop handler
-const makeDropHandler = (dirPath: string, hooks?: FileTreeHooks) =>
+const makeDropHandler =
+  (dirPath: string, hooks?: FileTreeHooks) =>
   (e: React.DragEvent<HTMLElement>) => {
     const data = e.dataTransfer.getData(DRAG_DATA_TYPE);
     const dragData: FileTreeDragData = JSON.parse(data);
@@ -46,7 +47,7 @@ const makeDropHandler = (dirPath: string, hooks?: FileTreeHooks) =>
 function searchFileTree(
   tree: NodeWithChildren,
   searchTerm: string,
-  getPathName: (path: string) => string,
+  getPathName: (path: string) => string
 ) {
   const results: Record<string, MatchRange[]> = {};
   if (searchTerm.length < 1) return results;
@@ -74,9 +75,10 @@ function FileNode(props: {
   disableRename?: boolean;
   getPathName: (path: string) => string;
 }) {
-  const name = useMemo(() => props.getPathName(props.node.path), [
-    props.node.path,
-  ]);
+  const name = useMemo(
+    () => props.getPathName(props.node.path),
+    [props.node.path]
+  );
 
   const onClick = () => props.hooks?.fileFocused?.(props.node.path);
 
@@ -86,44 +88,49 @@ function FileNode(props: {
   const [isDraggedOver, setDraggedOver] = useState(false);
 
   return props.visible &&
-      (isSearching ? searchResultRanges !== undefined : true)
-    ? (
-      <TreeItem
-        text={searchResultRanges
-          ? <Highlight text={name} ranges={searchResultRanges} />
-          : name}
-        icon={(() => {
-          if (props.getFileIcon) {
-            const icon = props.getFileIcon(props.node, "fill", "stroke");
-            if (icon) return <ElementToReact element={icon} />;
-          }
-          return <BlankFile fillClass="fill" strokeClass="stroke" />;
-        })()}
-        focused={props.focusedPath === props.node.path}
-        hovered={isDraggedOver}
-        onClick={onClick}
-        draggable
-        onDragStart={(e) =>
-          e.dataTransfer.setData(
-            DRAG_DATA_TYPE,
-            JSON.stringify({
-              path: props.node.path,
-              kind: "file",
-            }),
-          )}
-        onDragEnter={() => setDraggedOver(true)}
-        onDragLeave={() => setDraggedOver(false)}
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={(e) => {
-          makeDropHandler(props.parentPath, props.hooks)(e);
-          setDraggedOver(false);
-        }}
-        className="filetree-item" // used by context menu
-        data-mn-file-path={props.node.path}
-        data-mn-disable-rename={props.disableRename}
-      />
-    )
-    : <></>;
+    (isSearching ? searchResultRanges !== undefined : true) ? (
+    <TreeItem
+      text={
+        searchResultRanges ? (
+          <Highlight text={name} ranges={searchResultRanges} />
+        ) : (
+          name
+        )
+      }
+      icon={(() => {
+        if (props.getFileIcon) {
+          const icon = props.getFileIcon(props.node, "fill", "stroke");
+          if (icon) return <ElementToReact element={icon} />;
+        }
+        return <BlankFile fillClass="fill" strokeClass="stroke" />;
+      })()}
+      focused={props.focusedPath === props.node.path}
+      hovered={isDraggedOver}
+      onClick={onClick}
+      draggable
+      onDragStart={(e) =>
+        e.dataTransfer.setData(
+          DRAG_DATA_TYPE,
+          JSON.stringify({
+            path: props.node.path,
+            kind: "file",
+          })
+        )
+      }
+      onDragEnter={() => setDraggedOver(true)}
+      onDragLeave={() => setDraggedOver(false)}
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={(e) => {
+        makeDropHandler(props.parentPath, props.hooks)(e);
+        setDraggedOver(false);
+      }}
+      className="filetree-item" // used by context menu
+      data-mn-file-path={props.node.path}
+      data-mn-disable-rename={props.disableRename}
+    />
+  ) : (
+    <></>
+  );
 }
 
 function DirNode(props: {
@@ -145,11 +152,11 @@ function DirNode(props: {
   // sort by name and by type (directories go first)
   const sortedChildren = useMemo(
     () => sortChildren(props.getPathName, props.node),
-    [props.node.children],
+    [props.node.children]
   );
 
   const [expanded, setExpanded] = useState<boolean>(
-    props.initExpanded === undefined ? false : props.initExpanded,
+    props.initExpanded === undefined ? false : props.initExpanded
   );
 
   useEffect(() => {
@@ -191,12 +198,20 @@ function DirNode(props: {
     <div className="filetree-dir">
       <TreeItem
         hidden={!(props.visible /* && isOrHasSearchResult */)}
-        text={searchResultRanges
-          ? <Highlight text={name} ranges={searchResultRanges} />
-          : name}
-        icon={expanded
-          ? <ChevronDown fillClass="fill" strokeClass="stroke" />
-          : <ChevronRight fillClass="fill" strokeClass="stroke" />}
+        text={
+          searchResultRanges ? (
+            <Highlight text={name} ranges={searchResultRanges} />
+          ) : (
+            name
+          )
+        }
+        icon={
+          expanded ? (
+            <ChevronDown fillClass="fill" strokeClass="stroke" />
+          ) : (
+            <ChevronRight fillClass="fill" strokeClass="stroke" />
+          )
+        }
         onClick={onClick}
         onDragOver={(e) => {
           e.preventDefault();
@@ -214,8 +229,9 @@ function DirNode(props: {
             JSON.stringify({
               path: props.node.path,
               kind: "dir",
-            }),
-          )}
+            })
+          )
+        }
         className="filetree-item"
         hovered={isDraggedOver}
         data-mn-dir-path={props.node.path}
@@ -223,33 +239,31 @@ function DirNode(props: {
       />
       <TreeChildren hidden={!(props.visible && expanded)}>
         {sortedChildren.map((node) =>
-          node.children
-            ? (
-              <DirNode
-                visible={expanded}
-                key={node.path}
-                node={node as NodeWithChildren}
-                hooks={props.hooks}
-                focusedPath={props.focusedPath}
-                getFileIcon={props.getFileIcon}
-                searchResults={props.searchResults}
-                getPathName={props.getPathName}
-                ensureSeparatorAtEnd={props.ensureSeparatorAtEnd}
-              />
-            )
-            : (
-              <FileNode
-                parentPath={props.node.path}
-                visible={expanded}
-                node={node}
-                key={node.path}
-                hooks={props.hooks}
-                focusedPath={props.focusedPath}
-                getFileIcon={props.getFileIcon}
-                searchResults={props.searchResults}
-                getPathName={props.getPathName}
-              />
-            )
+          node.children ? (
+            <DirNode
+              visible={expanded}
+              key={node.path}
+              node={node as NodeWithChildren}
+              hooks={props.hooks}
+              focusedPath={props.focusedPath}
+              getFileIcon={props.getFileIcon}
+              searchResults={props.searchResults}
+              getPathName={props.getPathName}
+              ensureSeparatorAtEnd={props.ensureSeparatorAtEnd}
+            />
+          ) : (
+            <FileNode
+              parentPath={props.node.path}
+              visible={expanded}
+              node={node}
+              key={node.path}
+              hooks={props.hooks}
+              focusedPath={props.focusedPath}
+              getFileIcon={props.getFileIcon}
+              searchResults={props.searchResults}
+              getPathName={props.getPathName}
+            />
+          )
         )}
       </TreeChildren>
     </div>
@@ -274,25 +288,25 @@ export default function (props: {
 
   return (
     <div className="filetree-main">
-      {props.node
-        ? (
-          <DirNode
-            visible
-            hooks={props.hooks}
-            key={props.node.path}
-            initExpanded
-            draggable={false}
-            node={props.node}
-            overrideAutoExpand
-            focusedPath={props.initFocusedNode}
-            getFileIcon={props.getFileIcon}
-            searchResults={searchResults}
-            disableRename
-            getPathName={props.getPathName}
-            ensureSeparatorAtEnd={props.ensureSeparatorAtEnd}
-          />
-        )
-        : <></>}
+      {props.node ? (
+        <DirNode
+          visible
+          hooks={props.hooks}
+          key={props.node.path}
+          initExpanded
+          draggable={false}
+          node={props.node}
+          overrideAutoExpand
+          focusedPath={props.initFocusedNode}
+          getFileIcon={props.getFileIcon}
+          searchResults={searchResults}
+          disableRename
+          getPathName={props.getPathName}
+          ensureSeparatorAtEnd={props.ensureSeparatorAtEnd}
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

@@ -13,10 +13,11 @@ export class SystemModule implements SystemInteropModule {
   constructor(system?: Partial<SystemInteropModule>) {
     this.system = system;
 
-    window.matchMedia("(prefers-color-scheme: dark)").addEventListener(
-      "change",
-      () => this.themeChangedSignal.emit(this.getPreferredTheme()),
-    );
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", () =>
+        this.themeChangedSignal.emit(this.getPreferredTheme())
+      );
   }
 
   // todo: can we use a browser api?
@@ -42,8 +43,9 @@ export class SystemModule implements SystemInteropModule {
       return this.system.getPreferredTheme();
     }
 
-    const perfersDark =
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const perfersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
     return perfersDark ? "dark" : "light";
   }
 

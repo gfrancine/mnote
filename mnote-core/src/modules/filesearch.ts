@@ -23,8 +23,7 @@ export class FileSearchModule {
 
     this.input = el("input")
       .class("filesearch-input")
-      .attr("placeholder", "Search...")
-      .element as HTMLInputElement;
+      .attr("placeholder", "Search...").element as HTMLInputElement;
 
     this.input.addEventListener("keydown", (e) => {
       if (e.key !== "Enter") return;
@@ -38,36 +37,23 @@ export class FileSearchModule {
       "search",
       "fill",
       "stroke",
-      "Search for files or folders",
+      "Search for files or folders"
     );
     searchIcon.classList.add("icon", "search");
 
-    const closeIcon = createIcon(
-      "close",
-      "fill",
-      "stroke",
-      "Clear search",
-    );
+    const closeIcon = createIcon("close", "fill", "stroke", "Clear search");
     closeIcon.classList.add("icon", "close");
 
     this.button = el("div")
       .class("filesearch-button")
-      .children(
-        searchIcon,
-        closeIcon,
-      )
+      .children(searchIcon, closeIcon)
       .on("click", () => {
         this.setIsSearching(!this.isSearching);
-      })
-      .element;
+      }).element;
 
     this.element = el("div")
       .class("filesearch")
-      .children(
-        this.button,
-        this.input,
-      )
-      .element;
+      .children(this.button, this.input).element;
 
     this.layout.mountToFileSearchbar(this.element);
   }

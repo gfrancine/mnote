@@ -48,22 +48,20 @@ export class EditorsBaseModule {
     this.nothingHere = (() => {
       const element = el("div")
         .inner(
-          "Click the three dots on the top right to open a file or folder.",
+          "Click the three dots on the top right to open a file or folder."
         )
-        .class("placeholder-nothing")
-        .element;
+        .class("placeholder-nothing").element;
 
       return {
         element,
-        show: () => element.style.display = "flex",
-        hide: () => element.style.display = "none",
+        show: () => (element.style.display = "flex"),
+        hide: () => (element.style.display = "none"),
       };
     })();
 
     this.element = el("div")
       .class("editor-main")
-      .children(this.nothingHere.element)
-      .element;
+      .children(this.nothingHere.element).element;
 
     app.modules.layout.mountToContents(this.element);
 
@@ -75,7 +73,7 @@ export class EditorsBaseModule {
     const startPath = this.app.options.startPath;
     let startFile: string | undefined;
 
-    if (startPath && await this.fs.isFile(startPath)) {
+    if (startPath && (await this.fs.isFile(startPath))) {
       startFile = startPath;
     }
 
@@ -91,9 +89,7 @@ export class EditorsBaseModule {
   }
 
   private createContainer() {
-    return el("div")
-      .class("editor-container")
-      .element;
+    return el("div").class("editor-container").element;
   }
 
   // assumes the tab has already been mounted
@@ -203,7 +199,7 @@ export class EditorsBaseModule {
     // but it's good to have this
     if (!selectedEditorInfo) {
       this.popups.notify(
-        `Cannot open file ${path} because its document type is not supported.`,
+        `Cannot open file ${path} because its document type is not supported.`
       );
       return;
     }
@@ -265,7 +261,8 @@ export class EditorsBaseModule {
     const info: TabInfo = {
       editor: await editorInfo.createNewEditor(),
       document: {
-        name: "Untitled" +
+        name:
+          "Untitled" +
           (editorInfo.createNewFileExtension
             ? "." + editorInfo.createNewFileExtension
             : ""),

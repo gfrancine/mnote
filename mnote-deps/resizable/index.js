@@ -11,12 +11,10 @@ export default function ({
 
   const drag = (e) => {
     if (horizontal) {
-      element.style.width = (startWidth + (e.pageX - startX)) +
-        "px";
+      element.style.width = startWidth + (e.pageX - startX) + "px";
     }
     if (vertical) {
-      element.style.height = (startHeight + (e.pageY - startY)) +
-        "px";
+      element.style.height = startHeight + (e.pageY - startY) + "px";
     }
   };
 

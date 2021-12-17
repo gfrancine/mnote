@@ -29,27 +29,21 @@ class RichtextEditor implements Editor {
 
     this.wordstats.element.classList.add("richtext-wordstats");
 
-    const dummy = el("textarea")
-      .style("display", "none")
-      .element;
+    const dummy = el("textarea").style("display", "none").element;
 
     this.editorContainer = el("div")
       .class("richtext-editor")
-      .children(dummy)
-      .element;
+      .children(dummy).element;
 
-    this.toolbarContainer = el("div")
-      .class("richtext-toolbar")
-      .element;
+    this.toolbarContainer = el("div").class("richtext-toolbar").element;
 
     this.element = el("div")
       .class("richtext-extension")
       .children(
         this.toolbarContainer,
         this.editorContainer,
-        this.wordstats.element,
-      )
-      .element;
+        this.wordstats.element
+      ).element;
 
     this.editor = suneditor.create(dummy, {
       plugins: [
@@ -85,7 +79,7 @@ class RichtextEditor implements Editor {
     });
 
     this.editorElement = this.element.querySelector(
-      ".se-wrapper-inner.se-wrapper-wysiwyg.sun-editor-editable",
+      ".se-wrapper-inner.se-wrapper-wysiwyg.sun-editor-editable"
     ) as HTMLDivElement;
 
     // might be null if sun editor updates
@@ -97,9 +91,11 @@ class RichtextEditor implements Editor {
 
     // hacky way to get rid of the notice
     // REWRITEME
-    (this.element.querySelector(".se-notice button.close") as
-      | HTMLButtonElement
-      | null)?.click();
+    (
+      this.element.querySelector(
+        ".se-notice button.close"
+      ) as HTMLButtonElement | null
+    )?.click();
   }
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
@@ -158,10 +154,12 @@ export class RichtextExtension implements Extension {
       createNewEditor: () => new RichtextEditor(app),
       createNewFileExtension: "html",
       registeredIconKind: "html",
-      saveAsFileTypes: [{
-        name: "HTML Document",
-        extensions: ["html"],
-      }],
+      saveAsFileTypes: [
+        {
+          name: "HTML Document",
+          extensions: ["html"],
+        },
+      ],
     });
   }
 

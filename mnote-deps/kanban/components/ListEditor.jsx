@@ -43,8 +43,9 @@ class ListEditor extends Component {
           onKeyDown={this.onEnter}
           style={{ width: deleteList ? 220 : 245 }}
         />
-        {deleteList &&
-          <TrashIcon iconClass="icon-class" onClick={deleteList} />}
+        {deleteList && (
+          <TrashIcon iconClass="icon-class" onClick={deleteList} />
+        )}
       </div>
     );
   }

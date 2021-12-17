@@ -1,9 +1,6 @@
 import { toHtml } from "mnote-util/dom";
 
-export const settingsIcon = (
-  _fillClass: string,
-  strokeClass: string,
-) =>
+export const settingsIcon = (_fillClass: string, strokeClass: string) =>
   toHtml(`
   <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
     <path d="M262.29,192.31a64,64,0,1,0,57.4,57.4A64.13,64.13,0,0,0,262.29,192.31ZM416.39,256a154.34,154.34,0,0,1-1.53,

@@ -11,7 +11,7 @@ export class InputModule {
 
   registerShortcut(
     combinations: string[],
-    callback: (e: KeyboardEvent) => void | Promise<void>,
+    callback: (e: KeyboardEvent) => void | Promise<void>
   ) {
     this.log.info("input: bind combinations", combinations);
     Mousetrap.bind(combinations, callback);

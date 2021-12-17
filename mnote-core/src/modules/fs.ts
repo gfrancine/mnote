@@ -64,7 +64,7 @@ export class FSModule implements FsInteropModule {
 
   readDir(
     path: string,
-    opts: FsReadDirOptions = { recursive: true },
+    opts: FsReadDirOptions = { recursive: true }
   ): Promise<FileItemWithChildren> {
     if (this.fs?.readDir) return this.fs.readDir(path, opts);
     return Promise.resolve({
@@ -182,14 +182,14 @@ export class FSModule implements FsInteropModule {
 
   onWatchEvent<K extends keyof FsWatcherEvents>(
     event: K,
-    handler: FsWatcherEvents[K],
+    handler: FsWatcherEvents[K]
   ) {
     return this.fs?.onWatchEvent?.(event, handler);
   }
 
   offWatchEvent<K extends keyof FsWatcherEvents>(
     event: K,
-    handler: FsWatcherEvents[K],
+    handler: FsWatcherEvents[K]
   ) {
     return this.fs?.offWatchEvent?.(event, handler);
   }

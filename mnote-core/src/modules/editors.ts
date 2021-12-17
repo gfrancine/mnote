@@ -52,12 +52,7 @@ export class EditorsModule extends EditorsBaseModule {
   private hookToSidebar() {
     // the "New File" button and menu
     const button = this.sidebar.createSidemenuButton((fillClass, strokeClass) =>
-      createIcon(
-        "add",
-        fillClass,
-        strokeClass,
-        "Create a new file",
-      )
+      createIcon("add", fillClass, strokeClass, "Create a new file")
     );
 
     let menu: Menu | undefined;
@@ -94,20 +89,17 @@ export class EditorsModule extends EditorsBaseModule {
       const section = getSection();
       const sections = section ? [section] : [];
 
-      menu = new Menu(
-        (menuRect) => {
-          return buttonRect.left - menuRect.width < 0
-            ? {
+      menu = new Menu((menuRect) => {
+        return buttonRect.left - menuRect.width < 0
+          ? {
               point: { x: buttonRect.left, y: buttonRect.top },
               anchor: { top: false, left: true },
             }
-            : {
+          : {
               point: { x: buttonRect.right, y: buttonRect.top },
               anchor: { top: false, left: false },
             };
-        },
-        sections,
-      );
+      }, sections);
 
       menu.show(this.app.element);
     };
@@ -139,7 +131,7 @@ export class EditorsModule extends EditorsBaseModule {
     const updateMenubarTitle = (tab?: Tab) => {
       if (tab) {
         this.menubar.setMenubarText(
-          (tab.info.document.saved ? "" : "*") + tab.info.document.name,
+          (tab.info.document.saved ? "" : "*") + tab.info.document.name
         );
       } else {
         this.menubar.setMenubarText("");

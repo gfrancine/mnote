@@ -56,7 +56,7 @@ export class SettingsModule {
       this.log.info(
         "valid settings?",
         maybeSettings,
-        this.isValidSettings(maybeSettings),
+        this.isValidSettings(maybeSettings)
       );
       if (this.isValidSettings(maybeSettings)) {
         this.settings = maybeSettings;
@@ -72,15 +72,11 @@ export class SettingsModule {
 
   /** persist to the file */
   private async persistSettings() {
-    this.log.info(
-      "Persist settings to path",
-      this.settingsPath,
-      this.settings,
-    );
+    this.log.info("Persist settings to path", this.settingsPath, this.settings);
 
     await this.fs.writeTextFile(
       this.settingsPath,
-      JSON.stringify(this.settings),
+      JSON.stringify(this.settings)
     );
   }
 
@@ -100,14 +96,15 @@ export class SettingsModule {
 
   setKey(key: string, value: SettingsValue): Promise<void> {
     this.settings[key] = value;
-    return this.persistSettings()
-      .then(() => this.events.emit("change", this.settings));
+    return this.persistSettings().then(() =>
+      this.events.emit("change", this.settings)
+    );
   }
 
   async getKeyWithDefault<T extends SettingsValue>(
     key: string,
     default_: T,
-    isValid: (value: SettingsValue) => boolean, /* value is T */
+    isValid: (value: SettingsValue) => boolean /* value is T */
   ): Promise<T> {
     const value = this.getKey(key);
     if (isValid(value)) {
@@ -124,14 +121,16 @@ export class SettingsModule {
 
   setSettings(settings: Settings): Promise<void> {
     this.settings = settings;
-    return this.persistSettings()
-      .then(() => this.events.emit("change", this.settings));
+    return this.persistSettings().then(() =>
+      this.events.emit("change", this.settings)
+    );
   }
 
   resetSettings(): Promise<void> {
     this.settings = this.defaultSettings();
-    return this.persistSettings()
-      .then(() => this.events.emit("change", this.settings));
+    return this.persistSettings().then(() =>
+      this.events.emit("change", this.settings)
+    );
   }
 
   // inputs
@@ -161,9 +160,9 @@ export class SettingsModule {
         set(
           subcategoryInfo,
           "inputs",
-          set(subcategoryInfo.inputs, input.key, input),
-        ),
-      ),
+          set(subcategoryInfo.inputs, input.key, input)
+        )
+      )
     );
 
     this.events.emit("inputIndexChanged", this.inputsIndex);
@@ -175,14 +174,10 @@ export class SettingsModule {
     this.inputsIndex = set(
       this.inputsIndex,
       subcategory.category,
-      set(
-        this.inputsIndex[subcategory.category],
-        subcategory.key,
-        {
-          subcategory,
-          inputs: {},
-        },
-      ),
+      set(this.inputsIndex[subcategory.category], subcategory.key, {
+        subcategory,
+        inputs: {},
+      })
     );
 
     this.subcategories = set(this.subcategories, subcategory.key, subcategory);

@@ -10,11 +10,7 @@ export function Nothing() {
 
 export function Circle({ fillClass }: SVGProps) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      version="1.1"
-      viewBox="0 0 640 640"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 640 640">
       <path
         d="M530 320C530 435.9 435.9 530 320 530C204.1 530 110 435.9 110 320C110 204.1 204.1 110 320 110C435.9 110 530 204.1 530 320Z"
         opacity="1"

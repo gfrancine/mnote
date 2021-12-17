@@ -28,30 +28,25 @@ class PlaintextEditor implements Editor {
         e.preventDefault();
         const self = e.target as HTMLTextAreaElement;
         const start = self.selectionStart;
-        self.value = self.value.slice(0, start) +
+        self.value =
+          self.value.slice(0, start) +
           "\t" +
           self.value.slice(self.selectionEnd, self.value.length);
         self.selectionStart = start + 1;
         self.selectionEnd = self.selectionStart;
-      })
-      .element as HTMLTextAreaElement;
+      }).element as HTMLTextAreaElement;
 
     this.element = el("div")
       .class("plaintext-editor")
-      .children(
-        this.textarea,
-      )
-      .element;
+      .children(this.textarea).element;
   }
 
   updateTabSize = () =>
-    this.app.modules.settings.getKeyWithDefault(
-      "plaintext.tab-size",
-      4,
-      (v) => typeof v === "number",
-    ).then((value) => {
-      this.textarea.style.tabSize = "" + value;
-    });
+    this.app.modules.settings
+      .getKeyWithDefault("plaintext.tab-size", 4, (v) => typeof v === "number")
+      .then((value) => {
+        this.textarea.style.tabSize = "" + value;
+      });
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
     this.textarea.addEventListener("input", () => {
@@ -105,10 +100,12 @@ export class PlaintextExtension implements Extension {
       createNewEditor: () => new PlaintextEditor(app),
       registeredIconKind: "textFile",
       createNewFileExtension: "txt",
-      saveAsFileTypes: [{
-        name: "Plain Text",
-        extensions: ["txt"],
-      }],
+      saveAsFileTypes: [
+        {
+          name: "Plain Text",
+          extensions: ["txt"],
+        },
+      ],
     });
 
     app.modules.settings.registerSubcategory({

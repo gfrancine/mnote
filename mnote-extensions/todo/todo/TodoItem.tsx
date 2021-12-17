@@ -24,8 +24,9 @@ function CheckedBullet({
           stroke-width="4"
           className="outer"
         />
-        {value &&
-          <circle cx="50" cy="50" r="38" fill="black" className="inner" />}
+        {value && (
+          <circle cx="50" cy="50" r="38" fill="black" className="inner" />
+        )}
       </svg>
     </div>
   );
@@ -92,9 +93,11 @@ export default function TodoItem(props: {
         e.dataTransfer.setData("todo-index", "" + props.index);
       }}
       draggable
-      className={"todo-item" +
+      className={
+        "todo-item" +
         (dragoverLocation ? " draggedover " + dragoverLocation : "") +
-        (props.item.done ? " done" : "")}
+        (props.item.done ? " done" : "")
+      }
     >
       <CheckedBullet
         value={props.item.done}
@@ -102,7 +105,8 @@ export default function TodoItem(props: {
           props.ctx.setItem(props.item.id, {
             ...props.item,
             done: value,
-          })}
+          })
+        }
       />
       <div className={"todo-text-input" + (props.isEditing ? " editing" : "")}>
         <TextareaAutosize
@@ -129,10 +133,7 @@ export default function TodoItem(props: {
         />
         <div className="buttons">
           {!props.isEditing && (
-            <div
-              className="button delete"
-              onClick={deleteItem}
-            >
+            <div className="button delete" onClick={deleteItem}>
               <Trash strokeClass="stroke" fillClass="fill" />
             </div>
           )}

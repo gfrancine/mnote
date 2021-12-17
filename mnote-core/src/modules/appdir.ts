@@ -61,7 +61,7 @@ export class AppDirModule {
     this.log.info("appdir: closeDirectory");
     if (!this.directory) {
       this.log.warn(
-        "appdir: called closeDirectory when there is no current directory",
+        "appdir: called closeDirectory when there is no current directory"
       );
       return;
     }

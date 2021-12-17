@@ -14,8 +14,7 @@ export class FS implements Partial<FsInteropModule> {
   }
   readTextFile(path: string): Promise<string> {
     return Promise.resolve(
-      contents[this.getPathExtension(path)] ||
-        "lorem ipsum",
+      contents[this.getPathExtension(path)] || "lorem ipsum"
     );
   }
   getPathExtension(path: string) {
@@ -25,7 +24,7 @@ export class FS implements Partial<FsInteropModule> {
   }
   readDir(
     _path: string,
-    _opts: FsReadDirOptions,
+    _opts: FsReadDirOptions
   ): Promise<FileItemWithChildren> {
     return Promise.resolve(tree);
   }

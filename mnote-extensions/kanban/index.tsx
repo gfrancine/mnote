@@ -37,9 +37,7 @@ class KanbanEditor implements Editor {
   constructor(app: Mnote) {
     this.app = app;
     this.fs = app.modules.fs;
-    this.element = el("div")
-      .class("kanban-extension")
-      .element;
+    this.element = el("div").class("kanban-extension").element;
   }
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
@@ -55,11 +53,8 @@ class KanbanEditor implements Editor {
     }
 
     render(
-      <Wrapper
-        initialData={this.board}
-        onChange={makeCallback(this)}
-      />,
-      this.element,
+      <Wrapper initialData={this.board} onChange={makeCallback(this)} />,
+      this.element
     );
   }
 
@@ -92,10 +87,12 @@ export class KanbanExtension implements Extension {
       createNewEditor: () => new KanbanEditor(app),
       registeredIconKind: "kanban",
       createNewFileExtension: "mnkanban",
-      saveAsFileTypes: [{
-        name: "Mnote Kanban",
-        extensions: ["mnkanban"],
-      }],
+      saveAsFileTypes: [
+        {
+          name: "Mnote Kanban",
+          extensions: ["mnkanban"],
+        },
+      ],
     });
 
     app.modules.fileicons.registerIcon({

@@ -26,73 +26,42 @@ export class LayoutModule /* implements Module */ {
 
   constructor(app: Mnote) {
     this.menubar = (() => {
-      return el("div")
-        .class("layout-menubar")
-        .element;
+      return el("div").class("layout-menubar").element;
     })();
 
     this.sidebar = (() => {
-      this.fileSearchbar = el("div")
-        .class("sidebar-filesearch")
-        .element;
+      this.fileSearchbar = el("div").class("sidebar-filesearch").element;
 
-      this.filetree = el("div")
-        .class("sidebar-filetree")
-        .element;
+      this.filetree = el("div").class("sidebar-filetree").element;
 
-      this.openFiles = el("div")
-        .class("sidebar-openfiles")
-        .element;
+      this.openFiles = el("div").class("sidebar-openfiles").element;
 
       const contents = el("div")
         .class("sidebar-contents")
-        .children(
-          this.openFiles,
-          this.filetree,
-        )
-        .element;
+        .children(this.openFiles, this.filetree).element;
 
-      this.sidebarMenu = el("div")
-        .class("sidebar-menu")
-        .element;
+      this.sidebarMenu = el("div").class("sidebar-menu").element;
 
       return el("div")
         .class("layout-sidebar")
-        .children(
-          this.fileSearchbar,
-          contents,
-          this.sidebarMenu,
-        )
-        .element;
+        .children(this.fileSearchbar, contents, this.sidebarMenu).element;
     })();
 
     this.sidebarHandle = el("div")
       .class("gutter")
-      .class("gutter-horizontal")
-      .element;
+      .class("gutter-horizontal").element;
 
     this.contents = (() => {
-      return el("div")
-        .class("layout-contents")
-        .element;
+      return el("div").class("layout-contents").element;
     })();
 
     const container = el("div")
       .class("layout-container")
-      .children(
-        this.menubar,
-        this.contents,
-      )
-      .element;
+      .children(this.menubar, this.contents).element;
 
     this.main = el("div")
       .class("layout")
-      .children(
-        this.sidebar,
-        this.sidebarHandle,
-        container,
-      )
-      .element;
+      .children(this.sidebar, this.sidebarHandle, container).element;
 
     app.element.appendChild(this.main);
   }

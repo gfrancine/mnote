@@ -1,17 +1,16 @@
 // item heads used by filetree and openfiles
 import React, { ReactNode, useEffect, useRef } from "react";
 
-type DivProps =
-  & React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLDivElement>,
-    HTMLDivElement
-  >
-  & Record<string, unknown>;
+type DivProps = React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+> &
+  Record<string, unknown>;
 
 function omit<
   K extends string | number,
   T extends Record<K, unknown>,
-  O extends readonly K[],
+  O extends readonly K[]
 >(object: T, ...keys: O) {
   const omitted = { ...object };
   for (const k of keys) delete omitted[k];
@@ -28,16 +27,18 @@ export function TreeItem(
     hidden?: boolean;
     ref?: React.Ref<HTMLDivElement>;
     className?: string;
-  },
+  }
 ) {
   return (
     <div
-      className={"tree-item" +
+      className={
+        "tree-item" +
         (props.hovered ? " tree-hovered" : "") +
         (props.focused ? " tree-focused" : "") +
         (props.hidden ? " tree-hidden" : "") +
         (props.disableHover ? "" : " tree-enable-hover") +
-        (props.className ? " " + props.className : "")}
+        (props.className ? " " + props.className : "")
+      }
       {...omit(
         props,
         "text",
@@ -45,12 +46,10 @@ export function TreeItem(
         "children",
         "focused",
         "className",
-        "hovered",
+        "hovered"
       )}
     >
-      <div className="tree-item-icon">
-        {props.icon}
-      </div>
+      <div className="tree-item-icon">{props.icon}</div>
       {props.text}
       {props.children}
     </div>
@@ -62,10 +61,7 @@ export function TreeChildren(props: {
   children?: ReactNode;
 }) {
   return (
-    <div
-      className={"tree-children " +
-        (props.hidden ? "tree-hidden" : "")}
-    >
+    <div className={"tree-children " + (props.hidden ? "tree-hidden" : "")}>
       {props.children}
     </div>
   );
@@ -85,7 +81,6 @@ export function ElementToReact(props: { element: Element }) {
   });
 
   return (
-    <div style={{ width: "100%", height: "100%" }} ref={containerRef}>
-    </div>
+    <div style={{ width: "100%", height: "100%" }} ref={containerRef}></div>
   );
 }

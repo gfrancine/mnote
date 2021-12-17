@@ -23,11 +23,7 @@ export class CtxmenuModule {
       return sections;
     };
 
-    new ContextMenu(
-      app.element,
-      [app.modules.layout.contents],
-      getSections,
-    );
+    new ContextMenu(app.element, [app.modules.layout.contents], getSections);
   }
 
   addSectionReducer(reducer: SectionReducer) {
@@ -43,7 +39,7 @@ export class ContextMenu {
   constructor(
     element: Element,
     blacklist: Element[],
-    getSections: (context: CtxmenuContext) => MenuItem[][],
+    getSections: (context: CtxmenuContext) => MenuItem[][]
   ) {
     this.blacklist = new Set(blacklist);
 
@@ -87,7 +83,7 @@ export class ContextMenu {
             left: e.pageX + rect.width < innerWidth,
           },
         }),
-        sections,
+        sections
       );
 
       this.activeMenu.events.on("click", () => {

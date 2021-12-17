@@ -30,14 +30,13 @@ export class ThemesModule {
     this.system = app.modules.system;
     this.log = app.modules.log;
 
-    window.matchMedia("(prefers-color-scheme: dark)").addEventListener(
-      "change",
-      async () => {
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", async () => {
         const theme = await this.getSettingsValue();
         if (theme !== "system") return;
         this.updateSystemTheme();
-      },
-    );
+      });
 
     this.system.onPreferredThemeChange(async () => {
       const theme = await this.getSettingsValue();
@@ -113,7 +112,7 @@ export class ThemesModule {
     return this.settings.getKeyWithDefault(
       "theme",
       "system",
-      (v) => typeof v === "string" && this.hasTheme(v),
+      (v) => typeof v === "string" && this.hasTheme(v)
     );
   }
 

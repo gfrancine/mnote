@@ -77,13 +77,13 @@ function SubcategoryPage(props: {
   return (
     <div className="subcategory-main">
       <div className="subcategory-title">
-        {icon
-          ? (
-            <div className="subcategory-icon">
-              <ElementToReact element={icon("fill", "stroke")} />
-            </div>
-          )
-          : <></>}
+        {icon ? (
+          <div className="subcategory-icon">
+            <ElementToReact element={icon("fill", "stroke")} />
+          </div>
+        ) : (
+          <></>
+        )}
         <h1>{subcategoryInfo.subcategory.title}</h1>
       </div>
       {Object.values(subcategoryInfo.inputs).map((input) => (
@@ -109,7 +109,7 @@ export function SettingsEditor(props: {
   saveSettings: () => void;
 }) {
   const sortSubcategoryInfos = (
-    subcategoryInfos: Record<string, SettingsSubcategoryInfo>,
+    subcategoryInfos: Record<string, SettingsSubcategoryInfo>
   ) =>
     Object.values(subcategoryInfos).sort((a, b) =>
       a.subcategory.title < b.subcategory.title ? -1 : 1
@@ -117,18 +117,16 @@ export function SettingsEditor(props: {
 
   const coreSubcategoryInfos = useMemo(
     () => sortSubcategoryInfos(props.inputIndex.core),
-    [props.inputIndex.core],
+    [props.inputIndex.core]
   );
   const extensionSubcategoryInfos = useMemo(
     () => sortSubcategoryInfos(props.inputIndex.extensions),
-    [props.inputIndex.extensions],
+    [props.inputIndex.extensions]
   );
 
   const [currentSubcategoryKey, setCurrentSubcategoryKey] = useState<
     string | null
-  >(
-    coreSubcategoryInfos[0]?.subcategory.key || /* */ null,
-  );
+  >(coreSubcategoryInfos[0]?.subcategory.key || /* */ null);
 
   const [settings, setSettings] = useState(props.initialSettings);
 
@@ -136,23 +134,20 @@ export function SettingsEditor(props: {
     props.onChange?.(settings);
   }, [settings]);
 
-  const subcategoriesToTreeItem = (
-    subcategories: SettingsSubcategoryInfo[],
-  ) =>
+  const subcategoriesToTreeItem = (subcategories: SettingsSubcategoryInfo[]) =>
     subcategories.map((subcategory) => (
       <TreeItem
         key={subcategory.subcategory.key}
         text={subcategory.subcategory.title}
-        icon={subcategory.subcategory.iconFactory
-          ? (
+        icon={
+          subcategory.subcategory.iconFactory ? (
             <ElementToReact
-              element={subcategory.subcategory.iconFactory(
-                "fill",
-                "stroke",
-              )}
+              element={subcategory.subcategory.iconFactory("fill", "stroke")}
             />
+          ) : (
+            <Nothing />
           )
-          : <Nothing />}
+        }
         focused={subcategory.subcategory.key === currentSubcategoryKey}
         onClick={() => setCurrentSubcategoryKey(subcategory.subcategory.key)}
       />
@@ -165,9 +160,7 @@ export function SettingsEditor(props: {
         {(() => {
           if (!currentSubcategoryKey) {
             return (
-              <div className="placeholder-nothing">
-                {props.placeholder}
-              </div>
+              <div className="placeholder-nothing">{props.placeholder}</div>
             );
           }
           const subcategory = props.subcategories[currentSubcategoryKey];

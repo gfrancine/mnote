@@ -15,11 +15,13 @@ export class PopupsModule {
     new Prompt({
       container: this.app.element,
       message: message,
-      buttons: [{
-        kind: "emphasis",
-        text: "OK",
-        command: "",
-      }],
+      buttons: [
+        {
+          kind: "emphasis",
+          text: "OK",
+          command: "",
+        },
+      ],
     }).prompt();
   }
 
@@ -35,29 +37,31 @@ export class PopupsModule {
 
   async promptTextInput(
     message: string,
-    initialValue?: string,
+    initialValue?: string
   ): Promise<string | undefined> {
     const value = initialValue || "";
 
     const input = el("input")
       .class("prompt-input")
       .attr("spellcheck", "false")
-      .attr("value", value)
-      .element as HTMLInputElement;
+      .attr("value", value).element as HTMLInputElement;
 
     const prompt = new Prompt({
       container: this.app.element,
       message: message,
       insertedElements: [input],
-      buttons: [{
-        kind: "normal",
-        text: "Cancel",
-        command: "cancel",
-      }, {
-        kind: "emphasis",
-        text: "Confirm",
-        command: "confirm",
-      }],
+      buttons: [
+        {
+          kind: "normal",
+          text: "Cancel",
+          command: "cancel",
+        },
+        {
+          kind: "emphasis",
+          text: "Confirm",
+          command: "confirm",
+        },
+      ],
     });
 
     input.addEventListener("keydown", (e) => {
@@ -73,10 +77,7 @@ export class PopupsModule {
 
     const action = await prompt.prompt();
 
-    if (
-      action === "cancel" ||
-      input.value.length < 1
-    ) {
+    if (action === "cancel" || input.value.length < 1) {
       return;
     }
 

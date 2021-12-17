@@ -39,7 +39,8 @@ export default function Select({
       if (!expanded) return;
 
       const rect = menuRef.current.getBoundingClientRect();
-      const isWithin = e.clientX > rect.x &&
+      const isWithin =
+        e.clientX > rect.x &&
         e.clientX < rect.x + rect.width &&
         e.clientY > rect.y &&
         e.clientY < rect.y + rect.height;
@@ -66,15 +67,17 @@ export default function Select({
         }}
         getIcon={
           // using getIcon || () => confuses the parser
-          getIcon ? getIcon : (fillClass, strokeClass) =>
-            expanded
-              ? <ChevronUp strokeClass={strokeClass} fillClass={fillClass} />
-              : (
-                <ChevronDown
-                  strokeClass={strokeClass}
-                  fillClass={fillClass}
-                />
-              )
+          getIcon
+            ? getIcon
+            : (fillClass, strokeClass) =>
+                expanded ? (
+                  <ChevronUp strokeClass={strokeClass} fillClass={fillClass} />
+                ) : (
+                  <ChevronDown
+                    strokeClass={strokeClass}
+                    fillClass={fillClass}
+                  />
+                )
         }
       />
       <Dropdown.Menu menuRef={menuRef} visible={expanded} className={menuClass}>

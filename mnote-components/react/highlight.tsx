@@ -1,7 +1,10 @@
 import React, { ReactNode } from "react";
 import { MatchRange } from "mnote-util/search";
 
-export function Highlight({ text, ranges }: {
+export function Highlight({
+  text,
+  ranges,
+}: {
   text: string;
   ranges: MatchRange[];
 }) {
@@ -18,7 +21,7 @@ export function Highlight({ text, ranges }: {
   }
 
   nodes.push(
-    <span key={nodes.length}>{text.slice(lastEnd, text.length)}</span>,
+    <span key={nodes.length}>{text.slice(lastEnd, text.length)}</span>
   );
 
   return <span>{nodes}</span>;

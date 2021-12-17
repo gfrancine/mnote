@@ -51,16 +51,20 @@ export class SettingsInputsExamples implements Extension {
       type: "select",
       key: prefix + "select",
       default: "two",
-      getItems: () => [{
-        value: "one",
-        text: "One",
-      }, {
-        value: "two",
-        text: "Two",
-      }, {
-        value: "three",
-        text: "Three",
-      }],
+      getItems: () => [
+        {
+          value: "one",
+          text: "One",
+        },
+        {
+          value: "two",
+          text: "Two",
+        },
+        {
+          value: "three",
+          text: "Three",
+        },
+      ],
     });
   }
 

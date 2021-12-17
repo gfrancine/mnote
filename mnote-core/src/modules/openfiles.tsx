@@ -32,9 +32,7 @@ export class OpenFilesModule {
     this.fileicons = app.modules.fileicons;
     this.filesearch = app.modules.filesearch;
 
-    this.element = el("div")
-      .class("openfiles-main")
-      .element;
+    this.element = el("div").class("openfiles-main").element;
     this.setOpenFiles([]);
     this.layout.mountToOpenFiles(this.element);
 
@@ -43,7 +41,7 @@ export class OpenFilesModule {
         this.tabsToOpenFiles(this.editors.activeTabs),
         this.editors.currentTab
           ? this.editors.activeTabs.indexOf(this.editors.currentTab)
-          : undefined,
+          : undefined
       );
     };
 
@@ -78,16 +76,20 @@ export class OpenFilesModule {
         const file = this.openFiles[index];
         if (!file) return;
 
-        return [{
-          name: "Open Editor",
-          click: () => file.onOpen(file),
-        }, {
-          name: "Close Editor",
-          click: () => file.onClose(file),
-        }, {
-          name: "Save Editor",
-          click: () => file.onSave(file),
-        }];
+        return [
+          {
+            name: "Open Editor",
+            click: () => file.onOpen(file),
+          },
+          {
+            name: "Close Editor",
+            click: () => file.onClose(file),
+          },
+          {
+            name: "Save Editor",
+            click: () => file.onSave(file),
+          },
+        ];
       }
     };
 
@@ -111,10 +113,11 @@ export class OpenFilesModule {
         openFiles={[...this.openFiles]}
         activeIndex={this.activeIndex}
         getIcon={(file: OpenFile, fillClass: string, strokeClass: string) =>
-          file.getIcon(fillClass, strokeClass)}
+          file.getIcon(fillClass, strokeClass)
+        }
         searchTerm={this.searchTerm}
       />,
-      this.element,
+      this.element
     );
   }
 

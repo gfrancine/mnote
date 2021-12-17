@@ -21,7 +21,7 @@ export class System implements SystemInteropModule {
 
     await getCurrent().listen("close-requested", async () => {
       let quitCanceled = false;
-      const cancel = () => quitCanceled = true;
+      const cancel = () => (quitCanceled = true);
 
       for (const hook of this.cancelQuitHooks) {
         await hook(cancel);

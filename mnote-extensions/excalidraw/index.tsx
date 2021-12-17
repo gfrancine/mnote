@@ -21,12 +21,10 @@ type EventBus = Emitter<{
   change: (data: ExcalidrawData) => void;
 }>;
 
-function Wrapper(
-  props: {
-    emitter: EventBus;
-    initialData: Partial<ExcalidrawData>;
-  },
-) {
+function Wrapper(props: {
+  emitter: EventBus;
+  initialData: Partial<ExcalidrawData>;
+}) {
   // select only a few elements from the appstate
 
   const appState = props.initialData.appState;
@@ -47,10 +45,8 @@ function Wrapper(
     <>
       <Excalidraw
         onChange={(elements, appState) =>
-          props.emitter.emit(
-            "change",
-            { elements, appState } as ExcalidrawData,
-          )}
+          props.emitter.emit("change", { elements, appState } as ExcalidrawData)
+        }
         UIOptions={{
           canvasActions: {
             changeViewBackgroundColor: false,
@@ -66,11 +62,10 @@ function Wrapper(
   );
 }
 
-const makeCallback = (self: ExcalidrawEditor) =>
-  (data: ExcalidrawData) => {
-    self.data = data;
-    self.ctx?.markUnsaved();
-  };
+const makeCallback = (self: ExcalidrawEditor) => (data: ExcalidrawData) => {
+  self.data = data;
+  self.ctx?.markUnsaved();
+};
 
 class ExcalidrawEditor implements Editor {
   app: Mnote;
@@ -85,9 +80,7 @@ class ExcalidrawEditor implements Editor {
   constructor(app: Mnote) {
     this.app = app;
     this.fs = app.modules.fs as FSModule;
-    this.element = el("div")
-      .class("excdraw-extension")
-      .element;
+    this.element = el("div").class("excdraw-extension").element;
 
     this.emitter = new Emitter();
   }
@@ -108,7 +101,7 @@ class ExcalidrawEditor implements Editor {
 
     render(
       <Wrapper initialData={this.data} emitter={this.emitter} />,
-      this.element,
+      this.element
     );
   }
 
@@ -133,7 +126,7 @@ class ExcalidrawEditor implements Editor {
           await this.fs.writeBinaryFile(path, await blob.arrayBuffer());
         },
         "image/png",
-        1,
+        1
       );
     }
   }
@@ -152,13 +145,16 @@ export class ExcalidrawExtension implements Extension {
       canOpenPath: matchesExtension,
       createNewEditor: () => new ExcalidrawEditor(app),
       createNewFileExtension: "excalidraw",
-      saveAsFileTypes: [{
-        name: "Excalidraw",
-        extensions: ["excalidraw"],
-      }, {
-        name: "Portable Network Graphics",
-        extensions: ["png"],
-      }],
+      saveAsFileTypes: [
+        {
+          name: "Excalidraw",
+          extensions: ["excalidraw"],
+        },
+        {
+          name: "Portable Network Graphics",
+          extensions: ["png"],
+        },
+      ],
       registeredIconKind: "excalidraw",
     });
 

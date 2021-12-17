@@ -1,8 +1,8 @@
 .icon-wrapper {
-  display:inline-block;
-  width:1em;
-  height:1em;
-  contain:strict;
-  -webkit-box-sizing:content-box!important;
-  box-sizing:content-box!important
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  contain: strict;
+  -webkit-box-sizing: content-box !important;
+  box-sizing: content-box !important;
 }

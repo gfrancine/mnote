@@ -76,12 +76,8 @@ export default function StatefulBoard({
         };
       }
       case "MOVE_CARD": {
-        const {
-          oldCardIndex,
-          newCardIndex,
-          sourceListId,
-          destListId,
-        } = action.payload;
+        const { oldCardIndex, newCardIndex, sourceListId, destListId } =
+          action.payload;
         // Move within the same list
         if (sourceListId === destListId) {
           const newCards = Array.from(state[sourceListId].cards);
@@ -147,7 +143,7 @@ export default function StatefulBoard({
           .filter((cardId) => !cardIds.includes(cardId))
           .reduce(
             (newState, cardId) => ({ ...newState, [cardId]: state[cardId] }),
-            {},
+            {}
           );
       }
       default:

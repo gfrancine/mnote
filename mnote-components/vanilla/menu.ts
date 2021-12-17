@@ -34,13 +34,12 @@ export class Menu {
       point: Point;
       anchor: Anchor;
     },
-    sections: MenuItem[][],
+    sections: MenuItem[][]
   ) {
     this.getPosition = getPosition;
     this.sections = sections;
 
-    const element = el("div")
-      .class("menu");
+    const element = el("div").class("menu");
 
     const children: HTMLElement[] = [];
 
@@ -49,14 +48,10 @@ export class Menu {
         const itemEl = el("div")
           .class("menu-item")
           .children(
-            el("div")
-              .class("menu-item-left")
-              .inner(item.name)
-              .element,
+            el("div").class("menu-item-left").inner(item.name).element,
             el("div")
               .class("menu-item-right")
-              .inner(item.shortcut || "")
-              .element,
+              .inner(item.shortcut || "").element
           )
           .on("click", (e) => {
             let caughtErr;
@@ -73,24 +68,17 @@ export class Menu {
             if (caughtErr !== undefined) {
               throw caughtErr;
             }
-          })
-          .element;
+          }).element;
 
         children.push(itemEl);
       });
 
       if (i < sections.length - 1) {
-        children.push(
-          el("div")
-            .class("menu-divider")
-            .element,
-        );
+        children.push(el("div").class("menu-divider").element);
       }
     });
 
-    this.element = element
-      .children(...children)
-      .element;
+    this.element = element.children(...children).element;
   }
 
   show(element: Element) {
@@ -103,19 +91,15 @@ export class Menu {
     const position = this.getPosition(rect);
 
     if (position.anchor.top) {
-      builder
-        .style("top", position.point.y + "px");
+      builder.style("top", position.point.y + "px");
     } else {
-      builder
-        .style("top", (position.point.y - rect.height) + "px");
+      builder.style("top", position.point.y - rect.height + "px");
     }
 
     if (position.anchor.left) {
-      builder
-        .style("left", position.point.x + "px");
+      builder.style("left", position.point.x + "px");
     } else {
-      builder
-        .style("left", (position.point.x - rect.width) + "px");
+      builder.style("left", position.point.x - rect.width + "px");
     }
   }
 

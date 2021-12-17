@@ -50,9 +50,7 @@ class CalendarEditor implements Editor {
     this.app = app;
     this.fs = app.modules.fs as FSModule;
     this.popups = app.modules.popups as PopupsModule;
-    this.element = el("div")
-      .class("calendar-extension")
-      .element;
+    this.element = el("div").class("calendar-extension").element;
   }
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
@@ -93,7 +91,8 @@ class CalendarEditor implements Editor {
     // https://fullcalendar.io/docs/event-model
 
     cal.on("select", (arg) => {
-      this.app.modules.popups.promptTextInput("Create a new event")
+      this.app.modules.popups
+        .promptTextInput("Create a new event")
         .then((title) => {
           if (!title) return;
           cal.addEvent({
@@ -129,7 +128,7 @@ class CalendarEditor implements Editor {
   serializeData() {
     if (!this.calendar) {
       throw new Error(
-        "Attempted to serialize data before calendar initialized",
+        "Attempted to serialize data before calendar initialized"
       );
     }
 
@@ -173,10 +172,12 @@ export class CalendarExtension implements Extension {
       createNewEditor: () => new CalendarEditor(app),
       registeredIconKind: "calendar",
       createNewFileExtension: "mncalendar",
-      saveAsFileTypes: [{
-        name: "Mnote Calendar",
-        extensions: ["mncalendar"],
-      }],
+      saveAsFileTypes: [
+        {
+          name: "Mnote Calendar",
+          extensions: ["mncalendar"],
+        },
+      ],
     });
 
     app.modules.fileicons.registerIcon({

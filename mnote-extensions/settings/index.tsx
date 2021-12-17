@@ -46,27 +46,18 @@ class SettingsEditor implements Editor {
       .inner("Raw view")
       .on("click", () => {
         this.setView(this.view === "editor" ? "raw" : "editor");
-      })
-      .element;
+      }).element;
 
     this.textarea = el("textarea")
       .class("settings-textarea")
       .class("mousetrap") // enable shortcuts
-      .attr("spellcheck", "false")
-      .element as HTMLTextAreaElement;
+      .attr("spellcheck", "false").element as HTMLTextAreaElement;
 
-    this.editorMain = el("div")
-      .class("settings-main")
-      .element;
+    this.editorMain = el("div").class("settings-main").element;
 
     this.element = el("div")
       .class("settings-editor")
-      .children(
-        this.textarea,
-        this.editorMain,
-        this.viewToggle,
-      )
-      .element;
+      .children(this.textarea, this.editorMain, this.viewToggle).element;
 
     this.value = this.settings.getSettings();
 
@@ -84,11 +75,7 @@ class SettingsEditor implements Editor {
       saved: true,
     });
 
-    this.textarea.value = JSON.stringify(
-      this.value,
-      undefined,
-      2,
-    );
+    this.textarea.value = JSON.stringify(this.value, undefined, 2);
 
     this.textarea.addEventListener(
       "input",
@@ -104,14 +91,14 @@ class SettingsEditor implements Editor {
         if (!this.settings.isValidSettings(parsed)) {
           this.log.warn(
             "settings extension: invalid raw input settings",
-            parsed,
+            parsed
           );
           return;
         }
 
         this.value = parsed;
         ctx.markUnsaved();
-      }, 200),
+      }, 200)
     );
 
     this.container = containter;
@@ -131,14 +118,10 @@ class SettingsEditor implements Editor {
         onChange={(value) => {
           this.value = value;
           this.ctx?.markUnsaved();
-          this.textarea.value = JSON.stringify(
-            this.value,
-            undefined,
-            2,
-          );
+          this.textarea.value = JSON.stringify(this.value, undefined, 2);
         }}
       />,
-      this.editorMain,
+      this.editorMain
     );
   };
 

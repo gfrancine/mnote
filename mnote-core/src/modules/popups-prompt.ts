@@ -37,39 +37,26 @@ export class Prompt {
         .class("prompt-button")
         .class(buttonData.kind)
         .inner(buttonData.text)
-        .attr("prompt-command", buttonData.command)
-        .element;
+        .attr("prompt-command", buttonData.command).element;
 
       this.buttonEls.push(button);
     });
 
     const buttons = el("div")
       .class("prompt-buttons")
-      .children(...this.buttonEls)
-      .element;
+      .children(...this.buttonEls).element;
 
-    const text = el("div")
-      .class("prompt-text")
-      .inner(this.message)
-      .element;
+    const text = el("div").class("prompt-text").inner(this.message).element;
 
-    const insertedContainer = el("div")
-      .children(...this.insertedElements)
-      .element;
+    const insertedContainer = el("div").children(
+      ...this.insertedElements
+    ).element;
 
     const menu = el("div")
       .class("prompt")
-      .children(
-        text,
-        insertedContainer,
-        buttons,
-      )
-      .element;
+      .children(text, insertedContainer, buttons).element;
 
-    this.overlay = el("div")
-      .class("prompt-overlay")
-      .children(menu)
-      .element;
+    this.overlay = el("div").class("prompt-overlay").children(menu).element;
   }
 
   resolveEarly(command: string) {
@@ -98,14 +85,13 @@ export class Prompt {
     return new Promise((resolve) => {
       const listeners: Map<HTMLElement, () => void> = new Map();
 
-      const makeListener = (command: string) =>
-        () => {
-          for (const [k, v] of listeners.entries()) {
-            k.removeEventListener("click", v);
-          }
-          this.hide();
-          resolve(command);
-        };
+      const makeListener = (command: string) => () => {
+        for (const [k, v] of listeners.entries()) {
+          k.removeEventListener("click", v);
+        }
+        this.hide();
+        resolve(command);
+      };
 
       const signalListener = (command: string) => {
         makeListener(command)();

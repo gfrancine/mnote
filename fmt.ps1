@@ -1,26 +1,4 @@
-prettier -w **.scss
-
-deno fmt `
-  mnote-core/src `
-  mnote-extensions/plaintext `
-  mnote-extensions/richtext `
-  mnote-extensions/settings `
-  mnote-extensions/calendar `
-  mnote-extensions/kanban `
-  mnote-extensions/markdown `
-  mnote-extensions/excalidraw `
-  mnote-extensions/image-viewer `
-  mnote-extensions/todo `
-  mnote-components/react `
-  mnote-components/vanilla `
-  mnote-app/src `
-  mnote-app/src-web `
-  mnote-app/bundle-scripts `
-  mnote-util `
-  mnote-deps/kanban `
-  mnote-deps/resizable `
-  mnote-deps/natural-compare `
-  mnote-deps/path-browser
+prettier --ignore-path="./.gitingore" -w **.scss **.ts **.tsx "{mnote-deps,mnote-extensions}/**/*.{js,jsx,css}"
 
 cd mnote-app/src-tauri
 cargo fmt

@@ -22,9 +22,7 @@ class ImageViewer implements Editor {
 
     this.fs = app.modules.fs as FSModule;
 
-    this.element = el("div")
-      .class("image-viewer-editor")
-      .element;
+    this.element = el("div").class("image-viewer-editor").element;
 
     this.ivViewer = new IvViewer(this.element, {
       snapView: false,
@@ -67,7 +65,7 @@ class ImageViewer implements Editor {
 
 // source: https://www.w3schools.com/html/html_images.asp
 const IMAGE_EXTENSIONS = new Set(
-  "png,jpeg,jpg,jfif,pjpeg,pjp,gif,svg,ico,cur,apng".split(","),
+  "png,jpeg,jpg,jfif,pjpeg,pjp,gif,svg,ico,cur,apng".split(",")
 );
 
 // extension

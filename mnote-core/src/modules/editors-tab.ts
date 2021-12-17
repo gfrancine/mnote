@@ -84,7 +84,7 @@ export class TabManager {
   // DRY for saving with a prompt on error
   private async trySaveEditor(
     editor: Editor,
-    document: Required<DocInfo>,
+    document: Required<DocInfo>
   ): Promise<boolean> {
     try {
       await editor.save(document.path);
@@ -94,7 +94,7 @@ export class TabManager {
       this.log.err(
         "editor tab: error while saving document with trySaveEditor",
         document,
-        e,
+        e
       );
       return false;
     }
@@ -106,7 +106,7 @@ export class TabManager {
     if (document.path) {
       const success = await this.trySaveEditor(
         editor,
-        document as Required<DocInfo>,
+        document as Required<DocInfo>
       );
       if (!success) return false;
       this.ctx.setDocument({
@@ -128,12 +128,12 @@ export class TabManager {
     const newPath = editorInfo.disableSaveAs
       ? document.path
       : await this.fs.dialogSave({
-        filters: editorInfo.saveAsFileTypes,
-        startingDirectory: document.path
-          ? this.fs.getPathParent(document.path)
-          : this.appdir.getDirectory(),
-        startingFileName: document.name,
-      });
+          filters: editorInfo.saveAsFileTypes,
+          startingDirectory: document.path
+            ? this.fs.getPathParent(document.path)
+            : this.appdir.getDirectory(),
+          startingFileName: document.name,
+        });
 
     this.log.info("editor tabs: saveAs - new path:", newPath);
     if (!newPath) return false;
@@ -215,7 +215,7 @@ export class TabManager {
             text: "Save",
             command: "save",
           },
-        ],
+        ]
       );
 
       switch (action as "cancel" | "save" | "dontsave") {

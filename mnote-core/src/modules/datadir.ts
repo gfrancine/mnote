@@ -18,7 +18,7 @@ export class DataDirModule {
       this.dataDirName,
     ]);
 
-    if (!await this.fs.isDir(this.dataDirPath)) {
+    if (!(await this.fs.isDir(this.dataDirPath))) {
       if (await this.fs.isFile(this.dataDirPath)) {
         this.fs.removeFile(this.dataDirPath);
       }

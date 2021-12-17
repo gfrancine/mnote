@@ -51,15 +51,15 @@
 
 .card-title {
   font-weight: bold;
-  margin-block-end: .5em;
-  font-size: 1.1em!important;
+  margin-block-end: 0.5em;
+  font-size: 1.1em !important;
 }
 
 .card-text {
-  font-size: .9em !important;
+  font-size: 0.9em !important;
 }
 
 .card-title,
 .card-text {
-  line-height: 1.35!important
+  line-height: 1.35 !important;
 }

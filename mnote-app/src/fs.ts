@@ -37,7 +37,7 @@ export class Watcher {
         this.events.emit(
           "rename",
           event.payload.path,
-          event.payload.targetPath,
+          event.payload.targetPath
         );
       } else {
         this.events.emit(event.payload.kind, event.payload.path);
@@ -96,7 +96,7 @@ export class FS implements FsInteropModule {
 
   async readDir(
     path: string,
-    opts?: FsReadDirOptions,
+    opts?: FsReadDirOptions
   ): Promise<FileItemWithChildren> {
     const entries = await fs.readDir(path, opts);
     return {
@@ -218,14 +218,14 @@ export class FS implements FsInteropModule {
 
   onWatchEvent<K extends keyof FsWatcherEvents>(
     event: K,
-    handler: FsWatcherEvents[K],
+    handler: FsWatcherEvents[K]
   ) {
     this.watcher.events.on(event, handler);
   }
 
   offWatchEvent<K extends keyof FsWatcherEvents>(
     event: K,
-    handler: FsWatcherEvents[K],
+    handler: FsWatcherEvents[K]
   ) {
     this.watcher.events.off(event, handler);
   }

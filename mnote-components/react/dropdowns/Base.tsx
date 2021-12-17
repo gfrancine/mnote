@@ -1,12 +1,14 @@
 import React, { Fragment, ReactNode, RefObject } from "react";
 
-export function Container(
-  { children, className = "", containerRef }: {
-    children: ReactNode;
-    className?: string;
-    containerRef?: RefObject<HTMLDivElement>;
-  },
-) {
+export function Container({
+  children,
+  className = "",
+  containerRef,
+}: {
+  children: ReactNode;
+  className?: string;
+  containerRef?: RefObject<HTMLDivElement>;
+}) {
   return (
     <div ref={containerRef} className={"dropdown-container " + className}>
       {children}
@@ -14,42 +16,39 @@ export function Container(
   );
 }
 
-export function Toggle(
-  {
-    text,
-    className = "",
-    toggled,
-    placeholder,
-    onClick,
-    disabled,
-    getIcon,
-    toggleRef,
-  }: {
-    text?: string;
-    className?: string;
-    toggled?: boolean;
-    placeholder?: string;
-    disabled?: boolean;
-    onClick?: () => unknown;
-    getIcon?: (fillClass: string, strokeClass: string) => ReactNode;
-    toggleRef?: RefObject<HTMLDivElement>;
-  },
-) {
+export function Toggle({
+  text,
+  className = "",
+  toggled,
+  placeholder,
+  onClick,
+  disabled,
+  getIcon,
+  toggleRef,
+}: {
+  text?: string;
+  className?: string;
+  toggled?: boolean;
+  placeholder?: string;
+  disabled?: boolean;
+  onClick?: () => unknown;
+  getIcon?: (fillClass: string, strokeClass: string) => ReactNode;
+  toggleRef?: RefObject<HTMLDivElement>;
+}) {
   return (
     <div
-      className={"dropdown-toggle " +
+      className={
+        "dropdown-toggle " +
         (toggled ? " toggled " : " ") +
         (disabled ? " disabled " : " ") +
-        className}
+        className
+      }
       onClick={() => onClick?.()}
       ref={toggleRef}
     >
       <div className="content">
-        {text || (placeholder && (
-          <span className="placeholder">
-            {placeholder}
-          </span>
-        ))}
+        {text ||
+          (placeholder && <span className="placeholder">{placeholder}</span>)}
       </div>
       {getIcon && <div className="icon">{getIcon("fill", "stroke")}</div>}
     </div>
@@ -67,13 +66,13 @@ export function Menu({
   className?: string;
   menuRef?: RefObject<HTMLDivElement>;
 }) {
-  return visible
-    ? (
-      <div ref={menuRef} className={"dropdown-menu " + className}>
-        {children}
-      </div>
-    )
-    : <Fragment />;
+  return visible ? (
+    <div ref={menuRef} className={"dropdown-menu " + className}>
+      {children}
+    </div>
+  ) : (
+    <Fragment />
+  );
 }
 
 export function Item({
@@ -91,8 +90,9 @@ export function Item({
 }) {
   return (
     <div
-      className={"dropdown-menu-item " + (selected ? "selected " : " ") +
-        className}
+      className={
+        "dropdown-menu-item " + (selected ? "selected " : " ") + className
+      }
       onClick={() => onClick?.()}
       ref={itemRef}
     >

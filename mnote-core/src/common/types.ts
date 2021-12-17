@@ -35,7 +35,7 @@ export interface FsInteropModule {
   readBinaryFile(path: string): Promise<ArrayBuffer>;
   readDir(
     path: string,
-    options?: FsReadDirOptions,
+    options?: FsReadDirOptions
   ): Promise<FileItemWithChildren>;
   renameFile(path: string, newPath: string): Promise<void>;
   renameDir(path: string, newPath: string): Promise<void>;
@@ -74,12 +74,12 @@ export interface FsInteropModule {
   unwatch(path: string): Promise<void>;
   onWatchEvent<K extends keyof FsWatcherEvents>(
     event: K,
-    handler: FsWatcherEvents[K],
+    handler: FsWatcherEvents[K]
   ): void;
   // weird a** semantics
   offWatchEvent<K extends keyof FsWatcherEvents>(
     event: K,
-    handler: FsWatcherEvents[K],
+    handler: FsWatcherEvents[K]
   ): void;
 }
 
@@ -107,11 +107,11 @@ export type FileTreeHooks = {
   fileFocused?: (path: string) => void | Promise<void>;
   fileDroppedOnDir?: (
     targetDir: string,
-    droppedFile: string,
+    droppedFile: string
   ) => void | Promise<void>;
   dirDroppedOnDir?: (
     targetDir: string,
-    droppedDir: string,
+    droppedDir: string
   ) => void | Promise<void>;
 };
 

@@ -59,10 +59,7 @@ export default class Board extends Component {
     return (
       <DragDropContext onDragEnd={this.handleDragEnd}>
         <Droppable droppableId="board" direction="horizontal" type="COLUMN">
-          {(
-            provided,
-            _snapshot,
-          ) => (
+          {(provided, _snapshot) => (
             <div className="board" ref={provided.innerRef}>
               {appState.board.lists.map((listId, index) => {
                 return (
@@ -80,23 +77,21 @@ export default class Board extends Component {
               {provided.placeholder}
 
               <div className="add-list">
-                {addingList
-                  ? (
-                    <AddList
-                      dispatch={dispatch}
-                      setAddingList={this.setAddingList}
-                    />
-                  )
-                  : (
-                    <div
-                      onClick={() => {
-                        this.setAddingList(true);
-                      }}
-                      className="add-list-button"
-                    >
-                      <ion-icon name="add" /> Add a list
-                    </div>
-                  )}
+                {addingList ? (
+                  <AddList
+                    dispatch={dispatch}
+                    setAddingList={this.setAddingList}
+                  />
+                ) : (
+                  <div
+                    onClick={() => {
+                      this.setAddingList(true);
+                    }}
+                    className="add-list-button"
+                  >
+                    <ion-icon name="add" /> Add a list
+                  </div>
+                )}
               </div>
             </div>
           )}

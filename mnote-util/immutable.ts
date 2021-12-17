@@ -3,25 +3,21 @@
 export function set<
   V,
   K extends string | number | symbol,
-  T extends Record<K, V>,
->(
-  record: T,
-  key: K,
-  value: V,
-) {
+  T extends Record<K, V>
+>(record: T, key: K, value: V) {
   return { ...record, [key]: value } as T; //todo
 }
 
 export function setBatch<V, K extends string | number | symbol>(
   record: Record<K, V>,
-  changes: Record<K, V>,
+  changes: Record<K, V>
 ) {
   return { ...record, ...changes };
 }
 
 export function del<V, K extends string | number | symbol>(
   record: Record<K, V>,
-  key: K,
+  key: K
 ) {
   const newRecord = { ...record };
   delete newRecord[key];

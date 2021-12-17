@@ -25,41 +25,25 @@ export class MenubarModule /* implements Module */ {
   constructor(app: Mnote) {
     this.app = app;
 
-    this.left = el("div")
-      .class("menubar-left")
-      .element;
+    this.left = el("div").class("menubar-left").element;
 
     this.menuToggle = new Elbuilder(
-      this.createMenubarButton(
-        (fillClass, strokeClass) =>
-          createIcon(
-            "kebabMenu",
-            fillClass,
-            strokeClass,
-            "Menu",
-          ),
-      ),
-    )
-      .on("click", () => {
-        if (this.menuCurrent) {
-          this.hideMenu();
-        } else {
-          this.showMenu();
-        }
-      })
-      .element;
+      this.createMenubarButton((fillClass, strokeClass) =>
+        createIcon("kebabMenu", fillClass, strokeClass, "Menu")
+      )
+    ).on("click", () => {
+      if (this.menuCurrent) {
+        this.hideMenu();
+      } else {
+        this.showMenu();
+      }
+    }).element;
 
-    this.right = el("div")
-      .class("menubar-right")
-      .element;
+    this.right = el("div").class("menubar-right").element;
 
     this.element = el("div")
       .class("menubar")
-      .children(
-        this.left,
-        this.right,
-      )
-      .element;
+      .children(this.left, this.right).element;
 
     this.addMenubarButton(this.menuToggle);
 
@@ -79,19 +63,14 @@ export class MenubarModule /* implements Module */ {
   }
 
   createMenubarButton(
-    iconFactory: (fillClass: string, strokeClass: string) => Element,
+    iconFactory: (fillClass: string, strokeClass: string) => Element
   ) {
     return el("div")
       .class("menubar-menu-button")
       .children(
-        el("div")
-          .class("menubar-icon")
-          .children(
-            iconFactory("fill", "stroke"),
-          )
-          .element,
-      )
-      .element;
+        el("div").class("menubar-icon").children(iconFactory("fill", "stroke"))
+          .element
+      ).element;
   }
 
   addMenubarButton(button: HTMLElement) {
@@ -119,7 +98,7 @@ export class MenubarModule /* implements Module */ {
         },
         anchor: { top: true, left: false },
       }),
-      buttons,
+      buttons
     );
 
     this.menuCurrent = menu;

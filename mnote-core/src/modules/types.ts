@@ -110,11 +110,7 @@ export type SettingsSubcategory = {
 
 // settings are kept in JSON
 
-export type SettingsPrimitive =
-  | string
-  | number
-  | boolean
-  | null;
+export type SettingsPrimitive = string | number | boolean | null;
 
 export type SettingsValue =
   | SettingsPrimitive

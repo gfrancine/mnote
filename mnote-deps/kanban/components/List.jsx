@@ -69,28 +69,23 @@ export default class List extends Component {
             {...provided.dragHandleProps}
             className="list"
           >
-            {editingTitle
-              ? (
-                <ListEditor
-                  list={list}
-                  title={title}
-                  handleChangeTitle={this.handleChangeTitle}
-                  saveList={this.editListTitle}
-                  onClickOutside={this.editListTitle}
-                  deleteList={this.deleteList}
-                />
-              )
-              : (
-                <div className="list-title" onClick={this.toggleEditingTitle}>
-                  {list.title}
-                </div>
-              )}
+            {editingTitle ? (
+              <ListEditor
+                list={list}
+                title={title}
+                handleChangeTitle={this.handleChangeTitle}
+                saveList={this.editListTitle}
+                onClickOutside={this.editListTitle}
+                deleteList={this.deleteList}
+              />
+            ) : (
+              <div className="list-title" onClick={this.toggleEditingTitle}>
+                {list.title}
+              </div>
+            )}
 
             <Droppable droppableId={list._id}>
-              {(
-                provided,
-                _snapshot,
-              ) => (
+              {(provided, _snapshot) => (
                 <div ref={provided.innerRef} className="lists-cards">
                   {list.cards &&
                     list.cards.map((cardId, index) => (
@@ -109,22 +104,17 @@ export default class List extends Component {
               )}
             </Droppable>
 
-            {addingCard
-              ? (
-                <CardEditor
-                  onSave={this.addCard}
-                  onCancel={this.toggleAddingCard}
-                  adding
-                />
-              )
-              : (
-                <div
-                  className="toggle-add-card"
-                  onClick={this.toggleAddingCard}
-                >
-                  <ion-icon name="add" /> Add a card
-                </div>
-              )}
+            {addingCard ? (
+              <CardEditor
+                onSave={this.addCard}
+                onCancel={this.toggleAddingCard}
+                adding
+              />
+            ) : (
+              <div className="toggle-add-card" onClick={this.toggleAddingCard}>
+                <ion-icon name="add" /> Add a card
+              </div>
+            )}
           </div>
         )}
       </Draggable>

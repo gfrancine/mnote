@@ -51,13 +51,11 @@ export class FiletreeModule {
 
     this.nothingHere = el("div")
       .inner("No Opened Folder")
-      .class("placeholder-nothing")
-      .element;
+      .class("placeholder-nothing").element;
 
     this.element = el("div")
       .class("filetree-container")
-      .children(this.nothingHere)
-      .element;
+      .children(this.nothingHere).element;
 
     this.fs.onWatchEvent("event", () => {
       this.refreshTree();
@@ -116,7 +114,7 @@ export class FiletreeModule {
           "filetree: file dropped on dir",
           droppedFile,
           targetDir,
-          newPath,
+          newPath
         );
         this.fs.renameFile(droppedFile, newPath);
       },
@@ -129,7 +127,7 @@ export class FiletreeModule {
           "filetree: dir dropped on dir",
           droppedDir,
           targetDir,
-          newPath,
+          newPath
         );
         this.fs.renameDir(droppedDir, newPath);
       },
@@ -138,7 +136,7 @@ export class FiletreeModule {
     const getFileIcon = (
       node: FileTreeNode,
       fillClass: string,
-      strokeClass: string,
+      strokeClass: string
     ) => {
       const icon = this.fileicons.getIconForPath(node.path);
       return icon?.factory(fillClass, strokeClass);
@@ -154,9 +152,10 @@ export class FiletreeModule {
           searchTerm={this.searchTerm}
           getPathName={(path: string) => this.fs.getPathName(path)}
           ensureSeparatorAtEnd={(path: string) =>
-            this.fs.ensureSeparatorAtEnd(path)}
+            this.fs.ensureSeparatorAtEnd(path)
+          }
         />,
-        this.element,
+        this.element
       );
     } else {
       unmountComponentAtNode(this.element);
@@ -189,7 +188,7 @@ export class FiletreeModule {
       name: "New folder",
       click: async () => {
         const name = await this.popups.promptTextInput(
-          `Create new folder inside "${this.fs.getPathName(dir)}"`,
+          `Create new folder inside "${this.fs.getPathName(dir)}"`
         );
         if (!name) return;
         const path = this.fs.joinPath([dir, name]);
@@ -202,7 +201,7 @@ export class FiletreeModule {
       name: "New file",
       click: async () => {
         const name = await this.popups.promptTextInput(
-          `Create new folder inside "${this.fs.getPathName(dir)}"`,
+          `Create new folder inside "${this.fs.getPathName(dir)}"`
         );
         if (!name) return;
         const path = this.fs.joinPath([dir, name]);
@@ -223,38 +222,38 @@ export class FiletreeModule {
           fileTreeItem.getAttribute("data-mn-disable-rename") === "true";
 
         if (filePath) {
-          const buttons = [{
-            name: "Open file",
-            click: () => {
-              this.editors.open(filePath);
+          const buttons = [
+            {
+              name: "Open file",
+              click: () => {
+                this.editors.open(filePath);
+              },
             },
-          }, {
-            name: "Delete file",
-            click: () => {
-              this.fs.removeFile(filePath);
+            {
+              name: "Delete file",
+              click: () => {
+                this.fs.removeFile(filePath);
+              },
             },
-          }];
+          ];
 
           if (!disableRename) {
             buttons.push({
               name: "Rename file",
               click: () => {
                 const extension = this.fs.getPathExtension(filePath);
-                const dotExtension = extension.length > 0
-                  ? "." + extension
-                  : "";
+                const dotExtension =
+                  extension.length > 0 ? "." + extension : "";
                 const fullFileName = this.fs.getPathName(filePath);
                 const fileName = fullFileName.slice(
                   0,
                   dotExtension.length > 0
                     ? -dotExtension.length
-                    : fullFileName.length,
+                    : fullFileName.length
                 );
 
-                this.popups.promptTextInput(
-                  `Rename file "${fullFileName}"`,
-                  fileName,
-                )
+                this.popups
+                  .promptTextInput(`Rename file "${fullFileName}"`, fileName)
                   .then((newName) => {
                     if (!newName) return;
                     const newPath = this.fs.joinPath([
@@ -290,10 +289,8 @@ export class FiletreeModule {
                 click: () => {
                   const dirName = this.fs.getPathName(dirPath);
 
-                  this.popups.promptTextInput(
-                    `Rename folder "${dirName}"`,
-                    dirName,
-                  )
+                  this.popups
+                    .promptTextInput(`Rename folder "${dirName}"`, dirName)
                     .then((newName) => {
                       if (!newName) return;
                       const newPath = this.fs.joinPath([

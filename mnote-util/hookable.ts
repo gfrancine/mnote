@@ -10,10 +10,7 @@ new hookable<{
 trigger(event, context): results
 */
 
-type Hook<C> = (
-  cancel: () => void,
-  context: C,
-) => void | Promise<void>;
+type Hook<C> = (cancel: () => void, context: C) => void | Promise<void>;
 
 export class Hookable<H extends Record<string, unknown>> {
   protected topics: Record<keyof H, Hook<any>[]> = {} as Record<

@@ -7,11 +7,16 @@
  */
 
 export function naturalCompare(a, b) {
-  var i, codeA, codeB = 1, posA = 0, posB = 0, alphabet = String.alphabet;
+  var i,
+    codeA,
+    codeB = 1,
+    posA = 0,
+    posB = 0,
+    alphabet = String.alphabet;
 
   function getCode(str, pos, code) {
     if (code) {
-      for (i = pos; code = getCode(str, i), code < 76 && code > 65;) ++i;
+      for (i = pos; (code = getCode(str, i)), code < 76 && code > 65; ) ++i;
       return +str.slice(pos - 1, i);
     }
     code = alphabet && alphabet.indexOf(str.charAt(pos));
@@ -37,15 +42,15 @@ export function naturalCompare(a, b) {
   }
 
   if ((a += "") != (b += "")) {
-    for (; codeB;) {
+    for (; codeB; ) {
       codeA = getCode(a, posA++);
       codeB = getCode(b, posB++);
       if (codeA < 76 && codeB < 76 && codeA > 66 && codeB > 66) {
         codeA = getCode(a, posA, posA);
-        codeB = getCode(b, posB, posA = i);
+        codeB = getCode(b, posB, (posA = i));
         posB = i;
       }
-      if (codeA != codeB) return (codeA < codeB) ? -1 : 1;
+      if (codeA != codeB) return codeA < codeB ? -1 : 1;
     }
   }
   return 0;

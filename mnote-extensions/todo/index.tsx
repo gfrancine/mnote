@@ -32,10 +32,7 @@ function Wrapper(props: {
   onChange?: (newData: TodoData) => void;
 }) {
   return (
-    <Todo
-      initialState={props.initialData || {}}
-      onChange={props.onChange}
-    />
+    <Todo initialState={props.initialData || {}} onChange={props.onChange} />
   );
 }
 
@@ -60,9 +57,7 @@ class TodoEditor implements Editor {
   constructor(app: Mnote) {
     this.app = app;
     this.fs = app.modules.fs as FSModule;
-    this.element = el("div")
-      .class("todo-extension")
-      .element;
+    this.element = el("div").class("todo-extension").element;
   }
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
@@ -79,11 +74,8 @@ class TodoEditor implements Editor {
     }
 
     render(
-      <Wrapper
-        initialData={this.todo.data}
-        onChange={makeCallback(this)}
-      />,
-      this.element,
+      <Wrapper initialData={this.todo.data} onChange={makeCallback(this)} />,
+      this.element
     );
   }
 
@@ -116,10 +108,12 @@ export class TodoExtension implements Extension {
       createNewEditor: () => new TodoEditor(app),
       registeredIconKind: "todo",
       createNewFileExtension: "mntodo",
-      saveAsFileTypes: [{
-        name: "Mnote Todo",
-        extensions: ["mntodo"],
-      }],
+      saveAsFileTypes: [
+        {
+          name: "Mnote Todo",
+          extensions: ["mntodo"],
+        },
+      ],
     });
 
     app.modules.fileicons.registerIcon({

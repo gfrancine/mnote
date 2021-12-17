@@ -9,6 +9,6 @@ export function htmlIcon(_fillClass: string, strokeClass: string) {
       class="${strokeClass}" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" />
     <path d="M103 0L0 312" transform="translate(204 100)" fill="none" fill-rule="evenodd"
       class="${strokeClass}" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" />
-  </svg>`,
+  </svg>`
   );
 }

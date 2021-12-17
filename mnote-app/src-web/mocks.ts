@@ -89,7 +89,6 @@ export const contents: Record<string, string> = {
   "offsetTop":36,"width":957.5,"height":764}}`,
   mntodo: `{"version":1,"data":{"items":{"1":{"id":"1","done":true,"text":
   "Do something useful","depth":0}},"itemsOrder":["1"]}}`,
-  html:
-    `<p><br></p><p><br></p><p>Lorem&nbsp;<strong><u><em>Ipsum</em></u></strong></p><p>Dolor<sup>sit </sup><sub>amet</sub>​</p>`,
+  html: `<p><br></p><p><br></p><p>Lorem&nbsp;<strong><u><em>Ipsum</em></u></strong></p><p>Dolor<sup>sit </sup><sub>amet</sub>​</p>`,
   png: exampleImage,
 };

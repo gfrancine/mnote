@@ -93,37 +93,37 @@ export function makeImageNode(resolveImageSrc: (src: string) => string) {
         },
       },
       commands: (nodeType, schema) => [
-        createCmd(InsertImage, (src = "") =>
-          (state, dispatch) => {
-            if (!dispatch) return true;
-            const { tr } = state;
-            const node = nodeType.create({ src });
-            if (!node) {
-              return true;
-            }
-            const _tr = tr.replaceSelectionWith(node);
-            const { $from } = _tr.selection;
-            const start = $from.start();
-            const __tr = _tr.replaceSelectionWith(schema.node("paragraph"));
-            const sel = NodeSelection.create(__tr.doc, start);
-            dispatch(__tr.setSelection(sel));
+        createCmd(InsertImage, (src = "") => (state, dispatch) => {
+          if (!dispatch) return true;
+          const { tr } = state;
+          const node = nodeType.create({ src });
+          if (!node) {
             return true;
-          }),
-        createCmd(ModifyImage, (src = "") =>
-          (state, dispatch) => {
-            const node = findSelectedNodeOfType(state.selection, nodeType);
-            if (!node) return false;
+          }
+          const _tr = tr.replaceSelectionWith(node);
+          const { $from } = _tr.selection;
+          const start = $from.start();
+          const __tr = _tr.replaceSelectionWith(schema.node("paragraph"));
+          const sel = NodeSelection.create(__tr.doc, start);
+          dispatch(__tr.setSelection(sel));
+          return true;
+        }),
+        createCmd(ModifyImage, (src = "") => (state, dispatch) => {
+          const node = findSelectedNodeOfType(state.selection, nodeType);
+          if (!node) return false;
 
-            const { tr } = state;
-            dispatch?.(
-              tr.setNodeMarkup(node.pos, undefined, {
+          const { tr } = state;
+          dispatch?.(
+            tr
+              .setNodeMarkup(node.pos, undefined, {
                 ...node.node.attrs,
                 src,
-              }).scrollIntoView(),
-            );
+              })
+              .scrollIntoView()
+          );
 
-            return true;
-          }),
+          return true;
+        }),
       ],
       inputRules: (nodeType) => [
         new InputRule(
@@ -136,7 +136,7 @@ export function makeImageNode(resolveImageSrc: (src: string) => string) {
             }
 
             return tr;
-          },
+          }
         ),
       ],
       view: (_editor, _nodeType, node, _view, _getPos) => {

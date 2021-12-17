@@ -138,8 +138,8 @@ win32.resolve = function () {
       // Verify that a drive-local cwd was found and that it actually points
       // to our drive. If not, default to the drive's root.
       if (
-        !path || path.substr(0, 3).toLowerCase() !==
-          resolvedDevice.toLowerCase() + "\\"
+        !path ||
+        path.substr(0, 3).toLowerCase() !== resolvedDevice.toLowerCase() + "\\"
       ) {
         path = resolvedDevice + "\\";
       }
@@ -193,11 +193,10 @@ win32.resolve = function () {
   // Normalize the tail path
   resolvedTail = normalizeArray(
     resolvedTail.split(/[\\\/]+/),
-    !resolvedAbsolute,
+    !resolvedAbsolute
   ).join("\\");
 
-  return (resolvedDevice + (resolvedAbsolute ? "\\" : "") + resolvedTail) ||
-    ".";
+  return resolvedDevice + (resolvedAbsolute ? "\\" : "") + resolvedTail || ".";
 };
 
 win32.normalize = function (path) {
@@ -427,7 +426,7 @@ posix.resolve = function () {
     resolvedAbsolute = false;
 
   for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    var path = (i >= 0) ? arguments[i] : process.cwd();
+    var path = i >= 0 ? arguments[i] : process.cwd();
 
     // Skip empty and invalid entries
     // if (!util.isString(path)) {
@@ -444,10 +443,12 @@ posix.resolve = function () {
   // handle relative paths to be safe (might happen when process.cwd() fails)
 
   // Normalize the path
-  resolvedPath = normalizeArray(resolvedPath.split("/"), !resolvedAbsolute)
-    .join("/");
+  resolvedPath = normalizeArray(
+    resolvedPath.split("/"),
+    !resolvedAbsolute
+  ).join("/");
 
-  return ((resolvedAbsolute ? "/" : "") + resolvedPath) || ".";
+  return (resolvedAbsolute ? "/" : "") + resolvedPath || ".";
 };
 
 // path.normalize(path)

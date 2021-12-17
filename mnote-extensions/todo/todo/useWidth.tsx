@@ -1,12 +1,14 @@
 import { RefObject, useEffect, useState } from "react";
 
-export default function useWidth(
-  { ref, min = -Infinity, max = Infinity }: {
-    ref: RefObject<HTMLElement>;
-    min?: number;
-    max?: number;
-  },
-) {
+export default function useWidth({
+  ref,
+  min = -Infinity,
+  max = Infinity,
+}: {
+  ref: RefObject<HTMLElement>;
+  min?: number;
+  max?: number;
+}) {
   const [size, setSize] = useState(0);
   const [hasInitialized, setHasInitialized] = useState(false);
 
