@@ -11,7 +11,7 @@
   }
 
   .fc-scroller {
-    @include mn.scrollbar(map-get(mn.$vars, main-bg-secondary));
+    @include mn.scrollbar(map-get(mn.$vars, main-scrollbar));
   }
 
   // selection

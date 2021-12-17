@@ -23,6 +23,6 @@
     color: inherit;
     background: inherit;
 
-    @include mn.scrollbar(map-get(mn.$vars, main-bg-secondary));
+    @include mn.scrollbar(map-get(mn.$vars, main-scrollbar));
   }
 }

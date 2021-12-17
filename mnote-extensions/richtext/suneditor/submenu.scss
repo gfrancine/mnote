@@ -5,7 +5,7 @@
   .se-submenu {
     overflow-x: hidden;
     overflow-y: auto;
-    @include mn.scrollbar(map-get(mn.$vars, main-bg-secondary));
+    @include mn.scrollbar(map-get(mn.$vars, main-scrollbar));
   }
 
   .se-menu-container {

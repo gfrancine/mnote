@@ -21,11 +21,13 @@ $default-theme: (
   "main-bg-secondary": oc.$oc-gray-1,
   "main-shadow": 0 2px 5px #{oc.$oc-gray-7}32,
   "main-overlay-bg": #{oc.$oc-gray-7}32,
+  "main-scrollbar": oc.$oc-gray-3,
   "main-border": oc.$oc-gray-4,
   "main-border-dim": oc.$oc-gray-2,
   // sidebar
   "sidebar-bg": oc.$oc-gray-1,
   "sidebar-fg": oc.$oc-gray-9,
+  "sidebar-scrollbar": oc.$oc-gray-5,
   "sidebar-item-icon": oc.$oc-gray-6,
   "sidebar-item-hover-bg": oc.$oc-gray-2,
   "sidebar-item-hover-fg": oc.$oc-gray-9,

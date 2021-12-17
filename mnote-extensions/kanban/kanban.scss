@@ -19,7 +19,7 @@
   font-family: map-get(mn.$vars, main-font);
 
   .board {
-    @include mn.scrollbar(map-get(mn.$vars, main-fg-dimmer));
+    @include mn.scrollbar(map-get(mn.$vars, main-scrollbar));
     width: 100%;
     padding: 10px 1em 10px 0;
   }
@@ -103,7 +103,7 @@
   }
 
   .lists-cards {
-    @include mn.scrollbar(map-get(mn.$vars, main-fg-dimmer));
+    @include mn.scrollbar(map-get(mn.$vars, main-scrollbar));
   }
 
   .toggle-add-card {

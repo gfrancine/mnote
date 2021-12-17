@@ -253,7 +253,7 @@
 
         .se-input-form.se-math-exp {
           @include richtext.code-fence;
-          @include mn.scrollbar(map-get(mn.$vars, main-border-dim));
+          @include mn.scrollbar(map-get(mn.$vars, main-scrollbar));
 
           resize: vertical;
           height: 4rem;

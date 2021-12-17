@@ -11,6 +11,6 @@
 
   .editor-container {
     overflow: auto;
-    @include scrollbar.scrollbar(map-get(mn.$vars, main-bg-secondary));
+    @include scrollbar.scrollbar(map-get(mn.$vars, main-scrollbar));
   }
 }
