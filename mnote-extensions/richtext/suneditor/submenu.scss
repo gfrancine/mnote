@@ -23,8 +23,8 @@
     border-radius: 4px;
     padding: 6px 0;
     background-color: map-get(mn.$vars, main-bg);
-    -webkit-box-shadow: map-get(mn.$vars, shadow);
-    box-shadow: map-get(mn.$vars, shadow);
+    -webkit-box-shadow: map-get(mn.$vars, main-shadow);
+    box-shadow: map-get(mn.$vars, main-shadow);
     outline: 0 none;
 
     .se-list-inner {
@@ -221,8 +221,8 @@
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
     border-radius: 4px;
-    -webkit-box-shadow: map-get(mn.$vars, shadow);
-    box-shadow: map-get(mn.$vars, shadow);
+    -webkit-box-shadow: map-get(mn.$vars, main-shadow);
+    box-shadow: map-get(mn.$vars, main-shadow);
 
     .se-table-size {
       font-size: 18px;

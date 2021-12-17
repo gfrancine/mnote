@@ -9,7 +9,7 @@ $colors: (
   dropdown-bg: map-get(mn.$vars, main-bg-secondary),
   dropdown-bg-selected: map-get(mn.$vars, main-fg-dimmer),
   dropdown-bg-hover: map-get(mn.$vars, main-bg),
-  dropdown-shadow: map-get(mn.$vars, shadow),
+  dropdown-shadow: map-get(mn.$vars, main-shadow),
   dropdown-fg: map-get(mn.$vars, main-fg),
   item-border: map-get(mn.$vars, main-border),
   item-editing-border: map-get(mn.$vars, main-fg-secondary),

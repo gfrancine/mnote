@@ -45,7 +45,7 @@
   // @import "./styles/Card.css";
 
   .card {
-    box-shadow: map-get(mn.$vars, shadow);
+    box-shadow: map-get(mn.$vars, main-shadow);
     background: map-get(mn.$vars, main-bg);
     border: 0;
 
