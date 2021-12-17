@@ -10,7 +10,8 @@ Fork of https://github.com/Saul-Mirone/milkdown/blob/ce8634b783c3608651d06a6d36
 */
 
 import { createCmd, createCmdKey } from "@milkdown/core";
-import { createNode, findSelectedNodeOfType } from "@milkdown/utils";
+import { createNode } from "@milkdown/utils";
+import { findSelectedNodeOfType } from "@milkdown/prose";
 import { InputRule } from "prosemirror-inputrules";
 import { NodeSelection } from "prosemirror-state";
 
@@ -139,7 +140,7 @@ export function makeImageNode(resolveImageSrc: (src: string) => string) {
           }
         ),
       ],
-      view: (_editor, _nodeType, node, _view, _getPos) => {
+      view: (node, _view, _getPos) => {
         const content = document.createElement("img");
 
         const { src, title, alt } = node.attrs;

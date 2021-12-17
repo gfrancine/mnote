@@ -11,7 +11,6 @@ import {
 } from "mnote-core";
 
 import {
-  Configure as MilkdownConfigure,
   defaultValueCtx,
   Editor as MilkdownEditor,
   rootCtx,
@@ -61,19 +60,6 @@ class MarkdownEditor implements Editor {
   }
 
   createMilkdown(opts: { contents: string }): MilkdownEditor {
-    const config: MilkdownConfigure = (ctx) => {
-      ctx.set(rootCtx, this.editorContainer);
-      ctx.set(defaultValueCtx, opts.contents);
-      ctx.set(listenerCtx, {
-        markdown: [
-          (getMarkdown) => {
-            this.contents = getMarkdown();
-            this.onUpdate();
-          },
-        ],
-      });
-    };
-
     const resolveImageSrc = (src: string) => {
       if (!this.ctx) return src; // satisfy the type check
       const { path } = this.ctx.getDocument();
@@ -90,7 +76,18 @@ class MarkdownEditor implements Editor {
       .use(listener)
       .use(clipboard)
       .use(history)
-      .config(config);
+      .config((ctx) => {
+        ctx.set(rootCtx, this.editorContainer);
+        ctx.set(defaultValueCtx, opts.contents);
+        ctx.set(listenerCtx, {
+          markdown: [
+            (getMarkdown) => {
+              this.contents = getMarkdown();
+              this.onUpdate();
+            },
+          ],
+        });
+      });
   }
 
   updateFontSize = () =>
