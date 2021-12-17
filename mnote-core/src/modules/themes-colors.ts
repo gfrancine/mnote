@@ -71,7 +71,6 @@ export const dark = {
   "sidebar-bg": "#212324",
   "sidebar-bg-hover": "#2B2D2E",
   "sidebar-fg": "#B0B6BB",
-  "sidebar-main-fg-secondary": "#767E85",
   "sidebar-scrollbar": "#303233",
 
   "sidebar-item-icon": "#767E85",
