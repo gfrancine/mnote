@@ -76,7 +76,7 @@
         overflow-y: auto;
         padding: 0 15px 0 20px;
 
-        @include scrollbar.scrollbar(map-get(mn.$vars, sidebar-bg-hover));
+        @include scrollbar.scrollbar(map-get(mn.$vars, sidebar-scrollbar));
       }
 
       .sidebar-filetree,
