@@ -1,0 +1,44 @@
+# run with "tomlrun <script>" or "npm run tomlrun <script>"
+
+install = """\
+  npm --version \
+  && npm i \
+  && cd mnote-util && npm i \
+  && cd ../mnote-deps && npm i \
+  && cd ../mnote-components && npm i \
+  && cd ../mnote-styles && npm i \
+  && cd ../mnote-extensions && npm i \
+  && cd ../mnote-core && npm i \
+  && cd ../mnote-app && npm i \
+  """
+
+fmt = """\
+  prettier \
+    --ignore-path="./.gitingore" -w \
+    **.scss **.ts **.tsx \
+    "{mnote-deps,mnote-extensions}/**/*.{js,jsx,css}" \
+  && cd mnote-app/src-tauri && cargo fmt
+  """
+
+lint = """deno lint \
+  mnote-core/src \
+  mnote-extensions/plaintext \
+  mnote-extensions/richtext \
+  mnote-extensions/settings \
+  mnote-extensions/calendar \
+  mnote-extensions/kanban \
+  mnote-extensions/markdown \
+  mnote-extensions/image-viewer \
+  mnote-extensions/excalidraw \
+  mnote-extensions/todo \
+  mnote-components/react \
+  mnote-components/vanilla \
+  mnote-app/src \
+  mnote-app/src-web \
+  mnote-app/bundle-scripts \
+  mnote-util \
+  mnote-deps/kanban \
+  mnote-deps/resizable \
+  """
+
+lint-rs = "cd mnote-app/src-tauri && cargo clippy && cargo check"

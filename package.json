@@ -1,6 +1,9 @@
 {
   "name": "mnote",
   "version": "0.1.0",
+  "scripts": {
+    "tomlrun": "tomlrun"
+  },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.9.0",
     "@fullcalendar/core": "^5.9.0",
@@ -18,6 +21,7 @@
   "devDependencies": {
     "@types/node": "^16.3.3",
     "@types/react": "^17.0.14",
-    "@types/react-dom": "^17.0.9"
+    "@types/react-dom": "^17.0.9",
+    "tomlrun": "^0.1.3"
   }
 }

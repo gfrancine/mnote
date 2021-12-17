@@ -23,8 +23,7 @@ jobs:
         toolchain: stable
 
     - name: install dependencies
-      shell: pwsh
-      run: .\install.ps1
+      run: npm i && npm run tomlrun install
 
     - name: build release
       run: cd mnote-app && npm run build-release
