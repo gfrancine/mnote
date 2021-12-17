@@ -13,7 +13,6 @@ import { createCmd, createCmdKey } from "@milkdown/core";
 import { createNode } from "@milkdown/utils";
 import { findSelectedNodeOfType } from "@milkdown/prose";
 import { InputRule } from "prosemirror-inputrules";
-import { NodeSelection } from "prosemirror-state";
 
 export const ModifyImage = createCmdKey<string>();
 export const InsertImage = createCmdKey<string>();
@@ -28,7 +27,7 @@ export function makeImageNode(resolveImageSrc: (src: string) => string) {
   return createNode<string, ImageOptions>(() => {
     return {
       id,
-      schema: {
+      schema: () => ({
         inline: true,
         group: "inline",
         draggable: true,
@@ -69,31 +68,31 @@ export function makeImageNode(resolveImageSrc: (src: string) => string) {
             },
           ];
         },
-      },
-      parser: {
-        match: ({ type }) => type === id,
-        runner: (state, node, type) => {
-          const url = node.url as string;
-          const alt = node.alt as string;
-          const title = node.title as string;
-          state.addNode(type, {
-            src: url,
-            alt,
-            title,
-          });
+        parseMarkdown: {
+          match: ({ type }) => type === id,
+          runner: (state, node, type) => {
+            const url = node.url as string;
+            const alt = node.alt as string;
+            const title = node.title as string;
+            state.addNode(type, {
+              src: url,
+              alt,
+              title,
+            });
+          },
         },
-      },
-      serializer: {
-        match: (node) => node.type.name === id,
-        runner: (state, node) => {
-          state.addNode("image", undefined, undefined, {
-            title: node.attrs.title,
-            url: node.attrs.src,
-            alt: node.attrs.alt,
-          });
+        toMarkdown: {
+          match: (node) => node.type.name === id,
+          runner: (state, node) => {
+            state.addNode("image", undefined, undefined, {
+              title: node.attrs.title,
+              url: node.attrs.src,
+              alt: node.attrs.alt,
+            });
+          },
         },
-      },
-      commands: (nodeType, schema) => [
+      }),
+      commands: (nodeType, _ctx) => [
         createCmd(InsertImage, (src = "") => (state, dispatch) => {
           if (!dispatch) return true;
           const { tr } = state;
@@ -102,11 +101,7 @@ export function makeImageNode(resolveImageSrc: (src: string) => string) {
             return true;
           }
           const _tr = tr.replaceSelectionWith(node);
-          const { $from } = _tr.selection;
-          const start = $from.start();
-          const __tr = _tr.replaceSelectionWith(schema.node("paragraph"));
-          const sel = NodeSelection.create(__tr.doc, start);
-          dispatch(__tr.setSelection(sel));
+          dispatch(_tr.scrollIntoView());
           return true;
         }),
         createCmd(ModifyImage, (src = "") => (state, dispatch) => {
@@ -140,7 +135,7 @@ export function makeImageNode(resolveImageSrc: (src: string) => string) {
           }
         ),
       ],
-      view: (node, _view, _getPos) => {
+      view: () => (node, _view, _getPos) => {
         const content = document.createElement("img");
 
         const { src, title, alt } = node.attrs;
