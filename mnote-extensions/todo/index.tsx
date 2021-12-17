@@ -59,7 +59,7 @@ class TodoEditor implements Editor {
 
   constructor(app: Mnote) {
     this.app = app;
-    this.fs = (app.modules.fs as FSModule);
+    this.fs = app.modules.fs as FSModule;
     this.element = el("div")
       .class("todo-extension")
       .element;

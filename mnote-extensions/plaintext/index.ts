@@ -16,7 +16,7 @@ class PlaintextEditor implements Editor {
   constructor(app: Mnote) {
     this.app = app;
 
-    this.fs = (app.modules.fs as FSModule);
+    this.fs = app.modules.fs as FSModule;
 
     this.textarea = el("textarea")
       .class("plaintext-textarea")

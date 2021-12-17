@@ -20,7 +20,7 @@ class ImageViewer implements Editor {
   constructor(app: Mnote, mockSrc?: string) {
     this.app = app;
 
-    this.fs = (app.modules.fs as FSModule);
+    this.fs = app.modules.fs as FSModule;
 
     this.element = el("div")
       .class("image-viewer-editor")

@@ -31,13 +31,13 @@ export class MenubarModule /* implements Module */ {
 
     this.menuToggle = new Elbuilder(
       this.createMenubarButton(
-        ((fillClass, strokeClass) =>
+        (fillClass, strokeClass) =>
           createIcon(
             "kebabMenu",
             fillClass,
             strokeClass,
             "Menu",
-          )),
+          ),
       ),
     )
       .on("click", () => {

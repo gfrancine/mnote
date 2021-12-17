@@ -84,7 +84,7 @@ class ExcalidrawEditor implements Editor {
 
   constructor(app: Mnote) {
     this.app = app;
-    this.fs = (app.modules.fs as FSModule);
+    this.fs = app.modules.fs as FSModule;
     this.element = el("div")
       .class("excdraw-extension")
       .element;

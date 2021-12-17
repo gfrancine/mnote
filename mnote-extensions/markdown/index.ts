@@ -44,7 +44,7 @@ class MarkdownEditor implements Editor {
 
   constructor(app: Mnote) {
     this.app = app;
-    this.fs = (app.modules.fs as FSModule);
+    this.fs = app.modules.fs as FSModule;
     this.settings = app.modules.settings;
 
     this.editorContainer = el("div")

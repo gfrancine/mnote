@@ -123,6 +123,7 @@ export class TabManager {
 
   async saveAs(): Promise<boolean> {
     const { editor, editorInfo, document } = this.ctx.getTabInfo();
+    if (editorInfo.disableSaveAs) return false;
 
     const newPath = editorInfo.disableSaveAs
       ? document.path

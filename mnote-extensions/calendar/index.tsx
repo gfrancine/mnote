@@ -48,7 +48,7 @@ class CalendarEditor implements Editor {
 
   constructor(app: Mnote) {
     this.app = app;
-    this.fs = (app.modules.fs as FSModule);
+    this.fs = app.modules.fs as FSModule;
     this.popups = app.modules.popups as PopupsModule;
     this.element = el("div")
       .class("calendar-extension")

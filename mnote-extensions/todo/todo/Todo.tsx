@@ -135,9 +135,9 @@ export default function Todo(props: {
   };
 
   const amountCompleted: number = useMemo(
-    (() => {
+    () => {
       return Object.values(items).filter((item) => item.done).length;
-    }),
+    },
     [items],
   );
 
