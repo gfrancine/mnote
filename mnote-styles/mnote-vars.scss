@@ -1,53 +1,54 @@
-@use "./util/variables";
-@use "~open-color/open-color" as oc;
-
 // forward utilities
-
 @forward "./util/scrollbar.scss";
 
-// default light theme. will be overriden with javascript
-// when changing something here, update modules/themes.ts
-// keep in mind these are turned into root variables, use
-// the exported $vars map instead
-
-$default-theme: (
-  "main-font": "Open Sans",
-  "main-font-monospace": "Fira Mono",
-  "main-fg": oc.$oc-gray-9,
-  "main-fg-secondary": oc.$oc-gray-6,
-  "main-fg-dim": oc.$oc-gray-5,
-  "main-fg-dimmer": oc.$oc-gray-3,
-  "main-bg": #fff,
-  "main-bg-secondary": oc.$oc-gray-1,
-  "main-shadow": 0 2px 5px #{oc.$oc-gray-7}32,
-  "main-overlay-bg": #{oc.$oc-gray-7}32,
-  "main-scrollbar": oc.$oc-gray-3,
-  "main-border": oc.$oc-gray-4,
-  "main-border-dim": oc.$oc-gray-2,
+$var-names: (
+  "main-font",
+  "main-font-monospace",
+  "main-fg",
+  "main-fg-secondary",
+  "main-fg-dim",
+  "main-fg-dimmer",
+  "main-bg",
+  "main-bg-secondary",
+  "main-shadow",
+  "main-overlay-bg",
+  "main-scrollbar",
+  "main-border",
+  "main-border-dim",
   // sidebar
-  "sidebar-bg": oc.$oc-gray-1,
-  "sidebar-fg": oc.$oc-gray-9,
-  "sidebar-scrollbar": oc.$oc-gray-3,
-  "sidebar-item-icon": oc.$oc-gray-6,
-  "sidebar-item-hover-bg": oc.$oc-gray-2,
-  "sidebar-item-hover-fg": oc.$oc-gray-9,
-  "sidebar-item-hover-icon": oc.$oc-gray-6,
-  "sidebar-item-focused-bg": oc.$oc-gray-3,
-  "sidebar-item-focused-fg": oc.$oc-gray-9,
-  "sidebar-item-focused-icon": oc.$oc-gray-6,
-  "sidebar-filetree-border": oc.$oc-gray-3,
+  "sidebar-bg",
+  "sidebar-fg",
+  "sidebar-scrollbar",
+  "sidebar-item-icon",
+  "sidebar-item-hover-bg",
+  "sidebar-item-hover-fg",
+  "sidebar-item-hover-icon",
+  "sidebar-item-focused-bg",
+  "sidebar-item-focused-fg",
+  "sidebar-item-focused-icon",
+  "sidebar-filetree-border",
   // buttons, assuming background is main-bg
-  "btn-main-fg": oc.$oc-gray-9,
-  "btn-main-fg-hover": oc.$oc-gray-9,
-  "btn-main-bg": oc.$oc-gray-2,
-  "btn-main-bg-hover": oc.$oc-gray-3,
-  "btn-emphasis-fg": #fff,
-  "btn-emphasis-hover-fg": #fff,
-  "btn-emphasis-bg": oc.$oc-gray-6,
-  "btn-emphasis-hover-bg": oc.$oc-gray-7,
+  "btn-main-fg",
+  "btn-main-fg-hover",
+  "btn-main-bg",
+  "btn-main-bg-hover",
+  "btn-emphasis-fg",
+  "btn-emphasis-hover-fg",
+  "btn-emphasis-bg",
+  "btn-emphasis-hover-bg"
 );
 
 // map of root variables
 // all keys can be found in the default theme below
 
-$vars: variables.from($default-theme);
+$vars: ();
+
+// prefix the variables
+@each $var in $var-names {
+  $vars: map-merge(
+    $vars,
+    (
+      $var: var(#{"--mnote-" + $var}),
+    )
+  );
+}
