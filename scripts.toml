@@ -20,6 +20,9 @@ fmt = """\
   && cd mnote-app/src-tauri && cargo fmt
   """
 
+# pass arguments to prettier instead of running it on the whole project
+prettier = 'prettier --ignore-path="./.gitingore" -w' # glob...
+
 lint = """deno lint \
   mnote-core/src \
   mnote-extensions/plaintext \
