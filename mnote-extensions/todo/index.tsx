@@ -18,6 +18,8 @@ type TodoFile = {
   data: Partial<TodoData>;
 };
 
+// current file version: 2
+
 function migrate(value: TodoParsedFile): TodoFile {
   switch (value.version) {
     case 1:
@@ -26,8 +28,7 @@ function migrate(value: TodoParsedFile): TodoFile {
         depth: 0,
       }));
       value.version = 2;
-    case 2:
-      return value;
+    // falls through
     default:
       return value;
   }
