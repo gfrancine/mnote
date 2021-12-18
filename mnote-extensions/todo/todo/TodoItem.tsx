@@ -40,9 +40,6 @@ export default function TodoItem(props: {
   isEditing: boolean;
 }) {
   const [draft, setDraft] = useState(props.item.text);
-  const [dragoverLocation, setDragoverLocation] = useState<
-    null | "above" | "below"
-  >(null);
 
   const saveEdit = () => {
     props.ctx.setItem(props.item.id, {
@@ -68,37 +65,7 @@ export default function TodoItem(props: {
   });
 
   return (
-    <div
-      onDragOver={(e) => {
-        e.preventDefault();
-        const thisElement = e.target as HTMLDivElement;
-        const rect = thisElement.getBoundingClientRect();
-        const offset = rect.y + rect.height / 2;
-        if (e.clientY - offset > 0) {
-          setDragoverLocation("below");
-        } else {
-          setDragoverLocation("above");
-        }
-      }}
-      onDragLeave={() => setDragoverLocation(null)}
-      onDrop={(e) => {
-        const data = e.dataTransfer.getData("todo-index");
-        if (!data) return;
-        const sourceIndex = parseInt(data, 10);
-        setDragoverLocation(null);
-        const direction = dragoverLocation === "above" ? -1 : 1;
-        props.ctx.moveItemAtIndex(sourceIndex, props.index + direction);
-      }}
-      onDragStart={(e) => {
-        e.dataTransfer.setData("todo-index", "" + props.index);
-      }}
-      draggable
-      className={
-        "todo-item" +
-        (dragoverLocation ? " draggedover " + dragoverLocation : "") +
-        (props.item.done ? " done" : "")
-      }
-    >
+    <div className={"todo-item" + (props.item.done ? " done" : "")}>
       <CheckedBullet
         value={props.item.done}
         onClick={(value) =>
