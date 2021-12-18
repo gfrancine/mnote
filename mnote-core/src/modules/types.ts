@@ -65,7 +65,7 @@ export type TabInfo = {
 };
 
 export type Tab = {
-  /** just for open files reordering. use index and ref equality for everything else */
+  /** just for open tabs reordering. use index and ref equality for everything else */
   id: string;
   info: TabInfo;
   manager: TabManager;
@@ -77,7 +77,7 @@ export type TabContext = {
   setDocument: (doc: DocInfo) => void;
 };
 
-// data needed by the Open Files list
+// data needed by the Open Tabs list
 export type OpenFileTabContext = {
   getIcon: (fillClass: string, strokeClass: string) => Element | void;
   onSave: () => void | Promise<void>;

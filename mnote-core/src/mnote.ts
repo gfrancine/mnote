@@ -18,7 +18,7 @@ import {
   LayoutModule,
   LogModule,
   MenubarModule,
-  OpenFilesModule,
+  OpenTabsModule,
   PopupsModule,
   SettingsModule,
   SidebarModule,
@@ -43,7 +43,7 @@ type Modules = {
   editors: EditorsModule;
   fileicons: FileIconsModule;
   filetree: FiletreeModule;
-  openfiles: OpenFilesModule;
+  opentabs: OpenTabsModule;
   themes: ThemesModule;
   filesearch: FileSearchModule;
 };
@@ -95,7 +95,7 @@ export class Mnote {
     m.fileicons = new FileIconsModule(this);
     m.filesearch = new FileSearchModule(this);
     m.filetree = new FiletreeModule(this);
-    m.openfiles = new OpenFilesModule(this);
+    m.opentabs = new OpenTabsModule(this);
     m.themes = await new ThemesModule(this).init();
   }
 

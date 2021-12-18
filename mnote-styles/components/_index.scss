@@ -1,6 +1,6 @@
 @use "prompt";
 @use "filetree";
-@use "openfiles";
+@use "opentabs";
 @use "tree";
 @use "menu";
 
@@ -9,7 +9,7 @@
 @mixin components {
   @include prompt.prompt;
   @include tree.tree;
-  @include openfiles.openfiles;
+  @include opentabs.opentabs;
   @include filetree.filetree;
   @include menu.menu;
 }

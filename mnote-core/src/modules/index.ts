@@ -12,7 +12,7 @@ export { SettingsModule } from "./settings";
 export { ThemesModule } from "./themes";
 export { InputModule } from "./input";
 export { PopupsModule } from "./popups";
-export { OpenFilesModule } from "./openfiles";
+export { OpenTabsModule } from "./opentabs";
 export { FileIconsModule } from "./fileicons";
 export { DataDirModule } from "./datadir";
 export { FileSearchModule } from "./filesearch";

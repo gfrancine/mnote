@@ -47,7 +47,7 @@ export default function (props: {
   return (
     <div>
       <TreeItem
-        text="Open Files"
+        text="Open Tabs"
         icon={
           expanded ? (
             <ChevronDown fillClass="fill" strokeClass="stroke" />
@@ -97,13 +97,13 @@ export default function (props: {
                       // used by context menu to open the right path
                       data-mn-tab-index={itemProps.index}
                       // also used by context menu
-                      className="openfiles-item"
+                      className="opentabs-item"
                       innerRef={itemProps.ref}
                       {...itemProps.draggableProps}
                       {...itemProps.dragHandleProps}
                     >
                       <div
-                        className="openfiles-close tree-item-icon"
+                        className="opentabs-close tree-item-icon"
                         onClick={() => openFileTabCtx.onClose()}
                       >
                         <Close fillClass="fill" strokeClass="stroke" />

@@ -3,14 +3,14 @@ import { render } from "react-dom";
 import { FileSearchModule, LayoutModule } from ".";
 import { el } from "mnote-util/elbuilder";
 import { Mnote } from "..";
-import OpenFiles from "./openfiles-component";
+import OpenTabs from "./opentabs-component";
 import { EditorsModule } from "./editors";
 import { CtxmenuContext, Tab } from "./types";
 import { CtxmenuModule } from "./ctxmenu";
 import { FileIconsModule } from "./fileicons";
 import { LogModule } from "./log";
 
-export class OpenFilesModule {
+export class OpenTabsModule {
   private log: LogModule;
   private layout: LayoutModule;
   private editors: EditorsModule;
@@ -30,12 +30,12 @@ export class OpenFilesModule {
     this.fileicons = app.modules.fileicons;
     this.filesearch = app.modules.filesearch;
 
-    this.element = el("div").class("openfiles-main").element;
-    this.layout.mountToOpenFiles(this.element);
+    this.element = el("div").class("opentabs-main").element;
+    this.layout.mountToOpenTabs(this.element);
     this.setActiveIndex();
 
-    // openfiles updates editor      >
-    // editor tabs update internally > editor tabs change > open files change
+    // opentabs updates editor      >
+    // editor tabs update internally > editor tabs change > open tabs change
     const onEditorTabChange = () => {
       this.setActiveIndex(
         this.editors.currentTab
@@ -49,7 +49,7 @@ export class OpenFilesModule {
     // click > action up > event down > render
 
     const setSearchTerm = (searchTerm?: string) => {
-      this.log.info("open files: set search term", searchTerm);
+      this.log.info("open tabs: set search term", searchTerm);
       this.searchTerm = searchTerm;
       this.updateComponent();
     };
@@ -62,7 +62,7 @@ export class OpenFilesModule {
       let tabItem: Element | undefined;
 
       for (const el of ctx.elements) {
-        if (el.classList.contains("openfiles-item")) {
+        if (el.classList.contains("opentabs-item")) {
           tabItem = el;
           break;
         }
@@ -98,7 +98,7 @@ export class OpenFilesModule {
   }
 
   private setActiveIndex(activeIndex?: number) {
-    this.log.info("open files: set active index", activeIndex);
+    this.log.info("open tabs: set active index", activeIndex);
     this.activeIndex = activeIndex;
     this.updateComponent();
   }
@@ -128,7 +128,7 @@ export class OpenFilesModule {
 
   private updateComponent() {
     render(
-      <OpenFiles
+      <OpenTabs
         tabs={[...this.editors.activeTabs]}
         getOpenFileTabCtx={this.getOpenFileTabCtx}
         setTabs={(tabs) => this.editors.setActiveTabs(tabs)}

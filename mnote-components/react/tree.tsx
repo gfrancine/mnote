@@ -1,4 +1,4 @@
-// item heads used by filetree and openfiles
+// item heads used by filetree and opentabs
 import React, { ReactNode, useEffect, useRef } from "react";
 
 type DivProps = React.DetailedHTMLProps<

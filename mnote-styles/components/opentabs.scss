@@ -3,8 +3,8 @@
 
 // styles for the filetree component (components/jsx)
 
-@mixin openfiles {
-  .openfiles-main {
+@mixin opentabs {
+  .opentabs-main {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
@@ -12,7 +12,7 @@
   }
 
   .tree-item {
-    .openfiles-close {
+    .opentabs-close {
       display: none;
       margin-left: auto;
       margin-right: 0;
@@ -26,7 +26,7 @@
     }
 
     &:hover {
-      .openfiles-close {
+      .opentabs-close {
         display: flex;
       }
     }
