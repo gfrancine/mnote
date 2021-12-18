@@ -61,7 +61,7 @@ export default function (props: {
         <List items={props.tabs} onReorder={props.setTabs}>
           {(listProps) => (
             <div ref={listProps.ref} {...listProps.droppableProps}>
-              <Items items={props.tabs} skipDropAnim>
+              <Items items={props.tabs}>
                 {(itemProps) => {
                   const tab = itemProps.item;
                   const name = tab.info.document.name;
