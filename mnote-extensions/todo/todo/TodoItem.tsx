@@ -2,6 +2,14 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import { TodoItemContext, TodoItemData } from "./types";
 import TextareaAutosize from "react-textarea-autosize";
 import { Checkmark, Close, Trash } from "./icons";
+import Sortly, {
+  ItemRendererProps,
+  ContextProvider,
+  useDrag,
+  useDrop,
+} from "mnote-deps/react-sortly/src";
+import { TodoOrderItem } from ".";
+import { ConnectDragSource, ConnectDropTarget } from "react-dnd";
 
 function CheckedBullet({
   value = false,
@@ -21,7 +29,7 @@ function CheckedBullet({
           cy="50"
           r="46"
           stroke="black"
-          stroke-width="4"
+          strokeWidth="4"
           className="outer"
         />
         {value && (
@@ -32,13 +40,20 @@ function CheckedBullet({
   );
 }
 
-export default function TodoItem(props: {
+export type TodoItemProps = {
   index: number;
-  key: string;
   item: TodoItemData;
   ctx: TodoItemContext;
   isEditing: boolean;
-}) {
+};
+
+export type TodoItemPropsWithDnd = TodoItemProps & {
+  depth: number;
+  dragRef: ReturnType<typeof useDrag>[1];
+  dropRef: ReturnType<typeof useDrop>[1];
+};
+
+export function TodoItem(props: TodoItemPropsWithDnd) {
   const [draft, setDraft] = useState(props.item.text);
 
   const saveEdit = () => {
@@ -65,47 +80,69 @@ export default function TodoItem(props: {
   });
 
   return (
-    <div className={"todo-item" + (props.item.done ? " done" : "")}>
-      <CheckedBullet
-        value={props.item.done}
-        onClick={(value) =>
-          props.ctx.setItem(props.item.id, {
-            ...props.item,
-            done: value,
-          })
-        }
-      />
-      <div className={"todo-text-input" + (props.isEditing ? " editing" : "")}>
-        <TextareaAutosize
-          ref={ref}
-          spellCheck={false}
-          className="input"
-          onFocus={startEditing}
-          onBlur={saveEdit}
-          value={draft}
-          onInput={(e) => {
-            setDraft((e.target as HTMLTextAreaElement).value);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "ArrowUp") {
-              e.preventDefault();
-              saveEdit();
-              props.ctx.editItemByIndex(props.index - 1);
-            } else if (e.key === "ArrowDown") {
-              e.preventDefault();
-              saveEdit();
-              props.ctx.editItemByIndex(props.index + 1);
-            }
-          }}
+    <div
+      ref={props.dropRef}
+      style={{ marginLeft: props.depth * 20 + "px" }}
+      className={"todo-item" + (props.item.done ? " done" : "")}
+    >
+      <div ref={props.dragRef} className="inner">
+        <CheckedBullet
+          value={props.item.done}
+          onClick={(value) =>
+            props.ctx.setItem(props.item.id, {
+              ...props.item,
+              done: value,
+            })
+          }
         />
-        <div className="buttons">
-          {!props.isEditing && (
-            <div className="button delete" onClick={deleteItem}>
-              <Trash strokeClass="stroke" fillClass="fill" />
-            </div>
-          )}
+        <div
+          className={"todo-text-input" + (props.isEditing ? " editing" : "")}
+        >
+          <TextareaAutosize
+            ref={ref}
+            spellCheck={false}
+            className="input"
+            onFocus={startEditing}
+            onBlur={saveEdit}
+            value={draft}
+            onInput={(e) => {
+              setDraft((e.target as HTMLTextAreaElement).value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowUp") {
+                e.preventDefault();
+                saveEdit();
+                props.ctx.editItemByIndex(props.index - 1);
+              } else if (e.key === "ArrowDown") {
+                e.preventDefault();
+                saveEdit();
+                props.ctx.editItemByIndex(props.index + 1);
+              }
+            }}
+          />
+          <div className="buttons">
+            {!props.isEditing && (
+              <div className="button delete" onClick={deleteItem}>
+                <Trash strokeClass="stroke" fillClass="fill" />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
+}
+
+export function TodoItemSortlyRenderer({
+  itemProps,
+  sortlyProps,
+}: {
+  itemProps: TodoItemProps;
+  sortlyProps: ItemRendererProps<TodoOrderItem>;
+}) {
+  const { id, depth } = sortlyProps;
+  const [, dragRef] = useDrag();
+  const [, dropRef] = useDrop();
+
+  return <TodoItem {...itemProps} {...{ id, depth, dragRef, dropRef }} />;
 }

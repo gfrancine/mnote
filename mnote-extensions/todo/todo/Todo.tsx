@@ -5,7 +5,7 @@ import {
   TodoItemData,
   TodoListFilterType,
 } from "./types";
-import TodoItem from "./TodoItem";
+import { TodoItem, TodoItemSortlyRenderer } from "./TodoItem";
 import NewTodo from "./NewTodo";
 import { nanoid } from "nanoid";
 import TextareaAutosize from "react-textarea-autosize";
@@ -13,6 +13,14 @@ import useWidth from "./useWidth";
 import Menu from "mnote-components/react/dropdowns/Menu";
 import Select from "mnote-components/react/dropdowns/Select";
 import { useListener } from "mnote-util/useListener";
+
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import Sortly, {
+  ContextProvider,
+  useDrag,
+  useDrop,
+} from "mnote-deps/react-sortly/src";
 
 const NEW_ITEM_MOCK_ID = "_$*!(@)#%*!$@()#$NEWITEM";
 
@@ -64,23 +72,6 @@ export default function Todo(props: {
       setItems(newItems);
       setItemsOrder(newOrder);
     },
-    moveItemAtIndex: (oldIndex, newIndex) => {
-      if (oldIndex === newIndex) return;
-      const newOrder = [...itemsOrder];
-      const id = newOrder[oldIndex];
-      const insert = () => newOrder.splice(newIndex, 0, id);
-      const remove = () => newOrder.splice(oldIndex, 1);
-
-      if (newIndex > oldIndex) {
-        insert();
-        remove();
-      } else {
-        remove();
-        insert();
-      }
-
-      setItemsOrder(newOrder);
-    },
     createItem: (newItem) => {
       const item = {
         ...newItem,
@@ -90,14 +81,20 @@ export default function Todo(props: {
         ...items,
         [item.id]: item,
       });
-      setItemsOrder([...itemsOrder, item.id]);
+      setItemsOrder([
+        ...itemsOrder,
+        {
+          id: item.id,
+          depth: 0,
+        },
+      ]);
     },
     setCurrentlyEditing: (id: string | null) => {
       setCurrentlyEditing(id);
     },
     editItemByIndex: (index: number) => {
       const id =
-        index === itemsOrder.length ? NEW_ITEM_MOCK_ID : itemsOrder[index];
+        index === itemsOrder.length ? NEW_ITEM_MOCK_ID : itemsOrder[index].id;
 
       if (!id) return;
       setCurrentlyEditing(id);
@@ -112,9 +109,9 @@ export default function Todo(props: {
 
   const clearCompleted = () => {
     const removedIds: string[] = [];
-    const newOrder = itemsOrder.filter((id) => {
-      const removed = items[id].done;
-      if (removed) removedIds.push(id);
+    const newOrder = itemsOrder.filter((orderItem) => {
+      const removed = items[orderItem.id].done;
+      if (removed) removedIds.push(orderItem.id);
       return !removed;
     });
     const newItems = { ...items };
@@ -191,19 +188,28 @@ export default function Todo(props: {
         </div>
       </div>
       <div className="todo-list">
-        {itemsOrder.map((id, index) => {
-          return filters[filterType || "all"](items[id]) ? (
-            <TodoItem
-              index={index}
-              key={id}
-              item={items[id]}
-              isEditing={id === currentlyEditing}
-              ctx={ctx}
-            />
-          ) : (
-            <Fragment key={id} />
-          );
-        })}
+        <DndProvider backend={HTML5Backend}>
+          <ContextProvider>
+            <Sortly items={itemsOrder} onChange={setItemsOrder}>
+              {(sortlyProps) => {
+                return filters[filterType || "all"](items[sortlyProps.id]) ? (
+                  <TodoItemSortlyRenderer
+                    itemProps={{
+                      index: sortlyProps.index,
+                      item: items[sortlyProps.id],
+                      isEditing: sortlyProps.id === currentlyEditing,
+                      ctx,
+                    }}
+                    sortlyProps={sortlyProps}
+                    key={sortlyProps.id}
+                  />
+                ) : (
+                  <Fragment key={sortlyProps.id} />
+                );
+              }}
+            </Sortly>
+          </ContextProvider>
+        </DndProvider>
         <NewTodo
           ctx={ctx}
           mockId={NEW_ITEM_MOCK_ID}

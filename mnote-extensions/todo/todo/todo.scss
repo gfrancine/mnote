@@ -119,10 +119,15 @@ $colors: (
     .todo-list {
       .todo-item {
         width: 100%;
-        display: flex;
-        flex-direction: row;
         position: relative;
         margin: 0;
+
+        // used as the drag area for react-sortly
+        .inner {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+        }
 
         &.draggedover {
           &:before {

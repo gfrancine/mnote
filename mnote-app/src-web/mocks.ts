@@ -87,8 +87,8 @@ export const contents: Record<string, string> = {
   "viewBackgroundColor":"#ffffff","zenModeEnabled":true,"zoom":{"value":0.8,
   "translation":{"x":0,"y":0}},"viewModeEnabled":false,"offsetLeft":242.5,
   "offsetTop":36,"width":957.5,"height":764}}`,
-  mntodo: `{"version":1,"data":{"items":{"1":{"id":"1","done":true,"text":
-  "Do something useful","depth":0}},"itemsOrder":["1"]}}`,
+  mntodo: `{"version":2,"data":{"items":{"1":{"id":"1","done":true,"text":
+  "Do something useful"}},"itemsOrder":[{"id":"1","depth":0}]}}`,
   html: `<p><br></p><p><br></p><p>Lorem&nbsp;<strong><u><em>Ipsum</em></u></strong></p><p>Dolor<sup>sit </sup><sub>amet</sub>​</p>`,
   png: exampleImage,
 };

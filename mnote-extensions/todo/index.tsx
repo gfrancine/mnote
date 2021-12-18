@@ -21,6 +21,12 @@ type TodoFile = {
 function migrate(value: TodoParsedFile): TodoFile {
   switch (value.version) {
     case 1:
+      value.data.itemsOrder = value.data.itemsOrder?.map((id: string) => ({
+        id,
+        depth: 0,
+      }));
+      value.version = 2;
+    case 2:
       return value;
     default:
       return value;
