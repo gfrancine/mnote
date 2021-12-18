@@ -115,18 +115,6 @@ export type FileTreeHooks = {
   ) => void | Promise<void>;
 };
 
-// data needed by the Open Files list
-export type OpenFile = {
-  name: string;
-  saved: boolean;
-  index: number; // instead of the path, this is the primary key
-  path?: string;
-  getIcon: (fillClass: string, strokeClass: string) => Element | void;
-  onSave: (file: OpenFile) => void | Promise<void>;
-  onOpen: (file: OpenFile) => void | Promise<void>;
-  onClose: (file: OpenFile) => void | Promise<void>;
-};
-
 // system module
 
 export type SystemAppMenuId =

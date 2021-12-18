@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { OpenFile } from "../common/types";
+import { Tab } from "./types";
 import {
   BlankFile,
   ChevronDown,
@@ -14,35 +14,35 @@ import {
 } from "mnote-components/react/tree";
 import { Highlight } from "mnote-components/react/highlight";
 import { getMatchingRanges, MatchRange } from "mnote-util/search";
+import { List, Items } from "mnote-components/react/beautiful-dnd-list";
+import { OpenFileTabContext } from "./types";
 
-function searchOpenFiles(openFiles: OpenFile[], searchTerm: string) {
+function searchOpenTabs(tabs: Tab[], searchTerm: string) {
   const results: Record<string, MatchRange[]> = {};
 
-  for (const file of openFiles) {
-    if (results[file.name]) continue;
-    const ranges = getMatchingRanges(file.name, searchTerm);
-    if (ranges.length > 0) results[file.name] = ranges;
+  for (const tab of tabs) {
+    const name = tab.info.document.name;
+    if (results[name]) continue;
+    const ranges = getMatchingRanges(name, searchTerm);
+    if (ranges.length > 0) results[name] = ranges;
   }
 
   return results;
 }
 
 export default function (props: {
-  openFiles: OpenFile[];
+  tabs: Tab[];
+  setTabs: (tabs: Tab[]) => unknown;
+  getOpenFileTabCtx: (tab: Tab) => OpenFileTabContext;
   activeIndex?: number;
   searchTerm?: string;
-  getIcon?: (
-    file: OpenFile,
-    fillClass: string,
-    strokeClass: string
-  ) => Element | void;
 }) {
   const [expanded, setExpanded] = useState(true);
 
   const searchResults = useMemo(() => {
     if (!props.searchTerm) return;
-    return searchOpenFiles(props.openFiles, props.searchTerm);
-  }, [props.searchTerm, props.openFiles]);
+    return searchOpenTabs(props.tabs, props.searchTerm);
+  }, [props.searchTerm, props.tabs]);
 
   return (
     <div>
@@ -58,47 +58,66 @@ export default function (props: {
         onClick={() => setExpanded(!expanded)}
       />
       <TreeChildren hidden={!expanded}>
-        {props.openFiles.map((file) => {
-          const searchResultRanges = searchResults?.[file.name];
+        <List items={props.tabs} onReorder={props.setTabs}>
+          {(listProps) => (
+            <div ref={listProps.ref} {...listProps.droppableProps}>
+              <Items items={props.tabs} skipDropAnim>
+                {(itemProps) => {
+                  const tab = itemProps.item;
+                  const name = tab.info.document.name;
+                  const searchResultRanges = searchResults?.[name];
+                  const openFileTabCtx = props.getOpenFileTabCtx(tab);
 
-          return (searchResults ? searchResultRanges : true) ? (
-            <TreeItem
-              key={file.index}
-              text={
-                searchResultRanges ? (
-                  <Highlight text={file.name} ranges={searchResultRanges} />
-                ) : (
-                  file.name
-                )
-              }
-              icon={(() => {
-                if (!file.saved) {
-                  return <Circle fillClass="fill" strokeClass="stroke" />;
-                }
+                  return (searchResults ? searchResultRanges : true) ? (
+                    <TreeItem
+                      key={tab.id}
+                      text={
+                        searchResultRanges ? (
+                          <Highlight text={name} ranges={searchResultRanges} />
+                        ) : (
+                          name
+                        )
+                      }
+                      icon={(() => {
+                        if (!tab.info.document.saved) {
+                          return (
+                            <Circle fillClass="fill" strokeClass="stroke" />
+                          );
+                        }
 
-                if (props.getIcon) {
-                  const icon = props.getIcon(file, "fill", "stroke");
-                  if (icon) return <ElementToReact element={icon} />;
-                }
+                        const icon = openFileTabCtx.getIcon("fill", "stroke");
+                        if (icon) return <ElementToReact element={icon} />;
 
-                return <BlankFile fillClass="fill" strokeClass="stroke" />;
-              })()}
-              focused={props.activeIndex === file.index}
-              onClick={() => file.onOpen(file)}
-              data-mn-tab-index={file.index} // used by context menu to open the right path
-              className="openfiles-item" // also used by context menu
-            >
-              <div
-                className="openfiles-close tree-item-icon"
-                onClick={() => file.onClose(file)}
-              >
-                <Close fillClass="fill" strokeClass="stroke" />
-              </div>
-            </TreeItem>
-          ) : (
-            <></>
-          );
-        })}
+                        return (
+                          <BlankFile fillClass="fill" strokeClass="stroke" />
+                        );
+                      })()}
+                      focused={props.activeIndex === itemProps.index}
+                      onClick={() => openFileTabCtx.onOpen()}
+                      // used by context menu to open the right path
+                      data-mn-tab-index={itemProps.index}
+                      // also used by context menu
+                      className="openfiles-item"
+                      innerRef={itemProps.ref}
+                      {...itemProps.draggableProps}
+                      {...itemProps.dragHandleProps}
+                    >
+                      <div
+                        className="openfiles-close tree-item-icon"
+                        onClick={() => openFileTabCtx.onClose()}
+                      >
+                        <Close fillClass="fill" strokeClass="stroke" />
+                      </div>
+                    </TreeItem>
+                  ) : (
+                    <></>
+                  );
+                }}
+              </Items>
+              {listProps.placeholder}
+            </div>
+          )}
+        </List>
       </TreeChildren>
     </div>
   );

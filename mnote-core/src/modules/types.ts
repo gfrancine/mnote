@@ -65,6 +65,8 @@ export type TabInfo = {
 };
 
 export type Tab = {
+  /** just for open files reordering. use index and ref equality for everything else */
+  id: string;
   info: TabInfo;
   manager: TabManager;
 };
@@ -73,6 +75,14 @@ export type Tab = {
 export type TabContext = {
   getTabInfo: () => TabInfo;
   setDocument: (doc: DocInfo) => void;
+};
+
+// data needed by the Open Files list
+export type OpenFileTabContext = {
+  getIcon: (fillClass: string, strokeClass: string) => Element | void;
+  onSave: () => void | Promise<void>;
+  onOpen: () => void | Promise<void>;
+  onClose: () => void | Promise<void>;
 };
 
 // right click context menu context

@@ -1,5 +1,5 @@
+// react-beautiful-dnd reorderable list
 // adapted from https://codepen.io/annaazzam/pen/MWbwbGm
-// deno-lint-ignore-file no-explicit-any
 
 import React from "react";
 import {
@@ -7,8 +7,12 @@ import {
   Draggable,
   DraggableProvidedDraggableProps,
   DraggableProvidedDragHandleProps,
+  DraggableStateSnapshot,
+  DraggingStyle,
   Droppable,
   DroppableProvidedProps,
+  DroppableStateSnapshot,
+  NotDraggingStyle,
 } from "react-beautiful-dnd";
 
 function reorder<T>(list: T[], startIndex: number, endIndex: number) {
@@ -24,6 +28,18 @@ type DndPropChildrenReturnType = React.ReactElement<
   HTMLElement,
   string | React.JSXElementConstructor<any>
 >;
+
+// https://github.com/atlassian/react-beautiful-dnd/blob/master/docs/guides/drop-animation.md#skipping-the-drop-animation
+function getStyle(
+  style: DraggingStyle | NotDraggingStyle,
+  snapshot: DraggableStateSnapshot
+) {
+  if (!snapshot.isDropAnimating) return style;
+  return {
+    ...style,
+    transitionDuration: `0.00001s`,
+  };
+}
 
 export function List<T extends BaseItem>(props: {
   items: T[];
@@ -62,9 +78,11 @@ export function List<T extends BaseItem>(props: {
 export function Items<T extends BaseItem>(props: {
   items: T[];
   getDraggableId?: (item: T) => string;
+  skipDropAnim?: boolean;
   children: (props: {
     item: T;
     ref: React.Ref<any>;
+    index: number;
     isDragging: boolean;
     dragHandleProps?: DraggableProvidedDragHandleProps;
     draggableProps: DraggableProvidedDraggableProps;
@@ -78,15 +96,23 @@ export function Items<T extends BaseItem>(props: {
           draggableId={props.getDraggableId?.(item) || `${item.id}-id`}
           index={index}
         >
-          {(provided, snapshot) =>
-            props.children({
+          {(provided, snapshot) => {
+            const { draggableProps } = provided;
+            if (props.skipDropAnim)
+              draggableProps.style = getStyle(
+                draggableProps.style || {},
+                snapshot
+              );
+
+            return props.children({
               item,
+              index,
               ref: provided.innerRef,
               dragHandleProps: provided.dragHandleProps,
-              draggableProps: provided.draggableProps,
+              draggableProps,
               isDragging: snapshot.isDragging,
-            })
-          }
+            });
+          }}
         </Draggable>
       ))}
     </>

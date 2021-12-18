@@ -6,6 +6,7 @@ import { el } from "mnote-util/elbuilder";
 import { Emitter } from "mnote-util/emitter";
 import { TabManager } from "./editors-tab";
 import { FSModule } from "./fs";
+import { nanoid } from "nanoid";
 
 // editors keep the contents in their stae
 // this module communicates between all the other parts of the app, so
@@ -159,6 +160,7 @@ export class EditorsBaseModule {
     const tab = {
       manager,
       info,
+      id: nanoid(),
     };
 
     this.addActiveTab(tab);
@@ -274,6 +276,11 @@ export class EditorsBaseModule {
     };
 
     await this.trySetupTab(info);
+  }
+
+  setActiveTabs(tabs: Tab[]) {
+    this.activeTabs = [...tabs];
+    this.events.emit("activeTabsChanged");
   }
 
   // prompt a save dialog
