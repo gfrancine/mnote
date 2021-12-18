@@ -21,7 +21,7 @@ fmt = """\
   """
 
 # pass arguments to prettier instead of running it on the whole project
-prettier = 'prettier --ignore-path="./.gitingore" -w' # glob...
+prettier = 'prettier --ignore-path="./.gitingore" -w' # <glob...>
 
 lint = """deno lint \
   mnote-core/src \
@@ -45,3 +45,6 @@ lint = """deno lint \
   """
 
 lint-rs = "cd mnote-app/src-tauri && cargo clippy && cargo check"
+
+# run mnote-app commands from here
+app = "cd mnote-app && npm run" # <script name>
