@@ -82,7 +82,7 @@ export function TodoItem(props: TodoItemPropsWithDnd) {
   return (
     <div
       ref={props.dropRef}
-      style={{ marginLeft: props.depth * 20 + "px" }}
+      style={{ paddingLeft: props.depth * 20 + "px" }}
       className={"todo-item" + (props.item.done ? " done" : "")}
     >
       <div ref={props.dragRef} className="inner">
