@@ -1,9 +1,11 @@
-import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import React, { Fragment, useMemo, useRef, useState } from "react";
 import {
   TodoData,
   TodoItemContext,
   TodoItemData,
   TodoListFilterType,
+  TodoListFilterFactory,
+  TodoOrderItem,
 } from "./types";
 import { TodoItemSortlyRenderer } from "./TodoItem";
 import NewTodo from "./NewTodo";
@@ -13,11 +15,9 @@ import useWidth from "./useWidth";
 import Menu from "mnote-components/react/dropdowns/Menu";
 import Select from "mnote-components/react/dropdowns/Select";
 import { useListener } from "mnote-util/useListener";
-
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Sortly, { ContextProvider } from "mnote-deps/react-sortly/src";
-import { TodoListFilterFactory, TodoOrderItem } from ".";
 
 const NEW_ITEM_MOCK_ID = "_$*!(@)#%*!$@()#$NEWITEM";
 

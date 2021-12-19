@@ -1,15 +1,12 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import { TodoItemContext, TodoItemData } from "./types";
+import React, { useEffect, useRef, useState } from "react";
+import { TodoItemContext, TodoItemData, TodoOrderItem } from "./types";
 import TextareaAutosize from "react-textarea-autosize";
-import { Checkmark, Close, Trash } from "./icons";
-import Sortly, {
+import { Trash } from "./icons";
+import {
   ItemRendererProps,
-  ContextProvider,
   useDrag,
   useDrop,
 } from "mnote-deps/react-sortly/src";
-import { TodoOrderItem } from ".";
-import { ConnectDragSource, ConnectDropTarget } from "react-dnd";
 
 function CheckedBullet({
   value = false,

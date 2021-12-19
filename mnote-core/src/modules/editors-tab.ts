@@ -1,7 +1,13 @@
-import { EditorContextEvents, Mnote } from "..";
+import { Mnote } from "..";
 import { FSModule } from "./fs";
 import { PopupsModule } from "./popups";
-import { DocInfo, Editor, EditorContext, TabContext } from "./types";
+import {
+  DocInfo,
+  Editor,
+  EditorContext,
+  TabContext,
+  EditorContextEvents,
+} from "./types";
 import { LogModule } from "./log";
 import { Emitter } from "mnote-util/emitter";
 import { AppDirModule } from "./appdir";

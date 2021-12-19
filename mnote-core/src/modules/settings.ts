@@ -1,11 +1,11 @@
+import { Mnote } from "..";
 import {
-  Mnote,
   Settings,
   SettingsInput,
   SettingsInputIndex,
   SettingsSubcategory,
   SettingsValue,
-} from "..";
+} from "./types";
 import { FSModule } from "./fs";
 import { LogModule } from "./log";
 import { Emitter } from "mnote-util/emitter";

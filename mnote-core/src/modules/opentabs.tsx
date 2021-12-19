@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
-import { FileSearchModule, LayoutModule } from ".";
+import { FileSearchModule } from "./filesearch";
+import { LayoutModule } from "./layout";
 import { el } from "mnote-util/elbuilder";
 import { Mnote } from "..";
 import OpenTabs from "./opentabs-component";
