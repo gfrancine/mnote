@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 // adapted from https://github.com/react-dnd/react-dnd/blob/v13.1.0/packages/examples-hooks/src/04-sortable/simple/Container.tsx/
 // Copyright (c) 2015 Dan Abramov
 // MIT License
