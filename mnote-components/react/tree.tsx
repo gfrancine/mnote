@@ -61,9 +61,13 @@ export function TreeItem(
 export function TreeChildren(props: {
   hidden?: boolean;
   children?: ReactNode;
+  innerRef?: React.Ref<HTMLDivElement>;
 }) {
   return (
-    <div className={"tree-children " + (props.hidden ? "tree-hidden" : "")}>
+    <div
+      ref={props.innerRef}
+      className={"tree-children " + (props.hidden ? "tree-hidden" : "")}
+    >
       {props.children}
     </div>
   );
