@@ -129,6 +129,7 @@ export class OpenTabsModule {
   private updateComponent() {
     render(
       <OpenTabs
+        root={this.element}
         tabs={[...this.editors.activeTabs]}
         getOpenFileTabCtx={this.getOpenFileTabCtx}
         setTabs={(tabs) => this.editors.setActiveTabs(tabs)}
