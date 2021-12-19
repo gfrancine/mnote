@@ -14,6 +14,7 @@
     "@types/katex": "^0.11.1",
     "domain-browser": "^4.22.0",
     "events": "^3.3.0",
+    "immutability-helper": "^3.1.1",
     "open-color": "^1.8.0",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
