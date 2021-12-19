@@ -14,7 +14,7 @@ install = """\
 
 fmt = """\
   prettier \
-    --ignore-path="./.gitingore" -w \
+    --ignore-path="./.gitignore" -w \
     **.scss **.ts **.tsx \
     "{mnote-deps,mnote-extensions}/**/*.{js,jsx,css}" \
   && cd mnote-app/src-tauri && cargo fmt
