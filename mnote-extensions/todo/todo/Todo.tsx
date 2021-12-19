@@ -5,7 +5,7 @@ import {
   TodoItemData,
   TodoListFilterType,
 } from "./types";
-import { TodoItem, TodoItemSortlyRenderer } from "./TodoItem";
+import { TodoItemSortlyRenderer } from "./TodoItem";
 import NewTodo from "./NewTodo";
 import { nanoid } from "nanoid";
 import TextareaAutosize from "react-textarea-autosize";
@@ -16,11 +16,8 @@ import { useListener } from "mnote-util/useListener";
 
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import Sortly, {
-  ContextProvider,
-  useDrag,
-  useDrop,
-} from "mnote-deps/react-sortly/src";
+import Sortly, { ContextProvider } from "mnote-deps/react-sortly/src";
+import { TodoListFilterFactory, TodoOrderItem } from ".";
 
 const NEW_ITEM_MOCK_ID = "_$*!(@)#%*!$@()#$NEWITEM";
 
@@ -42,7 +39,65 @@ export default function Todo(props: {
 
   const [currentlyEditing, setCurrentlyEditing] = useState<string | null>(null);
 
+  const getItemAncestors = (index: number) => {
+    const ancestors: TodoOrderItem[] = [];
+    const orderItem = itemsOrder[index];
+    let currentDepth = orderItem.depth;
+    for (let i = index; i > -1; i--) {
+      const nextOrderItem = itemsOrder[i];
+      if (nextOrderItem.depth < currentDepth) {
+        ancestors.push(nextOrderItem);
+        currentDepth = nextOrderItem.depth;
+      }
+      if (currentDepth === 0) break;
+    }
+    return ancestors;
+  };
+
+  const getItemDescendants = (index: number) => {
+    const descendants: TodoOrderItem[] = [];
+    const orderItem = itemsOrder[index];
+    for (let i = index + 1; i < itemsOrder.length; i++) {
+      const nextOrderItem = itemsOrder[i];
+      if (nextOrderItem.depth < orderItem.depth) break;
+      descendants.push(nextOrderItem);
+    }
+    return descendants;
+  };
+
   const [filterType, setFilterType] = useState<TodoListFilterType>("all");
+  const makeCompletedFilterFactory = (
+    predicate: (done: boolean) => boolean
+  ) => {
+    const filterFactory: TodoListFilterFactory = (items, itemsOrder) => {
+      // show if item is active or has an active descendant
+      const whitelistedAncestors = new Set<string>();
+
+      for (let i = itemsOrder.length - 1; i > -1; i--) {
+        const orderItem = itemsOrder[i];
+        if (whitelistedAncestors.has(orderItem.id)) continue;
+        if (predicate(items[orderItem.id].done))
+          getItemAncestors(i).forEach(({ id }) => whitelistedAncestors.add(id));
+      }
+
+      return (index) => {
+        const item = items[itemsOrder[index].id];
+        return predicate(item.done) || whitelistedAncestors.has(item.id);
+      };
+    };
+    return filterFactory;
+  };
+
+  const filters: Record<TodoListFilterType, TodoListFilterFactory> = {
+    all: () => () => true,
+    active: makeCompletedFilterFactory((done) => !done),
+    completed: makeCompletedFilterFactory((done) => done),
+  };
+
+  const filter = useMemo(
+    () => filters[filterType || "all"](items, itemsOrder),
+    [items, itemsOrder, filterType]
+  );
 
   useListener(() => {
     props.onChange?.({
@@ -52,27 +107,42 @@ export default function Todo(props: {
     });
   }, [items, title, itemsOrder]);
 
-  const filters: Record<TodoListFilterType, (item: TodoItemData) => boolean> = {
-    all: () => true,
-    active: (item) => !item.done,
-    completed: (item) => item.done,
-  };
-
   const ctx: TodoItemContext = {
+    setItemCompleted: (index, completed) => {
+      let toComplete = [itemsOrder[index]];
+      if (completed) toComplete = [...toComplete, ...getItemDescendants(index)];
+
+      const completedItems: Record<string, TodoItemData> = {};
+      toComplete.forEach(
+        (orderItem) =>
+          (completedItems[orderItem.id] = {
+            ...items[orderItem.id],
+            done: completed,
+          })
+      );
+
+      setItems({
+        ...items,
+        ...completedItems,
+      });
+    },
     setItem: (id, value) =>
       setItems({
         ...items,
         [id]: value,
       }),
-    deleteItem: (id, index) => {
-      const newItems = { ...items };
-      delete newItems[id];
+    deleteItem: (index) => {
       const newOrder = [...itemsOrder];
-      newOrder.splice(index, 1);
-      setItems(newItems);
+      const newItems = { ...items };
+      const toDelete = [itemsOrder[index], ...getItemDescendants(index)];
+      newOrder.splice(index, toDelete.length);
+      toDelete.forEach(({ id }) => {
+        delete newItems[id];
+      });
       setItemsOrder(newOrder);
+      setItems(newItems);
     },
-    createItem: (newItem) => {
+    appendNewItem: (newItem) => {
       const item = {
         ...newItem,
         id: nanoid(),
@@ -192,7 +262,7 @@ export default function Todo(props: {
           <ContextProvider>
             <Sortly items={itemsOrder} onChange={setItemsOrder}>
               {(sortlyProps) => {
-                return filters[filterType || "all"](items[sortlyProps.id]) ? (
+                return filter(sortlyProps.index) ? (
                   <TodoItemSortlyRenderer
                     itemProps={{
                       index: sortlyProps.index,

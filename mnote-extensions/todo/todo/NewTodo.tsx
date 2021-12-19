@@ -58,7 +58,7 @@ export default function NewTodo(props: {
               if (e.key === "Enter") {
                 e.preventDefault();
                 setDraft("");
-                props.ctx.createItem({
+                props.ctx.appendNewItem({
                   text: draft,
                   done: false,
                 });

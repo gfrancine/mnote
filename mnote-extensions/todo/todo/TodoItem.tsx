@@ -69,7 +69,7 @@ export function TodoItem(props: TodoItemPropsWithDnd) {
   };
 
   const deleteItem = () => {
-    props.ctx.deleteItem(props.item.id, props.index);
+    props.ctx.deleteItem(props.index);
   };
 
   const ref = useRef<HTMLTextAreaElement>(null);
@@ -88,11 +88,8 @@ export function TodoItem(props: TodoItemPropsWithDnd) {
       <div ref={props.dragRef} className="inner">
         <CheckedBullet
           value={props.item.done}
-          onClick={(value) =>
-            props.ctx.setItem(props.item.id, {
-              ...props.item,
-              done: value,
-            })
+          onClick={(completed) =>
+            props.ctx.setItemCompleted(props.index, completed)
           }
         />
         <div

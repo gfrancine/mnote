@@ -16,11 +16,17 @@ export type TodoData = {
 };
 
 export type TodoItemContext = {
+  setItemCompleted: (index: number, completed: boolean) => void;
   setItem: (id: string, value: TodoItemData) => void;
-  deleteItem: (id: string, index: number) => void;
-  createItem: (newItem: Omit<TodoItemData, "id">) => void;
+  deleteItem: (index: number) => void;
+  appendNewItem: (newItem: Omit<TodoItemData, "id">) => void;
   setCurrentlyEditing: (id: string | null) => void;
   editItemByIndex: (index: number) => void;
 };
 
 export type TodoListFilterType = "all" | "active" | "completed";
+
+export type TodoListFilterFactory = (
+  items: Record<string, TodoItemData>,
+  itemsOrder: TodoOrderItem[]
+) => (index: number) => boolean;
