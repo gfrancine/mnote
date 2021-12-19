@@ -1,10 +1,11 @@
 import React from "react";
 import {
   useDrag as dndUseDrag,
-  DragObjectWithType,
   DragSourceHookSpec,
   ConnectDragSource,
   ConnectDragPreview,
+  DragObjectFactory,
+  DragSourceMonitor,
 } from "react-dnd";
 
 import context from "./context";
@@ -21,7 +22,7 @@ export default function useDrag<
   // @ts-ignore
   spec?: Partial<
     DragSourceHookSpec<
-      DragObject & { type?: DragObjectWithType["type"] },
+      DragObject & { type?: string | symbol },
       DropResult,
       CollectedProps
     >
@@ -30,10 +31,11 @@ export default function useDrag<
   const connectedDragRef = React.useRef<Connectable>();
   const { setDragMonitor, setConnectedDragSource, setInitialDepth } =
     React.useContext(context);
-  const { id, type, depth } = React.useContext(itemContext);
+  const fromItemCtx = React.useContext(itemContext);
+  const { id, type, depth } = fromItemCtx;
   const [collectedProps, originalDonnectDragSource, connectDragPreview] =
     dndUseDrag<
-      DragObjectWithType & { id: ID },
+      DragObject & { type: string | symbol; id: ID },
       DropResult,
       CollectedProps & { $isDragging: boolean }
     >({
@@ -48,25 +50,25 @@ export default function useDrag<
         };
       },
       isDragging: (monitor) => monitor.getItem().id === id,
-      item: {
-        type,
-        ...(spec && spec.item ? spec.item : {}),
-        id,
-      },
-      begin(monitor) {
+      type,
+      item: (monitor: DragSourceMonitor<DragObject>) => {
         setInitialDepth(depth);
         setDragMonitor(monitor);
         if (spec && spec.item) {
-          const result = spec.item(monitor);
+          const result = (spec.item as DragObjectFactory<DragObject>)(monitor);
           if (typeof result === "object") {
             return {
               type,
               ...result,
               id,
-            };
+            } as DragObject & { type: string | symbol; id: ID };
           }
         }
-        return undefined;
+        return {
+          ...fromItemCtx,
+          type,
+          id,
+        } as unknown as DragObject & { type: string | symbol; id: ID };
       },
       end(...args) {
         setInitialDepth(undefined);

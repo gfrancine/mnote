@@ -57,7 +57,10 @@ function Item<T>(props: {
   });
 
   const [{ isDragging }, drag] = useDrag({
-    item: { type: props.itemType, index: props.index },
+    type: props.itemType,
+    item: () => {
+      return { index: props.index };
+    },
     collect: (monitor: any) => ({
       isDragging: monitor.isDragging(),
     }),

@@ -1,5 +1,5 @@
 import React from "react";
-import { DragSourceMonitor, DragObjectWithType } from "react-dnd";
+import { DragSourceMonitor } from "react-dnd";
 import update from "immutability-helper";
 
 import ID from "./types/ID";
@@ -14,7 +14,7 @@ import itemContext from "./itemContext";
 import Item, { ItemProps } from "./Item";
 
 export type SortlyProps<D = { id: ID }> = {
-  type?: DragObjectWithType["type"] | (() => DragObjectWithType["type"]);
+  type?: string | symbol | (() => string | symbol);
   items: ItemData<D>[];
   threshold?: number;
   maxDepth?: number;
