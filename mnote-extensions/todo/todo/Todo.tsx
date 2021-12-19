@@ -59,7 +59,7 @@ export default function Todo(props: {
     const orderItem = itemsOrder[index];
     for (let i = index + 1; i < itemsOrder.length; i++) {
       const nextOrderItem = itemsOrder[i];
-      if (nextOrderItem.depth < orderItem.depth) break;
+      if (nextOrderItem.depth <= orderItem.depth) break;
       descendants.push(nextOrderItem);
     }
     return descendants;
