@@ -3,8 +3,7 @@
 fmt = """\
   prettier \
     --ignore-path="./.gitignore" -w \
-    **.scss **.ts **.tsx \
-    "{mnote-deps,mnote-extensions}/**/*.{js,jsx,css}" \
+    **.scss **.ts **.tsx **.js **.jsx **.css" \
   && cd mnote-app/src-tauri && cargo fmt
   """
 
@@ -12,18 +11,9 @@ fmt = """\
 prettier = 'prettier --ignore-path="./.gitingore" -w' # <glob...>
 
 lint = """deno lint \
-  mnote-core/src \
-  mnote-extensions/plaintext \
-  mnote-extensions/richtext \
-  mnote-extensions/settings \
-  mnote-extensions/calendar \
-  mnote-extensions/kanban \
-  mnote-extensions/markdown \
-  mnote-extensions/image-viewer \
-  mnote-extensions/excalidraw \
-  mnote-extensions/todo \
-  mnote-components/react \
-  mnote-components/vanilla \
+  mnote-core \
+  mnote-extensions \
+  mnote-components \
   mnote-app/src \
   mnote-app/src-web \
   mnote-app/bundle-scripts \
@@ -51,6 +41,5 @@ gitpod = """
   npm i -g npm@8
   npm --version
   npm i
-  npm run tomlrun install
   git reset --hard
   """
