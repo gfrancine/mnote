@@ -1,8 +1,12 @@
-@mixin scrollbar($color) {
+@mixin width($width) {
   &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: $width;
+    height: $width;
   }
+}
+
+@mixin scrollbar($color) {
+  @include width(6px);
 
   &::-webkit-scrollbar-track {
     background: none;

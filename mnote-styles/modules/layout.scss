@@ -77,6 +77,7 @@
         padding: 0 15px 0 20px;
 
         @include scrollbar.scrollbar(map-get(mn.$vars, sidebar-scrollbar));
+        @include scrollbar.width(4px);
       }
 
       .sidebar-filetree,
