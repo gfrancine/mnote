@@ -4,6 +4,15 @@
   "scripts": {
     "tomlrun": "tomlrun"
   },
+  "workspaces": [
+    "mnote-app",
+    "mnote-components",
+    "mnote-core",
+    "mnote-deps",
+    "mnote-extensions",
+    "mnote-util",
+    "mnote-styles"
+  ],
   "dependencies": {
     "@excalidraw/excalidraw": "^0.9.0",
     "@fullcalendar/core": "^5.9.0",

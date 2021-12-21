@@ -22,12 +22,6 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.0.0-beta.8",
-    "esbuild": "^0.14.5",
-    "mnote-components": "file:../mnote-components",
-    "mnote-core": "file:../mnote-core",
-    "mnote-deps": "file:../mnote-deps",
-    "mnote-extensions": "file:../mnote-extensions",
-    "mnote-styles": "file:../mnote-styles",
-    "mnote-util": "file:../mnote-util"
+    "esbuild": "^0.14.5"
   }
 }

@@ -1,7 +1,4 @@
 {
   "name": "mnote-components",
-  "version": "0.1.0",
-  "dependencies": {
-    "mnote-util": "file:../mnote-util"
-  }
+  "version": "0.1.0"
 }

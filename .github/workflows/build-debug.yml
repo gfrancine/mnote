@@ -23,7 +23,7 @@ jobs:
         toolchain: stable
 
     - name: install dependencies
-      run: npm i -g npm@8 && npm i && npm run tomlrun install
+      run: npm i -g npm@8 && npm --version && npm i
 
     - name: build debug
       run: cd mnote-app && npm run build-debug
