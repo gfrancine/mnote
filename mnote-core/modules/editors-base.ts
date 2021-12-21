@@ -280,7 +280,7 @@ export class EditorsBaseModule {
 
   setActiveTabs(tabs: Tab[]) {
     this.activeTabs = [...tabs];
-    this.events.emit("activeTabsChanged");
+    this.events.emitSync("activeTabsChanged");
   }
 
   // prompt a save dialog
