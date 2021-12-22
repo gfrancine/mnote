@@ -3,7 +3,7 @@
 fmt = """\
   prettier \
     --ignore-path="./.gitignore" -w \
-    **.scss **.ts **.tsx **.js **.jsx **.css" \
+    **.scss **.ts **.tsx **.js **.jsx **.css \
   && cd mnote-app/src-tauri && cargo fmt
   """
 
