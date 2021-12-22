@@ -16,7 +16,11 @@ export default function useWidth({
     const element = ref.current;
     if (!element) return;
 
-    const updateSize = () => setSize(element.offsetWidth);
+    const updateSize = () => {
+      // https://stackoverflow.com/a/58701523/16116382
+      window.requestAnimationFrame(() => setSize(element.offsetWidth));
+    };
+
     const observer = new ResizeObserver(updateSize);
     observer.observe(element);
 
@@ -25,7 +29,12 @@ export default function useWidth({
       setHasInitialized(true);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      const element = ref.current;
+      if (!element) return;
+      observer.unobserve(element);
+    };
   });
 
   return size >= min && size <= max;
