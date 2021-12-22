@@ -1,8 +1,8 @@
-// utilities for DOM manipulation
-
-const DOM_PARSER = new DOMParser();
+// utilities dealing with the DOM
 
 // string to html
+
+const DOM_PARSER = new DOMParser();
 
 export function toHtml(s: string): HTMLElement {
   const doc = DOM_PARSER.parseFromString(s, "text/html");
@@ -26,3 +26,9 @@ export function unfreeze() {
 export function isFrozen(): boolean {
   return frozen;
 }
+
+// css
+
+export const shortenSetProperty =
+  (el: HTMLElement) => (property: string, value: string) =>
+    el.style.setProperty(property, value);

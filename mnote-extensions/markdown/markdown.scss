@@ -4,6 +4,7 @@
 
 .md-extension {
   --md-font-size: 1em;
+  --md-line-height: 1.35;
 
   width: 100%;
   height: 100%;
@@ -11,6 +12,7 @@
 
   * {
     font-size: 1em;
+    line-height: var(--md-line-height);
   }
 
   .md-container {

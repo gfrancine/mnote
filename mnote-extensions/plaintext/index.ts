@@ -1,5 +1,7 @@
 import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
+import { shortenSetProperty } from "mnote-util/dom";
 import { el } from "mnote-util/elbuilder";
+import { isNumber, isString } from "mnote-util/validators";
 
 import { plaintextIcon } from "./icon";
 import "./plaintext.scss";
@@ -41,12 +43,21 @@ class PlaintextEditor implements Editor {
       .children(this.textarea).element;
   }
 
-  updateTabSize = () =>
-    this.app.modules.settings
-      .getKeyWithDefault("plaintext.tab-size", 4, (v) => typeof v === "number")
-      .then((value) => {
-        this.textarea.style.tabSize = "" + value;
-      });
+  syncWithSettings = async () => {
+    const setProperty = shortenSetProperty(this.textarea);
+
+    await this.app.modules.settings
+      .getKeyWithDefault("plaintext.font-size", "13px", isString)
+      .then((value) => setProperty("--font-size", value));
+
+    await this.app.modules.settings
+      .getKeyWithDefault("plaintext.line-height", "1.5", isString)
+      .then((value) => setProperty("--line-height", value));
+
+    await this.app.modules.settings
+      .getKeyWithDefault("plaintext.tab-size", 4, isNumber)
+      .then((value) => setProperty("--tab-size", "" + value));
+  };
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
     this.textarea.addEventListener("input", () => {
@@ -54,8 +65,8 @@ class PlaintextEditor implements Editor {
       ctx.markUnsaved();
     });
 
-    this.app.modules.settings.events.on("change", this.updateTabSize);
-    await this.updateTabSize();
+    this.app.modules.settings.events.on("change", this.syncWithSettings);
+    await this.syncWithSettings();
 
     const { path } = ctx.getDocument();
     if (path) {
@@ -68,7 +79,7 @@ class PlaintextEditor implements Editor {
   }
 
   cleanup() {
-    this.app.modules.settings.events.off("change", this.updateTabSize);
+    this.app.modules.settings.events.off("change", this.syncWithSettings);
 
     if (this.container) {
       this.container.removeChild(this.element);
@@ -113,6 +124,25 @@ export class PlaintextExtension implements Extension {
       key: "plaintext",
       title: "Plain Text",
       iconFactory: plaintextIcon,
+    });
+
+    app.modules.settings.registerInput({
+      subcategory: "plaintext",
+      key: "plaintext.font-size",
+      title: "Font size",
+      description:
+        "Plaintext editor font size in a CSS unit (e.g. 12px, 1em, etc...)",
+      default: "13px",
+      type: "string",
+    });
+
+    app.modules.settings.registerInput({
+      subcategory: "plaintext",
+      key: "plaintext.line-height",
+      title: "Line height",
+      description: "Plaintext editor line height",
+      default: "1.5",
+      type: "string",
     });
 
     app.modules.settings.registerInput({

@@ -6,7 +6,13 @@
   display: flex;
 
   .plaintext-textarea {
-    tab-size: 4;
+    --tab-size: 4;
+    --font-size: 13px;
+    --line-height: 1.5;
+
+    tab-size: var(--tab-size);
+    font-size: var(--font-size);
+    line-height: var(--line-height);
     padding: 2em 3em 3em;
     box-sizing: border-box;
     width: 100%;
@@ -18,8 +24,6 @@
     outline: none;
     border: none;
     font-family: map-get(mn.$vars, main-font-monospace);
-    font-size: 13px;
-    line-height: 1.5;
     color: inherit;
     background: inherit;
 

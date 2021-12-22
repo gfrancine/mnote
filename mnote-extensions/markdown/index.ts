@@ -1,6 +1,3 @@
-// todo:
-// find a better and maintained editor
-
 import {
   Editor,
   EditorContext,
@@ -9,7 +6,6 @@ import {
   Mnote,
   SettingsModule,
 } from "mnote-core";
-
 import {
   defaultValueCtx,
   Editor as MilkdownEditor,
@@ -20,13 +16,14 @@ import { listener, listenerCtx } from "@milkdown/plugin-listener";
 import { commonmark } from "@milkdown/preset-commonmark";
 import { history } from "@milkdown/plugin-history";
 import { clipboard } from "@milkdown/plugin-clipboard";
-
 import { el } from "mnote-util/elbuilder";
 import "./markdown.scss";
 import { markdownIcon } from "./icon";
 import { WordStats } from "mnote-components/vanilla/word-stats";
 import { makeImageNode } from "./image";
 import { isData, isWeb } from "mnote-util/url";
+import { isString } from "mnote-util/validators";
+import { shortenSetProperty } from "mnote-util/dom";
 
 class MarkdownEditor implements Editor {
   app: Mnote;
@@ -90,20 +87,21 @@ class MarkdownEditor implements Editor {
       });
   }
 
-  updateFontSize = () =>
-    this.settings
-      .getKeyWithDefault(
-        "markdown.font-size",
-        "1em",
-        (v) => typeof v === "string"
-      )
-      .then((value) => {
-        this.element.style.setProperty("--md-font-size", value);
-      });
+  syncWithSettings = async () => {
+    const setProperty = shortenSetProperty(this.element);
+
+    await this.settings
+      .getKeyWithDefault("markdown.font-size", "1em", isString)
+      .then((value) => setProperty("--md-font-size", value));
+
+    await this.settings
+      .getKeyWithDefault("markdown.line-height", "1.35", isString)
+      .then((value) => setProperty("--md-line-height", value));
+  };
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
-    this.settings.events.on("change", this.updateFontSize);
-    await this.updateFontSize();
+    this.settings.events.on("change", this.syncWithSettings);
+    await this.syncWithSettings();
 
     this.ctx = ctx;
     this.container = containter;
@@ -130,7 +128,7 @@ class MarkdownEditor implements Editor {
   }
 
   cleanup() {
-    this.settings.events.off("change", this.updateFontSize);
+    this.settings.events.off("change", this.syncWithSettings);
     if (this.container) this.container.removeChild(this.element);
     this.element.innerHTML = "";
   }
@@ -184,6 +182,15 @@ export class MarkdownExtension implements Extension {
       description:
         "Base font size of a markdown editor in a CSS unit (e.g. 12px, 1em, etc...)",
       default: "1em",
+    });
+
+    app.modules.settings.registerInput({
+      type: "string",
+      key: "markdown.line-height",
+      title: "Line height",
+      subcategory: "markdown",
+      description: "Paragraph line height of a markdown editor",
+      default: "1.5",
     });
   }
 
