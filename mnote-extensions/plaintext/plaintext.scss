@@ -4,6 +4,7 @@
   width: 100%;
   height: 100%;
   display: flex;
+  position: relative;
 
   .plaintext-textarea {
     --tab-size: 4;
@@ -28,5 +29,13 @@
     background: inherit;
 
     @include mn.scrollbar(map-get(mn.$vars, main-scrollbar));
+  }
+
+  .plaintext-cursorstats {
+    position: absolute;
+    right: 1em;
+    font-size: 12px;
+    bottom: 1em;
+    color: map-get(mn.$vars, main-fg-secondary);
   }
 }

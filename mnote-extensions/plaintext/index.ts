@@ -1,7 +1,7 @@
 import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { shortenSetProperty } from "mnote-util/dom";
 import { el } from "mnote-util/elbuilder";
-import { isNumber, isString } from "mnote-util/validators";
+import { isBoolean, isNumber, isString } from "mnote-util/validators";
 
 import { plaintextIcon } from "./icon";
 import "./plaintext.scss";
@@ -9,16 +9,20 @@ import "./plaintext.scss";
 class PlaintextEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
+  cursorStats: HTMLElement;
   textarea: HTMLTextAreaElement;
   container?: HTMLElement;
   fs: FSModule;
 
   contents = "";
+  showCursorStats = true;
 
   constructor(app: Mnote) {
     this.app = app;
 
     this.fs = app.modules.fs as FSModule;
+
+    this.cursorStats = el("div").class("plaintext-cursorstats").element;
 
     this.textarea = el("textarea")
       .class("plaintext-textarea")
@@ -36,11 +40,25 @@ class PlaintextEditor implements Editor {
           self.value.slice(self.selectionEnd, self.value.length);
         self.selectionStart = start + 1;
         self.selectionEnd = self.selectionStart;
-      }).element as HTMLTextAreaElement;
+      })
+      .on("input", () => this.updateCursorStats())
+      .on("focus", () => this.updateCursorStats())
+      .on("click", () => this.updateCursorStats())
+      .on("keydown", () => this.updateCursorStats())
+      .element as HTMLTextAreaElement;
 
     this.element = el("div")
       .class("plaintext-editor")
-      .children(this.textarea).element;
+      .children(this.textarea, this.cursorStats).element;
+  }
+
+  updateCursorStats() {
+    if (!this.showCursorStats) return;
+    const linesBefore = this.textarea.value
+      .slice(0, this.textarea.selectionEnd)
+      .split("\n");
+    const col = linesBefore[linesBefore.length - 1].length + 1;
+    this.cursorStats.innerText = `Ln ${linesBefore.length}, Col ${col}`;
   }
 
   syncWithSettings = async () => {
@@ -57,6 +75,14 @@ class PlaintextEditor implements Editor {
     await this.app.modules.settings
       .getKeyWithDefault("plaintext.tab-size", 4, isNumber)
       .then((value) => setProperty("--tab-size", "" + value));
+
+    await this.app.modules.settings
+      .getKeyWithDefault("plaintext.show-cursorstats", true, isBoolean)
+      .then((value) => {
+        this.showCursorStats = value;
+        this.cursorStats.style.display = value ? "unset" : "none";
+        this.updateCursorStats();
+      });
   };
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
@@ -153,6 +179,16 @@ export class PlaintextExtension implements Extension {
       default: 2,
       min: 1,
       type: "number",
+    });
+
+    app.modules.settings.registerInput({
+      subcategory: "plaintext",
+      key: "plaintext.show-cursorstats",
+      title: "Show cursor stats",
+      description:
+        "Show the line and column cursor position at the bottom right",
+      default: true,
+      type: "boolean",
     });
   }
 
