@@ -57,8 +57,7 @@
         "width": 1080,
         "height": 720,
         "resizable": true,
-        "fullscreen": false,
-        "fileDropEnabled": false
+        "fullscreen": false
       }
     ],
     "security": {
