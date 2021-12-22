@@ -55,29 +55,29 @@ export const dark = {
 
   "main-fg": "#B0B6BB",
   "main-fg-secondary": "#767E85",
-  "main-fg-dim": "#656A70",
+  "main-fg-dim": "#656c70",
   "main-fg-dimmer": "#404345",
 
-  "main-bg": "#2B2D2E",
-  "main-bg-secondary": "#212324",
+  "main-bg": "#27292a",
+  "main-bg-secondary": "#181b1c",
 
   "main-shadow": "0px 2px 5px " + "#111",
   "main-scrollbar": "#404345",
   "main-overlay-bg": "#11111132",
 
-  "main-border": "#111",
+  "main-border": "#000",
   "main-border-dim": "#222",
 
-  "sidebar-bg": "#212324",
-  "sidebar-bg-hover": "#2B2D2E",
+  "sidebar-bg": "#181b1c",
+  "sidebar-bg-hover": "#27292a",
   "sidebar-fg": "#B0B6BB",
-  "sidebar-scrollbar": "#303233",
+  "sidebar-scrollbar": "#2B2D2E",
 
   "sidebar-item-icon": "#767E85",
-  "sidebar-item-hover-bg": "#2B2D2E",
+  "sidebar-item-hover-bg": "#27292a",
   "sidebar-item-hover-fg": "#B0B6BB",
   "sidebar-item-hover-icon": "#767E85",
-  "sidebar-item-focused-bg": "#303233",
+  "sidebar-item-focused-bg": "#2B2D2E",
   "sidebar-item-focused-fg": "#B0B6BB",
   "sidebar-item-focused-icon": "#767E85",
   "sidebar-filetree-border": "#404345",
@@ -87,8 +87,8 @@ export const dark = {
   "btn-main-bg": "#3F4446",
   "btn-main-bg-hover": "#4A5052",
 
-  "btn-emphasis-fg": "#2B2D2E",
-  "btn-emphasis-hover-fg": "#2B2D2E",
+  "btn-emphasis-fg": "#27292a",
+  "btn-emphasis-hover-fg": "#27292a",
   "btn-emphasis-bg": "#B0B6BB",
   "btn-emphasis-hover-bg": "#92989C",
 };
