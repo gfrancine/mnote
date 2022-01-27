@@ -201,7 +201,7 @@ export class FiletreeModule {
       name: "New file",
       click: async () => {
         const name = await this.popups.promptTextInput(
-          `Create new folder inside "${this.fs.getPathName(dir)}"`
+          `Create new file inside "${this.fs.getPathName(dir)}"`
         );
         if (!name) return;
         const path = this.fs.joinPath([dir, name]);
