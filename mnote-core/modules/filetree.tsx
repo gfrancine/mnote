@@ -232,7 +232,26 @@ export class FiletreeModule {
             {
               name: "Delete file",
               click: () => {
-                this.fs.removeFile(filePath);
+                (async () => {
+                  const action = await this.popups.promptButtons(
+                    `Are you sure you want to delete the file "${filePath}"?`,
+                    [
+                      {
+                        text: "Cancel",
+                        command: "cancel",
+                        kind: "normal",
+                      },
+                      {
+                        text: "Delete",
+                        command: "delete",
+                        kind: "emphasis",
+                      },
+                    ]
+                  );
+
+                  if (action === "cancel") return;
+                  await this.fs.removeFile(filePath);
+                })();
               },
             },
           ];
@@ -276,7 +295,26 @@ export class FiletreeModule {
               {
                 name: "Delete folder",
                 click: () => {
-                  this.fs.removeDir(dirPath);
+                  (async () => {
+                    const action = await this.popups.promptButtons(
+                      `Are you sure you want to delete the folder "${dirPath}"?`,
+                      [
+                        {
+                          text: "Cancel",
+                          command: "cancel",
+                          kind: "normal",
+                        },
+                        {
+                          text: "Delete",
+                          command: "delete",
+                          kind: "emphasis",
+                        },
+                      ]
+                    );
+
+                    if (action === "cancel") return;
+                    await this.fs.removeDir(dirPath);
+                  })();
                 },
               },
               makeNewFolderButton(dirPath),
