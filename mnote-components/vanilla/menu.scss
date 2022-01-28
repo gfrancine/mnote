@@ -20,12 +20,19 @@ $theme: (
     width: max-content;
     box-shadow: map-get($theme, shadow);
     min-width: 210px;
+    font-size: 13px;
+
+    .menu-title {
+      color: map-get($theme, title-fg);
+      padding: 0.5em;
+      margin: 0 0.4em;
+    }
 
     .menu-item {
       font-family: inherit;
       color: map-get($theme, main-fg);
-      font-size: 13px;
       display: flex;
+      font-size: inherit;
       flex-direction: row;
       padding: 0.5em;
       margin: 0 0.4em;
@@ -47,9 +54,9 @@ $theme: (
         flex-direction: row;
 
         .menu-item-left-icon {
-          width: 13px;
-          height: 13px;
-          min-width: 13px;
+          width: 1em;
+          height: 1em;
+          min-width: 1em;
           margin: auto 0.5em auto 0;
 
           svg {

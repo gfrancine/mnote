@@ -48,7 +48,8 @@ export class Menu {
       point: Point;
       anchor: Anchor;
     },
-    itemList: MenuItemList
+    itemList: MenuItemList,
+    title?: string
   ) {
     this.getPosition = getPosition;
     this.itemList = itemList;
@@ -57,7 +58,11 @@ export class Menu {
 
     const children: HTMLElement[] = [];
 
-    itemList.forEach((item, i) => {
+    if (title) {
+      children.push(el("div").class("menu-title").inner(title).element);
+    }
+
+    itemList.forEach((item) => {
       if (item === "divider") {
         children.push(el("div").class("menu-divider").element);
         return;

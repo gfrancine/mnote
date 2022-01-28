@@ -93,17 +93,21 @@ export class EditorsModule extends EditorsBaseModule {
 
       const buttonRect = button.getBoundingClientRect();
 
-      menu = new Menu((menuRect) => {
-        return buttonRect.left - menuRect.width < 0
-          ? {
-              point: { x: buttonRect.left, y: buttonRect.top },
-              anchor: { top: false, left: true },
-            }
-          : {
-              point: { x: buttonRect.right, y: buttonRect.top },
-              anchor: { top: false, left: false },
-            };
-      }, getMenuItems() || []);
+      menu = new Menu(
+        (menuRect) => {
+          return buttonRect.left - menuRect.width < 0
+            ? {
+                point: { x: buttonRect.left, y: buttonRect.top },
+                anchor: { top: false, left: true },
+              }
+            : {
+                point: { x: buttonRect.right, y: buttonRect.top },
+                anchor: { top: false, left: false },
+              };
+        },
+        getMenuItems() || [],
+        "Create a new file"
+      );
 
       menu.show(this.app.element);
     };
