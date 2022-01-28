@@ -80,12 +80,12 @@
       @include inputs.text-input-small;
 
       &.invalid {
-        border: solid 1px #f66;
+        border: solid 1px map-get(mn.$vars, main-error);
       }
     }
 
     .invalid-message {
-      color: #f66;
+      color: map-get(mn.$vars, main-error);
       font-size: 0.8em;
       margin-top: 0.2em;
     }

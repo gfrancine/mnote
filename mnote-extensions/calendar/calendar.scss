@@ -87,5 +87,5 @@
   --fc-bg-event-opacity: 0.3;
   --fc-highlight-color: #{map-get(mn.$vars, btn-emphasis-bg)};
   --fc-today-bg-color: #{map-get(mn.$vars, btn-main-bg)};
-  --fc-now-indicator-color: #f66;
+  --fc-now-indicator-color: #{map-get(mn.$vars, main-error)};
 }

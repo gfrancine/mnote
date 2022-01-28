@@ -19,6 +19,7 @@ export const light = {
   "main-shadow": "0px 2px 5px " + gray[7] + "32",
   "main-overlay-bg": gray[7] + "32",
   "main-scrollbar": gray[3],
+  "main-error": "#f66",
 
   "main-border": gray[4],
   "main-border-dim": gray[2],
@@ -77,6 +78,7 @@ export const dark = {
   "main-shadow": "0px 2px 5px " + "#111",
   "main-scrollbar": "#404345",
   "main-overlay-bg": "#11111132",
+  "main-error": "#f66",
 
   "main-border": "#000",
   "main-border-dim": "#222",
