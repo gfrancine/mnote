@@ -3,8 +3,9 @@ import { Emitter } from "mnote-util/emitter";
 
 export type MenuItem = {
   name: string;
-  shortcut?: string;
   click: (e: MouseEvent) => void;
+  shortcut?: string;
+  icon?: (fillClass: string, strokeClass: string) => Element | undefined;
 };
 
 type Anchor = {
@@ -48,7 +49,20 @@ export class Menu {
         const itemEl = el("div")
           .class("menu-item")
           .children(
-            el("div").class("menu-item-left").inner(item.name).element,
+            el("div")
+              .class("menu-item-left")
+              .hook((e) => {
+                const icon = item.icon?.("fill", "stroke");
+                if (icon) {
+                  e.children(
+                    el("div").class("menu-item-left-icon").children(icon)
+                      .element
+                  );
+                }
+              })
+              .children(
+                el("div").class("menu-item-left-text").inner(item.name).element
+              ).element,
             el("div")
               .class("menu-item-right")
               .inner(item.shortcut || "").element

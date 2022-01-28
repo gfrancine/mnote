@@ -91,8 +91,8 @@ export class Mnote {
     m.menubar = new MenubarModule(this);
     m.appdir = new AppDirModule(this);
     m.sidebar = new SidebarModule(this);
-    m.editors = new EditorsModule(this);
     m.fileicons = new FileIconsModule(this);
+    m.editors = new EditorsModule(this);
     m.filesearch = new FileSearchModule(this);
     m.filetree = new FiletreeModule(this);
     m.opentabs = new OpenTabsModule(this);

@@ -8,6 +8,7 @@ import { Menu, MenuItem } from "mnote-components/vanilla/menu";
 import { createIcon } from "mnote-components/vanilla/icons";
 import { AppDirModule } from "./appdir";
 import { EditorsBaseModule } from "./editors-base";
+import { FileIconsModule } from "./fileicons";
 
 // previously the editors module was over 500 lines long, mostly due to the
 // code binding it to the rest of the app. They should be split into another
@@ -19,6 +20,7 @@ export class EditorsModule extends EditorsBaseModule {
   private input: InputModule;
   private appdir: AppDirModule;
   private sidebar: SidebarModule;
+  private fileicons: FileIconsModule;
 
   constructor(app: Mnote) {
     super(app);
@@ -28,6 +30,7 @@ export class EditorsModule extends EditorsBaseModule {
     this.input = app.modules.input;
     this.appdir = app.modules.appdir;
     this.sidebar = app.modules.sidebar;
+    this.fileicons = app.modules.fileicons;
 
     this.hookToSidebar();
     this.hookToAppdir();
@@ -68,8 +71,12 @@ export class EditorsModule extends EditorsBaseModule {
       const result: MenuItem[] = [];
       for (const editorInfo of this.editors) {
         if (!editorInfo.hideFromNewMenu) {
+          const icon = editorInfo.registeredIconKind
+            ? this.fileicons.getIcons()[editorInfo.registeredIconKind]
+            : undefined;
           result.push({
             name: editorInfo.name,
+            icon: icon?.factory,
             click: () => {
               this.newTab(editorInfo.kind);
               hideMenu();
