@@ -10,7 +10,7 @@ export class Prompt {
   container: Element;
   message: string;
   buttons: PromptButton[];
-  insertedElements: HTMLElement[] = [];
+  insertedElements: Element[] = [];
   buttonEls: HTMLElement[];
   overlay: HTMLElement;
   resolveSignal = new Signal<(command: string) => unknown>();
@@ -20,7 +20,7 @@ export class Prompt {
     container: Element;
     message: string;
     buttons: PromptButton[];
-    insertedElements?: HTMLElement[];
+    insertedElements?: Element[];
   }) {
     this.message = opts.message;
     this.container = opts.container;

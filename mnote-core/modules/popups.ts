@@ -37,7 +37,8 @@ export class PopupsModule {
 
   async promptTextInput(
     message: string,
-    initialValue?: string
+    initialValue?: string,
+    additionalContent?: () => Element | undefined
   ): Promise<string | undefined> {
     const value = initialValue || "";
 
@@ -46,10 +47,14 @@ export class PopupsModule {
       .attr("spellcheck", "false")
       .attr("value", value).element as HTMLInputElement;
 
+    const insertedElements: Element[] = [input];
+    const additionalContent_ = additionalContent?.();
+    if (additionalContent_) insertedElements.push(additionalContent_);
+
     const prompt = new Prompt({
       container: this.app.element,
-      message: message,
-      insertedElements: [input],
+      message,
+      insertedElements,
       buttons: [
         {
           kind: "normal",

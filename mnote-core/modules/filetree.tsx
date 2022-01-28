@@ -15,8 +15,8 @@ import { AppDirModule } from "./appdir";
 import { EditorsModule } from "./editors";
 import { FileIconsModule } from "./fileicons";
 import { FileSearchModule } from "./filesearch";
-
 import { render, unmountComponentAtNode } from "react-dom";
+import Select from "mnote-components/react/dropdowns/Select";
 import React from "react";
 import FileTree from "./filetree-component";
 
@@ -197,19 +197,55 @@ export class FiletreeModule {
       },
     });
 
-    const makeNewFileButton = (dir: string) => ({
-      name: "New file",
-      click: async () => {
-        const name = await this.popups.promptTextInput(
-          `Create new file inside "${this.fs.getPathName(dir)}"`
-        );
-        if (!name) return;
-        const path = this.fs.joinPath([dir, name]);
-        this.log.info("filetree: New file", path);
-        await this.fs.writeTextFile(path, "");
-        await this.editors.tryNewTabFromPath(path);
-      },
-    });
+    const makeNewFileButton = (dir: string) => {
+      const dropdown = el("div").class("prompt-dropdown").element;
+      let extension: string = "";
+
+      const options = [
+        {
+          text: "Select file type...",
+          value: "",
+        },
+      ];
+
+      options.concat(
+        this.editors.editors
+          .filter((info) => info.createNewFileExtension !== undefined)
+          .map((info) => ({
+            text: `.${info.createNewFileExtension} (${info.name})`,
+            value: "." + info.createNewFileExtension,
+          }))
+      );
+
+      render(
+        <Select
+          initialValue=""
+          onChange={(value) => (extension = value)}
+          options={options}
+        />,
+        dropdown
+      );
+
+      return {
+        name: "New file",
+        click: async () => {
+          const name = await this.popups.promptTextInput(
+            `Create new file inside "${this.fs.getPathName(dir)}"`,
+            undefined,
+            () => dropdown
+          );
+          unmountComponentAtNode(dropdown);
+          if (!name) return;
+          const path = this.fs.joinPath([
+            dir,
+            name.endsWith(extension) ? name : name + extension,
+          ]);
+          this.log.info("filetree: New file", path);
+          await this.fs.writeTextFile(path, "");
+          await this.editors.tryNewTabFromPath(path);
+        },
+      };
+    };
 
     const ctxmenuReducer = (ctx: CtxmenuContext) => {
       // find a file tree item

@@ -1,5 +1,6 @@
 @use "../mnote-vars.scss" as mn;
 @use "../mnote-inputs.scss" as inputs;
+@use "~mnote-components/react/dropdowns/dropdowns.scss";
 
 @mixin prompt {
   .prompt-overlay {
@@ -52,6 +53,30 @@
     .prompt-input {
       @include inputs.text-input;
       margin-bottom: 1em;
+    }
+
+    .prompt-dropdown {
+      $dropdown-colors: (
+        bg: map-get(mn.$vars, main-bg-secondary),
+        bg-selected: map-get(mn.$vars, main-fg-dimmer),
+        bg-hover: map-get(mn.$vars, main-bg),
+        shadow: map-get(mn.$vars, main-shadow),
+        fg: map-get(mn.$vars, main-fg),
+      );
+
+      @include dropdowns.base;
+      @include dropdowns.styled($dropdown-colors);
+
+      .dropdown-container {
+        margin-left: 0;
+        font-size: 13px;
+        width: 100%;
+        margin-bottom: 1em;
+      }
+      .dropdown-toggle,
+      .dropdown-menu {
+        width: 100%;
+      }
     }
   }
 }
