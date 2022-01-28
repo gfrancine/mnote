@@ -198,44 +198,31 @@ export class FiletreeModule {
     });
 
     const makeNewFileButton = (dir: string) => {
-      const dropdown = el("div").class("prompt-dropdown").element;
-      let extension: string = "";
-
       const options = [
         {
           text: "Select file type...",
           value: "",
         },
-      ];
-
-      options.concat(
-        this.editors.editors
+        ...this.editors.editors
           .filter((info) => info.createNewFileExtension !== undefined)
           .map((info) => ({
             text: `.${info.createNewFileExtension} (${info.name})`,
             value: "." + info.createNewFileExtension,
-          }))
-      );
-
-      render(
-        <Select
-          initialValue=""
-          onChange={(value) => (extension = value)}
-          options={options}
-        />,
-        dropdown
-      );
+          })),
+      ];
 
       return {
         name: "New file",
         click: async () => {
-          const name = await this.popups.promptTextInput(
-            `Create new file inside "${this.fs.getPathName(dir)}"`,
-            undefined,
-            () => dropdown
-          );
-          unmountComponentAtNode(dropdown);
+          const { textInputValue: name, selectValue: extension = "" } =
+            await this.popups.promptTextInputWithSelect({
+              message: `Create new file inside "${this.fs.getPathName(dir)}"`,
+              selectOptions: options,
+              selectValue: "",
+            });
+
           if (!name) return;
+
           const path = this.fs.joinPath([
             dir,
             name.endsWith(extension) ? name : name + extension,

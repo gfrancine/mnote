@@ -1,7 +1,10 @@
 import { Mnote } from "..";
 import { PromptButton } from "./types";
+import React from "react";
 import { Prompt } from "./popups-prompt";
 import { el } from "mnote-util/elbuilder";
+import { render, unmountComponentAtNode } from "react-dom";
+import Select from "mnote-components/react/dropdowns/Select";
 
 export class PopupsModule {
   private app: Mnote;
@@ -87,5 +90,38 @@ export class PopupsModule {
     }
 
     return input.value;
+  }
+
+  async promptTextInputWithSelect<T extends string>(opts: {
+    message: string;
+    textInputValue?: string;
+    selectValue?: T;
+    selectPlaceholder?: string;
+    selectOptions: { value: T; text: string }[];
+  }) {
+    const select = el("div").class("prompt-dropdown").element;
+    let selectValue: T | undefined = opts.selectValue;
+
+    render(
+      <Select
+        placeholder={opts.selectPlaceholder}
+        initialValue={opts.selectValue}
+        onChange={(value) => (selectValue = value)}
+        options={opts.selectOptions}
+      />,
+      select
+    );
+
+    const textInputValue = await this.promptTextInput(
+      opts.message,
+      opts.textInputValue,
+      () => select
+    );
+    unmountComponentAtNode(select);
+
+    return {
+      textInputValue,
+      selectValue,
+    };
   }
 }
