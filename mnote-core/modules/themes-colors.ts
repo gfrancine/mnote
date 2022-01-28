@@ -65,7 +65,7 @@ export const light = {
 
 // dark theme from my UI prototype
 
-export const dark = {
+export const dark: typeof light = {
   "main-font": "Open Sans",
   "main-font-monospace": "Fira Mono",
 
@@ -87,7 +87,6 @@ export const dark = {
   "main-border-dim": "#222",
 
   "sidebar-bg": "#181b1c",
-  "sidebar-bg-hover": "#27292a",
   "sidebar-fg": "#B0B6BB",
   "sidebar-fg-secondary": "#767E85",
   "sidebar-scrollbar": "#2B2D2E",
