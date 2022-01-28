@@ -38,6 +38,7 @@ export const light = {
   "sidebar-item-focused-fg": gray[9],
   "sidebar-item-focused-icon": gray[6],
   "sidebar-filetree-border": gray[3],
+  "sidebar-resizer-hover-bg": gray[2],
 
   "sidebar-mark-fg": "#000",
   "sidebar-mark-bg": "#fa0",
@@ -99,6 +100,7 @@ export const dark: typeof light = {
   "sidebar-item-focused-fg": "#B0B6BB",
   "sidebar-item-focused-icon": "#767E85",
   "sidebar-filetree-border": "#404345",
+  "sidebar-resizer-hover-bg": "#404345",
 
   "sidebar-mark-fg": "#000",
   "sidebar-mark-bg": "#ff0",

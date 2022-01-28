@@ -22,6 +22,10 @@
       flex-shrink: 0;
       flex-grow: 0;
 
+      &:hover {
+        background-color: map-get(mn.$vars, sidebar-resizer-hover-bg);
+      }
+
       &.gutter-horizontal {
         cursor: ew-resize;
       }
