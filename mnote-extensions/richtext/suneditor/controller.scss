@@ -55,7 +55,7 @@
         bg-disabled: none,
         fg: map-get(mn.$vars, main-fg),
         fg-hover: map-get(mn.$vars, main-fg),
-        fg-active: #4592ff,
+        fg-active: map-get(mn.$vars, main-link-fg),
         fg-disabled: map-get(mn.$vars, main-fg-dim),
       );
 
@@ -72,7 +72,7 @@
       .se-btn {
         &:enabled {
           &.active {
-            color: #4592ff;
+            color: map-get(mn.$vars, main-link-fg);
           }
         }
       }
@@ -95,13 +95,13 @@
   .se-resizing-container {
     position: absolute;
     display: none;
-    outline: 1px solid #3f9dff;
+    outline: 1px solid map-get(mn.$vars, main-link-fg);
     background-color: transparent;
 
     .se-modal-resize {
       position: absolute;
       display: inline-block;
-      background-color: #3f9dff;
+      background-color: map-get(mn.$vars, main-link-fg);
       opacity: 0.3;
     }
 
@@ -116,8 +116,8 @@
         position: absolute;
         width: 7px;
         height: 7px;
-        background-color: #3f9dff;
-        border: 1px solid #4592ff;
+        background-color: map-get(mn.$vars, main-link-fg);
+        border: 1px solid map-get(mn.$vars, main-link-fg);
 
         &.tl {
           top: -5px;
@@ -212,7 +212,7 @@
 
       a {
         display: inline-block;
-        color: #4592ff;
+        color: map-get(mn.$vars, main-link-fg);
         max-width: 200px;
         overflow: hidden;
         text-overflow: ellipsis;

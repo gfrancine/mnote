@@ -365,7 +365,7 @@
 
         td.se-table-selected-cell,
         th.se-table-selected-cell {
-          outline: 1px double #4592ff;
+          outline: 1px double map-get(mn.$vars, main-link-fg);
         }
       }
 

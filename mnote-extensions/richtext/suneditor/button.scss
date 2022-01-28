@@ -7,7 +7,7 @@ $a: (
   bg-disabled: none,
   fg: map-get(mn.$vars, main-fg),
   fg-hover: map-get(mn.$vars, main-fg),
-  fg-active: #4592ff,
+  fg-active: map-get(mn.$vars, main-link-fg),
   fg-disabled: map-get(mn.$vars, main-fg-dim),
 );
 

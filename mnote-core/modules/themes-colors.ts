@@ -20,6 +20,7 @@ export const light = {
   "main-overlay-bg": gray[7] + "32",
   "main-scrollbar": gray[3],
   "main-error": "#f66",
+  "main-link-fg": "#3f9dff",
 
   "main-border": gray[4],
   "main-border-dim": gray[2],
@@ -79,6 +80,7 @@ export const dark = {
   "main-scrollbar": "#404345",
   "main-overlay-bg": "#11111132",
   "main-error": "#f66",
+  "main-link-fg": "#3f9dff",
 
   "main-border": "#000",
   "main-border-dim": "#222",

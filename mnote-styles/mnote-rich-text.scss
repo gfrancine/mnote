@@ -45,7 +45,7 @@
 
 @mixin link {
   word-break: break-word;
-  color: map-get(mn.$vars, main-fg-secondary);
+  color: map-get(mn.$vars, main-link-fg);
   cursor: pointer;
   font-weight: normal;
   transition: all 0.2s ease-in-out;

@@ -1,3 +1,5 @@
+@use "~mnote-styles/mnote-vars" as mn;
+
 @mixin editable {
   .sun-editor-editable {
     word-wrap: break-word;
@@ -157,7 +159,7 @@
       ol,
       ul,
       pre {
-        border: 1px dashed #3f9dff !important;
+        border: 1px dashed map-get(mn.$vars, main-link-fg) !important;
         padding: 14px 8px 8px !important;
       }
 

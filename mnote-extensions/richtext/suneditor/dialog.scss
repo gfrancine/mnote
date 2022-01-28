@@ -16,7 +16,7 @@
     z-index: 2147483647;
 
     a {
-      color: #4592ff;
+      color: map-get(mn.$vars, main-link-fg);
     }
 
     label,
@@ -313,7 +313,7 @@
         .se-svg.se-anchor-preview-icon {
           flex: unset;
           line-height: 1.5;
-          // color: #4592ff;
+          // color: map-get(mn.$vars, main-link-fg);
 
           // .se-svg
           width: 1.2em;
@@ -338,7 +338,7 @@
 
       .se-anchor-rel-btn {
         width: 46px;
-        // color: #3f9dff;
+        // color: map-get(mn.$vars, main-link-fg);
       }
 
       .se-anchor-rel-wrapper {

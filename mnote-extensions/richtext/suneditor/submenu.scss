@@ -162,7 +162,7 @@
       }
 
       &.se-checked {
-        color: #4592ff;
+        color: map-get(mn.$vars, main-link-fg);
 
         > .se-svg > svg {
           display: block;
@@ -245,10 +245,18 @@
       width: 1em;
       height: 1em;
       background-size: 18px 18px;
-      background-image: linear-gradient(to right, #3f9dff 1px, transparent 1px),
-        linear-gradient(to bottom, #3f9dff 1px, #3f9dff20 1px);
-      border-right: solid 1px #3f9dff;
-      border-bottom: solid 1px #3f9dff;
+      background-image: linear-gradient(
+          to right,
+          map-get(mn.$vars, main-link-fg) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          to bottom,
+          map-get(mn.$vars, main-link-fg) 1px,
+          transparent 1px
+        );
+      border-right: solid 1px map-get(mn.$vars, main-link-fg);
+      border-bottom: solid 1px map-get(mn.$vars, main-link-fg);
       box-sizing: content-box; // make the bottom-right border line up
     }
 
