@@ -27,6 +27,7 @@ export const light = {
 
   "sidebar-bg": gray[1],
   "sidebar-fg": gray[9],
+  "sidebar-fg-secondary": gray[6],
   "sidebar-scrollbar": gray[3],
 
   "sidebar-item-icon": gray[6],
@@ -88,6 +89,7 @@ export const dark = {
   "sidebar-bg": "#181b1c",
   "sidebar-bg-hover": "#27292a",
   "sidebar-fg": "#B0B6BB",
+  "sidebar-fg-secondary": "#767E85",
   "sidebar-scrollbar": "#2B2D2E",
 
   "sidebar-item-icon": "#767E85",

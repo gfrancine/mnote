@@ -16,22 +16,22 @@
     height: 24px; // see layout styles
 
     .fill {
-      fill: map-get(mn.$vars, "main-fg-secondary");
+      fill: map-get(mn.$vars, "sidebar-fg-secondary");
     }
 
     .stroke {
-      stroke: map-get(mn.$vars, "main-fg-secondary");
+      stroke: map-get(mn.$vars, "sidebar-fg-secondary");
     }
 
     &:hover {
       cursor: pointer;
 
       .fill {
-        fill: map-get(mn.$vars, "main-fg");
+        fill: map-get(mn.$vars, "sidebar-fg");
       }
 
       .stroke {
-        stroke: map-get(mn.$vars, "main-fg");
+        stroke: map-get(mn.$vars, "sidebar-fg");
       }
     }
 
