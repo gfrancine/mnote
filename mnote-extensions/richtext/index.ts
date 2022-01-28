@@ -9,6 +9,8 @@ import { htmlIcon } from "./icon";
 import "./richtext.scss";
 import "katex/dist/katex.css";
 import { WordStats } from "mnote-components/vanilla/word-stats";
+import { shortenSetProperty } from "mnote-util/dom";
+import { isNumber } from "mnote-util/validators";
 
 class RichtextEditor implements Editor {
   app: Mnote;
@@ -105,6 +107,8 @@ class RichtextEditor implements Editor {
       this.contents = contents;
     }
 
+    this.app.modules.settings.events.on("change", this.syncWithSettings);
+
     this.editor.onInput = this.updateWordStats;
 
     this.editor.onChange = (contents) => {
@@ -123,10 +127,17 @@ class RichtextEditor implements Editor {
     this.wordstats.setText(this.editorElement.innerText);
   };
 
+  syncWithSettings = async () => {
+    const setProperty = shortenSetProperty(this.element);
+
+    await this.app.modules.settings
+      .getKeyWithDefault("richtext.default-font-size", 14, isNumber)
+      .then((value) => setProperty("--default-font-size", value + "px"));
+  };
+
   cleanup() {
-    if (this.container) {
-      this.container.removeChild(this.element);
-    }
+    this.app.modules.settings.events.off("change", this.syncWithSettings);
+    if (this.container) this.container.removeChild(this.element);
   }
 
   async save(path: string) {
@@ -160,6 +171,23 @@ export class RichtextExtension implements Extension {
           extensions: ["html"],
         },
       ],
+    });
+
+    app.modules.settings.registerSubcategory({
+      category: "extensions",
+      key: "richtext",
+      title: "Rich Text",
+      iconFactory: htmlIcon,
+    });
+
+    app.modules.settings.registerInput({
+      subcategory: "richtext",
+      key: "richtext.default-font-size",
+      title: "Default font size",
+      description: "Default paragraph font size in pixels",
+      type: "number",
+      default: 14,
+      min: 0,
     });
   }
 
