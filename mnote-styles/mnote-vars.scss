@@ -37,7 +37,16 @@ $var-names: (
   "btn-emphasis-fg",
   "btn-emphasis-hover-fg",
   "btn-emphasis-bg",
-  "btn-emphasis-hover-bg"
+  "btn-emphasis-hover-bg",
+  // inputs,  assuming background is main-bg
+  "switch-on-bg",
+  "switch-on-fg",
+  "switch-on-hover-bg",
+  "switch-on-hover-fg",
+  "switch-off-bg",
+  "switch-off-fg",
+  "switch-off-hover-bg",
+  "switch-off-hover-fg"
 );
 
 // map of root variables

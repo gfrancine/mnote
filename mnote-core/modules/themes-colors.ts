@@ -48,6 +48,16 @@ export const light = {
   "btn-emphasis-hover-fg": "#fff",
   "btn-emphasis-bg": gray[6],
   "btn-emphasis-hover-bg": gray[7],
+
+  "switch-on-bg": gray[6],
+  "switch-on-fg": "#fff",
+  "switch-on-hover-bg": gray[7],
+  "switch-on-hover-fg": "#fff",
+
+  "switch-off-bg": gray[3],
+  "switch-off-fg": "#fff",
+  "switch-off-hover-bg": gray[4],
+  "switch-off-hover-fg": "#fff",
 };
 
 // dark theme from my UI prototype
@@ -97,6 +107,16 @@ export const dark = {
   "btn-emphasis-hover-fg": "#27292a",
   "btn-emphasis-bg": "#B0B6BB",
   "btn-emphasis-hover-bg": "#92989C",
+
+  "switch-on-bg": "#B0B6BB",
+  "switch-on-fg": "#27292a",
+  "switch-on-hover-bg": "#92989C",
+  "switch-on-hover-fg": "#27292a",
+
+  "switch-off-bg": "#3F4446",
+  "switch-off-fg": "#B0B6BB",
+  "switch-off-hover-bg": "#4A5052",
+  "switch-off-hover-fg": "#B0B6BB",
 };
 
 /* oc dark theme

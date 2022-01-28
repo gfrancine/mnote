@@ -14,35 +14,36 @@
 
     &.off {
       .bg {
-        fill: map-get(mn.$vars, btn-main-bg);
+        fill: map-get(mn.$vars, switch-off-bg);
       }
       .handle {
-        fill: map-get(mn.$vars, btn-main-fg);
+        fill: map-get(mn.$vars, switch-off-fg);
       }
 
       &:hover {
         .bg {
-          fill: map-get(mn.$vars, btn-main-bg-hover);
+          fill: map-get(mn.$vars, switch-off-hover-bg);
         }
         .handle {
-          fill: map-get(mn.$vars, btn-main-fg-hover);
+          fill: map-get(mn.$vars, switch-off-hover-fg);
         }
       }
     }
 
     &.on {
       .bg {
-        fill: map-get(mn.$vars, btn-emphasis-bg);
+        fill: map-get(mn.$vars, switch-on-bg);
       }
       .handle {
-        fill: map-get(mn.$vars, btn-emphasis-fg);
+        fill: map-get(mn.$vars, switch-on-fg);
       }
+
       &:hover {
         .bg {
-          fill: map-get(mn.$vars, btn-emphasis-hover-bg);
+          fill: map-get(mn.$vars, switch-on-hover-bg);
         }
         .handle {
-          fill: map-get(mn.$vars, btn-emphasis-hover-fg);
+          fill: map-get(mn.$vars, switch-on-hover-fg);
         }
       }
     }
