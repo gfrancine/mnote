@@ -8,6 +8,8 @@ export type MenuItem = {
   icon?: (fillClass: string, strokeClass: string) => Element | undefined;
 };
 
+export type MenuItemList = (MenuItem | "divider")[];
+
 type Anchor = {
   top: boolean;
   left: boolean;
@@ -18,13 +20,24 @@ type Point = {
   y: number;
 };
 
+// ctxmenu and menubar modules still use MenuItem[][]
+export function sectionsToMenuItems(sections: MenuItem[][]) {
+  let items: MenuItemList = [];
+  sections.forEach((section, i) => {
+    items = items.concat(section);
+    if (i < sections.length - 1) items.push("divider");
+  });
+  return items;
+}
+
 export class Menu {
   element: HTMLElement;
   events: Emitter<{
     click(): void;
   }> = new Emitter();
 
-  sections: MenuItem[][];
+  itemList: MenuItemList;
+
   getPosition: (rect: DOMRect) => {
     point: Point;
     anchor: Anchor;
@@ -35,61 +48,59 @@ export class Menu {
       point: Point;
       anchor: Anchor;
     },
-    sections: MenuItem[][]
+    itemList: MenuItemList
   ) {
     this.getPosition = getPosition;
-    this.sections = sections;
+    this.itemList = itemList;
 
     const element = el("div").class("menu");
 
     const children: HTMLElement[] = [];
 
-    sections.forEach((section, i) => {
-      section.forEach((item) => {
-        const itemEl = el("div")
-          .class("menu-item")
-          .children(
-            el("div")
-              .class("menu-item-left")
-              .hook((e) => {
-                const icon = item.icon?.("fill", "stroke");
-                if (icon) {
-                  e.children(
-                    el("div").class("menu-item-left-icon").children(icon)
-                      .element
-                  );
-                }
-              })
-              .children(
-                el("div").class("menu-item-left-text").inner(item.name).element
-              ).element,
-            el("div")
-              .class("menu-item-right")
-              .inner(item.shortcut || "").element
-          )
-          .on("click", (e) => {
-            let caughtErr;
-            try {
-              item.click(e);
-            } catch (err) {
-              caughtErr = err;
-            }
-
-            // one of the listeners here will
-            // close the context menu
-            this.events.emit("click");
-
-            if (caughtErr !== undefined) {
-              throw caughtErr;
-            }
-          }).element;
-
-        children.push(itemEl);
-      });
-
-      if (i < sections.length - 1) {
+    itemList.forEach((item, i) => {
+      if (item === "divider") {
         children.push(el("div").class("menu-divider").element);
+        return;
       }
+
+      const itemEl = el("div")
+        .class("menu-item")
+        .children(
+          el("div")
+            .class("menu-item-left")
+            .hook((e) => {
+              const icon = item.icon?.("fill", "stroke");
+              if (icon) {
+                e.children(
+                  el("div").class("menu-item-left-icon").children(icon).element
+                );
+              }
+            })
+            .children(
+              el("div").class("menu-item-left-text").inner(item.name).element
+            ).element,
+          el("div")
+            .class("menu-item-right")
+            .inner(item.shortcut || "").element
+        )
+        .on("click", (e) => {
+          let caughtErr;
+          try {
+            item.click(e);
+          } catch (err) {
+            caughtErr = err;
+          }
+
+          // one of the listeners here will
+          // close the context menu
+          this.events.emit("click");
+
+          if (caughtErr !== undefined) {
+            throw caughtErr;
+          }
+        }).element;
+
+      children.push(itemEl);
     });
 
     this.element = element.children(...children).element;

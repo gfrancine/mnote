@@ -67,7 +67,7 @@ export class EditorsModule extends EditorsBaseModule {
       }
     };
 
-    const getSection: () => MenuItem[] | undefined = () => {
+    const getMenuItems: () => MenuItem[] | undefined = () => {
       const result: MenuItem[] = [];
       for (const editorInfo of this.editors) {
         if (!editorInfo.hideFromNewMenu) {
@@ -93,9 +93,6 @@ export class EditorsModule extends EditorsBaseModule {
 
       const buttonRect = button.getBoundingClientRect();
 
-      const section = getSection();
-      const sections = section ? [section] : [];
-
       menu = new Menu((menuRect) => {
         return buttonRect.left - menuRect.width < 0
           ? {
@@ -106,7 +103,7 @@ export class EditorsModule extends EditorsBaseModule {
               point: { x: buttonRect.right, y: buttonRect.top },
               anchor: { top: false, left: false },
             };
-      }, sections);
+      }, getMenuItems() || []);
 
       menu.show(this.app.element);
     };

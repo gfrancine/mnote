@@ -1,7 +1,11 @@
 import { Mnote } from "..";
 import { LayoutModule } from "./layout";
 import { el, Elbuilder } from "mnote-util/elbuilder";
-import { Menu, MenuItem } from "mnote-components/vanilla/menu";
+import {
+  Menu,
+  MenuItem,
+  sectionsToMenuItems,
+} from "mnote-components/vanilla/menu";
 import { LogModule } from "./log";
 import { createIcon } from "mnote-components/vanilla/icons";
 
@@ -98,7 +102,7 @@ export class MenubarModule /* implements Module */ {
         },
         anchor: { top: true, left: false },
       }),
-      buttons
+      sectionsToMenuItems(buttons)
     );
 
     this.menuCurrent = menu;

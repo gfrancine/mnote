@@ -1,5 +1,9 @@
 import { Mnote } from "..";
-import { Menu, MenuItem } from "mnote-components/vanilla/menu";
+import {
+  Menu,
+  MenuItem,
+  sectionsToMenuItems,
+} from "mnote-components/vanilla/menu";
 import { CtxmenuContext } from "./types";
 
 /* {
@@ -83,7 +87,7 @@ export class ContextMenu {
             left: e.pageX + rect.width < innerWidth,
           },
         }),
-        sections
+        sectionsToMenuItems(sections)
       );
 
       this.activeMenu.events.on("click", () => {
