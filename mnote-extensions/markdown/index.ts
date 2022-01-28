@@ -13,7 +13,7 @@ import {
   themeFactory,
 } from "@milkdown/core";
 import { listener, listenerCtx } from "@milkdown/plugin-listener";
-import { commonmark } from "@milkdown/preset-commonmark";
+import { gfm } from "@milkdown/preset-gfm";
 import { history } from "@milkdown/plugin-history";
 import { clipboard } from "@milkdown/plugin-clipboard";
 import { el } from "mnote-util/elbuilder";
@@ -68,7 +68,7 @@ class MarkdownEditor implements Editor {
 
     return MilkdownEditor.make()
       .use(themeFactory({}))
-      .use(commonmark)
+      .use(gfm)
       .use(makeImageNode(resolveImageSrc)())
       .use(listener)
       .use(clipboard)

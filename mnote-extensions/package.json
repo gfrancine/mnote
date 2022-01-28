@@ -7,7 +7,7 @@
     "@milkdown/plugin-clipboard": "~5.2.1",
     "@milkdown/plugin-history": "~5.2.1",
     "@milkdown/plugin-listener": "~5.2.1",
-    "@milkdown/preset-commonmark": "~5.2.1",
+    "@milkdown/preset-gfm": "~5.2.1",
     "@milkdown/prose": "~5.2.1",
     "@milkdown/utils": "~5.2.1",
     "debounce": "^1.2.1",
@@ -18,7 +18,7 @@
     "suneditor": "^2.41.3"
   },
   "scripts": {
-    "bump-milkdown": "npm i @milkdown/core@latest @milkdown/prose@latest @milkdown/utils@latest @milkdown/preset-commonmark@latest @milkdown/plugin-listener@latest @milkdown/plugin-clipboard@latest @milkdown/plugin-history@latest"
+    "bump-milkdown": "npm i @milkdown/core@latest @milkdown/prose@latest @milkdown/utils@latest @milkdown/preset-gfm@latest @milkdown/plugin-listener@latest @milkdown/plugin-clipboard@latest @milkdown/plugin-history@latest"
   },
   "devDependencies": {
     "@types/debounce": "^1.2.0",
