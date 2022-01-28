@@ -57,6 +57,11 @@
       flex-grow: 0;
       flex-shrink: 0;
 
+      mark {
+        color: map-get(mn.$vars, sidebar-mark-fg);
+        background: map-get(mn.$vars, sidebar-mark-bg);
+      }
+
       &.hidden {
         display: none;
       }
