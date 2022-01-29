@@ -13,6 +13,7 @@
     "debounce": "^1.2.1",
     "iv-viewer": "^2.0.1",
     "katex": "^0.13.18",
+    "panzoom": "^9.4.2",
     "prosemirror-inputrules": "^1.1.3",
     "prosemirror-state": "^1.3.4",
     "suneditor": "^2.41.3"

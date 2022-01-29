@@ -11,7 +11,7 @@
     box-sizing: border-box;
   }
 
-  .iv-image {
+  .image-viewer-image {
     image-rendering: pixelated;
     box-shadow: map-get(mn.$vars, main-shadow);
   }

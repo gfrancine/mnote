@@ -1,18 +1,16 @@
 import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
-
-import IvViewer from "iv-viewer";
-import "iv-viewer/dist/iv-viewer.css";
-
 import { imageIcon } from "./icon";
 import "./image-viewer.scss";
+import panzoom, { PanZoom } from "panzoom";
 
 class ImageViewer implements Editor {
   app: Mnote;
-  ivViewer: IvViewer;
   element: HTMLElement;
   container?: HTMLElement;
+  image: HTMLImageElement;
   fs: FSModule;
+  panzoom: PanZoom;
 
   // used by src-web
   mockSrc?: string;
@@ -22,13 +20,18 @@ class ImageViewer implements Editor {
 
     this.fs = app.modules.fs as FSModule;
 
-    this.element = el("div").class("image-viewer-editor").element;
+    this.image = el("img").class("image-viewer-image")
+      .element as HTMLImageElement;
 
-    this.ivViewer = new IvViewer(this.element, {
-      snapView: false,
-    });
+    this.element = el("div")
+      .class("image-viewer-editor")
+      .children(this.image).element;
 
     this.mockSrc = mockSrc;
+
+    this.panzoom = panzoom(this.image, {
+      smoothScroll: false,
+    });
   }
 
   startup(containter: HTMLElement, ctx: EditorContext) {
@@ -37,17 +40,21 @@ class ImageViewer implements Editor {
     this.container = containter;
     containter.appendChild(this.element);
 
+    console.log(ctx.getDocument());
+
     if (path) {
-      this.ivViewer.load(this.fs.convertImageSrc(path));
+      this.image.src = this.fs.convertImageSrc(path);
     }
 
     if (this.mockSrc) {
-      this.ivViewer.load(this.mockSrc);
+      this.image.src = this.mockSrc;
     }
 
+    console.log(this.mockSrc, this.image);
+
     // the viewer manually calculates its position
-    setTimeout(() => this.ivViewer.refresh(), 20);
-    ctx.events.on("tabShow", () => this.ivViewer.refresh());
+    // setTimeout(() => this.ivViewer.refresh(), 20);
+    // ctx.events.on("tabShow", () => this.ivViewer.refresh());
 
     return Promise.resolve();
   }
@@ -56,6 +63,8 @@ class ImageViewer implements Editor {
     if (this.container) {
       this.container.removeChild(this.element);
     }
+
+    this.panzoom.dispose();
   }
 
   save(_path: string) {
