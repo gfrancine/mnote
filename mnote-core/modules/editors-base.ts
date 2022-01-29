@@ -49,7 +49,10 @@ export class EditorsBaseModule {
     this.nothingHere = (() => {
       const element = el("div")
         .inner(
-          "Click the three dots on the top right to open a file or folder."
+          `<div>
+            <div>Click the three dots on the top right to open a file/folder.</div>
+            <div>Click on the "+" icon in the sidebar to create a new file.</div>
+          </div>`
         )
         .class("placeholder-nothing").element;
 
