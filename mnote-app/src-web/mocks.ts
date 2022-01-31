@@ -47,6 +47,12 @@ export const contents: Record<string, string> = {
 
   ![](${exampleImage})
 
+  - [ ] bullet
+    - [x] list
+      - [ ] nested
+
+  <!---->
+
   - bullet
     - list
       - nested

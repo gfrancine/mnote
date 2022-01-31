@@ -54,6 +54,11 @@
 
   p.paragraph {
     @include richtext.paragraph;
+
+    // override milkdown's styles
+    margin: unset;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
   }
 
   hr {
@@ -95,6 +100,11 @@
       span {
         font-size: 1em;
       }
+    }
+
+    p.paragraph {
+      margin-block-start: 0.5em;
+      margin-block-end: 0.5em;
     }
   }
 
