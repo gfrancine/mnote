@@ -83,6 +83,21 @@
     font-style: italic;
   }
 
+  // task list label with material icons
+
+  .task-list-item {
+    label {
+      width: 1em;
+      height: 1em;
+      top: 0.3em;
+      left: -1.4em;
+
+      span {
+        font-size: 1em;
+      }
+    }
+  }
+
   //
 
   .blockquote {
