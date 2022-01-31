@@ -18,11 +18,13 @@ import { history } from "@milkdown/plugin-history";
 import { clipboard } from "@milkdown/plugin-clipboard";
 import { el } from "mnote-util/elbuilder";
 import "./markdown.scss";
+import "./materialicons.css";
 import { markdownIcon } from "./icon";
 import { WordStats } from "mnote-components/vanilla/word-stats";
 import { makeImageNode } from "./image";
 import { isData, isWeb } from "mnote-util/url";
 import { isString } from "mnote-util/validators";
+import { slots } from "./milkdownicons";
 import { shortenSetProperty } from "mnote-util/dom";
 
 class MarkdownEditor implements Editor {
@@ -67,7 +69,7 @@ class MarkdownEditor implements Editor {
     };
 
     return MilkdownEditor.make()
-      .use(themeFactory({}))
+      .use(themeFactory({ slots }))
       .use(gfm)
       .use(makeImageNode(resolveImageSrc)())
       .use(listener)
