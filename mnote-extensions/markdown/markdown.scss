@@ -128,7 +128,7 @@
         background: map-get(mn.$vars, btn-main-bg);
 
         &:hover {
-          background: map-get(mn.$vars, btn-main-bg-hover);
+          background: map-get(mn.$vars, btn-main-hover-bg);
         }
       }
 

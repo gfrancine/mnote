@@ -44,9 +44,9 @@ export const light = {
   "sidebar-mark-bg": "#fa0",
 
   "btn-main-fg": gray[9], // buttons, assuming background is main-bg
-  "btn-main-fg-hover": gray[9],
+  "btn-main-hover-fg": gray[9],
   "btn-main-bg": gray[2],
-  "btn-main-bg-hover": gray[3],
+  "btn-main-hover-bg": gray[3],
 
   "btn-emphasis-fg": "#fff",
   "btn-emphasis-hover-fg": "#fff",
@@ -106,9 +106,9 @@ export const dark: typeof light = {
   "sidebar-mark-bg": "#ff0",
 
   "btn-main-fg": "#B0B6BB", // buttons, assuming background is main-bg
-  "btn-main-fg-hover": "#B0B6BB",
+  "btn-main-hover-fg": "#B0B6BB",
   "btn-main-bg": "#3F4446",
-  "btn-main-bg-hover": "#4A5052",
+  "btn-main-hover-bg": "#4A5052",
 
   "btn-emphasis-fg": "#27292a",
   "btn-emphasis-hover-fg": "#27292a",
@@ -151,9 +151,9 @@ const darkTheme = {
   "sidebar-fg": gray[4],
 
   "btn-main-fg": gray[2], // buttons, assuming background is main-bg
-  "btn-main-fg-hover": gray[2],
+  "btn-main-hover-fg": gray[2],
   "btn-main-bg": gray[7],
-  "btn-main-bg-hover": gray[6],
+  "btn-main-hover-bg": gray[6],
 
   "btn-emphasis-fg": gray[9],
   "btn-emphasis-hover-fg": gray[9],

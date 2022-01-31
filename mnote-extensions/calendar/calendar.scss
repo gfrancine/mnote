@@ -65,9 +65,9 @@
   --fc-button-text-color: #{map-get(mn.$vars, btn-main-fg)};
   --fc-button-bg-color: #{map-get(mn.$vars, btn-main-bg)};
   --fc-button-border-color: transparent;
-  --fc-button-hover-bg-color: #{map-get(mn.$vars, btn-main-bg-hover)};
+  --fc-button-hover-bg-color: #{map-get(mn.$vars, btn-main-hover-bg)};
   --fc-button-hover-border-color: transparent;
-  --fc-button-active-bg-color: #{map-get(mn.$vars, btn-main-bg-hover)};
+  --fc-button-active-bg-color: #{map-get(mn.$vars, btn-main-hover-bg)};
   --fc-button-active-border-color: transparent;
 
   --fc-event-bg-color: #{map-get(mn.$vars, btn-emphasis-bg)};

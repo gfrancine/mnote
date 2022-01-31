@@ -46,8 +46,8 @@
   color: map-get(mn.$vars, btn-main-fg);
 
   &:hover {
-    background: map-get(mn.$vars, btn-main-bg-hover);
-    color: map-get(mn.$vars, btn-main-fg-hover);
+    background: map-get(mn.$vars, btn-main-hover-bg);
+    color: map-get(mn.$vars, btn-main-hover-fg);
   }
 }
 
