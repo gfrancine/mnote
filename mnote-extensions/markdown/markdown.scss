@@ -24,6 +24,7 @@
     margin: 0 auto;
     box-sizing: border-box;
     background: map-get(mn.$vars, main-bg);
+    position: relative; // tooltip
 
     .editor {
       box-sizing: border-box;
@@ -105,6 +106,83 @@
     p.paragraph {
       margin-block-start: 0.5em;
       margin-block-end: 0.5em;
+    }
+  }
+
+  .tableWrapper {
+    transform: translate(-1em, 0);
+
+    table {
+      @include richtext.table;
+
+      table-layout: fixed;
+      margin: 1em 0 1em 1em !important;
+
+      * {
+        font-size: inherit;
+      }
+      .milkdown-cell-left,
+      .milkdown-cell-point,
+      .milkdown-cell-top {
+        position: absolute;
+        background: map-get(mn.$vars, btn-main-bg);
+
+        &:hover {
+          background: map-get(mn.$vars, btn-main-bg-hover);
+        }
+      }
+
+      .milkdown-cell-point {
+        left: calc(-2px - 1em);
+        top: calc(-2px - 1em);
+        width: 1em;
+        height: 1em;
+      }
+
+      .milkdown-cell-left {
+        left: calc(-6px - 0.5em);
+        top: 0;
+        bottom: 0;
+        width: 0.5em;
+      }
+
+      .milkdown-cell-top {
+        left: 0;
+        right: 0;
+        top: calc(-6px - 0.5em);
+        height: 0.5em;
+      }
+
+      th,
+      td {
+        padding: 0.4em;
+        height: unset;
+        min-width: 50px;
+        position: relative;
+
+        p {
+          line-height: var(--md-line-height) !important;
+        }
+
+        &.selectedCell {
+          // 1.1, otherwise the top and left borders won't show up
+          border: solid 1.1px map-get(mn.$vars, main-link-fg);
+        }
+      }
+    }
+  }
+
+  .table-tooltip {
+    background: var(--mnote-main-bg);
+    box-shadow: var(--mnote-main-shadow);
+
+    .icon {
+      width: 2em;
+      height: 2em;
+      font-size: 1em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 
