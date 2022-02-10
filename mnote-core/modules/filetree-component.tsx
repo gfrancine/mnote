@@ -13,6 +13,7 @@ import {
   ElementToReact,
   TreeChildren,
   TreeItem,
+  TREE_HOVERED_CONTAINER_CLASS,
 } from "mnote-components/react/tree";
 import { getMatchingRanges, MatchRange } from "mnote-util/search";
 import { sortChildren } from "mnote-util/nodes";
@@ -67,6 +68,8 @@ function searchFileTree(
 function FileNode(props: {
   parentPath: string;
   visible?: boolean;
+  isParentDraggedOver: boolean;
+  setParentDraggedOver: (value: boolean) => unknown;
   node: Node;
   focusedPath?: string; // path of the focused node
   hooks?: FileTreeHooks;
@@ -84,8 +87,6 @@ function FileNode(props: {
 
   const isSearching = props.searchResults !== undefined;
   const searchResultRanges = props.searchResults?.[props.node.path];
-
-  const [isDraggedOver, setDraggedOver] = useState(false);
 
   return props.visible &&
     (isSearching ? searchResultRanges !== undefined : true) ? (
@@ -105,7 +106,7 @@ function FileNode(props: {
         return <BlankFile fillClass="fill" strokeClass="stroke" />;
       })()}
       focused={props.focusedPath === props.node.path}
-      hovered={isDraggedOver}
+      hovered={props.isParentDraggedOver}
       onClick={onClick}
       draggable
       onDragStart={(e) =>
@@ -117,12 +118,12 @@ function FileNode(props: {
           })
         )
       }
-      onDragEnter={() => setDraggedOver(true)}
-      onDragLeave={() => setDraggedOver(false)}
+      onDragEnter={() => props.setParentDraggedOver(true)}
+      onDragLeave={() => props.setParentDraggedOver(false)}
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         makeDropHandler(props.parentPath, props.hooks)(e);
-        setDraggedOver(false);
+        props.setParentDraggedOver(false);
       }}
       className="filetree-item" // used by context menu
       data-mn-file-path={props.node.path}
@@ -195,7 +196,12 @@ function DirNode(props: {
   //  : true;
 
   return (
-    <div className="filetree-dir">
+    <div
+      className={
+        "filetree-dir " +
+        (isDraggedOver ? TREE_HOVERED_CONTAINER_CLASS + " " : "")
+      }
+    >
       <TreeItem
         hidden={!(props.visible /* && isOrHasSearchResult */)}
         text={
@@ -255,6 +261,8 @@ function DirNode(props: {
             <FileNode
               parentPath={props.node.path}
               visible={expanded}
+              isParentDraggedOver={isDraggedOver}
+              setParentDraggedOver={setDraggedOver}
               node={node}
               key={node.path}
               hooks={props.hooks}

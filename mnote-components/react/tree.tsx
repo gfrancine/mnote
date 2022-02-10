@@ -17,6 +17,8 @@ function omit<
   return omitted as Omit<T, typeof keys[number]>;
 }
 
+export const TREE_HOVERED_CONTAINER_CLASS = "tree-hovered-container";
+
 export function TreeItem(
   props: DivProps & {
     text: ReactNode;
@@ -62,11 +64,16 @@ export function TreeChildren(props: {
   hidden?: boolean;
   children?: ReactNode;
   innerRef?: React.Ref<HTMLDivElement>;
+  hovered?: boolean;
 }) {
   return (
     <div
       ref={props.innerRef}
-      className={"tree-children " + (props.hidden ? "tree-hidden" : "")}
+      className={
+        "tree-children " +
+        (props.hidden ? "tree-hidden " : "") +
+        (props.hovered ? "tree-hovered " : "")
+      }
     >
       {props.children}
     </div>

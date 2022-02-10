@@ -12,6 +12,30 @@ $a: (
 );
 */
 
+// internal
+@mixin hovered($theme) {
+  background: map-get($theme, item-hover-bg);
+  color: map-get($theme, item-hover-fg);
+  .fill {
+    fill: map-get($theme, item-hover-icon);
+  }
+  .stroke {
+    stroke: map-get($theme, item-hover-icon);
+  }
+}
+
+// internal
+@mixin focused($theme) {
+  background: map-get($theme, item-focused-bg);
+  color: map-get($theme, item-focused-fg);
+  .fill {
+    fill: map-get($theme, item-focused-icon);
+  }
+  .stroke {
+    stroke: map-get($theme, item-focused-icon);
+  }
+}
+
 @mixin tree($theme) {
   .tree-hidden {
     display: none !important;
@@ -32,30 +56,12 @@ $a: (
 
     &.tree-hovered,
     &.tree-enable-hover:hover {
-      background: map-get($theme, item-hover-bg);
-      color: map-get($theme, item-hover-fg);
-
-      .fill {
-        fill: map-get($theme, item-hover-icon);
-      }
-
-      .stroke {
-        stroke: map-get($theme, item-hover-icon);
-      }
+      @include hovered($theme);
     }
 
     &.tree-focused,
     &.tree-enable-hover.tree-focused {
-      background: map-get($theme, item-focused-bg);
-      color: map-get($theme, item-focused-fg);
-
-      .fill {
-        fill: map-get($theme, item-focused-icon);
-      }
-
-      .stroke {
-        stroke: map-get($theme, item-focused-icon);
-      }
+      @include focused($theme);
     }
 
     .tree-item-icon {
@@ -84,5 +90,17 @@ $a: (
   .tree-children {
     box-sizing: border-box;
     padding-left: 0.8em;
+  }
+
+  .tree-hovered-container {
+    @include hovered($theme);
+    border-radius: 5px;
+
+    .tree-children {
+      @include hovered($theme);
+    }
+    .tree-item {
+      @include hovered($theme);
+    }
   }
 }
