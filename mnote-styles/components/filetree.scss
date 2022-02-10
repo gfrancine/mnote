@@ -1,5 +1,7 @@
 @use "../util/scrollbar.scss";
 @use "../mnote-vars.scss" as mn;
+@use "./tree.scss";
+@use "~mnote-components/react/tree.scss" as react-tree;
 
 // styles for the filetree component (components/jsx)
 
@@ -22,6 +24,10 @@
 
     .tree-item {
       padding: 0.4em 0.5em;
+    }
+
+    .filetree-dir.dragged-over {
+      @include react-tree.active-container(tree.$theme);
     }
   }
 }
