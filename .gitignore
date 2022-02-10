@@ -1,4 +1,4 @@
-mnote-app/node_modules/
 mnote-app/dist/
+mnote-app/src-tauri/target
 node_modules/
 catetan.txt
