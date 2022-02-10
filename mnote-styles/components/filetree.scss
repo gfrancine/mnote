@@ -19,5 +19,9 @@
     &:hover .tree-children {
       border-left: solid 1px map-get(mn.$vars, sidebar-filetree-border);
     }
+
+    .tree-item {
+      padding: 0.4em 0.5em;
+    }
   }
 }
