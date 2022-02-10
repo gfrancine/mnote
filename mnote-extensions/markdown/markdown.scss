@@ -112,6 +112,8 @@
     }
   }
 
+  // tables
+
   .tableWrapper {
     transform: translate(-1em, 0);
 
@@ -175,6 +177,9 @@
     }
   }
 
+  // tooltips
+
+  .tooltip,
   .table-tooltip {
     background: var(--mnote-main-bg);
     box-shadow: var(--mnote-main-shadow);
@@ -190,6 +195,42 @@
 
       &:hover {
         background: map-get(mn.$vars, main-bg-secondary);
+      }
+    }
+  }
+
+  .tooltip-input {
+    height: 2rem;
+    box-sizing: border-box;
+    width: fit-content;
+    padding: 0 0 0 0.2em;
+    gap: 0;
+    background: map-get(mn.$vars, main-bg);
+    box-shadow: map-get(mn.$vars, main-shadow);
+
+    input {
+      font-size: 0.9em;
+      width: 15em;
+
+      @include mn.placeholder(map-get(mn.$vars, main-fg-secondary));
+    }
+
+    // apply
+    button {
+      cursor: pointer;
+      height: 2.25em;
+      color: var(--mnote-main-fg);
+      font-size: 0.9em;
+      padding: 0 0.5em;
+      font-weight: 500;
+      letter-spacing: unset;
+
+      &:hover {
+        background: map-get(mn.$vars, main-bg-secondary);
+      }
+
+      &.disable {
+        color: map-get(mn.$vars, main-fg-dim);
       }
     }
   }

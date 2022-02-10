@@ -16,6 +16,7 @@ import { listener, listenerCtx } from "@milkdown/plugin-listener";
 import { gfm } from "@milkdown/preset-gfm";
 import { history } from "@milkdown/plugin-history";
 import { clipboard } from "@milkdown/plugin-clipboard";
+import { tooltip } from "@milkdown/plugin-tooltip";
 import { el } from "mnote-util/elbuilder";
 import "./markdown.scss";
 import "./materialicons.css";
@@ -75,6 +76,7 @@ class MarkdownEditor implements Editor {
       .use(listener)
       .use(clipboard)
       .use(history)
+      .use(tooltip)
       .config((ctx) => {
         ctx.set(rootCtx, this.editorContainer);
         ctx.set(defaultValueCtx, opts.contents);
