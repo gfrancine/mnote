@@ -2,18 +2,18 @@
 @use "../mnote-vars.scss" as mn;
 @use "~mnote-components/react/tree.scss" as react-tree;
 
-@mixin tree {
-  $theme: (
-    item-bg: map-get(mn.$vars, sidebar-bg),
-    item-fg: map-get(mn.$vars, sidebar-fg),
-    item-icon: map-get(mn.$vars, sidebar-item-icon),
-    item-hover-bg: map-get(mn.$vars, sidebar-item-hover-bg),
-    item-hover-fg: map-get(mn.$vars, sidebar-item-hover-fg),
-    item-hover-icon: map-get(mn.$vars, sidebar-item-icon-hover),
-    item-focused-bg: map-get(mn.$vars, sidebar-item-focused-bg),
-    item-focused-fg: map-get(mn.$vars, sidebar-item-focused-fg),
-    item-focused-icon: map-get(mn.$vars, sidebar-item-icon-focused),
-  );
+$theme: (
+  item-bg: map-get(mn.$vars, sidebar-bg),
+  item-fg: map-get(mn.$vars, sidebar-fg),
+  item-icon: map-get(mn.$vars, sidebar-item-icon),
+  item-hover-bg: map-get(mn.$vars, sidebar-item-hover-bg),
+  item-hover-fg: map-get(mn.$vars, sidebar-item-hover-fg),
+  item-hover-icon: map-get(mn.$vars, sidebar-item-icon-hover),
+  item-focused-bg: map-get(mn.$vars, sidebar-item-focused-bg),
+  item-focused-fg: map-get(mn.$vars, sidebar-item-focused-fg),
+  item-focused-icon: map-get(mn.$vars, sidebar-item-icon-focused),
+);
 
+@mixin tree {
   @include react-tree.tree($theme);
 }

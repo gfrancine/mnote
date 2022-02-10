@@ -13,7 +13,6 @@ import {
   ElementToReact,
   TreeChildren,
   TreeItem,
-  TREE_HOVERED_CONTAINER_CLASS,
 } from "mnote-components/react/tree";
 import { getMatchingRanges, MatchRange } from "mnote-util/search";
 import { sortChildren } from "mnote-util/nodes";
@@ -196,12 +195,7 @@ function DirNode(props: {
   //  : true;
 
   return (
-    <div
-      className={
-        "filetree-dir " +
-        (isDraggedOver ? TREE_HOVERED_CONTAINER_CLASS + " " : "")
-      }
-    >
+    <div className={"filetree-dir " + (isDraggedOver ? "dragged-over " : "")}>
       <TreeItem
         hidden={!(props.visible /* && isOrHasSearchResult */)}
         text={

@@ -91,16 +91,16 @@ $a: (
     box-sizing: border-box;
     padding-left: 0.8em;
   }
+}
 
-  .tree-hovered-container {
+@mixin active-container($theme) {
+  @include hovered($theme);
+  border-radius: 5px;
+
+  .tree-children {
     @include hovered($theme);
-    border-radius: 5px;
-
-    .tree-children {
-      @include hovered($theme);
-    }
-    .tree-item {
-      @include hovered($theme);
-    }
+  }
+  .tree-item {
+    @include hovered($theme);
   }
 }

@@ -17,8 +17,6 @@ function omit<
   return omitted as Omit<T, typeof keys[number]>;
 }
 
-export const TREE_HOVERED_CONTAINER_CLASS = "tree-hovered-container";
-
 export function TreeItem(
   props: DivProps & {
     text: ReactNode;
