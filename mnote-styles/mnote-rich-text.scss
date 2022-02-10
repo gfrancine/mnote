@@ -52,8 +52,10 @@
   letter-spacing: unset;
 }
 
+$list-padding: 1.2em;
+
 @mixin list {
-  padding-inline-start: 1.2em;
+  padding-inline-start: $list-padding;
 }
 
 @mixin hr {
