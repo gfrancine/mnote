@@ -20,9 +20,6 @@
     "prosemirror-state": "^1.3.4",
     "suneditor": "^2.41.3"
   },
-  "scripts": {
-    "bump-milkdown": "npm i @milkdown/core@latest @milkdown/prose@latest @milkdown/utils@latest @milkdown/preset-gfm@latest @milkdown/plugin-listener@latest @milkdown/plugin-clipboard@latest @milkdown/plugin-history@latest"
-  },
   "devDependencies": {
     "@types/debounce": "^1.2.0",
     "@types/iv-viewer": "^2.0.1"
