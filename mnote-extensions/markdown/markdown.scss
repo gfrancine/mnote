@@ -225,6 +225,8 @@
     pre {
       @include richtext.code-fence;
       margin: 0 !important;
+      @include mn.scrollbar(map-get(mn.$vars, main-scrollbar));
+      overflow-x: scroll;
     }
   }
 }
