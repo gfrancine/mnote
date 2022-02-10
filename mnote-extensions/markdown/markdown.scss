@@ -97,7 +97,7 @@
       height: 1em;
       left: -#{richtext.$list-padding};
       margin: 0.8em 0;
-      font-size:1em;
+      font-size: 1em;
 
       span {
         font-size: 1em;
@@ -182,10 +182,15 @@
     .icon {
       width: 2em;
       height: 2em;
-      font-size: 1em;
+      font-size: 1.2em;
       display: flex;
       justify-content: center;
       align-items: center;
+      transition: none;
+
+      &:hover {
+        background: map-get(mn.$vars, main-bg-secondary);
+      }
     }
   }
 
