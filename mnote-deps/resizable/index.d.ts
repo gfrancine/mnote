@@ -6,6 +6,8 @@ declare function makeResizable(options: {
   horizontal?: boolean;
   vertical?: boolean;
   cursor?: string;
+  onStart?: () => unknown;
+  onEnd?: () => unknown;
 }): void;
 
 export default makeResizable;

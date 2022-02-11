@@ -6,6 +6,8 @@ export default function ({
   horizontal = true,
   vertical = true,
   cursor,
+  onStart,
+  onEnd,
 }) {
   let startX, startY, startWidth, startHeight;
 
@@ -26,12 +28,14 @@ export default function ({
     document.documentElement.addEventListener("mousemove", drag, false);
     document.documentElement.addEventListener("mouseup", stopDrag, false);
     document.body.style.cursor = cursor;
+    onStart?.();
   };
 
   const stopDrag = () => {
     document.documentElement.removeEventListener("mousemove", drag, false);
     document.documentElement.removeEventListener("mouseup", stopDrag, false);
     document.body.style.cursor = "";
+    onEnd?.();
   };
 
   handle.addEventListener("mousedown", startDrag, false);

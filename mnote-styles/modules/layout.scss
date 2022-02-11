@@ -26,6 +26,10 @@
         background-color: map-get(mn.$vars, sidebar-resizer-hover-bg);
       }
 
+      &.dragging {
+        background-color: map-get(mn.$vars, sidebar-resizer-hover-bg);
+      }
+
       &.gutter-horizontal {
         cursor: ew-resize;
       }
