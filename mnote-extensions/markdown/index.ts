@@ -70,7 +70,7 @@ class MarkdownEditor implements Editor {
     };
 
     return MilkdownEditor.make()
-      .use(themeFactory({ slots }))
+      .use(themeFactory(() => ({ slots })))
       .use(gfm)
       .use(makeImageNode(resolveImageSrc)())
       .use(listener)
@@ -80,13 +80,9 @@ class MarkdownEditor implements Editor {
       .config((ctx) => {
         ctx.set(rootCtx, this.editorContainer);
         ctx.set(defaultValueCtx, opts.contents);
-        ctx.set(listenerCtx, {
-          markdown: [
-            (getMarkdown) => {
-              this.contents = getMarkdown();
-              this.onUpdate();
-            },
-          ],
+        ctx.get(listenerCtx).markdownUpdated((_ctx, markdown) => {
+          this.contents = markdown;
+          this.onUpdate();
         });
       });
   }
