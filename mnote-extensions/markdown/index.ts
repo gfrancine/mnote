@@ -3,6 +3,7 @@ import {
   EditorContext,
   Extension,
   FSModule,
+  InputModule,
   Mnote,
   SettingsModule,
 } from "mnote-core";
@@ -36,16 +37,19 @@ class MarkdownEditor implements Editor {
   container?: HTMLElement;
   settings: SettingsModule;
   fs: FSModule;
+  input: InputModule;
   ctx?: EditorContext;
 
   wordstats = new WordStats();
   milkdown: MilkdownEditor;
+  prosemirrorElement?: HTMLElement; // the contenteditable element
   contents = "";
 
   constructor(app: Mnote) {
     this.app = app;
     this.fs = app.modules.fs as FSModule;
     this.settings = app.modules.settings;
+    this.input = app.modules.input;
 
     this.editorContainer = el("div")
       .class("md-container")
@@ -120,7 +124,52 @@ class MarkdownEditor implements Editor {
     this.container.appendChild(this.element);
 
     await this.milkdown.create();
+
+    const prosemirrorElement =
+      this.editorContainer.querySelector(".ProseMirror");
+    if (prosemirrorElement)
+      this.prosemirrorElement = prosemirrorElement as HTMLElement;
+
+    // only enable the ctrl+click link when the current tab
+    // is active
+    ctx.events.on("tabShow", this.bindModKey);
+    ctx.events.on("tabHide", this.unbindModKey);
   }
+
+  // make links clickable when pressing the command/ctrl key
+  // by turning off contenteditable
+  protected disableContentEditable = (e: KeyboardEvent) => {
+    e.preventDefault();
+    this.prosemirrorElement?.setAttribute("contenteditable", "false");
+  };
+  protected enableContentEditable = (e: KeyboardEvent) => {
+    e.preventDefault();
+    this.prosemirrorElement?.setAttribute("contenteditable", "true");
+  };
+  protected bindModKey = () => {
+    this.input.registerShortcut(
+      ["command", "control"],
+      this.disableContentEditable,
+      "keydown"
+    );
+    this.input.registerShortcut(
+      ["command", "control"],
+      this.enableContentEditable,
+      "keyup"
+    );
+  };
+  protected unbindModKey = () => {
+    this.input.unregisterShortcut(
+      ["command", "control"],
+      this.disableContentEditable,
+      "keydown"
+    );
+    this.input.unregisterShortcut(
+      ["command", "control"],
+      this.enableContentEditable,
+      "keyup"
+    );
+  };
 
   protected updateStats = () => this.wordstats.setText(this.contents);
 
@@ -132,6 +181,7 @@ class MarkdownEditor implements Editor {
   cleanup() {
     this.settings.events.off("change", this.syncWithSettings);
     if (this.container) this.container.removeChild(this.element);
+    this.unbindModKey();
     this.element.innerHTML = "";
   }
 
