@@ -211,6 +211,7 @@
     input {
       font-size: 0.9em;
       width: 15em;
+      -webkit-user-select: text;
 
       @include mn.placeholder(map-get(mn.$vars, main-fg-secondary));
     }
