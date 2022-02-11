@@ -27,6 +27,7 @@ import { isData, isWeb } from "mnote-util/url";
 import { isString } from "mnote-util/validators";
 import { slots } from "./milkdownicons";
 import { shortenSetProperty } from "mnote-util/dom";
+import { link } from "./link";
 
 class MarkdownEditor implements Editor {
   app: Mnote;
@@ -73,6 +74,7 @@ class MarkdownEditor implements Editor {
       .use(themeFactory(() => ({ slots })))
       .use(gfm)
       .use(makeImageNode(resolveImageSrc)())
+      .use(link())
       .use(listener)
       .use(clipboard)
       .use(history)
