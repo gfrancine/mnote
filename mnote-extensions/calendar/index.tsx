@@ -150,6 +150,8 @@ class CalendarEditor implements Editor {
     this.container?.removeChild(this.element);
     this.ctx?.events.off("tabShow", this.render);
     this.ctx?.events.off("tabMount", this.render);
+    this.calendar?.destroy();
+    delete this.calendar;
   }
 
   async save(path: string) {
