@@ -26,8 +26,8 @@ export class SidebarModule {
       handle: this.handle,
       vertical: false,
       cursor: "ew-resize",
-      onStart: () => this.element.classList.add("dragging"),
-      onEnd: () => this.element.classList.remove("dragging"),
+      onStart: () => this.handle.classList.add("dragging"),
+      onEnd: () => this.handle.classList.remove("dragging"),
     });
 
     this.sidemenu = el("div").class("sidemenu-main").element;
