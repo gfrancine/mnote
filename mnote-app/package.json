@@ -16,7 +16,7 @@
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.0-beta.10",
     "serve": "^13.0.2",
-    "shx": "^0.3.3"
+    "shx": "^0.3.4"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.0.0-beta.8",
