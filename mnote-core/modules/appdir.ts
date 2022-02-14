@@ -4,12 +4,14 @@ import { LogModule } from "./log";
 import { MenubarModule } from "./menubar";
 import { SystemModule } from "./system";
 import { Emitter } from "mnote-util/emitter";
+import { PopupsModule } from ".";
 
 export class AppDirModule {
   private app: Mnote;
 
   private fs: FSModule;
   private log: LogModule;
+  private popups: PopupsModule;
   private menubar: MenubarModule;
   private system: SystemModule;
 
@@ -31,6 +33,7 @@ export class AppDirModule {
     this.fs = app.modules.fs;
     this.system = app.modules.system;
     this.log = app.modules.log;
+    this.popups = app.modules.popups;
     this.menubar = app.modules.menubar;
 
     this.bindToModules();
@@ -74,6 +77,17 @@ export class AppDirModule {
 
   async setDirectory(path: string) {
     this.log.info("appdir: setDirectory", path);
+
+    try {
+      await this.fs.readDir(path, { recursive: false });
+    } catch (e) {
+      this.log.err("Appdir - try readDir error", e);
+      this.popups.notify(
+        `Cannot open folder ${path}: ${e instanceof Error ? e.message : e}`
+      );
+      return;
+    }
+
     if (this.directory) await this.closeDirectory();
     this.directory = path;
     await this.fs.watch(path);
@@ -91,6 +105,7 @@ export class AppDirModule {
         isDirectory: true,
         startingDirectory: this.directory,
       });
+      this.log.info("appdir: open folder path", maybePath);
       if (!maybePath) return;
       this.setDirectory(maybePath);
     };
