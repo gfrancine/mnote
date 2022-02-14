@@ -216,8 +216,11 @@ export class FS implements FsInteropModule {
     startingFileName?: string;
   }): Promise<string | void> {
     const result: string | undefined = await invoke("fs_open_dialog", opts);
-    if (!result) return;
-    return this.fromHome(result);
+    if (result === undefined) return;
+    const relativeToHome = this.fromHome(result);
+    // selecting home dir returns an empty string
+    if (relativeToHome.length === 0) return this.homePath;
+    return relativeToHome;
   }
 
   async dialogSave(opts: {
