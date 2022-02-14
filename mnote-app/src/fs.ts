@@ -311,6 +311,7 @@ export class FS implements FsInteropModule {
     handler: FsWatcherEvents[K]
   ) {
     const wrapped = this.watcherHandlerMap.get(handler);
+    this.watcherHandlerMap.delete(handler);
     this.watcher.events.off(event, wrapped);
   }
 }
