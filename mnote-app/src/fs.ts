@@ -72,12 +72,6 @@ using an absolute path or ".." will throw:
 this FS module treats $HOME like the root directory. all
 conversions between absolute paths and $home paths are handled
 within the module
-
-an alternative to consider is using an unrestricted file system
-with rust commands, because using the API like this is really
-hacky and unintuitive
-
-todo: asset protocol
 */
 
 const basedirOpts: fs.FsOptions = {
