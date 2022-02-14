@@ -53,6 +53,10 @@
       "fs": {
         "all": true,
         "scope": ["$HOME/**"]
+      },
+      "protocol": {
+        "asset": true,
+        "assetScope": ["$HOME/**"]
       }
     },
     "windows": [
