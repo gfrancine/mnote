@@ -209,7 +209,7 @@ export class FS implements FsInteropModule {
     startingDirectory?: string;
     startingFileName?: string;
   }): Promise<string | void> {
-    const result: string | undefined = await invoke("fs_open_dialog", opts);
+    const result: string | undefined = await invoke("dialog_open", opts);
     if (result === undefined) return;
     const relativeToHome = this.fromHome(result);
     // selecting home dir returns an empty string
@@ -222,7 +222,7 @@ export class FS implements FsInteropModule {
     startingDirectory?: string;
     startingFileName?: string;
   }): Promise<string | void> {
-    const result: string | undefined = await invoke("fs_save_dialog", opts);
+    const result: string | undefined = await invoke("dialog_save", opts);
     if (!result) return;
     return this.fromHome(result);
   }

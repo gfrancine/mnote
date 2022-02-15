@@ -18,159 +18,9 @@ fn is_windows() -> bool {
   cfg!(windows)
 }
 
-use std::{
-  fs::{self},
-  path::PathBuf,
-};
-
-#[tauri::command]
-fn fs_rename(from: String, to: String) -> Result<(), String> {
-  if let Err(err) = fs::rename(from, to) {
-    return Err(err.to_string());
-  }
-  Ok(())
-}
-
-use rfd::FileDialog;
-use serde::{Deserialize, Serialize};
-
-#[derive(Deserialize)]
-struct DialogFilter {
-  name: String,
-  extensions: Vec<String>,
-}
-
-fn dialog_from_opts(
-  filters: Option<Vec<DialogFilter>>,
-  starting_directory: Option<String>,
-  starting_file_name: Option<String>,
-) -> FileDialog {
-  let mut dialog = FileDialog::new();
-
-  if let Some(filters) = filters {
-    for filter in filters.iter() {
-      let extensions: Vec<&str> = filter
-        .extensions
-        .iter()
-        .map(|string| string.as_str())
-        .collect();
-      dialog = dialog.add_filter(&filter.name, &extensions[..]);
-    }
-  }
-  if let Some(file_name) = starting_file_name {
-    dialog = dialog.set_file_name(&file_name);
-  }
-  if let Some(directory) = starting_directory {
-    dialog = dialog.set_directory(directory);
-  }
-
-  dialog
-}
-
-fn process_dialog_result(result: Option<PathBuf>) -> Option<String> {
-  match result {
-    Some(pathbuf) => {
-      if let Ok(path) = pathbuf.into_os_string().into_string() {
-        return Some(path);
-      }
-      None
-    }
-    None => None,
-  }
-}
-
-#[tauri::command]
-fn fs_open_dialog(
-  filters: Option<Vec<DialogFilter>>,
-  is_directory: bool,
-  starting_directory: Option<String>,
-  starting_file_name: Option<String>,
-) -> Option<String> {
-  let dialog =
-    dialog_from_opts(filters, starting_directory, starting_file_name);
-
-  let result = if is_directory {
-    dialog.pick_folder()
-  } else {
-    dialog.pick_file()
-  };
-
-  process_dialog_result(result)
-}
-
-#[tauri::command]
-fn fs_save_dialog(
-  filters: Option<Vec<DialogFilter>>,
-  starting_directory: Option<String>,
-  starting_file_name: Option<String>,
-) -> Option<String> {
-  process_dialog_result(
-    dialog_from_opts(filters, starting_directory, starting_file_name)
-      .save_file(),
-  )
-}
-
-use hotwatch::{Event, Hotwatch};
-use std::sync::Mutex;
-use std::time::Duration;
-
-#[derive(Clone, Serialize)]
-#[serde(rename_all = "camelCase")]
-struct WatcherPayload<'a> {
-  kind: &'a str, //
-  path: Option<&'a str>,
-  target_path: Option<&'a str>,
-}
-
-struct Watcher(Mutex<Hotwatch>);
-
-#[tauri::command]
-fn watch(
-  path: String,
-  window: tauri::Window,
-  watcher: tauri::State<'_, Watcher>,
-) {
-  watcher
-    .0
-    .lock()
-    .unwrap()
-    .watch(path, move |ev| {
-      println!("Event: {:?}", ev);
-      let emit = |payload: WatcherPayload| {
-        window.emit("watcher_event", payload).unwrap();
-      };
-
-      match ev {
-        Event::Create(path) => emit(WatcherPayload {
-          kind: "create",
-          path: path.as_path().to_str(),
-          target_path: None,
-        }),
-        Event::Write(path) => emit(WatcherPayload {
-          kind: "write",
-          path: path.as_path().to_str(),
-          target_path: None,
-        }),
-        Event::Rename(path, target) => emit(WatcherPayload {
-          kind: "rename",
-          path: path.as_path().to_str(),
-          target_path: target.as_path().to_str(),
-        }),
-        Event::Remove(path) => emit(WatcherPayload {
-          kind: "remove",
-          path: path.as_path().to_str(),
-          target_path: None,
-        }),
-        _ => (),
-      };
-    })
-    .unwrap();
-}
-
-#[tauri::command]
-fn unwatch(path: String, watcher: tauri::State<'_, Watcher>) {
-  watcher.0.lock().unwrap().unwatch(path).unwrap();
-}
+mod dialog;
+mod filesystem;
+mod watcher;
 
 use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu};
 
@@ -227,16 +77,22 @@ fn main() {
       get_args,
       is_mac,
       is_windows,
-      watch,
-      unwatch,
-      fs_rename,
-      fs_save_dialog,
-      fs_open_dialog
+      watcher::watch,
+      watcher::unwatch,
+      filesystem::fs_rename,
+      filesystem::fs_read_dir,
+      filesystem::fs_read_text_file,
+      filesystem::fs_read_binary_file,
+      filesystem::fs_write_text_file,
+      filesystem::fs_write_binary_file,
+      filesystem::fs_read_dir,
+      filesystem::fs_delete_file,
+      filesystem::fs_delete_dir,
+      dialog::dialog_open,
+      dialog::dialog_save
     ])
     .setup(|app| {
-      app.manage(Watcher(Mutex::new(
-        Hotwatch::new_with_custom_delay(Duration::from_millis(500)).unwrap(),
-      )));
+      app.manage(watcher::Watcher::default());
       Ok(())
     });
 
