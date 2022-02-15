@@ -52,17 +52,13 @@ fn read_dir<P: AsRef<Path>>(
   let mut entries = Vec::new();
   for entry in fs::read_dir(path)? {
     let entry = entry?;
-    let path = entry.path();
-    let name = path.file_name().unwrap().to_str().unwrap().to_string();
+    let path = entry.path().to_str().unwrap().to_string();
     let children = if recursive && entry.file_type()?.is_dir() {
-      Some(read_dir(path, true)?)
+      Some(read_dir(&path, true)?)
     } else {
       None
     };
-    entries.push(DirEntry {
-      path: name,
-      children,
-    });
+    entries.push(DirEntry { path, children });
   }
   Ok(entries)
 }
@@ -88,4 +84,19 @@ pub fn fs_delete_file(path: &str) -> Result<(), String> {
 #[tauri::command]
 pub fn fs_delete_dir(path: &str) -> Result<(), String> {
   fs::remove_dir_all(path).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub fn fs_create_dir(path: &str) -> Result<(), String> {
+  fs::create_dir(path).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub fn fs_is_file(path: &str) -> bool {
+  fs::metadata(path).map(|m| m.is_file()).unwrap_or(false)
+}
+
+#[tauri::command]
+pub fn fs_is_dir(path: &str) -> bool {
+  fs::metadata(path).map(|m| m.is_dir()).unwrap_or(false)
 }

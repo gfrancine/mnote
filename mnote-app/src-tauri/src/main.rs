@@ -88,6 +88,9 @@ fn main() {
       filesystem::fs_read_dir,
       filesystem::fs_delete_file,
       filesystem::fs_delete_dir,
+      filesystem::fs_create_dir,
+      filesystem::fs_is_file,
+      filesystem::fs_is_dir,
       dialog::dialog_open,
       dialog::dialog_save
     ])

@@ -1,5 +1,6 @@
 import {
   DialogFilter,
+  FileItem,
   FileItemWithChildren,
   FsInteropModule,
   FsReadDirOptions,
@@ -8,7 +9,6 @@ import {
 import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { Event as TauriEvent, listen } from "@tauri-apps/api/event";
 import { Emitter } from "mnote-util/emitter";
-import * as fs from "@tauri-apps/api/fs";
 import * as pathLib from "@tauri-apps/api/path";
 import { posix, win32 } from "mnote-deps/path-browser";
 
@@ -56,9 +56,8 @@ export class Watcher {
 }
 
 /*
-since 1.0.0-rc, tauri only allows scoped file system access.
-mnote has scoped access to the $HOME directory, the largest
-possible scope. Calls to fs apis become like this:
+since 1.0.0-rc, tauri only allows scoped file system access. Calls to fs
+apis become like this:
 
   fs.readTextFile("Desktop/a.txt", {
     dir: fs.BaseDirectory.Home
@@ -69,14 +68,11 @@ using an absolute path or ".." will throw:
   fs.readTextFile("../a.txt")
   fs.readTextFile("/users/me/desktop/a.txt")
 
-this FS module treats $HOME like the root directory. all
-conversions between absolute paths and $home paths are handled
-within the module
+the app needs access to much more than the home dir, however, for example
+example to be able to use UNC paths. This is a custom fs module, which 
+also covers more features and allows for custom scoping logic if it's ever
+needed.
 */
-
-const basedirOpts: fs.FsOptions = {
-  dir: fs.BaseDirectory.Home,
-};
 
 export class FS implements FsInteropModule {
   protected watcher = new Watcher(); // at the bottom of the file
@@ -85,8 +81,6 @@ export class FS implements FsInteropModule {
 
   protected lib = posix;
 
-  protected homePath = "";
-
   async init() {
     this.IS_WINDOWS = await invoke("is_windows");
 
@@ -94,61 +88,39 @@ export class FS implements FsInteropModule {
       this.lib = win32;
     }
 
-    this.homePath = await pathLib.homeDir();
-
     return this;
   }
 
-  private fromHome(path: string) {
-    // make sure path is absolute
-    // relative() calls resolve() internally, which will call
-    // process.cwd() when it's not an absolute path
-    return this.lib.relative(this.homePath, path);
-  }
-
   writeTextFile(path: string, contents: string): Promise<void> {
-    return fs.writeFile(
-      {
-        path,
-        contents,
-      },
-      basedirOpts
-    );
+    return invoke("fs_write_text_file", {
+      path,
+      contents,
+    });
   }
 
   readTextFile(path: string): Promise<string> {
-    return fs.readTextFile(path, basedirOpts);
+    return invoke("fs_read_text_file", { path })
   }
 
   writeBinaryFile(path: string, contents: ArrayBuffer): Promise<void> {
-    return fs.writeBinaryFile(
-      {
-        path,
-        contents: new Uint8Array(contents),
-      },
-      basedirOpts
-    );
+    return invoke("fs_write_binary_file", { path, contents });
   }
 
   async readBinaryFile(path: string): Promise<ArrayBuffer> {
-    return new Uint8Array(await fs.readBinaryFile(path, basedirOpts));
+    return new Uint8Array(await invoke("fs_read_binary_file", { path }));
   }
 
   async readDir(
     path: string,
     opts?: FsReadDirOptions
   ): Promise<FileItemWithChildren> {
-    const entries = await fs.readDir(path, {
-      ...opts,
-      ...basedirOpts,
-    });
+    const entries: FileItem[] = await invoke("fs_read_dir", {path, ...opts});
 
-    const dirStack: fs.FileEntry[][] = [entries];
+    const dirStack: FileItem[][] = [entries];
     while (dirStack.length > 0) {
-      const dir = dirStack.pop() as fs.FileEntry[];
+      const dir = dirStack.pop() as FileItem[];
       for (let i = 0; i < dir.length; i++) {
         const entry = dir[i];
-        entry.path = this.fromHome(entry.path);
         if (entry.children) dirStack.push(entry.children);
       }
     }
@@ -160,7 +132,7 @@ export class FS implements FsInteropModule {
   }
 
   async renameFile(path: string, newPath: string): Promise<void> {
-    await fs.renameFile(path, newPath, basedirOpts);
+    await invoke("fs_rename", {from: path, to: newPath});
   }
 
   async renameDir(path: string, newPath: string): Promise<void> {
@@ -171,36 +143,23 @@ export class FS implements FsInteropModule {
   }
 
   async removeFile(path: string): Promise<void> {
-    await fs.removeFile(path, basedirOpts);
+    await invoke("fs_delete_file", { path });
   }
 
   async removeDir(path: string): Promise<void> {
-    await fs.removeDir(path, {
-      recursive: true,
-      ...basedirOpts,
-    });
+    await invoke("fs_delete_dir", { path });
   }
 
   async createDir(path: string): Promise<void> {
-    await fs.createDir(path, basedirOpts);
+    await invoke("fs_create_dir", { path });
   }
 
   async isFile(path: string): Promise<boolean> {
-    try {
-      await fs.readTextFile(path, basedirOpts);
-      return true;
-    } catch {
-      return false;
-    }
+    return await invoke("fs_is_file", { path });
   }
 
   async isDir(path: string): Promise<boolean> {
-    try {
-      await fs.readDir(path, basedirOpts);
-      return true;
-    } catch {
-      return false;
-    }
+    return await invoke("fs_is_dir", { path });
   }
 
   async dialogOpen(opts: {
@@ -209,12 +168,7 @@ export class FS implements FsInteropModule {
     startingDirectory?: string;
     startingFileName?: string;
   }): Promise<string | void> {
-    const result: string | undefined = await invoke("dialog_open", opts);
-    if (result === undefined) return;
-    const relativeToHome = this.fromHome(result);
-    // selecting home dir returns an empty string
-    if (relativeToHome.length === 0) return this.homePath;
-    return relativeToHome;
+    return await invoke("dialog_open", opts);
   }
 
   async dialogSave(opts: {
@@ -222,17 +176,15 @@ export class FS implements FsInteropModule {
     startingDirectory?: string;
     startingFileName?: string;
   }): Promise<string | void> {
-    const result: string | undefined = await invoke("dialog_save", opts);
-    if (!result) return;
-    return this.fromHome(result);
+    return await invoke("dialog_save", opts);
   }
 
   async getConfigDir(): Promise<string> {
-    return this.fromHome(await pathLib.configDir());
+    return await pathLib.configDir();
   }
 
   async getCurrentDir(): Promise<string> {
-    return this.fromHome(await pathLib.resolve("."));
+    return await pathLib.resolve(".");
   }
 
   getPathName(path: string) {
@@ -255,12 +207,7 @@ export class FS implements FsInteropModule {
   }
 
   resolvePath(basePath: string, relativePath: string) {
-    return this.lib.resolve(
-      // make the path absolute, otherwise .resolve()
-      // would call process.cwd()
-      this.lib.join(this.homePath, basePath),
-      relativePath
-    );
+    return this.lib.resolve(basePath, relativePath);
   }
 
   ensureSeparatorAtEnd(path: string) {
@@ -276,39 +223,24 @@ export class FS implements FsInteropModule {
 
   async watch(path: string) {
     if (!this.watcher.hasInitialized) await this.watcher.init();
-    return this.watcher.watch(this.lib.join(this.homePath, path));
+    return this.watcher.watch(path);
   }
 
   async unwatch(path: string) {
-    await this.watcher.unwatch(this.lib.join(this.homePath, path));
+    await this.watcher.unwatch(path);
   }
-
-  // onWatchEvent wraps the handler so it adapts the
-  // paths to the relative path
-  // Map<original handler, wrapped handler>
-  private watcherHandlerMap = new Map();
 
   onWatchEvent<K extends keyof FsWatcherEvents>(
     event: K,
     handler: FsWatcherEvents[K]
   ) {
-    const wrapped = ((path: string, targetPath: string) => {
-      if (path) path = this.fromHome(path);
-      if (targetPath) targetPath = this.fromHome(targetPath);
-      return handler(path, targetPath);
-    }) as FsWatcherEvents[K];
-
-    this.watcherHandlerMap.set(handler, wrapped);
-
-    this.watcher.events.on(event, wrapped);
+    this.watcher.events.on(event, handler);
   }
 
   offWatchEvent<K extends keyof FsWatcherEvents>(
     event: K,
     handler: FsWatcherEvents[K]
   ) {
-    const wrapped = this.watcherHandlerMap.get(handler);
-    this.watcherHandlerMap.delete(handler);
-    this.watcher.events.off(event, wrapped);
+    this.watcher.events.off(event, handler);
   }
 }
