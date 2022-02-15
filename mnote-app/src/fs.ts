@@ -292,7 +292,7 @@ export class FS implements FsInteropModule {
     event: K,
     handler: FsWatcherEvents[K]
   ) {
-    const wrapped = ((path, targetPath) => {
+    const wrapped = ((path: string, targetPath: string) => {
       if (path) path = this.fromHome(path);
       if (targetPath) targetPath = this.fromHome(targetPath);
       return handler(path, targetPath);
