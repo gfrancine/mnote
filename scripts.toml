@@ -12,7 +12,6 @@ prettier = 'prettier --ignore-path="./.gitingore" -w' # <glob...>
 
 lint = """deno lint \
   mnote-core \
-  mnote-extensions \
   mnote-components \
   mnote-app/src \
   mnote-app/src-web \
@@ -20,6 +19,15 @@ lint = """deno lint \
   mnote-util \
   mnote-deps/kanban \
   mnote-deps/resizable \
+  mnote-extensions/calendar \
+  mnote-extensions/excalidraw \
+  mnote-extensions/image-viewer \
+  mnote-extensions/kanban \
+  mnote-extensions/markdown \
+  mnote-extensions/plaintext \
+  mnote-extensions/richtext \
+  mnote-extensions/settings \
+  mnote-extensions/todo \
   """
 
 lint-rs = "cd mnote-app/src-tauri && cargo clippy && cargo check"
