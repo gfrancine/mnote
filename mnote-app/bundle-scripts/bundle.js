@@ -20,9 +20,12 @@ module.exports = function (entryPoints, isProduction) {
       define: {
         "process.env.NODE_ENV": isProduction ? "'production'" : "'development'",
       },
-      plugins: [sassPlugin(), alias({
-        domain: require.resolve("domain-browser"),
-      })],
+      plugins: [
+        sassPlugin(),
+        alias({
+          domain: require.resolve("domain-browser"),
+        }),
+      ],
     })
     .catch(console.error);
 };
