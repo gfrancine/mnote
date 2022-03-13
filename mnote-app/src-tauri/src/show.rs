@@ -19,7 +19,9 @@ fn show<P: AsRef<std::ffi::OsStr>>(path: P) -> Result<(), ShowErr> {
     command.arg("--reveal");
     command
   } else if cfg!(target_os = "windows") {
-    Command::new("explorer")
+    let mut command = Command::new("explorer");
+    command.arg("/select,");
+    command
   } else {
     return Err(ShowErr::UnsupportedOs);
   };
