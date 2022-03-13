@@ -20,6 +20,7 @@ fn is_windows() -> bool {
 
 mod dialog;
 mod filesystem;
+mod show;
 mod watcher;
 
 use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu};
@@ -92,7 +93,9 @@ fn main() {
       filesystem::fs_is_file,
       filesystem::fs_is_dir,
       dialog::dialog_open,
-      dialog::dialog_save
+      dialog::dialog_save,
+      show::can_show_in_explorer,
+      show::show_in_explorer
     ])
     .setup(|app| {
       app.manage(watcher::Watcher::default());

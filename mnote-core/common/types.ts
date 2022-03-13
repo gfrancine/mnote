@@ -81,6 +81,9 @@ export interface FsInteropModule {
     event: K,
     handler: FsWatcherEvents[K]
   ): void;
+
+  canShowInExplorer(): boolean;
+  showInExplorer(path: string): Promise<void>;
 }
 
 export type FileItem = {

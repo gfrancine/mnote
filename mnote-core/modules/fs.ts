@@ -193,4 +193,15 @@ export class FSModule implements FsInteropModule {
   ) {
     return this.fs?.offWatchEvent?.(event, handler);
   }
+
+  canShowInExplorer() {
+    if (this.fs?.canShowInExplorer) {
+      return this.fs.canShowInExplorer();
+    }
+    return false;
+  }
+
+  async showInExplorer(path: string) {
+    await this.fs?.showInExplorer?.(path);
+  }
 }

@@ -184,6 +184,11 @@ export class FiletreeModule {
       }
     };
 
+    const makeShowInExplorerButton = (path: string) => ({
+      name: "Show in Explorer",
+      click: () => this.fs.showInExplorer(path),
+    });
+
     const makeNewFolderButton = (dir: string) => ({
       name: "New folder",
       click: async () => {
@@ -309,6 +314,10 @@ export class FiletreeModule {
             });
           }
 
+          if (this.fs.canShowInExplorer()) {
+            buttons.push(makeShowInExplorerButton(filePath));
+          }
+
           return buttons;
         } else {
           const dirPath = fileTreeItem.getAttribute("data-mn-dir-path");
@@ -363,6 +372,10 @@ export class FiletreeModule {
                     });
                 },
               });
+            }
+
+            if (this.fs.canShowInExplorer()) {
+              buttons.push(makeShowInExplorerButton(dirPath));
             }
 
             return buttons;

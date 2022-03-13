@@ -79,10 +79,13 @@ export class FS implements FsInteropModule {
 
   protected IS_WINDOWS = false;
 
+  protected CAN_SHOW_IN_EXPLORER = false;
+
   protected lib = posix;
 
   async init() {
     this.IS_WINDOWS = await invoke("is_windows");
+    this.CAN_SHOW_IN_EXPLORER = await invoke("can_show_in_explorer");
 
     if (this.IS_WINDOWS) {
       this.lib = win32;
@@ -99,7 +102,7 @@ export class FS implements FsInteropModule {
   }
 
   readTextFile(path: string): Promise<string> {
-    return invoke("fs_read_text_file", { path })
+    return invoke("fs_read_text_file", { path });
   }
 
   writeBinaryFile(path: string, contents: ArrayBuffer): Promise<void> {
@@ -114,7 +117,7 @@ export class FS implements FsInteropModule {
     path: string,
     opts?: FsReadDirOptions
   ): Promise<FileItemWithChildren> {
-    const entries: FileItem[] = await invoke("fs_read_dir", {path, ...opts});
+    const entries: FileItem[] = await invoke("fs_read_dir", { path, ...opts });
 
     const dirStack: FileItem[][] = [entries];
     while (dirStack.length > 0) {
@@ -132,7 +135,7 @@ export class FS implements FsInteropModule {
   }
 
   async renameFile(path: string, newPath: string): Promise<void> {
-    await invoke("fs_rename", {from: path, to: newPath});
+    await invoke("fs_rename", { from: path, to: newPath });
   }
 
   async renameDir(path: string, newPath: string): Promise<void> {
@@ -242,5 +245,13 @@ export class FS implements FsInteropModule {
     handler: FsWatcherEvents[K]
   ) {
     this.watcher.events.off(event, handler);
+  }
+
+  canShowInExplorer() {
+    return this.CAN_SHOW_IN_EXPLORER;
+  }
+
+  async showInExplorer(path: string) {
+    await invoke("show_in_explorer", { path });
   }
 }
