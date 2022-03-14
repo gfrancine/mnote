@@ -1,1 +1,1 @@
-require("./bundle")(["src/index-release.ts"], true);
+require("./bundle")(["src-tauri-frontend/index-release.ts"], true);

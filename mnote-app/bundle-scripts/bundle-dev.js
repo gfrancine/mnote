@@ -1,1 +1,1 @@
-require("./bundle")(["src/index-debug.ts"], false);
+require("./bundle")(["src-tauri-frontend/index-debug.ts"], false);

@@ -1,1 +1,1 @@
-require("./bundle")(["src-web/index.ts"], false);
+require("./bundle")(["src-web-demo/index.ts"], false);
