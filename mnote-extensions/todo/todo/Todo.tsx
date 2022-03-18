@@ -17,7 +17,10 @@ import Select from "mnote-components/react/dropdowns/Select";
 import { useListener } from "mnote-util/useListener";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import Sortly, { ContextProvider } from "mnote-deps/react-sortly/src";
+import Sortly, {
+  ContextProvider,
+  ItemRendererProps,
+} from "mnote-deps/react-sortly/src";
 
 const NEW_ITEM_MOCK_ID = "_$*!(@)#%*!$@()#$NEWITEM";
 
@@ -142,6 +145,12 @@ export default function Todo(props: {
       setItemsOrder(newOrder);
       setItems(newItems);
     },
+    setItemCollapsed: (index, collapsed) => {
+      const newOrder = [...itemsOrder];
+      const newItemOrder = { ...newOrder[index], collapsed };
+      newOrder[index] = newItemOrder;
+      setItemsOrder(newOrder);
+    },
     appendNewItem: (newItem) => {
       const item = {
         ...newItem,
@@ -156,6 +165,7 @@ export default function Todo(props: {
         {
           id: item.id,
           depth: 0,
+          collapsed: false,
         },
       ]);
     },
@@ -261,22 +271,46 @@ export default function Todo(props: {
         <DndProvider backend={HTML5Backend}>
           <ContextProvider>
             <Sortly items={itemsOrder} onChange={setItemsOrder}>
-              {(sortlyProps) => {
-                return filter(sortlyProps.index) ? (
-                  <TodoItemSortlyRenderer
-                    itemProps={{
-                      index: sortlyProps.index,
-                      item: items[sortlyProps.id],
-                      isEditing: sortlyProps.id === currentlyEditing,
-                      ctx,
-                    }}
-                    sortlyProps={sortlyProps}
-                    key={sortlyProps.id}
-                  />
-                ) : (
-                  <Fragment key={sortlyProps.id} />
-                );
-              }}
+              {(() => {
+                let lastCollapsedDepth: number | undefined;
+
+                return (sortlyProps: ItemRendererProps<TodoOrderItem>) => {
+                  if (
+                    lastCollapsedDepth !== undefined &&
+                    sortlyProps.data.depth > lastCollapsedDepth
+                  ) {
+                    return <Fragment key={sortlyProps.id} />;
+                  } else {
+                    lastCollapsedDepth = undefined;
+                  }
+
+                  if (sortlyProps.data.collapsed) {
+                    lastCollapsedDepth = sortlyProps.data.depth;
+                  }
+
+                  const nextItemOrder = itemsOrder[sortlyProps.index + 1];
+                  const hasChildren =
+                    nextItemOrder &&
+                    nextItemOrder.depth > sortlyProps.data.depth;
+
+                  return filter(sortlyProps.index) ? (
+                    <TodoItemSortlyRenderer
+                      itemProps={{
+                        index: sortlyProps.index,
+                        item: items[sortlyProps.id],
+                        isEditing: sortlyProps.id === currentlyEditing,
+                        collapsed: sortlyProps.data.collapsed,
+                        hasChildren,
+                        ctx,
+                      }}
+                      sortlyProps={sortlyProps}
+                      key={sortlyProps.id}
+                    />
+                  ) : (
+                    <Fragment key={sortlyProps.id} />
+                  );
+                };
+              })()}
             </Sortly>
           </ContextProvider>
         </DndProvider>

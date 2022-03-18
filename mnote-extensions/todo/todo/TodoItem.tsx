@@ -7,6 +7,7 @@ import {
   useDrag,
   useDrop,
 } from "mnote-deps/react-sortly/src";
+import { ChevronRight, ChevronDown } from "mnote-components/react/icons-jsx";
 
 function CheckedBullet({
   value = false,
@@ -42,6 +43,8 @@ export type TodoItemProps = {
   item: TodoItemData;
   ctx: TodoItemContext;
   isEditing: boolean;
+  collapsed: boolean;
+  hasChildren: boolean;
 };
 
 export type TodoItemPropsWithDnd = TodoItemProps & {
@@ -69,6 +72,10 @@ export function TodoItem(props: TodoItemPropsWithDnd) {
     props.ctx.deleteItem(props.index);
   };
 
+  const toggleCollapsed = () => {
+    props.ctx.setItemCollapsed(props.index, !props.collapsed);
+  };
+
   const ref = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
     if (!ref.current) return;
@@ -92,6 +99,17 @@ export function TodoItem(props: TodoItemPropsWithDnd) {
         <div
           className={"todo-text-input" + (props.isEditing ? " editing" : "")}
         >
+          {props.hasChildren ? (
+            <div className="collapse" onClick={toggleCollapsed}>
+              {props.collapsed ? (
+                <ChevronRight fillClass="fill" strokeClass="stroke" />
+              ) : (
+                <ChevronDown fillClass="fill" strokeClass="stroke" />
+              )}
+            </div>
+          ) : (
+            <></>
+          )}
           <TextareaAutosize
             ref={ref}
             spellCheck={false}

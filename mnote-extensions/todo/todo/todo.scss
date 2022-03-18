@@ -167,6 +167,28 @@ $colors: (
           }
         }
 
+        .collapse {
+          width: 1.1em;
+          margin: 0.2em 0.4em 0 0;
+
+          .stroke {
+            stroke: map-get($colors, icon-fg);
+          }
+          .fill {
+            fill: map-get($colors, icon-fg);
+          }
+
+          &:hover {
+            cursor: pointer;
+            .stroke {
+              stroke: map-get($colors, icon-hover-fg);
+            }
+            .fill {
+              fill: map-get($colors, icon-hover-fg);
+            }
+          }
+        }
+
         .checked-bullet {
           padding: 0.1em 0;
           .outer {

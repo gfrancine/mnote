@@ -7,6 +7,7 @@ export type TodoItemData = {
 export type TodoOrderItem = {
   id: string;
   depth: number;
+  collapsed: boolean;
 };
 
 export type TodoData = {
@@ -19,6 +20,7 @@ export type TodoItemContext = {
   setItemCompleted: (index: number, completed: boolean) => void;
   setItem: (id: string, value: TodoItemData) => void;
   deleteItem: (index: number) => void;
+  setItemCollapsed: (index: number, collapsed: boolean) => void;
   appendNewItem: (newItem: Omit<TodoItemData, "id">) => void;
   setCurrentlyEditing: (id: string | null) => void;
   editItemByIndex: (index: number) => void;
