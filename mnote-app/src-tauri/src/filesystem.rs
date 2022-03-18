@@ -91,6 +91,13 @@ pub fn fs_create_dir(path: &str) -> Result<(), String> {
   fs::create_dir(path).map_err(|e| e.to_string())
 }
 
+use trash;
+
+#[tauri::command]
+pub fn fs_move_to_trash(path: &str) -> Result<(), String> {
+  trash::delete(path).map_err(|e| e.to_string())
+}
+
 #[tauri::command]
 pub fn fs_is_file(path: &str) -> bool {
   fs::metadata(path).map(|m| m.is_file()).unwrap_or(false)

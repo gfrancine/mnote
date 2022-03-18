@@ -42,6 +42,7 @@ export interface FsInteropModule {
   removeFile(path: string): Promise<void>;
   removeDir(path: string): Promise<void>;
   createDir(path: string): Promise<void>;
+  moveToTrash(path: string): Promise<void>;
   isFile(path: string): Promise<boolean>;
   isDir(path: string): Promise<boolean>;
   dialogOpen(opts: {

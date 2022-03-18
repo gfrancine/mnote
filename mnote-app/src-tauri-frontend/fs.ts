@@ -157,6 +157,10 @@ export class FS implements FsInteropModule {
     await invoke("fs_create_dir", { path });
   }
 
+  async moveToTrash(path: string): Promise<void> {
+    await invoke("fs_move_to_trash", { path });
+  }
+
   async isFile(path: string): Promise<boolean> {
     return await invoke("fs_is_file", { path });
   }

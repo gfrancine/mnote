@@ -262,7 +262,7 @@ export class FiletreeModule {
               click: () => {
                 (async () => {
                   const action = await this.popups.promptButtons(
-                    `Are you sure you want to delete the file "${filePath}"?`,
+                    `Are you sure you want to move the file "${filePath}" to the trash?`,
                     [
                       {
                         text: "Cancel",
@@ -270,15 +270,15 @@ export class FiletreeModule {
                         kind: "normal",
                       },
                       {
-                        text: "Delete",
-                        command: "delete",
+                        text: "Confirm",
+                        command: "confirm",
                         kind: "emphasis",
                       },
                     ]
                   );
 
                   if (action === "cancel") return;
-                  await this.fs.removeFile(filePath);
+                  await this.fs.moveToTrash(filePath);
                 })();
               },
             },
@@ -329,7 +329,7 @@ export class FiletreeModule {
                 click: () => {
                   (async () => {
                     const action = await this.popups.promptButtons(
-                      `Are you sure you want to delete the folder "${dirPath}"?`,
+                      `Are you sure you want to move the folder "${dirPath}" to the trash?`,
                       [
                         {
                           text: "Cancel",
@@ -337,15 +337,15 @@ export class FiletreeModule {
                           kind: "normal",
                         },
                         {
-                          text: "Delete",
-                          command: "delete",
+                          text: "Confirm",
+                          command: "confirm",
                           kind: "emphasis",
                         },
                       ]
                     );
 
                     if (action === "cancel") return;
-                    await this.fs.removeDir(dirPath);
+                    await this.fs.moveToTrash(dirPath);
                   })();
                 },
               },

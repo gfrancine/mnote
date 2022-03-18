@@ -449,6 +449,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "const-sha1"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fb58b6451e8c2a812ad979ed1d83378caa5e927eef2622017a45f251457c2c9d"
+
+[[package]]
 name = "constant_time_eq"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1848,6 +1854,7 @@ dependencies = [
  "serde_json",
  "tauri",
  "tauri-build",
+ "trash",
 ]
 
 [[package]]
@@ -3231,7 +3238,7 @@ dependencies = [
  "tao-core-video-sys",
  "unicode-segmentation",
  "windows 0.30.0",
- "windows_macros",
+ "windows_macros 0.30.0",
  "x11-dl",
 ]
 
@@ -3588,6 +3595,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "trash"
+version = "2.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9a2ed4369f59214865022230fb397ad71353101fe87bfef0f0cf887c43eaa094"
+dependencies = [
+ "chrono",
+ "libc",
+ "log",
+ "objc",
+ "once_cell",
+ "scopeguard",
+ "url",
+ "windows 0.9.1",
+]
+
+[[package]]
 name = "treediff"
 version = "3.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3853,7 +3876,7 @@ dependencies = [
  "webview2-com-macros",
  "webview2-com-sys",
  "windows 0.30.0",
- "windows_macros",
+ "windows_macros 0.30.0",
 ]
 
 [[package]]
@@ -3941,6 +3964,17 @@ checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
 
 [[package]]
 name = "windows"
+version = "0.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "361f3533a83ee1a28c9be59683f40043db02dbedf6479ce8795657386195c97f"
+dependencies = [
+ "const-sha1",
+ "windows_gen 0.9.1",
+ "windows_macros 0.9.1",
+]
+
+[[package]]
+name = "windows"
 version = "0.24.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a9f39345ae0c8ab072c0ac7fe8a8b411636aa34f89be19ddd0d9226544f13944"
@@ -3982,6 +4016,15 @@ checksum = "29277a4435d642f775f63c7d1faeb927adba532886ce0287bd985bffb16b6bca"
 
 [[package]]
 name = "windows_gen"
+version = "0.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "54154dbc515d58723f6b6053c12f1065da7389f733660581b2391bd1af480452"
+dependencies = [
+ "syn",
+]
+
+[[package]]
+name = "windows_gen"
 version = "0.30.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "30dff4d91d22520628bb94b66f2bb313cb16a09a515a32320a84a1b449bc94c0"
@@ -4016,12 +4059,22 @@ checksum = "d4a09e3a0d4753b73019db171c1339cd4362c8c44baf1bcea336235e955954a6"
 
 [[package]]
 name = "windows_macros"
+version = "0.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0f7794c652845dc466cb8dc1b86c08345707c8144bc53e9086430047c7d33b76"
+dependencies = [
+ "syn",
+ "windows_gen 0.9.1",
+]
+
+[[package]]
+name = "windows_macros"
 version = "0.30.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "62ae44ab917e9005fe710d99d52d227ca0164b10a09be90649142cc3fab825d3"
 dependencies = [
  "syn",
- "windows_gen",
+ "windows_gen 0.30.0",
  "windows_quote",
  "windows_reader",
 ]
@@ -4109,7 +4162,7 @@ dependencies = [
  "webkit2gtk-sys",
  "webview2-com",
  "windows 0.30.0",
- "windows_macros",
+ "windows_macros 0.30.0",
 ]
 
 [[package]]

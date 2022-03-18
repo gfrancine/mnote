@@ -92,6 +92,7 @@ fn main() {
       filesystem::fs_create_dir,
       filesystem::fs_is_file,
       filesystem::fs_is_dir,
+      filesystem::fs_move_to_trash,
       dialog::dialog_open,
       dialog::dialog_save,
       show::can_show_in_explorer,

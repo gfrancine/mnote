@@ -93,6 +93,10 @@ export class FSModule implements FsInteropModule {
     await this.fs?.createDir?.(path);
   }
 
+  async moveToTrash(path: string): Promise<void> {
+    await this.fs?.moveToTrash?.(path);
+  }
+
   isFile(path: string): Promise<boolean> {
     if (this.fs?.isFile) return this.fs.isFile(path);
     return Promise.resolve(false);
