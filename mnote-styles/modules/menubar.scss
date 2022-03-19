@@ -1,7 +1,7 @@
 // styles for modules/menubar.ts
 
 @use "../mnote-vars.scss" as mn;
-@use "../mnote-resets.scss";
+@use "~mnote-components/resets.scss";
 
 @mixin menubar {
   .menubar {
@@ -33,7 +33,7 @@
     }
 
     .menubar-menu-button {
-      @include mnote-resets.input;
+      @include resets.input;
       height: 14px;
       width: 14px;
       cursor: pointer;
