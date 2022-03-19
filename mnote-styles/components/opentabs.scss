@@ -24,6 +24,7 @@
 
       &:hover,
       &:focus {
+        opacity: 1;
         .fill {
           fill: map-get(mn.$vars, main-fg);
         }
