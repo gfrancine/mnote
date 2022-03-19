@@ -60,7 +60,10 @@ export class MenubarModule /* implements Module */ {
       if (!this.menuCurrent) return;
       const mouseoverEls = document.elementsFromPoint(e.pageX, e.pageY);
 
-      if (mouseoverEls.indexOf(this.menuCurrent.element) === -1) {
+      if (
+        mouseoverEls.indexOf(this.menuCurrent.element) === -1 &&
+        mouseoverEls.indexOf(this.menuToggle) === -1
+      ) {
         this.hideMenu();
       }
     });

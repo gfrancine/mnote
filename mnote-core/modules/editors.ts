@@ -112,11 +112,19 @@ export class EditorsModule extends EditorsBaseModule {
       menu.show(this.app.element);
     };
 
-    button.addEventListener("click", showMenu);
+    button.addEventListener("click", () => {
+      if (menu) {
+        hideMenu();
+      } else {
+        showMenu();
+      }
+    });
+
     document.addEventListener("mousedown", (e) => {
       if (menu) {
         const els = document.elementsFromPoint(e.pageX, e.pageY);
-        if (els.indexOf(menu.element) === -1) hideMenu();
+        if (els.indexOf(menu.element) === -1 && els.indexOf(button) === -1)
+          hideMenu();
       }
     });
 
