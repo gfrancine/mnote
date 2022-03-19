@@ -69,7 +69,7 @@ export class MenubarModule /* implements Module */ {
   createMenubarButton(
     iconFactory: (fillClass: string, strokeClass: string) => Element
   ) {
-    return el("div")
+    return el("button")
       .class("menubar-menu-button")
       .children(
         el("div").class("menubar-icon").children(iconFactory("fill", "stroke"))

@@ -1,6 +1,7 @@
 // styles for modules/menubar.ts
 
 @use "../mnote-vars.scss" as mn;
+@use "../mnote-resets.scss";
 
 @mixin menubar {
   .menubar {
@@ -32,6 +33,7 @@
     }
 
     .menubar-menu-button {
+      @include mnote-resets.input;
       height: 14px;
       width: 14px;
       cursor: pointer;
@@ -46,12 +48,6 @@
         }
         .stroke {
           stroke: map-get(mn.$vars, main-fg-dim);
-        }
-
-        svg {
-          transform: translateY(
-            -8px
-          ); // no clue why the svg is slightly offsetted
         }
 
         &:hover {
