@@ -64,11 +64,11 @@ export class Menu {
 
     itemList.forEach((item) => {
       if (item === "divider") {
-        children.push(el("div").class("menu-divider").element);
+        children.push(el("hr").class("menu-divider").element);
         return;
       }
 
-      const itemEl = el("div")
+      const itemEl = el("button")
         .class("menu-item")
         .children(
           el("div")

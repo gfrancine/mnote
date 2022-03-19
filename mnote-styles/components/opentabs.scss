@@ -1,5 +1,6 @@
 @use "../util/scrollbar.scss";
 @use "../mnote-vars.scss" as mn;
+@use "~mnote-components/resets.scss";
 
 // styles for the filetree component (components/jsx)
 
@@ -15,21 +16,27 @@
     padding: 0.4em 0.5em;
 
     .opentabs-close {
-      display: none;
+      @include resets.input;
+      display: flex;
+      opacity: 0;
       margin-left: auto;
       margin-right: 0;
 
-      &:hover .fill {
-        fill: map-get(mn.$vars, main-fg);
-      }
-      &:hover .stroke {
-        stroke: map-get(mn.$vars, main-fg);
+      &:hover,
+      &:focus {
+        .fill {
+          fill: map-get(mn.$vars, main-fg);
+        }
+        .stroke {
+          stroke: map-get(mn.$vars, main-fg);
+        }
       }
     }
 
-    &:hover {
+    &:hover,
+    &:focus {
       .opentabs-close {
-        display: flex;
+        opacity: 1;
       }
     }
   }

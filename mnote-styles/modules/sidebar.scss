@@ -1,4 +1,5 @@
 @use "../mnote-vars.scss" as mn;
+@use "~mnote-components/resets.scss";
 
 @mixin sidebar {
   .sidemenu-main {
@@ -11,6 +12,7 @@
   }
 
   .sidemenu-button {
+    @include resets.input;
     box-sizing: border-box;
     width: 24px;
     height: 24px; // see layout styles

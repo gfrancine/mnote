@@ -1,3 +1,5 @@
+@use "~mnote-components/resets.scss";
+
 /*
 $a: (
   item-bg: map-get(mn.$vars, sidebar-bg),
@@ -41,7 +43,13 @@ $a: (
     display: none !important;
   }
 
+  .tree-item-li {
+    @include resets.list-item;
+  }
+
   .tree-item {
+    @include resets.input;
+    width: 100%;
     box-sizing: border-box;
     cursor: pointer;
     font-size: 13px;
@@ -88,6 +96,7 @@ $a: (
   }
 
   .tree-children {
+    @include resets.list;
     box-sizing: border-box;
     padding-left: 0.8em;
   }

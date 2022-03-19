@@ -12,7 +12,7 @@ export class WordStats {
   element: HTMLElement;
 
   constructor() {
-    this.element = el("div")
+    this.element = el("button")
       .class("md-statsbar")
       .on("click", () => {
         this.countMode = this.countMode === "words" ? "characters" : "words";

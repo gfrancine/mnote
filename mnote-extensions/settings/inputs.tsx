@@ -23,7 +23,7 @@ export function BooleanInput(props: {
   }, [value]);
 
   return (
-    <div
+    <button
       className={"inputs-boolean " + (value ? "on" : "off")}
       onClick={() => setValue(!value)}
     >
@@ -33,7 +33,7 @@ export function BooleanInput(props: {
         <rect x="12" y="0" width="24" height="24" className="bg" />
         <circle cx={value ? "36" : "12"} cy="12" r="10" className="handle" />
       </svg>
-    </div>
+    </button>
   );
 }
 

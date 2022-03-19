@@ -44,7 +44,7 @@ export default function (props: {
     return searchOpenTabs(props.tabs, props.searchTerm);
   }, [props.searchTerm, props.tabs]);
 
-  const treeChildrenRef = useRef<HTMLDivElement>(null);
+  const treeChildrenRef = useRef<HTMLUListElement>(null);
 
   return (
     <div>
@@ -106,12 +106,12 @@ export default function (props: {
               // also used by context menu
               className="opentabs-item"
             >
-              <div
+              <button
                 className="opentabs-close tree-item-icon"
                 onClick={() => openFileTabCtx.onClose()}
               >
                 <Close fillClass="fill" strokeClass="stroke" />
-              </div>
+              </button>
             </TreeItem>
           ) : (
             <></>

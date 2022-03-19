@@ -33,10 +33,10 @@ export function Toggle({
   disabled?: boolean;
   onClick?: () => unknown;
   getIcon?: (fillClass: string, strokeClass: string) => ReactNode;
-  toggleRef?: RefObject<HTMLDivElement>;
+  toggleRef?: RefObject<HTMLButtonElement>;
 }) {
   return (
-    <div
+    <button
       className={
         "dropdown-toggle " +
         (toggled ? " toggled " : " ") +
@@ -51,7 +51,7 @@ export function Toggle({
           (placeholder && <span className="placeholder">{placeholder}</span>)}
       </div>
       {getIcon && <div className="icon">{getIcon("fill", "stroke")}</div>}
-    </div>
+    </button>
   );
 }
 
@@ -68,7 +68,7 @@ export function Menu({
 }) {
   return visible ? (
     <div ref={menuRef} className={"dropdown-menu " + className}>
-      {children}
+      <ul>{children}</ul>
     </div>
   ) : (
     <Fragment />
@@ -86,17 +86,19 @@ export function Item({
   selected?: boolean;
   className?: string;
   onClick?: () => unknown;
-  itemRef?: RefObject<HTMLDivElement>;
+  itemRef?: RefObject<HTMLButtonElement>;
 }) {
   return (
-    <div
-      className={
-        "dropdown-menu-item " + (selected ? "selected " : " ") + className
-      }
-      onClick={() => onClick?.()}
-      ref={itemRef}
-    >
-      {text}
-    </div>
+    <li>
+      <button
+        className={
+          "dropdown-menu-item " + (selected ? "selected " : " ") + className
+        }
+        onClick={() => onClick?.()}
+        ref={itemRef}
+      >
+        {text}
+      </button>
+    </li>
   );
 }

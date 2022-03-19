@@ -1,9 +1,11 @@
 @use "~mnote-styles/mnote-vars" as mn;
 @use "~mnote-components/react/dropdowns/dropdowns.scss";
 @use "~mnote-styles/mnote-inputs.scss" as inputs;
+@use "~mnote-components/resets.scss";
 
 @mixin inputs {
   .inputs-boolean {
+    @include resets.input;
     width: 2.8em;
     height: 1.4em;
     cursor: pointer;

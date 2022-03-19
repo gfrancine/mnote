@@ -33,7 +33,7 @@ export class Prompt {
     this.buttonEls = [];
 
     this.buttons.forEach((buttonData) => {
-      const button = el("div")
+      const button = el("button")
         .class("prompt-button")
         .class(buttonData.kind)
         .inner(buttonData.text)

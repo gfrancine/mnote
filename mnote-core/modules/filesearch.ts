@@ -44,7 +44,7 @@ export class FileSearchModule {
     const closeIcon = createIcon("close", "fill", "stroke", "Clear search");
     closeIcon.classList.add("icon", "close");
 
-    this.button = el("div")
+    this.button = el("button")
       .class("filesearch-button")
       .children(searchIcon, closeIcon)
       .on("click", () => {

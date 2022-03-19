@@ -50,7 +50,7 @@ export class SidebarModule {
   createSidemenuButton(
     iconFactory: (fillClass: string, strokeClass: string) => Element
   ): HTMLElement {
-    return el("div")
+    return el("button")
       .class("sidemenu-button")
       .children(iconFactory("fill", "stroke")).element;
   }

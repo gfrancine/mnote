@@ -1,4 +1,7 @@
+@use "../resets.scss";
+
 @mixin word-stats {
+  @include resets.input;
   position: absolute;
   right: 1em;
   font-size: 12px;

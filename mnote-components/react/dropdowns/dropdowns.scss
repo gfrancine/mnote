@@ -1,3 +1,5 @@
+@use "../../resets.scss";
+
 // functional
 
 @mixin base {
@@ -11,6 +13,7 @@
     }
 
     .dropdown-toggle {
+      @include resets.input;
       cursor: pointer;
       width: fit-content;
       display: flex;
@@ -30,9 +33,14 @@
       width: fit-content;
       position: absolute;
       z-index: 1;
+
+      ul {
+        @include resets.list;
+      }
     }
 
     .dropdown-menu-item {
+      @include resets.input;
       cursor: pointer;
     }
   }
@@ -90,6 +98,7 @@ $colors: (
 
     .dropdown-menu-item {
       padding: 0.5em 0.3em;
+      width: 100%;
 
       &:hover {
         background: map-get($colors, bg-hover);

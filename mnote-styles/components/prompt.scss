@@ -1,6 +1,7 @@
 @use "../mnote-vars.scss" as mn;
 @use "../mnote-inputs.scss" as inputs;
 @use "~mnote-components/react/dropdowns/dropdowns.scss";
+@use "~mnote-components/resets.scss";
 
 @mixin prompt {
   .prompt-overlay {
@@ -32,6 +33,7 @@
       text-align: right;
 
       .prompt-button {
+        @include resets.input;
         margin-left: 0.5em;
 
         &.normal {

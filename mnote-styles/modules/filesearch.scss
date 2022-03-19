@@ -1,4 +1,5 @@
 @use "../mnote-vars.scss" as mn;
+@use "~mnote-components/resets.scss";
 
 @mixin filesearch {
   .filesearch {
@@ -25,6 +26,7 @@
     }
 
     .filesearch-button {
+      @include resets.input;
       width: 24px;
       flex-shrink: 0;
       height: 100%;

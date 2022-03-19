@@ -25,47 +25,49 @@ export function TreeItem(
     disableHover?: boolean;
     focused?: boolean;
     hidden?: boolean;
-    innerRef?: React.Ref<HTMLDivElement>;
+    innerRef?: React.Ref<HTMLButtonElement>;
     className?: string;
   }
 ) {
   return (
-    <div
-      className={
-        "tree-item" +
-        (props.hovered ? " tree-hovered" : "") +
-        (props.focused ? " tree-focused" : "") +
-        (props.hidden ? " tree-hidden" : "") +
-        (props.disableHover ? "" : " tree-enable-hover") +
-        (props.className ? " " + props.className : "")
-      }
-      ref={props.innerRef}
-      {...omit(
-        props,
-        "text",
-        "icon",
-        "children",
-        "focused",
-        "className",
-        "hovered",
-        "innerRef"
-      )}
-    >
-      <div className="tree-item-icon">{props.icon}</div>
-      {props.text}
-      {props.children}
-    </div>
+    <li className="tree-item-li">
+      <button
+        className={
+          "tree-item" +
+          (props.hovered ? " tree-hovered" : "") +
+          (props.focused ? " tree-focused" : "") +
+          (props.hidden ? " tree-hidden" : "") +
+          (props.disableHover ? "" : " tree-enable-hover") +
+          (props.className ? " " + props.className : "")
+        }
+        ref={props.innerRef}
+        {...omit(
+          props,
+          "text",
+          "icon",
+          "children",
+          "focused",
+          "className",
+          "hovered",
+          "innerRef"
+        )}
+      >
+        <div className="tree-item-icon">{props.icon}</div>
+        {props.text}
+        {props.children}
+      </button>
+    </li>
   );
 }
 
 export function TreeChildren(props: {
   hidden?: boolean;
   children?: ReactNode;
-  innerRef?: React.Ref<HTMLDivElement>;
+  innerRef?: React.Ref<HTMLUListElement>;
   hovered?: boolean;
 }) {
   return (
-    <div
+    <ul
       ref={props.innerRef}
       className={
         "tree-children " +
@@ -74,7 +76,7 @@ export function TreeChildren(props: {
       }
     >
       {props.children}
-    </div>
+    </ul>
   );
 }
 

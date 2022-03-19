@@ -9,6 +9,8 @@ $theme: (
 );
 */
 
+@use "../resets.scss";
+
 @mixin menu($theme) {
   .menu {
     position: absolute;
@@ -29,6 +31,7 @@ $theme: (
     }
 
     .menu-item {
+      @include resets.input;
       font-family: inherit;
       color: map-get($theme, main-fg);
       display: flex;
@@ -37,6 +40,7 @@ $theme: (
       padding: 0.5em;
       margin: 0 0.4em;
       border-radius: 5px;
+      width: calc(100% - 0.8em);
       cursor: pointer;
       justify-content: space-between;
 
@@ -83,8 +87,10 @@ $theme: (
     .menu-divider {
       width: 100%;
       height: 1px;
-      background: map-get($theme, border-divider);
       margin: 0.3em 0;
+      box-sizing: border-box;
+      border: 0;
+      background: map-get($theme, border-divider);
     }
   }
 }
