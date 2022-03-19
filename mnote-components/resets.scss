@@ -2,6 +2,7 @@
 // for resetting default HTML elements until they look like blank divs
 
 @mixin input {
+  text-align: inherit;
   color: inherit;
   font-size: inherit;
   font-family: inherit;
