@@ -1,0 +1,19 @@
+// mnote-resets
+// for resetting default HTML elements until they look like blank divs
+
+@mixin input {
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  background: none;
+  border: none;
+  display: block;
+  padding: 0;
+  align-items: normal;
+}
+
+@mixin list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
