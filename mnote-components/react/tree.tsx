@@ -1,5 +1,6 @@
 // item heads used by filetree and opentabs
 import React, { ReactNode, useEffect, useRef } from "react";
+import { useButton } from "./useButton";
 
 type DivProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -25,37 +26,43 @@ export function TreeItem(
     disableHover?: boolean;
     focused?: boolean;
     hidden?: boolean;
-    innerRef?: React.Ref<HTMLButtonElement>;
+    innerRef?: React.RefObject<HTMLLIElement>;
     className?: string;
   }
 ) {
+  const ref: React.RefObject<HTMLLIElement> =
+    props.innerRef || useRef<HTMLLIElement>(null);
+
+  const buttonProps = useButton(ref);
+
+  const elementProps = omit(
+    props,
+    "text",
+    "icon",
+    "children",
+    "focused",
+    "className",
+    "hovered",
+    "innerRef"
+  );
+
   return (
-    <li className="tree-item-li">
-      <button
-        className={
-          "tree-item" +
-          (props.hovered ? " tree-hovered" : "") +
-          (props.focused ? " tree-focused" : "") +
-          (props.hidden ? " tree-hidden" : "") +
-          (props.disableHover ? "" : " tree-enable-hover") +
-          (props.className ? " " + props.className : "")
-        }
-        ref={props.innerRef}
-        {...omit(
-          props,
-          "text",
-          "icon",
-          "children",
-          "focused",
-          "className",
-          "hovered",
-          "innerRef"
-        )}
-      >
-        <div className="tree-item-icon">{props.icon}</div>
-        {props.text}
-        {props.children}
-      </button>
+    <li
+      className={
+        "tree-item-li tree-item" +
+        (props.hovered ? " tree-hovered" : "") +
+        (props.focused ? " tree-focused" : "") +
+        (props.hidden ? " tree-hidden" : "") +
+        (props.disableHover ? "" : " tree-enable-hover") +
+        (props.className ? " " + props.className : "")
+      }
+      ref={ref}
+      tabIndex={buttonProps.tabIndex}
+      {...elementProps}
+    >
+      <div className="tree-item-icon">{props.icon}</div>
+      {props.text}
+      {props.children}
     </li>
   );
 }
