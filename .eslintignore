@@ -1,0 +1,6 @@
+node_modules/
+
+/mnote-app/dist/
+/mnote-app/src-tauri/target/
+/mnote-deps/react-sortly
+/mnote-deps/path-browser

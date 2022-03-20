@@ -11,7 +11,7 @@ fmt = """\
 prettier = 'prettier --ignore-path="./.gitingore" -w' # <glob...>
 
 lint = """eslint \
-  --ignore-path .gitignore \
+  --ignore-path .eslintignore \
   **/**.ts **/**.tsx **/**.js **/**.jsx \
   """
 
