@@ -1,11 +1,11 @@
 # run with "tomlrun <script>" or "npm run tomlrun <script>"
 
-fmt = """\
-  prettier \
-    --ignore-path="./.gitignore" -w \
-    **.scss **.ts **.tsx **.js **.jsx **.css \
-  && cd mnote-app/src-tauri && cargo fmt
+fmt = """prettier \
+  --ignore-path="./.gitignore" -w \
+  **.scss **.ts **.tsx **.js **.jsx **.css \
   """
+
+fmt-rs = "cd mnote-app/src-tauri && cargo fmt"
 
 # pass arguments to prettier instead of running it on the whole project
 prettier = 'prettier --ignore-path="./.gitingore" -w' # <glob...>
