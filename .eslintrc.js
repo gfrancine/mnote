@@ -20,13 +20,9 @@ module.exports = {
   plugins: ["react", "@typescript-eslint"],
   rules: {
     "react/prop-types": "off",
-		"@typescript-eslint/no-var-requires": "off",
-    "no-unused-vars": [
-      "error",
-      {
-        argsIgnorePattern: "^_",
-        destructuredArrayIgnorePattern: "^_",
-      },
-    ],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
   },
 };
