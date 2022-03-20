@@ -1,6 +1,6 @@
 // react-beautiful-dnd reorderable list
 // adapted from https://codepen.io/annaazzam/pen/MWbwbGm
-// deno-lint-ignore-file no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import React from "react";
 import {

@@ -1,4 +1,4 @@
-// deno-lint-ignore-file ban-types no-explicit-any
+/* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any */
 
 type Arguments<T> = [T] extends [(...args: infer U) => any]
   ? U
