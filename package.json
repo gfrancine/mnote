@@ -28,6 +28,7 @@
     "nanoid": "^3.1.30",
     "open-color": "^1.8.0",
     "react": "^17.0.2",
+    "react-aria": "^3.14.0",
     "react-beautiful-dnd": "^13.1.0",
     "react-dnd": "^14.0.4",
     "react-dnd-html5-backend": "^14.0.2",
