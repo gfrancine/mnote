@@ -22,20 +22,3 @@ eslint = "eslint --ignore-path .gitignore"
 
 # run mnote-app commands from here
 app = "cd mnote-app && npm run" # <script name>
-
-# for gitpod workspaces
-gitpod = """
-  cd ..
-
-  # install deno (as the linter)
-  curl -fsSL https://deno.land/x/install/install.sh | sh
-  export DENO_INSTALL="/home/gitpod/.deno"
-  export PATH="$DENO_INSTALL/bin:$PATH"
-
-  # install dependencies
-  cd mnote
-  npm i -g npm@8
-  npm --version
-  npm i
-  git reset --hard
-  """
