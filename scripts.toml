@@ -10,27 +10,15 @@ fmt = """\
 # pass arguments to prettier instead of running it on the whole project
 prettier = 'prettier --ignore-path="./.gitingore" -w' # <glob...>
 
-lint = """deno lint \
-  mnote-core \
-  mnote-components \
-  mnote-app/src \
-  mnote-app/src-web \
-  mnote-app/bundle-scripts \
-  mnote-util \
-  mnote-deps/kanban \
-  mnote-deps/resizable \
-  mnote-extensions/calendar \
-  mnote-extensions/excalidraw \
-  mnote-extensions/image-viewer \
-  mnote-extensions/kanban \
-  mnote-extensions/markdown \
-  mnote-extensions/plaintext \
-  mnote-extensions/richtext \
-  mnote-extensions/settings \
-  mnote-extensions/todo \
+lint = """eslint \
+  --ignore-path .gitignore \
+  **/**.ts **/**.tsx **/**.js **/**.jsx \
   """
 
 lint-rs = "cd mnote-app/src-tauri && cargo clippy && cargo check"
+
+# same as the prettier script
+eslint = "eslint --ignore-path .gitignore"
 
 # run mnote-app commands from here
 app = "cd mnote-app && npm run" # <script name>
