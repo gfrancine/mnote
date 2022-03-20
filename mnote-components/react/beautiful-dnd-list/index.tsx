@@ -12,7 +12,6 @@ import {
   DraggingStyle,
   Droppable,
   DroppableProvidedProps,
-  DroppableStateSnapshot,
   NotDraggingStyle,
 } from "react-beautiful-dnd";
 

@@ -102,5 +102,6 @@ export class KanbanExtension implements Extension {
     });
   }
 
+  /* eslint-disable-next-line @typescript-eslint/no-empty-function */ 
   cleanup(_app: Mnote) {}
 }

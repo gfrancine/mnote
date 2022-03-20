@@ -62,7 +62,7 @@ export default class List extends Component {
 
     return (
       <Draggable draggableId={list._id} index={index}>
-        {(provided, snapshot) => (
+        {(provided, _snapshot) => (
           <div
             ref={provided.innerRef}
             {...provided.draggableProps}

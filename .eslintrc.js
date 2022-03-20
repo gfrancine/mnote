@@ -20,6 +20,7 @@ module.exports = {
   plugins: ["react", "@typescript-eslint"],
   rules: {
     "react/prop-types": "off",
+    "react/display-name": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/no-explicit-any": "error",

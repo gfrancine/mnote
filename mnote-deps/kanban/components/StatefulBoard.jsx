@@ -62,7 +62,8 @@ export default function StatefulBoard({
       }
       case "DELETE_LIST": {
         const { listId } = action.payload;
-        const { [listId]: deletedList, ...restOfLists } = state;
+        const restOfLists = { ...state };
+        delete restOfLists[listId];
         return restOfLists;
       }
       case "ADD_CARD": {
@@ -133,7 +134,8 @@ export default function StatefulBoard({
       }
       case "DELETE_CARD": {
         const { cardId } = action.payload;
-        const { [cardId]: deletedCard, ...restOfCards } = state;
+        const restOfCards = { ...state };
+        delete restOfCards[cardId];
         return restOfCards;
       }
       // Find every card from the deleted list and remove it

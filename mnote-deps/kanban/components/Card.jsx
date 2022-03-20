@@ -49,7 +49,7 @@ export default class Card extends Component {
     if (!editing) {
       return (
         <Draggable draggableId={card._id} index={index}>
-          {(provided, snapshot) => (
+          {(provided, _snapshot) => (
             <div
               ref={provided.innerRef}
               {...provided.draggableProps}

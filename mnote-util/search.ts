@@ -9,7 +9,7 @@ export function getMatchingRanges(value: string, searchTerm: string) {
   const matches: MatchRange[] = [];
 
   let offset = 0;
-  while (true) {
+  for (;;) {
     const slice = value.slice(offset);
     const index = slice.indexOf(searchTerm);
     if (index === -1) break;

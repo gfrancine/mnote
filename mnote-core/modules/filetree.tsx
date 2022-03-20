@@ -16,7 +16,6 @@ import { EditorsModule } from "./editors";
 import { FileIconsModule } from "./fileicons";
 import { FileSearchModule } from "./filesearch";
 import { render, unmountComponentAtNode } from "react-dom";
-import Select from "mnote-components/react/dropdowns/Select";
 import React from "react";
 import FileTree from "./filetree-component";
 
