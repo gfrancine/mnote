@@ -2,7 +2,7 @@
   "name": "mnote-extensions",
   "version": "0.1.0",
   "dependencies": {
-    "@excalidraw/excalidraw": "^0.10.0",
+    "@excalidraw/excalidraw": "^0.11.0",
     "@milkdown/core": "~5.5.0",
     "@milkdown/plugin-clipboard": "~5.5.0",
     "@milkdown/plugin-history": "~5.5.0",
