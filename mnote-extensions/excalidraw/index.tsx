@@ -7,7 +7,10 @@ import React from "react";
 
 import Excalidraw, { exportToCanvas } from "@excalidraw/excalidraw";
 import { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
-import { AppState as ExcalidrawAppState } from "@excalidraw/excalidraw/types/types";
+import {
+  AppState as ExcalidrawAppState,
+  BinaryFiles,
+} from "@excalidraw/excalidraw/types/types";
 
 import "./styles.scss";
 import { excalidrawIcon } from "./icon";
@@ -15,6 +18,7 @@ import { excalidrawIcon } from "./icon";
 type ExcalidrawData = {
   readonly elements: ExcalidrawElement[];
   appState: ExcalidrawAppState;
+  files: BinaryFiles;
 };
 
 type EventBus = Emitter<{
@@ -39,13 +43,18 @@ function Wrapper(props: {
       scrollY: appState?.scrollY,
       zoom: appState?.zoom,
     },
+    files: props.initialData.files,
   };
 
   return (
     <>
       <Excalidraw
-        onChange={(elements, appState) =>
-          props.emitter.emit("change", { elements, appState } as ExcalidrawData)
+        onChange={(elements, appState, files) =>
+          props.emitter.emit("change", {
+            elements,
+            appState,
+            files,
+          } as ExcalidrawData)
         }
         UIOptions={{
           canvasActions: {
@@ -115,9 +124,10 @@ class ExcalidrawEditor implements Editor {
     if (extension === "excalidraw") {
       await this.fs.writeTextFile(path, JSON.stringify(this.data));
     } else if (extension === "png") {
-      const canvas = exportToCanvas({
+      const canvas = await exportToCanvas({
         elements: this.data.elements || [],
         appState: this.data.appState,
+        files: this.data.files || null,
       });
 
       canvas.toBlob(
