@@ -72,6 +72,11 @@ $a: (
       @include focused($theme);
     }
 
+    &:focus {
+      @include focused($theme);
+      outline: none;
+    }
+
     .tree-item-icon {
       width: 14px;
       height: 14px;
