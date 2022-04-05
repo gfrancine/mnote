@@ -14,5 +14,6 @@
   .image-viewer-image {
     image-rendering: pixelated;
     box-shadow: map-get(mn.$vars, main-shadow);
+    height: 100%;
   }
 }
