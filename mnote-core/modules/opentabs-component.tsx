@@ -99,7 +99,7 @@ export default function (props: {
 
                 return <BlankFile fillClass="fill" strokeClass="stroke" />;
               })()}
-              focused={props.activeIndex === itemProps.index}
+              selected={props.activeIndex === itemProps.index}
               onClick={() => openFileTabCtx.onOpen()}
               // used by context menu to open the right path
               data-mn-tab-index={itemProps.index}

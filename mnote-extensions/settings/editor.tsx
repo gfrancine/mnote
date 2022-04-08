@@ -148,7 +148,7 @@ export function SettingsEditor(props: {
             <Nothing />
           )
         }
-        focused={subcategory.subcategory.key === currentSubcategoryKey}
+        selected={subcategory.subcategory.key === currentSubcategoryKey}
         onClick={() => setCurrentSubcategoryKey(subcategory.subcategory.key)}
       />
     ));

@@ -24,7 +24,7 @@ export function TreeItem(
     icon: ReactNode;
     hovered?: boolean;
     disableHover?: boolean;
-    focused?: boolean;
+    selected?: boolean;
     hidden?: boolean;
     innerRef?: React.RefObject<HTMLLIElement>;
     className?: string;
@@ -40,7 +40,7 @@ export function TreeItem(
     "text",
     "icon",
     "children",
-    "focused",
+    "selected",
     "className",
     "hovered",
     "innerRef"
@@ -51,7 +51,7 @@ export function TreeItem(
       className={
         "tree-item-li tree-item" +
         (props.hovered ? " tree-hovered" : "") +
-        (props.focused ? " tree-focused" : "") +
+        (props.selected ? " tree-selected" : "") +
         (props.hidden ? " tree-hidden" : "") +
         (props.disableHover ? "" : " tree-enable-hover") +
         (props.className ? " " + props.className : "")

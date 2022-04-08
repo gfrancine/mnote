@@ -70,7 +70,7 @@ function FileNode(props: {
   isParentDraggedOver: boolean;
   setParentDraggedOver: (value: boolean) => unknown;
   node: Node;
-  focusedPath?: string; // path of the focused node
+  selectedPath?: string; // path of the selected node
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
   searchResults?: Record<string, MatchRange[]>;
@@ -82,7 +82,7 @@ function FileNode(props: {
     [props.node.path]
   );
 
-  const onClick = () => props.hooks?.fileFocused?.(props.node.path);
+  const onClick = () => props.hooks?.fileSelected?.(props.node.path);
 
   const isSearching = props.searchResults !== undefined;
   const searchResultRanges = props.searchResults?.[props.node.path];
@@ -104,7 +104,7 @@ function FileNode(props: {
         }
         return <BlankFile fillClass="fill" strokeClass="stroke" />;
       })()}
-      focused={props.focusedPath === props.node.path}
+      selected={props.selectedPath === props.node.path}
       hovered={props.isParentDraggedOver}
       onClick={onClick}
       draggable
@@ -138,9 +138,9 @@ function DirNode(props: {
   node: NodeWithChildren;
   draggable?: boolean;
   initExpanded?: boolean; // is the dir open at initialization?
-  overrideAutoExpand?: boolean; // should it expand when it has the focused path?
+  overrideAutoExpand?: boolean; // should it expand when it has the selected path?
   disableRename?: boolean;
-  focusedPath?: string; // path of the focused node
+  selectedPath?: string; // path of the selected node
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
   searchResults?: Record<string, MatchRange[]>;
@@ -160,14 +160,14 @@ function DirNode(props: {
   );
 
   useEffect(() => {
-    if (!props.focusedPath) return;
+    if (!props.selectedPath) return;
     if (props.overrideAutoExpand) return;
     if (
-      props.focusedPath.startsWith(props.ensureSeparatorAtEnd(props.node.path))
+      props.selectedPath.startsWith(props.ensureSeparatorAtEnd(props.node.path))
     ) {
       setExpanded(true);
     }
-  }, [props.focusedPath]);
+  }, [props.selectedPath]);
 
   const hasSearchResult = useMemo(() => {
     if (!props.searchResults) return false;
@@ -245,7 +245,7 @@ function DirNode(props: {
               key={node.path}
               node={node as NodeWithChildren}
               hooks={props.hooks}
-              focusedPath={props.focusedPath}
+              selectedPath={props.selectedPath}
               getFileIcon={props.getFileIcon}
               searchResults={props.searchResults}
               getPathName={props.getPathName}
@@ -260,7 +260,7 @@ function DirNode(props: {
               node={node}
               key={node.path}
               hooks={props.hooks}
-              focusedPath={props.focusedPath}
+              selectedPath={props.selectedPath}
               getFileIcon={props.getFileIcon}
               searchResults={props.searchResults}
               getPathName={props.getPathName}
@@ -276,7 +276,7 @@ function DirNode(props: {
 // not meant to be used with another react component
 export default function (props: {
   node: NodeWithChildren;
-  initFocusedNode?: string; // path of the focused node
+  initSelectedNode?: string; // path of the selected node
   hooks?: FileTreeHooks;
   getFileIcon?: FileIconFactory;
   searchTerm?: string;
@@ -299,7 +299,7 @@ export default function (props: {
           draggable={false}
           node={props.node}
           overrideAutoExpand
-          focusedPath={props.initFocusedNode}
+          selectedPath={props.initSelectedNode}
           getFileIcon={props.getFileIcon}
           searchResults={searchResults}
           disableRename

@@ -108,9 +108,9 @@
         item-hover-bg: map-get(mn.$vars, main-bg-secondary),
         item-hover-fg: map-get(mn.$vars, main-fg),
         item-hover-icon: map-get(mn.$vars, main-fg-dim),
-        item-focused-bg: map-get(mn.$vars, main-bg-secondary),
-        item-focused-fg: map-get(mn.$vars, main-fg),
-        item-focused-icon: map-get(mn.$vars, main-fg-dim),
+        item-selected-bg: map-get(mn.$vars, main-bg-secondary),
+        item-selected-fg: map-get(mn.$vars, main-fg),
+        item-selected-icon: map-get(mn.$vars, main-fg-dim),
       );
 
       @include tree.tree($theme);

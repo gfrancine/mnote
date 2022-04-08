@@ -100,8 +100,8 @@ export class FiletreeModule {
     this.log.info("filetree: updateTree", this.tree, this.selectedFile);
 
     const hooks: FileTreeHooks = {
-      fileFocused: (path: string) => {
-        this.log.info("filetree: file focused", path);
+      fileSelected: (path: string) => {
+        this.log.info("filetree: file selected", path);
         this.editors.open(path);
       },
       fileDroppedOnDir: (targetDir: string, droppedFile: string) => {
@@ -146,7 +146,7 @@ export class FiletreeModule {
         <FileTree
           node={this.tree}
           hooks={hooks}
-          initFocusedNode={this.selectedFile}
+          initSelectedNode={this.selectedFile}
           getFileIcon={getFileIcon}
           searchTerm={this.searchTerm}
           getPathName={(path: string) => this.fs.getPathName(path)}

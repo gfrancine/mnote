@@ -108,7 +108,7 @@ export type FileTreeNode = Node;
 export type FileTreeNodeWithChildren = NodeWithChildren;
 
 export type FileTreeHooks = {
-  fileFocused?: (path: string) => void | Promise<void>;
+  fileSelected?: (path: string) => void | Promise<void>;
   fileDroppedOnDir?: (
     targetDir: string,
     droppedFile: string
