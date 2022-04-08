@@ -73,7 +73,7 @@ $a: (
     }
 
     &:focus {
-      @include selected($theme);
+      @include hovered($theme);
       outline: none;
     }
 
