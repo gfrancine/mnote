@@ -126,8 +126,8 @@ export class FSModule implements FsInteropModule {
     return Promise.resolve();
   }
 
-  getDataDir(): Promise<string> {
-    if (this.fs?.getDataDir) return this.fs.getDataDir();
+  getConfigDir(): Promise<string> {
+    if (this.fs?.getConfigDir) return this.fs.getConfigDir();
     return Promise.resolve("");
   }
 

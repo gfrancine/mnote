@@ -13,6 +13,7 @@ export type MnoteOptions = {
   fs?: Partial<FsInteropModule>;
   system?: Partial<SystemInteropModule>;
   isProduction?: boolean;
+  dataDirectoryName?: string;
   appSettingsFileName?: string;
 };
 
@@ -55,7 +56,7 @@ export interface FsInteropModule {
     startingDirectory?: string;
     startingFileName?: string;
   }): Promise<string | void>;
-  getDataDir(): Promise<string>;
+  getConfigDir(): Promise<string>;
   getCurrentDir(): Promise<string>;
 
   // path

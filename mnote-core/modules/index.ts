@@ -14,6 +14,7 @@ export { InputModule } from "./input";
 export { PopupsModule } from "./popups";
 export { OpenTabsModule } from "./opentabs";
 export { FileIconsModule } from "./fileicons";
+export { DataDirModule } from "./datadir";
 export { FileSearchModule } from "./filesearch";
 export { AppDirModule } from "./appdir";
 
