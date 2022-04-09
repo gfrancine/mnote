@@ -7,7 +7,7 @@ import * as SettingsInputs from "./settings-inputs";
 // used by the extension module
 export interface Extension {
   startup(app: Mnote): void;
-  cleanup(app: Mnote): void;
+  cleanup(): void;
 }
 
 // https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor
