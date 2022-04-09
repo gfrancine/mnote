@@ -60,7 +60,7 @@ export class ThemesModule {
       type: "select",
       title: "Theme",
       description: "The app theme color",
-      key: "theme",
+      key: "core.theme",
       subcategory: "appearance",
       default: "system",
       getItems: () => [
@@ -110,7 +110,7 @@ export class ThemesModule {
 
   getSettingsValue() {
     return this.settings.getKeyWithDefault(
-      "theme",
+      "core.theme",
       "system",
       (v) => typeof v === "string" && this.hasTheme(v)
     );
