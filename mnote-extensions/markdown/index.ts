@@ -97,11 +97,11 @@ class MarkdownEditor implements Editor {
     const setProperty = shortenSetProperty(this.element);
 
     await this.settings
-      .getKeyWithDefault("markdown.font-size", "1em", isString)
+      .getKeyWithDefault("markdown.fontSize", "1em", isString)
       .then((value) => setProperty("--md-font-size", value));
 
     await this.settings
-      .getKeyWithDefault("markdown.line-height", "1.35", isString)
+      .getKeyWithDefault("markdown.lineHeight", "1.35", isString)
       .then((value) => setProperty("--md-line-height", value));
   };
 
@@ -187,7 +187,7 @@ export class MarkdownExtension implements Extension {
 
     app.modules.settings.registerInput({
       type: "string",
-      key: "markdown.font-size",
+      key: "markdown.fontSize",
       title: "Font size",
       subcategory: "markdown",
       description:
@@ -197,7 +197,7 @@ export class MarkdownExtension implements Extension {
 
     app.modules.settings.registerInput({
       type: "string",
-      key: "markdown.line-height",
+      key: "markdown.lineHeight",
       title: "Line height",
       subcategory: "markdown",
       description: "Paragraph line height of a markdown editor",

@@ -65,19 +65,19 @@ class PlaintextEditor implements Editor {
     const setProperty = shortenSetProperty(this.textarea);
 
     await this.app.modules.settings
-      .getKeyWithDefault("plaintext.font-size", "13px", isString)
+      .getKeyWithDefault("plaintext.fontSize", "13px", isString)
       .then((value) => setProperty("--font-size", value));
 
     await this.app.modules.settings
-      .getKeyWithDefault("plaintext.line-height", "1.5", isString)
+      .getKeyWithDefault("plaintext.lineHeight", "1.5", isString)
       .then((value) => setProperty("--line-height", value));
 
     await this.app.modules.settings
-      .getKeyWithDefault("plaintext.tab-size", 4, isNumber)
+      .getKeyWithDefault("plaintext.tabSize", 4, isNumber)
       .then((value) => setProperty("--tab-size", "" + value));
 
     await this.app.modules.settings
-      .getKeyWithDefault("plaintext.show-cursorstats", true, isBoolean)
+      .getKeyWithDefault("plaintext.showCursorStats", true, isBoolean)
       .then((value) => {
         this.showCursorStats = value;
         this.cursorStats.style.display = value ? "unset" : "none";
@@ -154,7 +154,7 @@ export class PlaintextExtension implements Extension {
 
     app.modules.settings.registerInput({
       subcategory: "plaintext",
-      key: "plaintext.font-size",
+      key: "plaintext.fontSize",
       title: "Font size",
       description:
         "Plaintext editor font size in a CSS unit (e.g. 12px, 1em, etc...)",
@@ -164,7 +164,7 @@ export class PlaintextExtension implements Extension {
 
     app.modules.settings.registerInput({
       subcategory: "plaintext",
-      key: "plaintext.line-height",
+      key: "plaintext.lineHeight",
       title: "Line height",
       description: "Plaintext editor line height",
       default: "1.5",
@@ -173,7 +173,7 @@ export class PlaintextExtension implements Extension {
 
     app.modules.settings.registerInput({
       subcategory: "plaintext",
-      key: "plaintext.tab-size",
+      key: "plaintext.tabSize",
       title: "Tab size",
       description: "The number of characters a tab is equal to",
       default: 2,
@@ -183,7 +183,7 @@ export class PlaintextExtension implements Extension {
 
     app.modules.settings.registerInput({
       subcategory: "plaintext",
-      key: "plaintext.show-cursorstats",
+      key: "plaintext.showCursorStats",
       title: "Show cursor stats",
       description:
         "Show the line and column cursor position at the bottom right",

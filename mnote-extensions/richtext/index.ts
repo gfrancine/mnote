@@ -131,7 +131,7 @@ class RichtextEditor implements Editor {
     const setProperty = shortenSetProperty(this.element);
 
     await this.app.modules.settings
-      .getKeyWithDefault("richtext.default-font-size", 14, isNumber)
+      .getKeyWithDefault("richtext.defaultFontSize", 14, isNumber)
       .then((value) => setProperty("--default-font-size", value + "px"));
   };
 
@@ -182,7 +182,7 @@ export class RichtextExtension implements Extension {
 
     app.modules.settings.registerInput({
       subcategory: "richtext",
-      key: "richtext.default-font-size",
+      key: "richtext.defaultFontSize",
       title: "Default font size",
       description: "Default paragraph font size in pixels",
       type: "number",
