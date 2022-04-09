@@ -9,7 +9,6 @@ import {
 import { FSModule } from "./fs";
 import { LogModule } from "./log";
 import { Emitter } from "mnote-util/emitter";
-import { DataDirModule } from "./datadir";
 import { set } from "mnote-util/immutable";
 
 // the file is only read once at initialization. as long as the
@@ -18,7 +17,6 @@ import { set } from "mnote-util/immutable";
 
 export class SettingsModule {
   private fs: FSModule;
-  private datadir: DataDirModule;
   private log: LogModule;
 
   private settingsPath = ""; // initialized in init()
@@ -38,17 +36,13 @@ export class SettingsModule {
 
   constructor(app: Mnote) {
     this.fs = app.modules.fs;
-    this.datadir = app.modules.datadir;
     this.log = app.modules.log;
 
     this.settingsName = app.options.appSettingsFileName || this.settingsName;
   }
 
   async init() {
-    this.settingsPath = this.fs.joinPath([
-      await this.datadir.getPath(),
-      this.settingsName,
-    ]);
+    this.settingsPath = await this.fs.getDataDir();
 
     try {
       const contents = await this.fs.readTextFile(this.settingsPath);

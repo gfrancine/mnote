@@ -20,7 +20,7 @@ export const run = async (isProduction: boolean) => {
 
   const app = new Mnote("#root", {
     startPath,
-    fs: await new FS().init(),
+    fs: await new FS({ dataDirName: "Mnote" }).init(),
     system: await new System().init(),
     isProduction,
   });

@@ -83,6 +83,12 @@ export class FS implements FsInteropModule {
 
   protected lib = posix;
 
+  protected dataDirName: string;
+
+  constructor(options: { dataDirName: string }) {
+    this.dataDirName = options.dataDirName;
+  }
+
   async init() {
     this.IS_WINDOWS = await invoke("is_windows");
     this.CAN_SHOW_IN_EXPLORER = await invoke("can_show_in_explorer");
@@ -186,8 +192,8 @@ export class FS implements FsInteropModule {
     return await invoke("dialog_save", opts);
   }
 
-  async getConfigDir(): Promise<string> {
-    return await pathLib.configDir();
+  async getDataDir(): Promise<string> {
+    return pathLib.join(await pathLib.configDir());
   }
 
   async getCurrentDir(): Promise<string> {
