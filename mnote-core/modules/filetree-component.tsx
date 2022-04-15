@@ -296,6 +296,7 @@ export default function (props: {
   node: NodeWithChildren;
   initOpenedFile?: string; // path of the selected node
   hooks?: FileTreeHooks;
+  updateSelectedPaths?: (paths: Record<string, "file" | "dir">) => void; // update the data upstream
   getFileIcon?: FileIconFactory;
   searchTerm?: string;
   getPathName: (path: string) => string;
@@ -303,9 +304,14 @@ export default function (props: {
 }) {
   // selection
   const [isShiftDown, setIsShiftDown] = useState(false);
-  const [selectedPaths, setSelectedPaths] = useState<
+  const [selectedPaths, setSelectedPaths_] = useState<
     Record<string, "file" | "dir">
   >({});
+
+  const setSelectedPaths = (paths: Record<string, "file" | "dir">) => {
+    setSelectedPaths_(paths);
+    props.updateSelectedPaths?.(paths);
+  };
 
   const ref = useRef<HTMLDivElement>(null);
 

@@ -33,6 +33,8 @@ export class FiletreeModule {
   private fileicons: FileIconsModule;
   private filesearch: FileSearchModule;
 
+  // this VV is maintained by the filetree-component
+  private selectedPaths: Record<string, "file" | "dir"> = {};
   private openedFile?: string;
   private tree?: FileTreeNodeWithChildren;
   private searchTerm?: string;
@@ -149,6 +151,9 @@ export class FiletreeModule {
           initOpenedFile={this.openedFile}
           getFileIcon={getFileIcon}
           searchTerm={this.searchTerm}
+          updateSelectedPaths={(paths) => {
+            this.selectedPaths = paths;
+          }}
           getPathName={(path: string) => this.fs.getPathName(path)}
           ensureSeparatorAtEnd={(path: string) =>
             this.fs.ensureSeparatorAtEnd(path)
@@ -243,8 +248,43 @@ export class FiletreeModule {
       const fileTreeItem = findFileTreeItem(ctx);
       const dir = this.appdir.getDirectory();
 
-      if (fileTreeItem) {
+      // order:
+      // 1. selection
+      // 2. item directlyclicked on
+      // 3. the file tree element
+      if (fileTreeItem && Object.values(this.selectedPaths).length > 0) {
+        return [
+          {
+            name: "Delete All",
+            click: async () => {
+              const paths = Object.keys(this.selectedPaths);
+              const action = await this.popups.promptButtons(
+                `Are you sure you want to move ${paths.length} item(s) to the trash?`,
+                [
+                  {
+                    text: "Cancel",
+                    command: "cancel",
+                    kind: "normal",
+                  },
+                  {
+                    text: "Confirm",
+                    command: "confirm",
+                    kind: "emphasis",
+                  },
+                ]
+              );
+
+              if (action === "cancel") return;
+              // will throw errors if the user selects a directory before
+              // its descendants, they can be ignored
+              this.log.info("filetree: Delete All", paths);
+              paths.forEach((path) => this.fs.moveToTrash(path));
+            },
+          },
+        ];
+      } else if (fileTreeItem) {
         const filePath = fileTreeItem.getAttribute("data-mn-file-path");
+        const dirPath = fileTreeItem.getAttribute("data-mn-dir-path");
         const disableRename =
           fileTreeItem.getAttribute("data-mn-disable-rename") === "true";
 
@@ -318,67 +358,64 @@ export class FiletreeModule {
           }
 
           return buttons;
-        } else {
-          const dirPath = fileTreeItem.getAttribute("data-mn-dir-path");
-          if (dirPath) {
-            // a directory
-            const buttons = [
-              {
-                name: "Delete folder",
-                click: () => {
-                  (async () => {
-                    const action = await this.popups.promptButtons(
-                      `Are you sure you want to move the folder "${dirPath}" to the trash?`,
-                      [
-                        {
-                          text: "Cancel",
-                          command: "cancel",
-                          kind: "normal",
-                        },
-                        {
-                          text: "Confirm",
-                          command: "confirm",
-                          kind: "emphasis",
-                        },
-                      ]
-                    );
+        } else if (dirPath) {
+          // a directory
+          const buttons = [
+            {
+              name: "Delete folder",
+              click: () => {
+                (async () => {
+                  const action = await this.popups.promptButtons(
+                    `Are you sure you want to move the folder "${dirPath}" to the trash?`,
+                    [
+                      {
+                        text: "Cancel",
+                        command: "cancel",
+                        kind: "normal",
+                      },
+                      {
+                        text: "Confirm",
+                        command: "confirm",
+                        kind: "emphasis",
+                      },
+                    ]
+                  );
 
-                    if (action === "cancel") return;
-                    await this.fs.moveToTrash(dirPath);
-                  })();
-                },
+                  if (action === "cancel") return;
+                  await this.fs.moveToTrash(dirPath);
+                })();
               },
-              makeNewFolderButton(dirPath),
-              makeNewFileButton(dirPath),
-            ];
+            },
+            makeNewFolderButton(dirPath),
+            makeNewFileButton(dirPath),
+          ];
 
-            if (!disableRename) {
-              buttons.push({
-                name: "Rename folder",
-                click: () => {
-                  const dirName = this.fs.getPathName(dirPath);
+          if (!disableRename) {
+            buttons.push({
+              name: "Rename folder",
+              click: () => {
+                const dirName = this.fs.getPathName(dirPath);
 
-                  this.popups
-                    .promptTextInput(`Rename folder "${dirName}"`, dirName)
-                    .then((newName) => {
-                      if (!newName) return;
-                      const newPath = this.fs.joinPath([
-                        this.fs.getPathParent(dirPath),
-                        newName,
-                      ]);
-                      this.log.info("rename dir", dirPath, "to", newPath);
-                      this.fs.renameDir(dirPath, newPath);
-                    });
-                },
-              });
-            }
-
-            if (this.fs.canShowInExplorer()) {
-              buttons.push(makeShowInExplorerButton(dirPath));
-            }
-
-            return buttons;
+                this.popups
+                  .promptTextInput(`Rename folder "${dirName}"`, dirName)
+                  .then((newName) => {
+                    if (!newName) return;
+                    const newPath = this.fs.joinPath([
+                      this.fs.getPathParent(dirPath),
+                      newName,
+                    ]);
+                    this.log.info("rename dir", dirPath, "to", newPath);
+                    this.fs.renameDir(dirPath, newPath);
+                  });
+              },
+            });
           }
+
+          if (this.fs.canShowInExplorer()) {
+            buttons.push(makeShowInExplorerButton(dirPath));
+          }
+
+          return buttons;
         }
       } else if (ctx.elements.includes(this.element) && dir) {
         // right clicked directly on the file tree
