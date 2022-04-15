@@ -52,7 +52,7 @@ function FileNode(props: {
   handleDrop: (targetPath: string, targetDirPath: string) => unknown;
   node: Node;
   openedFilePath?: string; // path of the selected file
-  isShiftDown: boolean;
+  isModDown: boolean;
   hooks?: FileTreeHooks;
   selectedPaths: Record<string, "file" | "dir">;
   setSelectedPaths: (paths: Record<string, "file" | "dir">) => unknown;
@@ -68,7 +68,7 @@ function FileNode(props: {
   );
 
   const onClick = () => {
-    if (props.isShiftDown) {
+    if (props.isModDown) {
       props.togglePathSelected(props.node.path, "file");
     } else {
       props.hooks?.fileClicked?.(props.node.path);
@@ -136,7 +136,7 @@ function DirNode(props: {
   disableRename?: boolean;
   openedFilePath?: string; // path of the selected file
   selectable?: boolean;
-  isShiftDown: boolean;
+  isModDown: boolean;
   selectedPaths: Record<string, "file" | "dir">;
   setSelectedPaths: (paths: Record<string, "file" | "dir">) => unknown;
   togglePathSelected: (path: string, kind: "file" | "dir") => unknown;
@@ -187,7 +187,7 @@ function DirNode(props: {
   const searchResultRanges = props.searchResults?.[props.node.path];
 
   const onClick = () => {
-    if (props.isShiftDown && props.selectable) {
+    if (props.isModDown && props.selectable) {
       props.togglePathSelected(props.node.path, "dir");
     } else {
       setExpanded(!expanded);
@@ -254,7 +254,7 @@ function DirNode(props: {
               handleDrop={props.handleDrop}
               hooks={props.hooks}
               openedFilePath={props.openedFilePath}
-              isShiftDown={props.isShiftDown}
+              isModDown={props.isModDown}
               selectable
               selectedPaths={props.selectedPaths}
               setSelectedPaths={props.setSelectedPaths}
@@ -275,7 +275,7 @@ function DirNode(props: {
               key={node.path}
               hooks={props.hooks}
               openedFilePath={props.openedFilePath}
-              isShiftDown={props.isShiftDown}
+              isModDown={props.isModDown}
               selectedPaths={props.selectedPaths}
               setSelectedPaths={props.setSelectedPaths}
               togglePathSelected={props.togglePathSelected}
@@ -296,6 +296,7 @@ export default function (props: {
   node: NodeWithChildren;
   initOpenedFile?: string; // path of the selected node
   hooks?: FileTreeHooks;
+  modKey: string;
   updateSelectedPaths?: (paths: Record<string, "file" | "dir">) => void; // update the data upstream
   getFileIcon?: FileIconFactory;
   searchTerm?: string;
@@ -303,7 +304,7 @@ export default function (props: {
   ensureSeparatorAtEnd: (path: string) => string;
 }) {
   // selection
-  const [isShiftDown, setIsShiftDown] = useState(false);
+  const [isModDown, setIsModDown] = useState(false);
   const [selectedPaths, setSelectedPaths_] = useState<
     Record<string, "file" | "dir">
   >({});
@@ -350,10 +351,10 @@ export default function (props: {
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Shift") setIsShiftDown(true);
+      if (e.key === props.modKey) setIsModDown(true);
     };
     const onKeyUp = (e: KeyboardEvent) => {
-      if (e.key === "Shift") setIsShiftDown(false);
+      if (e.key === props.modKey) setIsModDown(false);
     };
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("keyup", onKeyUp);
@@ -397,7 +398,7 @@ export default function (props: {
           node={props.node}
           overrideAutoExpand
           openedFilePath={props.initOpenedFile}
-          isShiftDown={isShiftDown}
+          isModDown={isModDown}
           selectedPaths={selectedPaths}
           setSelectedPaths={setSelectedPaths}
           togglePathSelected={togglePathSelected}

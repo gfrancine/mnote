@@ -18,12 +18,14 @@ import { FileSearchModule } from "./filesearch";
 import { render, unmountComponentAtNode } from "react-dom";
 import React from "react";
 import FileTree from "./filetree-component";
+import { SystemModule } from "./system";
 
 export class FiletreeModule {
   private element: HTMLElement;
   private nothingHere: HTMLElement;
 
   private fs: FSModule;
+  private system: SystemModule;
   private layout: LayoutModule;
   private ctxmenu: CtxmenuModule;
   private log: LogModule;
@@ -41,6 +43,7 @@ export class FiletreeModule {
 
   constructor(app: Mnote) {
     this.fs = app.modules.fs;
+    this.system = app.modules.system;
     this.layout = app.modules.layout;
     this.ctxmenu = app.modules.ctxmenu;
     this.log = app.modules.log;
@@ -151,6 +154,7 @@ export class FiletreeModule {
           initOpenedFile={this.openedFile}
           getFileIcon={getFileIcon}
           searchTerm={this.searchTerm}
+          modKey={this.system.usesCmd() ? "Command" : "Control"}
           updateSelectedPaths={(paths) => {
             this.selectedPaths = paths;
           }}
