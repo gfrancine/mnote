@@ -33,7 +33,7 @@ export class FiletreeModule {
   private fileicons: FileIconsModule;
   private filesearch: FileSearchModule;
 
-  private selectedFile?: string;
+  private openedFile?: string;
   private tree?: FileTreeNodeWithChildren;
   private searchTerm?: string;
 
@@ -90,18 +90,18 @@ export class FiletreeModule {
     this.updateTree();
   }
 
-  setSelectedFile(path?: string) {
-    this.log.info("filetree: setSelectedFile", path);
-    this.selectedFile = path;
+  setOpenedFile(path?: string) {
+    this.log.info("filetree: setOpenedFile", path);
+    this.openedFile = path;
     this.updateTree();
   }
 
   private updateTree() {
-    this.log.info("filetree: updateTree", this.tree, this.selectedFile);
+    this.log.info("filetree: updateTree", this.tree, this.openedFile);
 
     const hooks: FileTreeHooks = {
-      fileSelected: (path: string) => {
-        this.log.info("filetree: file selected", path);
+      fileClicked: (path: string) => {
+        this.log.info("filetree: file clicked", path);
         this.editors.open(path);
       },
       fileDroppedOnDir: (targetDir: string, droppedFile: string) => {
@@ -146,7 +146,7 @@ export class FiletreeModule {
         <FileTree
           node={this.tree}
           hooks={hooks}
-          initSelectedNode={this.selectedFile}
+          initOpenedFile={this.openedFile}
           getFileIcon={getFileIcon}
           searchTerm={this.searchTerm}
           getPathName={(path: string) => this.fs.getPathName(path)}
@@ -394,9 +394,9 @@ export class FiletreeModule {
 
     const onEditorTabChange = () => {
       if (this.editors.currentTab) {
-        this.setSelectedFile(this.editors.currentTab.info.document.path);
+        this.setOpenedFile(this.editors.currentTab.info.document.path);
       } else {
-        this.setSelectedFile();
+        this.setOpenedFile(undefined);
       }
     };
 
