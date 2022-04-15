@@ -364,8 +364,10 @@ export class FiletreeModule {
           return buttons;
         } else if (dirPath) {
           // a directory
-          const buttons = [
-            {
+          const buttons = [];
+
+          if (this.tree?.path !== dirPath) {
+            buttons.push({
               name: "Delete folder",
               click: () => {
                 (async () => {
@@ -389,10 +391,13 @@ export class FiletreeModule {
                   await this.fs.moveToTrash(dirPath);
                 })();
               },
-            },
+            });
+          }
+
+          buttons.push(
             makeNewFolderButton(dirPath),
-            makeNewFileButton(dirPath),
-          ];
+            makeNewFileButton(dirPath)
+          );
 
           if (!disableRename) {
             buttons.push({
