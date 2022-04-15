@@ -17,6 +17,8 @@ import {
 import { getMatchingRanges, MatchRange } from "mnote-util/search";
 import { sortChildren } from "mnote-util/nodes";
 import { Highlight } from "mnote-components/react/highlight";
+import { useClickaway } from "mnote-components/react/useClickaway";
+import { useKeydown } from "mnote-components/react/useKeydown";
 
 type FileIconFactory = (
   node: Node,
@@ -304,7 +306,6 @@ export default function (props: {
   ensureSeparatorAtEnd: (path: string) => string;
 }) {
   // selection
-  const [isModDown, setIsModDown] = useState(false);
   const [selectedPaths, setSelectedPaths_] = useState<
     Record<string, "file" | "dir">
   >({});
@@ -313,8 +314,6 @@ export default function (props: {
     setSelectedPaths_(paths);
     props.updateSelectedPaths?.(paths);
   };
-
-  const ref = useRef<HTMLDivElement>(null);
 
   const togglePathSelected = (path: string, kind: "file" | "dir") => {
     if (selectedPaths[path]) {
@@ -349,34 +348,9 @@ export default function (props: {
     });
   };
 
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === props.modKey) setIsModDown(true);
-    };
-    const onKeyUp = (e: KeyboardEvent) => {
-      if (e.key === props.modKey) setIsModDown(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    window.addEventListener("keyup", onKeyUp);
-    return () => {
-      window.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("keyup", onKeyUp);
-    };
-  });
-
-  useEffect(() => {
-    const onClickAway = (e: MouseEvent) => {
-      if (
-        ref.current &&
-        e.target &&
-        !ref.current.contains(e.target as Element)
-      ) {
-        setSelectedPaths({});
-      }
-    };
-    window.addEventListener("click", onClickAway);
-    return () => window.removeEventListener("click", onClickAway);
-  });
+  const ref = useRef<HTMLDivElement>(null);
+  useClickaway(ref, () => setSelectedPaths({}));
+  const isModDown = useKeydown(props.modKey);
 
   // search
   const searchResults = useMemo(() => {
