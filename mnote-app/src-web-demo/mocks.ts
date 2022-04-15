@@ -15,7 +15,12 @@ export const tree = {
     },
     {
       path: "dir-a/dir-",
-      children: [],
+      children: [
+        {
+          path: "dir-a/dir-/dir-g",
+          children: [],
+        },
+      ],
     },
     { path: "dir-a/zzzzzthisshouldbesorted" },
     {
