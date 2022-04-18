@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 import { FileSearchModule } from "./filesearch";
 import { LayoutModule } from "./layout";
 import { el } from "mnote-util/elbuilder";
@@ -20,6 +20,7 @@ export class OpenTabsModule {
   private fileicons: FileIconsModule;
   private filesearch: FileSearchModule;
 
+  private reactRoot: Root;
   private searchTerm?: string;
   private activeIndex?: number;
 
@@ -32,6 +33,7 @@ export class OpenTabsModule {
     this.filesearch = app.modules.filesearch;
 
     this.element = el("div").class("opentabs-main").element;
+    this.reactRoot = createRoot(this.element);
     this.layout.mountToOpenTabs(this.element);
     this.setActiveIndex();
 
@@ -128,15 +130,14 @@ export class OpenTabsModule {
   });
 
   private updateComponent() {
-    render(
+    this.reactRoot.render(
       <OpenTabs
         tabs={[...this.editors.activeTabs]}
         getOpenFileTabCtx={this.getOpenFileTabCtx}
         setTabs={(tabs) => this.editors.setActiveTabs(tabs)}
         activeIndex={this.activeIndex}
         searchTerm={this.searchTerm}
-      />,
-      this.element
+      />
     );
   }
 }

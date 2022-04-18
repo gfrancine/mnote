@@ -4,8 +4,5 @@
   "main": "./index.ts",
   "dependencies": {
     "mousetrap": "^1.6.5"
-  },
-  "optionalDependencies": {
-    "@types/react": "^17.0.14"
   }
 }

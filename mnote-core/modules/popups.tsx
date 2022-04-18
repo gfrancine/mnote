@@ -3,7 +3,7 @@ import { PromptButton } from "./types";
 import React from "react";
 import { Prompt } from "./popups-prompt";
 import { el } from "mnote-util/elbuilder";
-import { render, unmountComponentAtNode } from "react-dom";
+import { createRoot } from "react-dom/client";
 import Select from "mnote-components/react/dropdowns/Select";
 
 export class PopupsModule {
@@ -100,16 +100,16 @@ export class PopupsModule {
     selectOptions: { value: T; text: string }[];
   }) {
     const select = el("div").class("prompt-dropdown").element;
+    const reactRoot = createRoot(select);
     let selectValue: T | undefined = opts.selectValue;
 
-    render(
+    reactRoot.render(
       <Select
         placeholder={opts.selectPlaceholder}
         initialValue={opts.selectValue}
         onChange={(value) => (selectValue = value)}
         options={opts.selectOptions}
-      />,
-      select
+      />
     );
 
     const textInputValue = await this.promptTextInput(
@@ -117,7 +117,7 @@ export class PopupsModule {
       opts.textInputValue,
       () => select
     );
-    unmountComponentAtNode(select);
+    reactRoot.unmount();
 
     return {
       textInputValue,

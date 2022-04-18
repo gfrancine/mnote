@@ -1,7 +1,7 @@
 import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 
 import "./todo.scss";
 import Todo, { TodoData } from "./todo";
@@ -52,6 +52,7 @@ function makeCallback(editor: TodoEditor) {
 class TodoEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
+  reactRoot: Root;
   container?: HTMLElement;
   fs: FSModule;
   ctx?: EditorContext;
@@ -65,6 +66,7 @@ class TodoEditor implements Editor {
     this.app = app;
     this.fs = app.modules.fs as FSModule;
     this.element = el("div").class("todo-extension").element;
+    this.reactRoot = createRoot(this.element);
   }
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
@@ -80,14 +82,13 @@ class TodoEditor implements Editor {
       this.todo = migrated;
     }
 
-    render(
-      <Wrapper initialData={this.todo.data} onChange={makeCallback(this)} />,
-      this.element
+    this.reactRoot.render(
+      <Wrapper initialData={this.todo.data} onChange={makeCallback(this)} />
     );
   }
 
   cleanup() {
-    unmountComponentAtNode(this.element);
+    this.reactRoot.unmount();
     this.container?.removeChild(this.element);
   }
 

@@ -1,7 +1,7 @@
 import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 import Board, { defaultValue, KanbanState } from "mnote-deps/kanban";
 
 import "./kanban.scss";
@@ -28,6 +28,7 @@ function makeCallback(editor: KanbanEditor) {
 class KanbanEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
+  reactRoot: Root;
   container?: HTMLElement;
   fs: FSModule;
   ctx?: EditorContext;
@@ -38,6 +39,7 @@ class KanbanEditor implements Editor {
     this.app = app;
     this.fs = app.modules.fs;
     this.element = el("div").class("kanban-extension").element;
+    this.reactRoot = createRoot(this.element);
   }
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
@@ -52,14 +54,13 @@ class KanbanEditor implements Editor {
       this.board = data;
     }
 
-    render(
-      <Wrapper initialData={this.board} onChange={makeCallback(this)} />,
-      this.element
+    this.reactRoot.render(
+      <Wrapper initialData={this.board} onChange={makeCallback(this)} />
     );
   }
 
   cleanup() {
-    unmountComponentAtNode(this.element);
+    this.reactRoot.unmount();
     this.container?.removeChild(this.element);
   }
 

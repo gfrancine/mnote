@@ -2,7 +2,7 @@ import { Editor, EditorContext, Extension, FSModule, Mnote } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
 import { Emitter } from "mnote-util/emitter";
 
-import { render, unmountComponentAtNode } from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 import React from "react";
 
 import Excalidraw, { exportToCanvas } from "@excalidraw/excalidraw";
@@ -79,6 +79,7 @@ const makeCallback = (self: ExcalidrawEditor) => (data: ExcalidrawData) => {
 class ExcalidrawEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
+  reactRoot: Root;
   container?: HTMLElement;
   ctx?: EditorContext;
   fs: FSModule;
@@ -90,7 +91,7 @@ class ExcalidrawEditor implements Editor {
     this.app = app;
     this.fs = app.modules.fs as FSModule;
     this.element = el("div").class("excdraw-extension").element;
-
+    this.reactRoot = createRoot(this.element);
     this.emitter = new Emitter();
   }
 
@@ -108,15 +109,14 @@ class ExcalidrawEditor implements Editor {
       this.data = data;
     }
 
-    render(
-      <Wrapper initialData={this.data} emitter={this.emitter} />,
-      this.element
+    this.reactRoot.render(
+      <Wrapper initialData={this.data} emitter={this.emitter} />
     );
   }
 
   cleanup() {
     this.container?.removeChild(this.element);
-    unmountComponentAtNode(this.element);
+    this.reactRoot.unmount();
   }
 
   async save(path: string) {

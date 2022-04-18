@@ -8,7 +8,7 @@ import {
   SettingsModule,
 } from "mnote-core";
 import { el } from "mnote-util/elbuilder";
-import { render, unmountComponentAtNode } from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 import React from "react";
 import { SettingsEditor as ReactSettingsEditor } from "./editor";
 import { settingsIcon } from "./icon";
@@ -25,6 +25,7 @@ export const SETTINGS_ALIAS_PATH = "Settings *.[]:;|,_";
 class SettingsEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
+  reactRoot: Root;
   editorMain: HTMLElement;
   viewToggle: HTMLElement;
   textarea: HTMLTextAreaElement;
@@ -54,6 +55,8 @@ class SettingsEditor implements Editor {
       .attr("spellcheck", "false").element as HTMLTextAreaElement;
 
     this.editorMain = el("div").class("settings-main").element;
+
+    this.reactRoot = createRoot(this.editorMain);
 
     this.element = el("div")
       .class("settings-editor")
@@ -106,7 +109,7 @@ class SettingsEditor implements Editor {
   }
 
   renderEditor = () => {
-    render(
+    this.reactRoot.render(
       <ReactSettingsEditor
         inputIndex={this.settings.getInputsIndex()}
         subcategories={this.settings.getSubcategories()}
@@ -120,8 +123,7 @@ class SettingsEditor implements Editor {
           this.ctx?.markUnsaved();
           this.textarea.value = JSON.stringify(this.value, undefined, 2);
         }}
-      />,
-      this.editorMain
+      />
     );
   };
 
@@ -141,7 +143,7 @@ class SettingsEditor implements Editor {
   };
 
   cleanup() {
-    unmountComponentAtNode(this.editorMain);
+    this.reactRoot.unmount();
     if (this.container) {
       this.container.removeChild(this.element);
     }

@@ -15,7 +15,7 @@ import { AppDirModule } from "./appdir";
 import { EditorsModule } from "./editors";
 import { FileIconsModule } from "./fileicons";
 import { FileSearchModule } from "./filesearch";
-import { render, unmountComponentAtNode } from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 import React from "react";
 import FileTree from "./filetree-component";
 import { SystemModule } from "./system";
@@ -23,6 +23,7 @@ import { SystemModule } from "./system";
 export class FiletreeModule {
   private element: HTMLElement;
   private nothingHere: HTMLElement;
+  private reactRoot: Root;
 
   private fs: FSModule;
   private system: SystemModule;
@@ -60,6 +61,8 @@ export class FiletreeModule {
     this.element = el("div")
       .class("filetree-container")
       .children(this.nothingHere).element;
+
+    this.reactRoot = createRoot(this.element);
 
     this.fs.onWatchEvent("event", () => {
       this.refreshTree();
@@ -149,7 +152,7 @@ export class FiletreeModule {
     console.log("usescmd", this.system.usesCmd());
 
     if (this.tree) {
-      render(
+      this.reactRoot.render(
         <FileTree
           node={this.tree}
           hooks={hooks}
@@ -168,11 +171,10 @@ export class FiletreeModule {
           ensureSeparatorAtEnd={(path: string) =>
             this.fs.ensureSeparatorAtEnd(path)
           }
-        />,
-        this.element
+        />
       );
     } else {
-      unmountComponentAtNode(this.element);
+      this.reactRoot.unmount();
       this.element.appendChild(this.nothingHere);
     }
   }
