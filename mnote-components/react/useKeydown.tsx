@@ -5,6 +5,7 @@ export function useKeydown(key: string) {
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
+      if (isKeyDown) return;
       if (e.key === key) setIsKeyDown(true);
     };
     const onKeyUp = (e: KeyboardEvent) => {
