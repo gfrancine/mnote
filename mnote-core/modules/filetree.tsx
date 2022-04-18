@@ -146,6 +146,8 @@ export class FiletreeModule {
       return icon?.factory(fillClass, strokeClass);
     };
 
+    console.log("usescmd", this.system.usesCmd());
+
     if (this.tree) {
       render(
         <FileTree
@@ -154,7 +156,11 @@ export class FiletreeModule {
           initOpenedFile={this.openedFile}
           getFileIcon={getFileIcon}
           searchTerm={this.searchTerm}
-          modKey={this.system.usesCmd() ? "Command" : "Control"}
+          modKey={
+            // Doesn't work on a mac
+            // this.system.usesCmd() ? "Command" : "Control"
+            "Shift"
+          }
           updateSelectedPaths={(paths) => {
             this.selectedPaths = paths;
           }}
