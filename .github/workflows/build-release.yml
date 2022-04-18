@@ -23,7 +23,7 @@ jobs:
         toolchain: stable
 
     - name: install dependencies
-      run: npm i -g npm@8 && npm --version && npm i
+      run: npm i -g npm@8 && npm --version && npm i --force
 
     - name: build release
       run: cd mnote-app && npm run build-release

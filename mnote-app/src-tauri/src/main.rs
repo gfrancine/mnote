@@ -18,7 +18,6 @@ fn is_windows() -> bool {
   cfg!(windows)
 }
 
-mod dialog;
 mod filesystem;
 mod show;
 mod watcher;
@@ -93,8 +92,6 @@ fn main() {
       filesystem::fs_is_file,
       filesystem::fs_is_dir,
       filesystem::fs_move_to_trash,
-      dialog::dialog_open,
-      dialog::dialog_save,
       show::can_show_in_explorer,
       show::show_in_explorer
     ])
@@ -117,7 +114,12 @@ fn main() {
     .expect("error building the app");
 
   app.run(|app_handle, e| {
-    if let tauri::RunEvent::CloseRequested { label, api, .. } = e {
+    if let tauri::RunEvent::WindowEvent {
+      label,
+      event: tauri::WindowEvent::CloseRequested { api, .. },
+      ..
+    } = e
+    {
       api.prevent_close();
       let window = app_handle.get_window(&label).unwrap();
       window.emit("close-requested", ()).unwrap();
