@@ -117,7 +117,12 @@ fn main() {
     .expect("error building the app");
 
   app.run(|app_handle, e| {
-    if let tauri::RunEvent::CloseRequested { label, api, .. } = e {
+    if let tauri::RunEvent::WindowEvent {
+      label,
+      event: tauri::WindowEvent::CloseRequested { api, .. },
+      ..
+    } = e
+    {
       api.prevent_close();
       let window = app_handle.get_window(&label).unwrap();
       window.emit("close-requested", ()).unwrap();
