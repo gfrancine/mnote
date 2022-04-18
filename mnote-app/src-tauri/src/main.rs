@@ -18,7 +18,6 @@ fn is_windows() -> bool {
   cfg!(windows)
 }
 
-mod dialog;
 mod filesystem;
 mod show;
 mod watcher;
@@ -93,8 +92,6 @@ fn main() {
       filesystem::fs_is_file,
       filesystem::fs_is_dir,
       filesystem::fs_move_to_trash,
-      dialog::dialog_open,
-      dialog::dialog_save,
       show::can_show_in_explorer,
       show::show_in_explorer
     ])

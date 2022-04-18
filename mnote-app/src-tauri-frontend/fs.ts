@@ -8,6 +8,7 @@ import {
 } from "mnote-core";
 import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
 import { Event as TauriEvent, listen } from "@tauri-apps/api/event";
+import * as dialog from "@tauri-apps/api/dialog";
 import { Emitter } from "mnote-util/emitter";
 import * as pathLib from "@tauri-apps/api/path";
 import { posix, win32 } from "mnote-deps/path-browser";
@@ -169,13 +170,38 @@ export class FS implements FsInteropModule {
     return await invoke("fs_is_dir", { path });
   }
 
+  // DRY for file dialogs
+  private getDefaultPath(
+    startingDirectory?: string,
+    startingFileName?: string
+  ) {
+    return (
+      (startingDirectory &&
+        startingFileName &&
+        this.joinPath([startingDirectory, startingFileName])) ||
+      startingDirectory ||
+      startingFileName
+    );
+  }
+
   async dialogOpen(opts: {
     filters?: DialogFilter[];
     isDirectory: boolean;
     startingDirectory?: string;
     startingFileName?: string;
   }): Promise<string | void> {
-    return await invoke("dialog_open", opts);
+    const results: string[] | string | null = await dialog.open({
+      filters: opts.filters,
+      directory: opts.isDirectory,
+      defaultPath: this.getDefaultPath(
+        opts.startingDirectory,
+        opts.startingFileName
+      ),
+    });
+
+    if (!results) return;
+    if (results instanceof Array) return results[0];
+    return results;
   }
 
   async dialogSave(opts: {
@@ -183,7 +209,16 @@ export class FS implements FsInteropModule {
     startingDirectory?: string;
     startingFileName?: string;
   }): Promise<string | void> {
-    return await invoke("dialog_save", opts);
+    const results: string | null = await dialog.save({
+      filters: opts.filters,
+      defaultPath: this.getDefaultPath(
+        opts.startingDirectory,
+        opts.startingFileName
+      ),
+    });
+
+    if (!results) return;
+    return results;
   }
 
   async getConfigDir(): Promise<string> {
