@@ -1,4 +1,5 @@
-import { el, Elbuilder } from "mnote-util/elbuilder";
+import { applyPopupAnchor } from "mnote-util/dom";
+import { el } from "mnote-util/elbuilder";
 import { Emitter } from "mnote-util/emitter";
 
 export type MenuItem = {
@@ -112,25 +113,20 @@ export class Menu {
   }
 
   show(element: Element) {
-    // todo wrap another container just to display none?
     element.appendChild(this.element);
-
-    const builder = new Elbuilder(this.element);
 
     const rect = this.element.getBoundingClientRect();
     const position = this.getPosition(rect);
 
-    if (position.anchor.top) {
-      builder.style("top", position.point.y + "px");
-    } else {
-      builder.style("top", position.point.y - rect.height + "px");
-    }
-
-    if (position.anchor.left) {
-      builder.style("left", position.point.x + "px");
-    } else {
-      builder.style("left", position.point.x - rect.width + "px");
-    }
+    applyPopupAnchor(
+      this.element,
+      position.point.x,
+      position.point.y,
+      rect.width,
+      rect.height,
+      position.anchor.left,
+      position.anchor.top
+    );
   }
 
   cleanup() {

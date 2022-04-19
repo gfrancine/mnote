@@ -5,6 +5,7 @@ import {
   sectionsToMenuItems,
 } from "mnote-components/vanilla/menu";
 import { CtxmenuContext } from "./types";
+import { getPopupAnchor } from "mnote-util/dom";
 
 /* {
   name: "Copy",
@@ -82,10 +83,14 @@ export class ContextMenu {
             x: e.pageX,
             y: e.pageY,
           },
-          anchor: {
-            top: e.pageY + rect.height < innerHeight,
-            left: e.pageX + rect.width < innerWidth,
-          },
+          anchor: getPopupAnchor(
+            innerWidth,
+            innerHeight,
+            e.pageX,
+            e.pageY,
+            rect.width,
+            rect.height
+          ),
         }),
         sectionsToMenuItems(sections)
       );
