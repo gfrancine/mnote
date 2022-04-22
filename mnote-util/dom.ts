@@ -54,16 +54,28 @@ export const getPopupPosition = (
   y: number,
   width: number,
   height: number
-) => ({
-  point: {
-    x,
-    y, //todo
-  },
-  anchor: {
-    top: y + height < containerHeight,
-    left: x + width < containerWidth,
-  },
-});
+) => {
+  const anchor = {
+    top: y < containerHeight / 2,
+    left: x < containerWidth / 2,
+  };
+
+  const point = { x, y };
+
+  if (anchor.left && x + width > containerWidth) {
+    point.x = containerWidth - width;
+  } else if (!anchor.left && x - width < 0) {
+    point.x = containerWidth - (containerWidth - width);
+  }
+
+  if (anchor.top && y + height > containerWidth) {
+    point.y = containerHeight - height;
+  } else if (!anchor.top && y - height < 0) {
+    point.y = containerHeight - (containerHeight - height);
+  }
+
+  return { anchor, point };
+};
 
 export function applyPopupPositionToElement(
   element: HTMLElement,
