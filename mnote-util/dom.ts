@@ -35,8 +35,19 @@ export const shortenSetProperty =
   (el: HTMLElement) => (property: string, value: string) =>
     el.style.setProperty(property, value);
 
+export type Position = {
+  point: {
+    x: number;
+    y: number;
+  };
+  anchor: {
+    top: boolean;
+    left: boolean;
+  };
+};
+
 /** get anchor or origin for a floating element */
-export const getPopupAnchor = (
+export const getPopupPosition = (
   containerWidth: number,
   containerHeight: number,
   x: number,
@@ -44,30 +55,32 @@ export const getPopupAnchor = (
   width: number,
   height: number
 ) => ({
-  top: y + height < containerHeight,
-  left: x + width < containerWidth,
+  point: {
+    x,
+    y, //todo
+  },
+  anchor: {
+    top: y + height < containerHeight,
+    left: x + width < containerWidth,
+  },
 });
 
-export function applyPopupAnchor(
+export function applyPopupPositionToElement(
   element: HTMLElement,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  left: boolean,
-  top: boolean
+  pos: Position
 ) {
   const builder = new Elbuilder(element);
+  const rect = element.getBoundingClientRect();
 
-  if (top) {
-    builder.style("top", y + "px");
+  if (pos.anchor.top) {
+    builder.style("top", pos.point.y + "px");
   } else {
-    builder.style("top", y - height + "px");
+    builder.style("top", pos.point.y - rect.height + "px");
   }
 
-  if (left) {
-    builder.style("left", x + "px");
+  if (pos.anchor.left) {
+    builder.style("left", pos.point.x + "px");
   } else {
-    builder.style("left", x - width + "px");
+    builder.style("left", pos.point.x - rect.width + "px");
   }
 }

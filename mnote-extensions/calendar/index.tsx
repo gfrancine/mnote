@@ -16,7 +16,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import "./calendar.scss";
 import { calendarIcon } from "./icon";
 import { nanoid } from "nanoid";
-import { applyPopupAnchor, getPopupAnchor } from "mnote-util/dom";
+import { applyPopupPositionToElement, getPopupPosition } from "mnote-util/dom";
 
 // https://github.com/fullcalendar/fullcalendar-example-projects/blob/master/react-typescript/src/DemoApp.tsx
 // https://github.com/fullcalendar/fullcalendar-example-projects/blob/master/typescript/src/main.ts
@@ -61,7 +61,7 @@ class CalendarEventPopup {
     const rect = this.element.getBoundingClientRect();
     const containerRect = this.container.getBoundingClientRect();
 
-    const anchor = getPopupAnchor(
+    const position = getPopupPosition(
       containerRect.width,
       containerRect.height,
       e.pageX,
@@ -70,15 +70,7 @@ class CalendarEventPopup {
       rect.height
     );
 
-    applyPopupAnchor(
-      this.element,
-      e.pageX,
-      e.pageY,
-      rect.width,
-      rect.height,
-      anchor.left,
-      anchor.top
-    );
+    applyPopupPositionToElement(this.element, position);
 
     this.element.classList.remove("hidden");
     e.stopPropagation(); // stop the clickaway listener

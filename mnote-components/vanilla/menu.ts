@@ -1,4 +1,4 @@
-import { applyPopupAnchor } from "mnote-util/dom";
+import { applyPopupPositionToElement } from "mnote-util/dom";
 import { el } from "mnote-util/elbuilder";
 import { Emitter } from "mnote-util/emitter";
 
@@ -118,15 +118,7 @@ export class Menu {
     const rect = this.element.getBoundingClientRect();
     const position = this.getPosition(rect);
 
-    applyPopupAnchor(
-      this.element,
-      position.point.x,
-      position.point.y,
-      rect.width,
-      rect.height,
-      position.anchor.left,
-      position.anchor.top
-    );
+    applyPopupPositionToElement(this.element, position);
   }
 
   cleanup() {
