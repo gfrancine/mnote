@@ -28,6 +28,8 @@ export class EditorsBaseModule {
 
   events: Emitter<{
     currentTabSet: (tab?: Tab) => void; // menubar *Untitled text
+    tabAdded: (tab: Tab) => void;
+    tabRemoved: (tab: Tab) => void;
     activeTabsChanged: () => void;
   }> = new Emitter();
 
@@ -123,12 +125,14 @@ export class EditorsBaseModule {
     this.activeTabs.push(tab);
     tab.manager.mount(this.element);
     this.events.emit("activeTabsChanged");
+    this.events.emit("tabAdded", tab);
   }
 
   private removeActiveTab(index: number) {
     const tabs = this.activeTabs.splice(index, 1);
     tabs[0]?.manager.unmount(this.element);
     this.events.emit("activeTabsChanged");
+    this.events.emit("tabRemoved", tabs[0]);
   }
 
   // DRY
