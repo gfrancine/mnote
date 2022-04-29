@@ -6,6 +6,7 @@ import { el } from "mnote-util/elbuilder";
 
 import {
   AppDirModule,
+  AutosaveModule,
   CtxmenuModule,
   DataDirModule,
   EditorsModule,
@@ -41,6 +42,7 @@ type Modules = {
   menubar: MenubarModule;
   sidebar: SidebarModule;
   editors: EditorsModule;
+  autosave: AutosaveModule;
   fileicons: FileIconsModule;
   filetree: FiletreeModule;
   opentabs: OpenTabsModule;
@@ -93,6 +95,7 @@ export class Mnote {
     m.sidebar = new SidebarModule(this);
     m.fileicons = new FileIconsModule(this);
     m.editors = new EditorsModule(this);
+    m.autosave = await new AutosaveModule(this).init();
     m.filesearch = new FileSearchModule(this);
     m.filetree = new FiletreeModule(this);
     m.opentabs = new OpenTabsModule(this);

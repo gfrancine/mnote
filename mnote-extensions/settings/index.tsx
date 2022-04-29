@@ -185,6 +185,7 @@ export class SettingsExtension implements Extension {
       createNewEditor: () => new SettingsEditor(app),
       hideFromNewMenu: true,
       disableSaveAs: true,
+      disableAutosave: true, // we're not saving to file directly
       registeredIconKind: "settings",
     });
   }

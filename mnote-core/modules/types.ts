@@ -51,6 +51,8 @@ export type EditorInfo = {
   saveAsFileTypes?: DialogFilter[];
   /** Disable the save as dialog. Useful for non-file system editors */
   disableSaveAs?: boolean;
+  /** Disable the app periodically calling the editor's save() method to an autosave file path */
+  disableAutosave?: boolean;
   /** Get the editor's icon registered from the file icons module */
   registeredIconKind?: string;
   /** Extensions used when prompting to create a new file */

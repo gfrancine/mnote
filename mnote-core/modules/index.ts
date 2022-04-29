@@ -17,6 +17,7 @@ export { FileIconsModule } from "./fileicons";
 export { DataDirModule } from "./datadir";
 export { FileSearchModule } from "./filesearch";
 export { AppDirModule } from "./appdir";
+export { AutosaveModule } from "./autosave";
 
 // non-module exports
 
