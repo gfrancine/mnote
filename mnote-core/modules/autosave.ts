@@ -17,7 +17,10 @@ export class AutosaveModule {
     this.autosaveDir = fs.joinPath([datadir.getPath(), "autosaves"]);
     await fs.ensureDir(this.autosaveDir);
 
-    this.sessionDir = fs.joinPath([this.autosaveDir, new Date().toString()]);
+    this.sessionDir = fs.joinPath([
+      this.autosaveDir,
+      this.generateSessionDirName(),
+    ]);
     await fs.ensureDir(this.sessionDir);
 
     editors.events.on("tabRemoved", async (tab) => {
@@ -63,5 +66,15 @@ export class AutosaveModule {
 
   private getFileNameForTab(tab: Tab) {
     return tab.info.document.name + "_" + tab.id;
+  }
+
+  private generateSessionDirName() {
+    const date = new Date();
+    return (
+      `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}` +
+      "_" +
+      `${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}-` +
+      date.getMilliseconds()
+    );
   }
 }
