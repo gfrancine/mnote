@@ -5,6 +5,7 @@ import {
   sectionsToMenuItems,
 } from "mnote-components/vanilla/menu";
 import { CtxmenuContext } from "./types";
+import { getPopupPosition } from "mnote-util/dom";
 
 /* {
   name: "Copy",
@@ -77,16 +78,15 @@ export class ContextMenu {
       }
 
       this.activeMenu = new Menu(
-        (rect: DOMRect) => ({
-          point: {
-            x: e.pageX,
-            y: e.pageY,
-          },
-          anchor: {
-            top: e.pageY + rect.height < innerHeight,
-            left: e.pageX + rect.width < innerWidth,
-          },
-        }),
+        (rect: DOMRect) =>
+          getPopupPosition(
+            innerWidth,
+            innerHeight,
+            e.pageX,
+            e.pageY,
+            rect.width,
+            rect.height
+          ),
         sectionsToMenuItems(sections)
       );
 

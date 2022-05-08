@@ -16,6 +16,10 @@ import interactionPlugin from "@fullcalendar/interaction";
 import "./calendar.scss";
 import { calendarIcon } from "./icon";
 import { nanoid } from "nanoid";
+import { applyPopupPositionToElement, getPopupPosition } from "mnote-util/dom";
+import { Root, createRoot } from "react-dom/client";
+import React from "react";
+import { EventEditor, EventEditorProps } from "./event-editor";
 
 // https://github.com/fullcalendar/fullcalendar-example-projects/blob/master/react-typescript/src/DemoApp.tsx
 // https://github.com/fullcalendar/fullcalendar-example-projects/blob/master/typescript/src/main.ts
@@ -35,9 +39,66 @@ type Data = {
   events: DeserializedEvent[];
 };
 
+class CalendarEventPopup {
+  private container: HTMLElement;
+  private element: HTMLElement;
+  private reactRoot: Root;
+
+  constructor(container: HTMLElement) {
+    this.container = container;
+    this.element = el("div").class("calendar-popup").class("hidden").element;
+    this.reactRoot = createRoot(this.element);
+    this.container.appendChild(this.element);
+
+    window.addEventListener("click", this.onDocumentClick);
+  }
+
+  private onDocumentClick = (e: MouseEvent) => {
+    if (
+      !this.element.classList.contains("hidden") &&
+      !this.element.contains(e.target as Node)
+    ) {
+      this.hide();
+    }
+  };
+
+  hide() {
+    this.element.classList.add("hidden");
+  }
+
+  show(e: MouseEvent, props: Omit<EventEditorProps, "closeEditor">) {
+    const rect = this.element.getBoundingClientRect();
+    const containerRect = this.container.getBoundingClientRect();
+
+    const position = getPopupPosition(
+      containerRect.width,
+      containerRect.height,
+      e.pageX,
+      e.pageY,
+      rect.width,
+      rect.height
+    );
+
+    applyPopupPositionToElement(this.element, position);
+    this.reactRoot.render(
+      <EventEditor {...props} closeEditor={this.hide.bind(this)} />
+    );
+
+    this.element.classList.remove("hidden");
+    e.stopPropagation(); // stop the clickaway listener
+  }
+
+  cleanup() {
+    this.reactRoot.unmount();
+    window.removeEventListener("click", this.onDocumentClick);
+  }
+}
+
 class CalendarEditor implements Editor {
   app: Mnote;
   element: HTMLElement;
+  popup: CalendarEventPopup;
+  calendarContainer: HTMLElement;
   container?: HTMLElement;
   fs: FSModule;
   popups: PopupsModule;
@@ -51,6 +112,10 @@ class CalendarEditor implements Editor {
     this.fs = app.modules.fs as FSModule;
     this.popups = app.modules.popups as PopupsModule;
     this.element = el("div").class("calendar-extension").element;
+    this.calendarContainer = el("div")
+      .class("calendar-container")
+      .parent(this.element).element;
+    this.popup = new CalendarEventPopup(this.element);
   }
 
   async startup(containter: HTMLElement, ctx: EditorContext) {
@@ -66,7 +131,7 @@ class CalendarEditor implements Editor {
       initialData = JSON.parse(contents);
     }
 
-    const cal = new Calendar(this.element, {
+    const cal = new Calendar(this.calendarContainer, {
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       selectable: true,
       editable: true,
@@ -107,7 +172,26 @@ class CalendarEditor implements Editor {
     });
 
     cal.on("eventClick", (arg) => {
-      arg.event.remove();
+      const { title, allDay, start, end } = arg.event;
+      const eventData: EventEditorProps["event"] = {
+        title,
+        allDay,
+        start: (start || new Date()).toString(),
+        end: (end || new Date()).toString(),
+      };
+
+      this.popup.show(arg.jsEvent, {
+        event: eventData,
+        removeEvent: () => arg.event.remove(),
+        commitChanges: (newEvent) => {
+          if (newEvent.allDay) arg.event.setAllDay(newEvent.allDay);
+          if (newEvent.start) arg.event.setStart(newEvent.start);
+          if (newEvent.end) arg.event.setEnd(newEvent.end);
+          if (newEvent.title !== undefined)
+            arg.event.setProp("title", newEvent.title);
+        },
+      });
+      // arg.event.remove()
     });
 
     cal.on("eventsSet", this.handleChange);
@@ -148,6 +232,7 @@ class CalendarEditor implements Editor {
 
   cleanup() {
     this.container?.removeChild(this.element);
+    this.popup.cleanup();
     this.ctx?.events.off("tabShow", this.render);
     this.ctx?.events.off("tabMount", this.render);
     this.calendar?.destroy();

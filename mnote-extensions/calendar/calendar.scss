@@ -1,91 +1,137 @@
 @use "~mnote-styles/mnote-vars" as mn;
+@use "~mnote-styles/mnote-inputs" as inputs;
 
 .calendar-extension {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  padding: 1em 2.5em 2.5em;
 
-  .fc-toolbar {
-    flex-wrap: wrap;
-  }
+  .calendar-popup {
+    background: map-get(mn.$vars, main-bg);
+    box-shadow: map-get(mn.$vars, main-shadow);
+    position: absolute;
+    z-index: 50;
+    width: 20em;
 
-  .fc-scroller {
-    @include mn.scrollbar(map-get(mn.$vars, main-scrollbar));
-  }
+    &.hidden {
+      display: none;
+    }
 
-  // selection
-  .fc-daygrid-bg-harness,
-  .fc-timegrid-bg-harness {
-    opacity: 0.3;
-  }
+    .event-editor {
+      margin: 0.6em;
 
-  // correct sizes
+      .title {
+        @include inputs.text-input;
+      }
 
-  .fc-view {
-    position: static;
-    display: block;
-    height: 100%;
-    width: 100%;
-  }
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.2em;
+        margin-top: 0.6em;
 
-  .fc-daygrid-body {
-    width: 100% !important;
-    height: 100% !important;
-  }
+        .save {
+          @include inputs.button-emphasis;
+        }
 
-  table.fc-scrollgrid-sync-table {
-    width: 100% !important;
-    height: 100% !important;
-  }
+        .cancel {
+          @include inputs.button-normal;
+        }
 
-  table.fc-col-header {
-    width: 100% !important;
-  }
-
-  .fc-timegrid-body {
-    width: 100% !important;
-  }
-
-  .fc-timegrid-body,
-  .fc-timegrid-cols {
-    table {
-      width: 100% !important;
+        .delete {
+          @include inputs.button-normal;
+        }
+      }
     }
   }
 
-  // variables
+  .calendar-container {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 1em 2.5em 2.5em;
 
-  --fc-small-font-size: 0.85em;
-  --fc-page-bg-color: #{map-get(mn.$vars, main-border)};
-  --fc-neutral-bg-color: #{map-get(mn.$vars, main-bg-secondary)};
-  --fc-neutral-text-color: #{map-get(mn.$vars, main-fg-secondary)};
-  --fc-border-color: #{map-get(mn.$vars, main-border)};
+    .fc-toolbar {
+      flex-wrap: wrap;
+    }
 
-  --fc-button-text-color: #{map-get(mn.$vars, btn-main-fg)};
-  --fc-button-bg-color: #{map-get(mn.$vars, btn-main-bg)};
-  --fc-button-border-color: transparent;
-  --fc-button-hover-bg-color: #{map-get(mn.$vars, btn-main-hover-bg)};
-  --fc-button-hover-border-color: transparent;
-  --fc-button-active-bg-color: #{map-get(mn.$vars, btn-main-hover-bg)};
-  --fc-button-active-border-color: transparent;
+    .fc-scroller {
+      @include mn.scrollbar(map-get(mn.$vars, main-scrollbar));
+    }
 
-  --fc-event-bg-color: #{map-get(mn.$vars, btn-emphasis-bg)};
-  --fc-event-border-color: #{map-get(mn.$vars, btn-emphasis-bg)};
-  --fc-event-text-color: #{map-get(mn.$vars, btn-emphasis-fg)};
-  --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
+    // selection
+    .fc-daygrid-bg-harness,
+    .fc-timegrid-bg-harness {
+      opacity: 0.3;
+    }
 
-  --fc-more-link-bg-color: #{map-get(mn.$vars, main-bg)};
-  --fc-more-link-text-color: #{map-get(mn.$vars, main-fg)};
+    // correct sizes
 
-  --fc-event-resizer-thickness: 8px;
-  --fc-event-resizer-dot-total-width: 8px;
-  --fc-event-resizer-dot-border-width: 1px;
+    .fc-view {
+      position: static;
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
 
-  --fc-non-business-color: rgba(215, 215, 215, 0.3);
-  --fc-bg-event-color: rgb(143, 223, 130);
-  --fc-bg-event-opacity: 0.3;
-  --fc-highlight-color: #{map-get(mn.$vars, btn-emphasis-bg)};
-  --fc-today-bg-color: #{map-get(mn.$vars, btn-main-bg)};
-  --fc-now-indicator-color: #{map-get(mn.$vars, main-error)};
+    .fc-daygrid-body {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    table.fc-scrollgrid-sync-table {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    table.fc-col-header {
+      width: 100% !important;
+    }
+
+    .fc-timegrid-body {
+      width: 100% !important;
+    }
+
+    .fc-timegrid-body,
+    .fc-timegrid-cols {
+      table {
+        width: 100% !important;
+      }
+    }
+
+    // variables
+
+    --fc-small-font-size: 0.85em;
+    --fc-page-bg-color: #{map-get(mn.$vars, main-border)};
+    --fc-neutral-bg-color: #{map-get(mn.$vars, main-bg-secondary)};
+    --fc-neutral-text-color: #{map-get(mn.$vars, main-fg-secondary)};
+    --fc-border-color: #{map-get(mn.$vars, main-border)};
+
+    --fc-button-text-color: #{map-get(mn.$vars, btn-main-fg)};
+    --fc-button-bg-color: #{map-get(mn.$vars, btn-main-bg)};
+    --fc-button-border-color: transparent;
+    --fc-button-hover-bg-color: #{map-get(mn.$vars, btn-main-hover-bg)};
+    --fc-button-hover-border-color: transparent;
+    --fc-button-active-bg-color: #{map-get(mn.$vars, btn-main-hover-bg)};
+    --fc-button-active-border-color: transparent;
+
+    --fc-event-bg-color: #{map-get(mn.$vars, btn-emphasis-bg)};
+    --fc-event-border-color: #{map-get(mn.$vars, btn-emphasis-bg)};
+    --fc-event-text-color: #{map-get(mn.$vars, btn-emphasis-fg)};
+    --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
+
+    --fc-more-link-bg-color: #{map-get(mn.$vars, main-bg)};
+    --fc-more-link-text-color: #{map-get(mn.$vars, main-fg)};
+
+    --fc-event-resizer-thickness: 8px;
+    --fc-event-resizer-dot-total-width: 8px;
+    --fc-event-resizer-dot-border-width: 1px;
+
+    --fc-non-business-color: rgba(215, 215, 215, 0.3);
+    --fc-bg-event-color: rgb(143, 223, 130);
+    --fc-bg-event-opacity: 0.3;
+    --fc-highlight-color: #{map-get(mn.$vars, btn-emphasis-bg)};
+    --fc-today-bg-color: #{map-get(mn.$vars, btn-main-bg)};
+    --fc-now-indicator-color: #{map-get(mn.$vars, main-error)};
+  }
 }
