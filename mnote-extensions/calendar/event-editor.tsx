@@ -37,9 +37,29 @@ export function EventEditor(props: EventEditorProps) {
 
   return (
     <div className="event-editor">
-      <input value={title} onChange={(e) => setTitle(e.target.value)} />
-      <button onClick={commitChanges}>Save</button>
-      <button onClick={removeEvent}>Delete</button>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          commitChanges();
+        }}
+      >
+        <input
+          placeholder="Event title"
+          className="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <div className="actions">
+          {/* https://stackoverflow.com/a/6617259 */}
+          <button type="button" className="cancel" onClick={props.closeEditor}>
+            Cancel
+          </button>
+          <button type="button" className="delete" onClick={removeEvent}>
+            Delete
+          </button>
+          <input value="Save" type="submit" className="save" />
+        </div>
+      </form>
     </div>
   );
 }

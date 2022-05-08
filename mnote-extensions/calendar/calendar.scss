@@ -18,7 +18,30 @@
     }
 
     .event-editor {
-      margin: 1em;
+      margin: 0.6em;
+
+      .title {
+        @include inputs.text-input;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.2em;
+        margin-top: 0.6em;
+
+        .save {
+          @include inputs.button-emphasis;
+        }
+
+        .cancel {
+          @include inputs.button-normal;
+        }
+
+        .delete {
+          @include inputs.button-normal;
+        }
+      }
     }
   }
 
