@@ -1,4 +1,5 @@
 @use "~mnote-styles/mnote-vars" as mn;
+@use "~mnote-styles/mnote-inputs" as inputs;
 
 .calendar-extension {
   width: 100%;
@@ -11,10 +12,13 @@
     position: absolute;
     z-index: 50;
     width: 20em;
-    height: 50px;
 
     &.hidden {
       display: none;
+    }
+
+    .event-editor {
+      margin: 1em;
     }
   }
 

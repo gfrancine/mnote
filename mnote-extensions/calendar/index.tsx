@@ -17,6 +17,9 @@ import "./calendar.scss";
 import { calendarIcon } from "./icon";
 import { nanoid } from "nanoid";
 import { applyPopupPositionToElement, getPopupPosition } from "mnote-util/dom";
+import { Root, createRoot } from "react-dom/client";
+import React from "react";
+import { EventEditor, EventEditorProps } from "./event-editor";
 
 // https://github.com/fullcalendar/fullcalendar-example-projects/blob/master/react-typescript/src/DemoApp.tsx
 // https://github.com/fullcalendar/fullcalendar-example-projects/blob/master/typescript/src/main.ts
@@ -39,10 +42,12 @@ type Data = {
 class CalendarEventPopup {
   private container: HTMLElement;
   private element: HTMLElement;
+  private reactRoot: Root;
 
   constructor(container: HTMLElement) {
     this.container = container;
     this.element = el("div").class("calendar-popup").class("hidden").element;
+    this.reactRoot = createRoot(this.element);
     this.container.appendChild(this.element);
 
     window.addEventListener("click", this.onDocumentClick);
@@ -53,11 +58,15 @@ class CalendarEventPopup {
       !this.element.classList.contains("hidden") &&
       !this.element.contains(e.target as Node)
     ) {
-      this.element.classList.add("hidden");
+      this.hide();
     }
   };
 
-  show(e: MouseEvent) {
+  hide() {
+    this.element.classList.add("hidden");
+  }
+
+  show(e: MouseEvent, props: Omit<EventEditorProps, "closeEditor">) {
     const rect = this.element.getBoundingClientRect();
     const containerRect = this.container.getBoundingClientRect();
 
@@ -71,12 +80,16 @@ class CalendarEventPopup {
     );
 
     applyPopupPositionToElement(this.element, position);
+    this.reactRoot.render(
+      <EventEditor {...props} closeEditor={this.hide.bind(this)} />
+    );
 
     this.element.classList.remove("hidden");
     e.stopPropagation(); // stop the clickaway listener
   }
 
   cleanup() {
+    this.reactRoot.unmount();
     window.removeEventListener("click", this.onDocumentClick);
   }
 }
@@ -159,7 +172,25 @@ class CalendarEditor implements Editor {
     });
 
     cal.on("eventClick", (arg) => {
-      this.popup.show(arg.jsEvent);
+      const { title, allDay, start, end } = arg.event;
+      const eventData: EventEditorProps["event"] = {
+        title,
+        allDay,
+        start: (start || new Date()).toString(),
+        end: (end || new Date()).toString(),
+      };
+
+      this.popup.show(arg.jsEvent, {
+        event: eventData,
+        removeEvent: () => arg.event.remove(),
+        commitChanges: (newEvent) => {
+          if (newEvent.allDay) arg.event.setAllDay(newEvent.allDay);
+          if (newEvent.start) arg.event.setStart(newEvent.start);
+          if (newEvent.end) arg.event.setEnd(newEvent.end);
+          if (newEvent.title !== undefined)
+            arg.event.setProp("title", newEvent.title);
+        },
+      });
       // arg.event.remove()
     });
 
