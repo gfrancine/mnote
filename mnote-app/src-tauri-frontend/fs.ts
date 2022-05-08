@@ -221,8 +221,9 @@ export class FS implements FsInteropModule {
     return results;
   }
 
-  async getConfigDir(): Promise<string> {
-    return await pathLib.configDir();
+  async getDataDir(): Promise<string> {
+    // {config dir}/{bundle identifier}
+    return await pathLib.appDir();
   }
 
   async getCurrentDir(): Promise<string> {

@@ -40,8 +40,8 @@ export class FS implements Partial<FsInteropModule> {
   dialogSave(_opts: Record<string, unknown>): Promise<string | void> {
     return Promise.resolve("");
   }
-  getConfigDir(): Promise<string> {
-    return Promise.resolve("configdir");
+  getDataDir(): Promise<string> {
+    return Promise.resolve("datadir");
   }
   getCurrentDir(): Promise<string> {
     return Promise.resolve("currentdir");
