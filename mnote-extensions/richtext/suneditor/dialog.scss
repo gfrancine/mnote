@@ -120,16 +120,6 @@
         }
       }
 
-      // the "Select from files" input in the image dialog
-      .se-dialog-content.se-dialog-image
-        .se-dialog-body
-        > :first-child
-        > :first-child {
-        // tauri does not support HTML file dialogs
-        // https://github.com/tauri-apps/wry/issues/305
-        display: none !important;
-      }
-
       input:disabled {
         background-color: #f3f3f3;
       }
