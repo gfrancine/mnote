@@ -8,7 +8,6 @@ export class AutosaveModule {
   private app: Mnote;
   private autosaveDir = "";
   private sessionDir = "";
-  private lastSavedFiles: string[] = [];
   private intervalId?: number;
 
   constructor(app: Mnote) {
@@ -30,7 +29,6 @@ export class AutosaveModule {
     editors.events.on("tabRemoved", async (tab) => {
       const fileName = this.getFileNameForTab(tab);
 
-      if (this.lastSavedFiles.indexOf(fileName) === -1) return;
       const path = fs.joinPath([this.sessionDir, fileName]);
       try {
         await fs.removeFile(path);
@@ -88,16 +86,11 @@ export class AutosaveModule {
   private runAutosave() {
     const { fs, editors, log } = this.app.modules;
 
-    const newLastSavedFiles: string[] = [];
-    this.lastSavedFiles = newLastSavedFiles;
-
     Promise.all(
       editors.activeTabs.map(async (tab) => {
         if (tab.info.document.saved) return;
 
         const fileName = this.getFileNameForTab(tab);
-
-        newLastSavedFiles.push(fileName);
         const path = fs.joinPath([this.sessionDir, fileName]);
         try {
           await tab.info.editor.save(path);
