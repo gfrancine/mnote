@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { getRangeString } from "./format-date";
 
 export type EventEditorEvent = {
   title: string;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   allDay: boolean;
 };
 
@@ -49,6 +50,13 @@ export function EventEditor(props: EventEditorProps) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
+        <div className="range">
+          {getRangeString({
+            start: props.event.start,
+            end: props.event.end,
+            isAllDay: props.event.allDay,
+          })}
+        </div>
         <div className="actions">
           {/* https://stackoverflow.com/a/6617259 */}
           <button type="button" className="cancel" onClick={props.closeEditor}>

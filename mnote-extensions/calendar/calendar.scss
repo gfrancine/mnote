@@ -24,6 +24,11 @@
         @include inputs.text-input;
       }
 
+      .range {
+        font-size: 0.9em;
+        margin: 0.8em 0;
+      }
+
       .actions {
         display: flex;
         justify-content: flex-end;

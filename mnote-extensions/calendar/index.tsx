@@ -176,8 +176,8 @@ class CalendarEditor implements Editor {
       const eventData: EventEditorProps["event"] = {
         title,
         allDay,
-        start: (start || new Date()).toString(),
-        end: (end || new Date()).toString(),
+        start: start || new Date(),
+        end: end || new Date(),
       };
 
       this.popup.show(arg.jsEvent, {
