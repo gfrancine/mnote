@@ -1,5 +1,6 @@
 @use "~mnote-styles/mnote-vars" as mn;
 @use "~mnote-styles/mnote-inputs" as inputs;
+@use "~mnote-components/resets.scss";
 
 .calendar-extension {
   width: 100%;
@@ -12,6 +13,7 @@
     position: absolute;
     z-index: 50;
     width: 20em;
+    border-radius: 5px;
 
     &.hidden {
       display: none;
@@ -19,32 +21,73 @@
 
     .event-editor {
       margin: 0.6em;
+      font-size: 0.9em;
 
-      .title {
-        @include inputs.text-input;
-      }
-
-      .range {
-        font-size: 0.9em;
+      .head {
         margin: 0.8em 0;
+        display: flex;
+        flex-direction: row;
+
+        h3.editor-title {
+          margin-block-end: 0;
+          margin-block-start: 0;
+          flex: 1;
+        }
+
+        .close {
+          @include resets.input;
+          width: 1.5em;
+          height: 1.5em;
+
+          .stroke {
+            stroke: map-get(mn.$vars, main-fg-secondary);
+          }
+          .fill {
+            fill: map-get(mn.$vars, main-fg-secondary);
+          }
+          &:hover {
+            .stroke {
+              stroke: map-get(mn.$vars, main-fg);
+            }
+            .fill {
+              fill: map-get(mn.$vars, main-fg);
+            }
+          }
+        }
       }
 
-      .actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.2em;
-        margin-top: 0.6em;
-
-        .save {
-          @include inputs.button-emphasis;
+      .form {
+        .title {
+          @include inputs.text-input-base;
+          font-size: 1em;
+          padding: 0.6em;
         }
 
-        .cancel {
-          @include inputs.button-normal;
+        .range {
+          font-size: 0.9em;
+          margin: 0.8em 0;
+          font-size: 1em;
         }
 
-        .delete {
-          @include inputs.button-normal;
+        .actions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 0.2em;
+          margin-top: 1em;
+
+          @mixin action-font-size {
+            font-size: 0.9em;
+          }
+
+          .save {
+            @include inputs.button-emphasis;
+            @include action-font-size;
+          }
+
+          .delete {
+            @include inputs.button-normal;
+            @include action-font-size;
+          }
         }
       }
     }

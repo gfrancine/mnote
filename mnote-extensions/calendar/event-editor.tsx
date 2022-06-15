@@ -1,3 +1,4 @@
+import { Close } from "mnote-components/react/icons-jsx";
 import React, { useEffect, useState } from "react";
 import { getRangeString } from "./format-date";
 
@@ -38,7 +39,14 @@ export function EventEditor(props: EventEditorProps) {
 
   return (
     <div className="event-editor">
+      <div className="head">
+        <h3 className="editor-title">Edit Event</h3>
+        <button className="close" onClick={props.closeEditor}>
+          <Close strokeClass="stroke" fillClass="fill" />
+        </button>
+      </div>
       <form
+        className="form"
         onSubmit={(e) => {
           e.preventDefault();
           commitChanges();
@@ -59,9 +67,6 @@ export function EventEditor(props: EventEditorProps) {
         </div>
         <div className="actions">
           {/* https://stackoverflow.com/a/6617259 */}
-          <button type="button" className="cancel" onClick={props.closeEditor}>
-            Cancel
-          </button>
           <button type="button" className="delete" onClick={removeEvent}>
             Delete
           </button>
