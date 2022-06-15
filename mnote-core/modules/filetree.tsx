@@ -174,7 +174,7 @@ export class FiletreeModule {
         />
       );
     } else {
-      this.reactRoot.unmount();
+      this.reactRoot.render(<></>);
       this.element.appendChild(this.nothingHere);
     }
   }
