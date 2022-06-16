@@ -9,7 +9,13 @@ import { Event, listen } from "@tauri-apps/api/event";
 import { Signal } from "mnote-util/signal";
 import { appWindow, getCurrent } from "@tauri-apps/api/window";
 
-export class System implements SystemInteropModule {
+export class System
+  implements
+    Omit<
+      SystemInteropModule,
+      "getPreferredTheme" | "onPreferredThemeChange" | "offPreferredThemeChange"
+    >
+{
   private USES_CMD = false;
 
   private appMenuSignal = new Signal<SystemAppMenuListener>();
