@@ -46,6 +46,7 @@ export class ThemesModule {
 
     this.settings.events.on("change", () => {
       this.updateTheme();
+      this.updateFontOverride();
     });
 
     this.settings.registerSubcategory({
@@ -74,10 +75,23 @@ export class ThemesModule {
         })),
       ],
     });
+
+    this.settings.registerInput({
+      type: "string",
+      title: "Font override",
+      description:
+        "Override the app's main font with any installed font," +
+        " e.g. with Arial, Times New Roman, etc." +
+        " Leave blank to use the theme's default font.",
+      key: "core.theme.fontOverride",
+      subcategory: "appearance",
+      default: "",
+    });
   }
 
   async init() {
     await this.updateTheme();
+    await this.updateFontOverride();
     return this;
   }
 
@@ -114,6 +128,17 @@ export class ThemesModule {
       "system",
       (v) => typeof v === "string" && this.hasTheme(v)
     );
+  }
+
+  async updateFontOverride() {
+    const overrideFont = await this.settings.getKeyWithDefault(
+      "core.theme.fontOverride",
+      "",
+      (v) => typeof v === "string"
+    );
+
+    if (!overrideFont.trim().length) return;
+    this.setVar("main-font", `'${overrideFont}'`);
   }
 
   hasTheme(name: string) {
