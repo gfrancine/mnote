@@ -287,4 +287,8 @@ export class FS implements FsInteropModule {
   async showInExplorer(path: string) {
     await invoke("show_in_explorer", { path });
   }
+
+  async openFolderInExplorer(path: string) {
+    await invoke("open_folder_in_explorer", { path });
+  }
 }

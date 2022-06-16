@@ -210,4 +210,8 @@ export class FSModule implements FsInteropModule {
   async showInExplorer(path: string) {
     await this.fs?.showInExplorer?.(path);
   }
+
+  async openFolderInExplorer(path: string) {
+    await this.fs?.showInExplorer?.(path);
+  }
 }

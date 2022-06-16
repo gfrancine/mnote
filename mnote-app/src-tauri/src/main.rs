@@ -92,7 +92,8 @@ fn main() {
       filesystem::fs_is_file,
       filesystem::fs_is_dir,
       filesystem::fs_move_to_trash,
-      show::show_in_explorer
+      show::show_in_explorer,
+      show::open_folder_in_explorer
     ])
     .setup(|app| {
       app.manage(watcher::Watcher::default());

@@ -83,6 +83,7 @@ export interface FsInteropModule {
   ): void;
 
   showInExplorer(path: string): Promise<void>;
+  openFolderInExplorer(path: string): Promise<void>;
 }
 
 export type FileItem = {

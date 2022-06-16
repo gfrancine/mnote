@@ -36,3 +36,20 @@ fn show<P: AsRef<Path>>(path: P) -> io::Result<()> {
 pub fn show_in_explorer(path: String) -> Result<(), String> {
   show(&path).map_err(|e| e.to_string())
 }
+
+#[tauri::command]
+pub fn open_folder_in_explorer(path: String) -> Result<(), String> {
+  match Command::new(if cfg!(target_os = "macos") {
+    "open"
+  } else if cfg!(target_os = "windows") {
+    "explorer"
+  } else {
+    "xdg-open"
+  })
+  .arg(path)
+  .spawn()
+  {
+    Ok(_) => Ok(()),
+    Err(e) => Err(e.to_string()),
+  }
+}
