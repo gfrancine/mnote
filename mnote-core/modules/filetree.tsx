@@ -365,9 +365,7 @@ export class FiletreeModule {
             });
           }
 
-          if (this.fs.canShowInExplorer()) {
-            buttons.push(makeShowInExplorerButton(filePath));
-          }
+          buttons.push(makeShowInExplorerButton(filePath));
 
           return buttons;
         } else if (dirPath) {
@@ -428,9 +426,7 @@ export class FiletreeModule {
             });
           }
 
-          if (this.fs.canShowInExplorer()) {
-            buttons.push(makeShowInExplorerButton(dirPath));
-          }
+          buttons.push(makeShowInExplorerButton(dirPath));
 
           return buttons;
         }

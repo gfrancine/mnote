@@ -92,7 +92,6 @@ fn main() {
       filesystem::fs_is_file,
       filesystem::fs_is_dir,
       filesystem::fs_move_to_trash,
-      show::can_show_in_explorer,
       show::show_in_explorer
     ])
     .setup(|app| {

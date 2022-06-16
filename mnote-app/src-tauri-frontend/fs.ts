@@ -80,13 +80,10 @@ export class FS implements FsInteropModule {
 
   protected IS_WINDOWS = false;
 
-  protected CAN_SHOW_IN_EXPLORER = false;
-
   protected lib = posix;
 
   async init() {
     this.IS_WINDOWS = await invoke("is_windows");
-    this.CAN_SHOW_IN_EXPLORER = await invoke("can_show_in_explorer");
 
     if (this.IS_WINDOWS) {
       this.lib = win32;
@@ -285,10 +282,6 @@ export class FS implements FsInteropModule {
     handler: FsWatcherEvents[K]
   ) {
     this.watcher.events.off(event, handler);
-  }
-
-  canShowInExplorer() {
-    return this.CAN_SHOW_IN_EXPLORER;
   }
 
   async showInExplorer(path: string) {

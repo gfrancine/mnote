@@ -49,9 +49,6 @@ export class FS implements Partial<FsInteropModule> {
   resolveImageSrcPath() {
     return "halo bandung";
   }
-  canShowInExplorer() {
-    return true;
-  }
   showInExplorer(path: string) {
     console.log("show in explorer", path);
     return Promise.resolve();

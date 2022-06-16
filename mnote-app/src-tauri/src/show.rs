@@ -1,19 +1,22 @@
 // https://stackoverflow.com/questions/66485945/
 
+use std::ffi::OsStr;
+use std::fs;
+use std::io;
+use std::path::Path;
 use std::process::Command;
 
-#[derive(Debug)]
-pub enum ShowErr {
-  UnsupportedOs,
-  ProcessErr(std::io::Error),
-}
+fn show<P: AsRef<Path>>(path: P) -> io::Result<()> {
+  let path = path.as_ref();
 
-#[tauri::command]
-pub fn can_show_in_explorer() -> bool {
-  cfg!(any(target_os = "windows", target_os = "macos"))
-}
+  let path = if cfg!(target_os = "linux") && fs::metadata(path)?.is_file() {
+    let mut parent_path = path.to_path_buf();
+    parent_path.pop();
+    parent_path
+  } else {
+    path.to_path_buf()
+  };
 
-fn show<P: AsRef<std::ffi::OsStr>>(path: P) -> Result<(), ShowErr> {
   let mut command = if cfg!(target_os = "macos") {
     let mut command = Command::new("open");
     command.arg("--reveal");
@@ -23,16 +26,13 @@ fn show<P: AsRef<std::ffi::OsStr>>(path: P) -> Result<(), ShowErr> {
     command.arg("/select,");
     command
   } else {
-    return Err(ShowErr::UnsupportedOs);
+    Command::new("xdg-open")
   };
 
-  match command.arg(path).spawn() {
-    Ok(_) => Ok(()),
-    Err(err) => Err(ShowErr::ProcessErr(err)),
-  }
+  command.arg(&OsStr::new(&path)).spawn().map(|_| {})
 }
 
 #[tauri::command]
-pub fn show_in_explorer(path: String) {
-  show(&path).unwrap();
+pub fn show_in_explorer(path: String) -> Result<(), String> {
+  show(&path).map_err(|e| e.to_string())
 }
