@@ -26,7 +26,7 @@ export class ExtensionsModule /* implements Module */ {
     const index = this.extensions.indexOf(extension);
     if (index === undefined) return;
     delete this.extensions[index];
-    await extension.cleanup(this.app);
+    await extension.cleanup();
     return this;
   }
 }
