@@ -17,6 +17,7 @@
       cursor: pointer;
       width: fit-content;
       display: flex;
+      -webkit-appearance: none;
 
       &.disabled {
         cursor: not-allowed;
