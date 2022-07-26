@@ -34,6 +34,8 @@ export const tree = {
     { path: "dir-a/file-j.mntodo" },
     { path: "dir-a/file-j.html" },
     { path: "dir-a/file-j.png" },
+    { path: "dir-a/file-j.webloc" },
+    { path: "dir-a/file-j.url" },
   ],
 };
 
@@ -155,4 +157,14 @@ export const contents: Record<string, string> = {
   }`,
   html: `<p><br></p><p><br></p><p>Lorem&nbsp;<strong><u><em>Ipsum</em></u></strong></p><p>Dolor<sup>sit </sup><sub>amet</sub></p>`,
   png: exampleImage,
+  webloc: `<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+  <plist version="1.0">
+  <dict>
+    <key>URL</key>
+    <string>https://github.com/</string>
+  </dict>
+  </plist>`,
+  url: `[InternetShortcut]
+  URL=https://github.com/`,
 };

@@ -12,6 +12,7 @@ import { CalendarExtension } from "mnote-extensions/calendar";
 import { TodoExtension } from "mnote-extensions/todo";
 import { RichtextExtension } from "mnote-extensions/richtext";
 import { ImageViewerExtension } from "mnote-extensions/image-viewer";
+import { LinkViewerExtension } from "mnote-extensions/link-viewer";
 import { contents } from "./mocks";
 
 // web build
@@ -38,6 +39,7 @@ import { contents } from "./mocks";
     new TodoExtension(),
     new RichtextExtension(),
     new ImageViewerExtension(contents.png),
+    new LinkViewerExtension(),
   ]);
 
   await app.startup();
