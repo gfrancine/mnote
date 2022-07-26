@@ -5,7 +5,7 @@ import { Emitter } from "mnote-util/emitter";
 import { createRoot, Root } from "react-dom/client";
 import React from "react";
 
-import Excalidraw, { exportToCanvas } from "@excalidraw/excalidraw";
+import { Excalidraw, exportToCanvas } from "@excalidraw/excalidraw";
 import { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
 import {
   AppState as ExcalidrawAppState,
