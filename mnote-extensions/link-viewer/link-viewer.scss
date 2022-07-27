@@ -1,3 +1,19 @@
+@use "~mnote-styles/mnote-inputs" as inputs;
+
 .link-viewer-editor {
   // todo
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 10%;
+
+  .open-button {
+    text-decoration: none;
+    color: inherit;
+
+    @include inputs.button-normal;
+  }
 }

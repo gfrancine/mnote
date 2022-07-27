@@ -46,7 +46,19 @@ class LinkViewer implements Editor {
         ? extractFromWebloc(contents)
         : extractFromInternetShortcut(contents);
 
-    this.element.innerHTML = `<a target="_blank" href="${link}">${name}</a>`;
+    this.element.innerHTML = `
+    <div>
+      <p style="margin-top:0">This link leads to <b>${link}</b>.</p>
+      <a class="open-button" target="_blank" href="${link}">
+        Open in Default Browser
+        <span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height:1em; width:1em;">
+            <path d="M384 224v184a40 40 0 01-40 40H104a40 40 0 01-40-40V168a40 40 0 0140-40h167.48M336 64h112v112M224 288L440 72" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" stroke="currentColor" />
+          </svg>
+        </span>
+      </a>
+    </div>
+    `;
 
     return Promise.resolve();
   }
