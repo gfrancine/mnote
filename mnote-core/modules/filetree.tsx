@@ -270,23 +270,11 @@ export class FiletreeModule {
             name: "Delete All",
             click: async () => {
               const paths = Object.keys(this.selectedPaths);
-              const action = await this.popups.promptButtons(
-                `Are you sure you want to move ${paths.length} item(s) to the trash?`,
-                [
-                  {
-                    text: "Cancel",
-                    command: "cancel",
-                    kind: "normal",
-                  },
-                  {
-                    text: "Confirm",
-                    command: "confirm",
-                    kind: "emphasis",
-                  },
-                ]
+              const confirmed = await this.popups.confirm(
+                `Are you sure you want to move ${paths.length} item(s) to the trash?`
               );
 
-              if (action === "cancel") return;
+              if (!confirmed) return;
               // will throw errors if the user selects a directory before
               // its descendants, they can be ignored
               this.log.info("filetree: Delete All", paths);
@@ -312,23 +300,11 @@ export class FiletreeModule {
               name: "Delete file",
               click: () => {
                 (async () => {
-                  const action = await this.popups.promptButtons(
-                    `Are you sure you want to move the file "${filePath}" to the trash?`,
-                    [
-                      {
-                        text: "Cancel",
-                        command: "cancel",
-                        kind: "normal",
-                      },
-                      {
-                        text: "Confirm",
-                        command: "confirm",
-                        kind: "emphasis",
-                      },
-                    ]
+                  const confirmed = await this.popups.confirm(
+                    `Are you sure you want to move the file "${filePath}" to the trash?`
                   );
 
-                  if (action === "cancel") return;
+                  if (!confirmed) return;
                   await this.fs.moveToTrash(filePath);
                 })();
               },
@@ -377,23 +353,11 @@ export class FiletreeModule {
               name: "Delete folder",
               click: () => {
                 (async () => {
-                  const action = await this.popups.promptButtons(
-                    `Are you sure you want to move the folder "${dirPath}" to the trash?`,
-                    [
-                      {
-                        text: "Cancel",
-                        command: "cancel",
-                        kind: "normal",
-                      },
-                      {
-                        text: "Confirm",
-                        command: "confirm",
-                        kind: "emphasis",
-                      },
-                    ]
+                  const confirmed = await this.popups.confirm(
+                    `Are you sure you want to move the folder "${dirPath}" to the trash?`
                   );
 
-                  if (action === "cancel") return;
+                  if (!confirmed) return;
                   await this.fs.moveToTrash(dirPath);
                 })();
               },
