@@ -11,22 +11,25 @@
     position: fixed;
     top: 0;
     left: 0;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
     z-index: 20;
+    padding: 2em;
   }
 
   .prompt {
     z-index: 21;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
     background: map-get(mn.$vars, main-bg);
     color: map-get(mn.$vars, main-fg);
     padding: 0.8em;
-    margin-top: 2em;
     border-radius: 5px;
     box-sizing: border-box;
     width: min-content;
     min-width: 360px;
+    overflow-y: auto;
+    height: min-content;
+    max-height: 100%;
 
     .prompt-buttons {
       width: 100%;
