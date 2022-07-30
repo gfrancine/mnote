@@ -79,14 +79,17 @@ export class ExtensionsModule /* implements Module */ {
   private async loadUserExtensions() {
     const { fs, popups } = this.app.modules;
 
-    const extensionDirs = ( // new Array(50).fill({ path: "sdfasfads"})
-      await fs.readDir(this.extensionsDir)
-    ).children.filter((entry) => entry.children);
+    const extensionDirs = // new Array(50).fill({ path: "sdfasfads"})
+      // /*
+      (await fs.readDir(this.extensionsDir)).children.filter(
+        (entry) => entry.children
+      );
+    // */
 
     if (extensionDirs.length < 1) return;
 
     if (this.displayUserExtensionsAtStartup) {
-      const action = await popups.promptButtons(
+      const shouldProceed = await popups.confirm(
         "<h2>User Extensions</h2>" +
           "<p>The following extensions will be loaded:</p><ul>" +
           extensionDirs
@@ -94,21 +97,10 @@ export class ExtensionsModule /* implements Module */ {
             .join("\n") +
           "</ul><p>Would you like to proceed?</p>" +
           "<small>This message can be turned off in the Extensions settings category.</small>",
-        [
-          {
-            text: "Cancel",
-            kind: "normal",
-            command: "cancel",
-          },
-          {
-            text: "Confirm",
-            kind: "emphasis",
-            command: "confirm",
-          },
-        ]
+        "cancel"
       );
 
-      if (action === "cancel") return;
+      if (!shouldProceed) return;
     }
 
     for (const entry of extensionDirs) {
