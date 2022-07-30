@@ -1,6 +1,7 @@
 import { createIcon } from "mnote-components/vanilla/icons";
 import { Mnote, FileItemWithChildren } from "..";
 import { Extension, ExtensionManifest, UserExtensionInfo } from "./types";
+import { Base64 } from "js-base64";
 import * as s from "superstruct";
 
 const manifestStruct: s.Struct<ExtensionManifest> = s.object({
@@ -133,8 +134,9 @@ export class ExtensionsModule /* implements Module */ {
       const mainScriptPath = fs.joinPath([dir.path, manifest.main]);
       try {
         const contents = await fs.readTextFile(mainScriptPath);
+        // https://miyauchi.dev/posts/module-from-string/
         const module: { default: Extension } = await import(
-          `data:text/javascript,${contents}`
+          `data:text/javascript;base64,${Base64.encode(contents)}`
         );
         await this.add(module.default);
         userExtension.extension = module.default;
