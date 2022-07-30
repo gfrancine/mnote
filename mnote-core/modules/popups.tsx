@@ -38,6 +38,31 @@ export class PopupsModule {
     }).prompt();
   }
 
+  async confirm(
+    message: string,
+    defaultAction: "cancel" | "confirm" = "confirm"
+  ): Promise<boolean> {
+    const prompt = new Prompt({
+      container: this.app.element,
+      message,
+      buttons: [
+        {
+          text: "Cancel",
+          command: "cancel",
+          kind: defaultAction === "cancel" ? "emphasis" : "normal",
+        },
+        {
+          text: "Confirm",
+          command: "confirm",
+          kind: defaultAction === "confirm" ? "emphasis" : "normal",
+        },
+      ],
+    });
+
+    const action = (await prompt.prompt()) as "cancel" | "confirm";
+    return action === "confirm";
+  }
+
   async promptTextInput(
     message: string,
     initialValue?: string,
