@@ -30,13 +30,13 @@ export class ExtensionsModule /* implements Module */ {
       title: "Enable User Extensions",
       description:
         "Enable loading user extensions. The app must be restarted for changes to apply. This feature is unstable and we recommend turning off this setting.",
-      key: "core.extensions.enableUserExtensions",
+      key: "core.extensions.userExtensionsEnabled",
       subcategory: "extensions",
       default: false,
     });
 
     this.userExtensionsEnabled = await settings.getKeyWithDefault(
-      "core.extensions.enableUserExtensions",
+      "core.extensions.userExtensionsEnabled",
       false,
       (value) => typeof value === "boolean"
     );
