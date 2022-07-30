@@ -3,9 +3,6 @@ import { Mnote, FileItemWithChildren } from "..";
 import { Extension, ExtensionManifest, UserExtensionInfo } from "./types";
 import * as s from "superstruct";
 
-// if modules are services, think of
-// extensions as the scripts
-
 const manifestStruct: s.Struct<ExtensionManifest> = s.object({
   main: s.string(),
   stylesheets: s.optional(s.array(s.string())),
