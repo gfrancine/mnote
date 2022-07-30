@@ -86,7 +86,6 @@ export class Mnote {
     m.input = new InputModule(this);
     m.datadir = await new DataDirModule(this).init();
     m.settings = await new SettingsModule(this).init();
-    m.extensions = await new ExtensionsModule(this).init();
     m.layout = new LayoutModule(this);
     m.popups = new PopupsModule(this);
     m.ctxmenu = new CtxmenuModule(this);
@@ -94,6 +93,7 @@ export class Mnote {
     m.appdir = new AppDirModule(this);
     m.sidebar = new SidebarModule(this);
     m.fileicons = new FileIconsModule(this);
+    m.extensions = await new ExtensionsModule(this).init();
     m.editors = new EditorsModule(this);
     m.autosave = await new AutosaveModule(this).init();
     m.filesearch = new FileSearchModule(this);
@@ -103,7 +103,7 @@ export class Mnote {
   }
 
   async startup() {
-    await this.hooks.emitAsync("startup");
     this.container.appendChild(this.element);
+    await this.hooks.emitAsync("startup");
   }
 }

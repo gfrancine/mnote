@@ -10,6 +10,16 @@ export interface Extension {
   cleanup(): void;
 }
 
+export type ExtensionManifest = {
+  main: string;
+  stylesheets?: string[];
+};
+
+export type UserExtensionInfo = {
+  extension: Extension;
+  styles: HTMLStyleElement[];
+};
+
 // https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor
 // https://github.com/microsoft/vscode-extension-samples/blob/main/custom-editor-sample/src/pawDrawEditor.ts
 

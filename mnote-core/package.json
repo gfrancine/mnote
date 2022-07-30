@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "main": "./index.ts",
   "dependencies": {
-    "mousetrap": "^1.6.5"
+    "mousetrap": "^1.6.5",
+    "superstruct": "^0.16.0"
   }
 }

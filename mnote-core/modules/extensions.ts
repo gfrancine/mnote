@@ -1,21 +1,33 @@
 import { createIcon } from "mnote-components/vanilla/icons";
-import { Mnote } from "..";
-import { Extension } from "./types";
+import { Mnote, FileItemWithChildren } from "..";
+import { Extension, ExtensionManifest, UserExtensionInfo } from "./types";
+import * as s from "superstruct";
 
 // if modules are services, think of
 // extensions as the scripts
+
+const manifestStruct: s.Struct<ExtensionManifest> = s.object({
+  main: s.string(),
+  stylesheets: s.optional(s.array(s.string())),
+});
 
 export class ExtensionsModule /* implements Module */ {
   private extensions: Extension[] = [];
   private app: Mnote;
   private userExtensionsEnabled = false;
+  private displayUserExtensionsAtStartup = true;
+  private extensionsDir = "";
+  private userExtensions: UserExtensionInfo[] = [];
 
   constructor(app: Mnote) {
     this.app = app;
   }
 
   async init() {
-    const { settings } = this.app.modules;
+    const { settings, datadir, fs } = this.app.modules;
+
+    this.extensionsDir = fs.joinPath([datadir.getPath(), "extensions"]);
+    await fs.ensureDir(this.extensionsDir);
 
     settings.registerSubcategory({
       key: "extensions",
@@ -29,10 +41,22 @@ export class ExtensionsModule /* implements Module */ {
       type: "boolean",
       title: "Enable User Extensions",
       description:
-        "Enable loading user extensions. The app must be restarted for changes to apply. This feature is unstable and we recommend turning off this setting.",
+        `Enable loading user extensions from the extensions folder (${this.extensionsDir}).` +
+        ` The app must be restarted for changes to apply.` +
+        ` This feature is still unstable and potentially unsafe. We recommend turning off this setting.`,
       key: "core.extensions.userExtensionsEnabled",
       subcategory: "extensions",
       default: false,
+    });
+
+    settings.registerInput({
+      type: "boolean",
+      title: "Display User Extensions at Startup",
+      description:
+        "Display a list of user extensions at startup before loading them.",
+      key: "core.extensions.displayUserExtensionsAtStartup",
+      subcategory: "extensions",
+      default: true,
     });
 
     this.userExtensionsEnabled = await settings.getKeyWithDefault(
@@ -41,7 +65,118 @@ export class ExtensionsModule /* implements Module */ {
       (value) => typeof value === "boolean"
     );
 
+    this.displayUserExtensionsAtStartup = await settings.getKeyWithDefault(
+      "core.extensions.displayUserExtensionsAtStartup",
+      true,
+      (value) => typeof value === "boolean"
+    );
+
+    this.app.hooks.on("startup", async () => {
+      // this.userExtensionsEnabled = true;
+      if (this.userExtensionsEnabled) await this.loadUserExtensions();
+    });
+
     return this;
+  }
+
+  private async loadUserExtensions() {
+    const { fs, popups } = this.app.modules;
+
+    const extensionDirs = ( // new Array(50).fill({ path: "sdfasfads"})
+      await fs.readDir(this.extensionsDir)
+    ).children.filter((entry) => entry.children);
+
+    if (extensionDirs.length < 1) return;
+
+    if (this.displayUserExtensionsAtStartup) {
+      const action = await popups.promptButtons(
+        "<h2>User Extensions</h2>" +
+          "<p>The following extensions will be loaded:</p><ul>" +
+          extensionDirs
+            .map((entry) => `<li>${fs.getPathName(entry.path)}</li>`)
+            .join("\n") +
+          "</ul><p>Would you like to proceed?</p>" +
+          "<small>This message can be turned off in the Extensions settings category.</small>",
+        [
+          {
+            text: "Cancel",
+            kind: "normal",
+            command: "cancel",
+          },
+          {
+            text: "Confirm",
+            kind: "emphasis",
+            command: "confirm",
+          },
+        ]
+      );
+
+      if (action === "cancel") return;
+    }
+
+    for (const entry of extensionDirs) {
+      const dir: FileItemWithChildren = entry as any;
+
+      // manifest file
+      const manifestFile = dir.children.find(
+        (entry) =>
+          fs.getPathName(entry.path) === "extension.json" && !entry.children
+      );
+      if (!manifestFile) continue;
+      let manifest: ExtensionManifest = {} as unknown as ExtensionManifest;
+      try {
+        const contents = JSON.parse(await fs.readTextFile(manifestFile.path));
+        s.assert(contents, manifestStruct);
+        manifest = contents as ExtensionManifest;
+      } catch (e) {
+        popups.notify(
+          `Error while reading extension manifest file at "${manifestFile.path}": ${e}`
+        );
+        continue;
+      }
+
+      const userExtension: UserExtensionInfo = {
+        extension: {} as Extension,
+        styles: [],
+      };
+
+      // main script
+      const mainScriptPath = fs.joinPath([dir.path, manifest.main]);
+      try {
+        const contents = await fs.readTextFile(mainScriptPath);
+        const module: { default: Extension } = await import(
+          `data:text/javascript,${contents}`
+        );
+        await this.add(module.default);
+        userExtension.extension = module.default;
+      } catch (e) {
+        popups.notify(
+          `Error while loading extension main script at "${mainScriptPath}": ${e}`
+        );
+        continue;
+      }
+
+      // stylesheets
+      if (manifest.stylesheets) {
+        for (const path of manifest.stylesheets) {
+          try {
+            const contents = await fs.readTextFile(
+              fs.joinPath([dir.path, path])
+            );
+            const element = document.createElement("style");
+            element.innerHTML = contents;
+            document.head.appendChild(element);
+            userExtension.styles.push(element);
+          } catch (e) {
+            popups.notify(
+              `Error while loading extension stylesheet at "${path}": ${e}`
+            );
+          }
+        }
+      }
+
+      this.userExtensions.push(userExtension);
+    }
   }
 
   async add(extension: Extension) {
