@@ -84,9 +84,9 @@ export class Mnote {
     m.fs = new FSModule(this.options.fs);
     m.system = new SystemModule(this.options.system);
     m.input = new InputModule(this);
-    m.extensions = new ExtensionsModule(this);
     m.datadir = await new DataDirModule(this).init();
     m.settings = await new SettingsModule(this).init();
+    m.extensions = await new ExtensionsModule(this).init();
     m.layout = new LayoutModule(this);
     m.popups = new PopupsModule(this);
     m.ctxmenu = new CtxmenuModule(this);
