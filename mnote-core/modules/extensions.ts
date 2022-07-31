@@ -85,7 +85,7 @@ export class ExtensionsModule /* implements Module */ {
       // /*
       (await fs.readDir(this.extensionsDir)).children.filter(
         (entry) => entry.children
-      );
+      ) as FileItemWithChildren[];
     // */
 
     if (extensionDirs.length < 1) return;
@@ -105,70 +105,70 @@ export class ExtensionsModule /* implements Module */ {
       if (!shouldProceed) return;
     }
 
-    for (const entry of extensionDirs) {
-      const dir: FileItemWithChildren = entry as any;
-
-      // manifest file
-      const manifestFile = dir.children.find(
-        (entry) =>
-          fs.getPathName(entry.path) === "extension.json" && !entry.children
-      );
-      if (!manifestFile) continue;
-      let manifest: ExtensionManifest = {} as unknown as ExtensionManifest;
-      try {
-        const contents = JSON.parse(await fs.readTextFile(manifestFile.path));
-        s.assert(contents, manifestStruct);
-        manifest = contents as ExtensionManifest;
-      } catch (e) {
-        popups.notify(
-          `Error while reading extension manifest file at "${manifestFile.path}": ${e}`
+    await Promise.all(
+      extensionDirs.map(async (dir) => {
+        // manifest file
+        const manifestFile = dir.children.find(
+          (entry) =>
+            fs.getPathName(entry.path) === "extension.json" && !entry.children
         );
-        continue;
-      }
+        if (!manifestFile) return;
+        let manifest: ExtensionManifest = {} as unknown as ExtensionManifest;
+        try {
+          const contents = JSON.parse(await fs.readTextFile(manifestFile.path));
+          s.assert(contents, manifestStruct);
+          manifest = contents as ExtensionManifest;
+        } catch (e) {
+          popups.notify(
+            `Error while reading extension manifest file at "${manifestFile.path}": ${e}`
+          );
+          return;
+        }
 
-      const userExtension: UserExtensionInfo = {
-        extension: {} as Extension,
-        styles: [],
-      };
+        const userExtension: UserExtensionInfo = {
+          extension: {} as Extension,
+          styles: [],
+        };
 
-      // main script
-      const mainScriptPath = fs.joinPath([dir.path, manifest.main]);
-      try {
-        const contents = await fs.readTextFile(mainScriptPath);
-        // https://miyauchi.dev/posts/module-from-string/
-        const module: { default: Extension } = await import(
-          `data:text/javascript;base64,${Base64.encode(contents)}`
-        );
-        await this.add(module.default);
-        userExtension.extension = module.default;
-      } catch (e) {
-        popups.notify(
-          `Error while loading extension main script at "${mainScriptPath}": ${e}`
-        );
-        continue;
-      }
+        // main script
+        const mainScriptPath = fs.joinPath([dir.path, manifest.main]);
+        try {
+          const contents = await fs.readTextFile(mainScriptPath);
+          // https://miyauchi.dev/posts/module-from-string/
+          const module: { default: Extension } = await import(
+            `data:text/javascript;base64,${Base64.encode(contents)}`
+          );
+          await this.add(module.default);
+          userExtension.extension = module.default;
+        } catch (e) {
+          popups.notify(
+            `Error while loading extension main script at "${mainScriptPath}": ${e}`
+          );
+          return;
+        }
 
-      // stylesheets
-      if (manifest.stylesheets) {
-        for (const path of manifest.stylesheets) {
-          try {
-            const contents = await fs.readTextFile(
-              fs.joinPath([dir.path, path])
-            );
-            const element = document.createElement("style");
-            element.innerHTML = contents;
-            document.head.appendChild(element);
-            userExtension.styles.push(element);
-          } catch (e) {
-            popups.notify(
-              `Error while loading extension stylesheet at "${path}": ${e}`
-            );
+        // stylesheets
+        if (manifest.stylesheets) {
+          for (const path of manifest.stylesheets) {
+            try {
+              const contents = await fs.readTextFile(
+                fs.joinPath([dir.path, path])
+              );
+              const element = document.createElement("style");
+              element.innerHTML = contents;
+              document.head.appendChild(element);
+              userExtension.styles.push(element);
+            } catch (e) {
+              popups.notify(
+                `Error while loading extension stylesheet at "${path}": ${e}`
+              );
+            }
           }
         }
-      }
 
-      this.userExtensions.push(userExtension);
-    }
+        this.userExtensions.push(userExtension);
+      })
+    );
   }
 
   async add(extension: Extension) {
