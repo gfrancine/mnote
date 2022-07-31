@@ -1,6 +1,11 @@
 import { createIcon } from "mnote-components/vanilla/icons";
 import { Mnote, FileItemWithChildren } from "..";
-import { Extension, ExtensionManifest, UserExtensionInfo } from "./types";
+import {
+  BuiltinExtensionInfo,
+  Extension,
+  ExtensionManifest,
+  UserExtensionInfo,
+} from "./types";
 import { Base64 } from "js-base64";
 import * as s from "superstruct";
 
@@ -10,12 +15,12 @@ const manifestStruct: s.Struct<ExtensionManifest> = s.object({
 });
 
 export class ExtensionsModule /* implements Module */ {
-  private extensions: Extension[] = [];
   private app: Mnote;
   private userExtensionsEnabled = false;
   private displayUserExtensionsAtStartup = true;
   private extensionsDir = "";
   private userExtensions: UserExtensionInfo[] = [];
+  private builtinExtensions: BuiltinExtensionInfo[] = [];
 
   constructor(app: Mnote) {
     this.app = app;
@@ -70,12 +75,28 @@ export class ExtensionsModule /* implements Module */ {
     );
 
     this.app.hooks.on("startup", async () => {
-      await this.addAll(this.app.options.builtinExtensions || []);
+      await this.loadBuiltinExtensions();
       // this.userExtensionsEnabled = true;
       if (this.userExtensionsEnabled) await this.loadUserExtensions();
     });
 
     return this;
+  }
+
+  private async loadBuiltinExtensions() {
+    const { builtinExtensions } = this.app.options;
+    if (!builtinExtensions) return;
+
+    return Promise.all(
+      builtinExtensions.map(async (extension) => {
+        try {
+          await extension.startup(this.app);
+          this.builtinExtensions.push({ extension });
+        } catch (e) {
+          console.error("Error loading builtin extension:", e);
+        }
+      })
+    );
   }
 
   private async loadUserExtensions() {
@@ -138,7 +159,7 @@ export class ExtensionsModule /* implements Module */ {
           const module: { default: Extension } = await import(
             `data:text/javascript;base64,${Base64.encode(contents)}`
           );
-          await this.add(module.default);
+          await module.default.startup(this.app);
           userExtension.extension = module.default;
         } catch (e) {
           popups.notify(
@@ -169,23 +190,5 @@ export class ExtensionsModule /* implements Module */ {
         this.userExtensions.push(userExtension);
       })
     );
-  }
-
-  async add(extension: Extension) {
-    this.extensions.push(extension);
-    await extension.startup(this.app);
-    return this;
-  }
-
-  addAll(extensions: Extension[]) {
-    return Promise.all(extensions.map((extension) => this.add(extension)));
-  }
-
-  async remove(extension: Extension) {
-    const index = this.extensions.indexOf(extension);
-    if (index === undefined) return;
-    delete this.extensions[index];
-    await extension.cleanup();
-    return this;
   }
 }

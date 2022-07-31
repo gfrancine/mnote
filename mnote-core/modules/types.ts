@@ -21,6 +21,10 @@ export type UserExtensionInfo = {
   styles: HTMLStyleElement[];
 };
 
+export type BuiltinExtensionInfo = {
+  extension: Extension;
+};
+
 // https://code.visualstudio.com/api/extension-guides/custom-editors#custom-editor
 // https://github.com/microsoft/vscode-extension-samples/blob/main/custom-editor-sample/src/pawDrawEditor.ts
 
