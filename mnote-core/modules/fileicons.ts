@@ -13,8 +13,8 @@ export class FileIconsModule {
     this.icons[icon.kind] = icon;
   }
 
-  unregisterIcon(icon: FileIcon) {
-    delete this.icons[icon.kind];
+  unregisterIcon(kind: string) {
+    delete this.icons[kind];
   }
 
   getIcons() {
