@@ -1,6 +1,6 @@
 // The implementation of the Mnote type in ./types
 
-import { MnoteOptions } from "./common/types";
+import { MnoteOptions } from "./types";
 import { Emitter } from "mnote-util/emitter";
 import { el } from "mnote-util/elbuilder";
 

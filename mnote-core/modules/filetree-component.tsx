@@ -8,7 +8,7 @@ import {
   FileTreeHooks,
   FileTreeNode as Node,
   FileTreeNodeWithChildren as NodeWithChildren,
-} from "../common/types";
+} from "../types";
 import {
   ElementToReact,
   TreeChildren,

@@ -1,4 +1,4 @@
-import { DialogFilter } from "../common/types";
+import { DialogFilter } from "../types";
 import type { TabManager } from "./editors-tab";
 import type { Mnote } from "..";
 import { Emitter } from "mnote-util/emitter";

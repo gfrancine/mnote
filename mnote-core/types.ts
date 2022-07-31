@@ -1,7 +1,7 @@
-// common types used by the files
-
 import { Node, NodeWithChildren } from "mnote-util/nodes";
-import { Extension } from "../modules/types";
+import { Extension } from "./modules/types";
+
+export * from "./modules/types";
 
 // options mainly for interop
 // 1. app receives these options, including functions for modules

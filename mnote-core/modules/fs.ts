@@ -4,7 +4,7 @@ import {
   FsInteropModule,
   FsReadDirOptions,
   FsWatcherEvents,
-} from "../common/types";
+} from "../types";
 
 // the interop module
 // todo: mock

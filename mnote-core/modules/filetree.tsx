@@ -2,7 +2,7 @@ import {
   FileTreeHooks,
   FileTreeNode,
   FileTreeNodeWithChildren,
-} from "../common/types";
+} from "../types";
 import { Mnote } from "..";
 import { el } from "mnote-util/elbuilder";
 import { CtxmenuContext } from "./types";

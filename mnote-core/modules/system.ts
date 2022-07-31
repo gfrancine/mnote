@@ -4,7 +4,7 @@ import {
   SystemCancelQuitHook,
   SystemInteropModule,
   SystemThemeListener,
-} from "../common/types";
+} from "../types";
 
 export class SystemModule implements SystemInteropModule {
   private system?: Partial<SystemInteropModule>;
