@@ -201,5 +201,6 @@ export class SettingsExtension implements Extension {
     if (!this.app) return;
     this.app.modules.editors.unregisterEditor("settings");
     this.app.modules.fileicons.unregisterIcon("settings");
+    this.app.modules.menubar.removeSectionReducer("openSettingsEditor")
   }
 }
