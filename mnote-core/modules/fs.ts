@@ -180,8 +180,8 @@ export class FSModule implements FsInteropModule {
     return relativePath;
   }
 
-  convertImageSrc(src: string) {
-    if (this.fs?.convertImageSrc) return this.fs.convertImageSrc(src);
+  convertAssetSrc(src: string) {
+    if (this.fs?.convertAssetSrc) return this.fs.convertAssetSrc(src);
     return src;
   }
 

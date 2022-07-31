@@ -69,7 +69,7 @@ export interface FsInteropModule {
   ensureSeparatorAtEnd: (path: string) => string;
 
   // this method resolves an absolute file path into a fetchable link
-  convertImageSrc: (path: string) => string;
+  convertAssetSrc: (path: string) => string;
 
   // watcher
   watch(path: string): Promise<void>;

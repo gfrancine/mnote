@@ -71,7 +71,7 @@ class MarkdownEditor implements Editor {
       if (!path) return src;
       if (isWeb(src) || isData(src)) return src;
       const dir = this.fs.getPathParent(path);
-      return this.fs.convertImageSrc(this.fs.resolvePath(dir, src));
+      return this.fs.convertAssetSrc(this.fs.resolvePath(dir, src));
     };
 
     return MilkdownEditor.make()

@@ -43,7 +43,7 @@ class ImageViewer implements Editor {
     console.log(ctx.getDocument());
 
     if (path) {
-      this.image.src = this.fs.convertImageSrc(path);
+      this.image.src = this.fs.convertAssetSrc(path);
     }
 
     if (this.mockSrc) {

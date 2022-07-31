@@ -257,7 +257,7 @@ export class FS implements FsInteropModule {
     return path;
   }
 
-  convertImageSrc(src: string) {
+  convertAssetSrc(src: string) {
     return convertFileSrc(src);
   }
 
