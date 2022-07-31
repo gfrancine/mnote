@@ -10,7 +10,7 @@ import { FSModule } from "./fs";
 import { LogModule } from "./log";
 import { Emitter } from "mnote-util/emitter";
 import { DataDirModule } from "./datadir";
-import { set } from "mnote-util/immutable";
+import { set, del } from "mnote-util/immutable";
 
 // the file is only read once at initialization. as long as the
 // app is running state is kept here and persisted based on the
@@ -168,6 +168,28 @@ export class SettingsModule {
     this.events.emit("inputIndexChanged", this.inputsIndex);
   }
 
+  unregisterInput(input: { key: string; subcategory: string }) {
+    const subcategory = this.subcategories[input.subcategory];
+    if (!subcategory) {
+      throw new Error(`Cannot find subcategory "${input.subcategory}"`);
+    }
+
+    const subcategoryInfo =
+      this.inputsIndex[subcategory.category][input.subcategory];
+
+    this.inputsIndex = set(
+      this.inputsIndex,
+      subcategory.category,
+      set(
+        this.inputsIndex[subcategory.category],
+        input.subcategory,
+        set(subcategoryInfo, "inputs", del(subcategoryInfo.inputs, input.key))
+      )
+    );
+
+    this.events.emit("inputIndexChanged", this.inputsIndex);
+  }
+
   registerSubcategory(subcategory: SettingsSubcategory) {
     if (this.inputsIndex[subcategory.category][subcategory.key]) return;
 
@@ -183,5 +205,18 @@ export class SettingsModule {
     this.subcategories = set(this.subcategories, subcategory.key, subcategory);
 
     this.events.emit("inputIndexChanged", this.inputsIndex);
+  }
+
+  unregisterSubcategory(key: string) {
+    const category = this.inputsIndex.core[key] ? "core" : "extensions";
+    const subcategoryInfo = this.inputsIndex[category][key];
+    if (!subcategoryInfo) return;
+
+    this.subcategories = del(this.subcategories, key);
+    this.inputsIndex = set(
+      this.inputsIndex,
+      category,
+      del(this.inputsIndex[category], key)
+    );
   }
 }

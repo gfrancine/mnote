@@ -94,6 +94,15 @@ export class EditorsBaseModule {
     this.editors.push(opts);
   }
 
+  unregisterEditor(kind: string) {
+    const index = this.editors.findIndex(
+      (editorInfo) => editorInfo.kind === kind
+    );
+    if (index === -1) return;
+    this.editors.splice(index, 1);
+    delete this.editorKinds[kind];
+  }
+
   private createContainer() {
     return el("div").class("editor-container").element;
   }
