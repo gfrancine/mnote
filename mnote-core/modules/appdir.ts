@@ -150,6 +150,9 @@ export class AppDirModule {
       }
     });
 
-    this.menubar.addSectionReducer(menuReducer);
+    this.menubar.addSectionReducer({
+      id: "core.appDirModule",
+      reducer: menuReducer,
+    });
   }
 }

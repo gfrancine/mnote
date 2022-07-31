@@ -157,19 +157,26 @@ class SettingsEditor implements Editor {
 // extension
 
 export class SettingsExtension implements Extension {
+  private app?: Mnote;
+
   startup(app: Mnote) {
+    this.app = app;
+
     const isSettingsPath = (path: string) => path === SETTINGS_ALIAS_PATH;
 
     const openSettings = () => {
       app.modules.editors.open(SETTINGS_ALIAS_PATH);
     };
 
-    app.modules.menubar.addSectionReducer(() => {
-      const button = {
-        name: "Settings",
-        click: openSettings,
-      };
-      return [button];
+    app.modules.menubar.addSectionReducer({
+      id: "openSettingsEditor",
+      reducer: () => {
+        const button = {
+          name: "Settings",
+          click: openSettings,
+        };
+        return [button];
+      },
     });
 
     app.modules.fileicons.registerIcon({
@@ -190,6 +197,9 @@ export class SettingsExtension implements Extension {
     });
   }
 
-  /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-  cleanup() {}
+  cleanup() {
+    if (!this.app) return;
+    this.app.modules.editors.unregisterEditor("settings");
+    this.app.modules.fileicons.unregisterIcon("settings");
+  }
 }

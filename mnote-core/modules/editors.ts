@@ -189,7 +189,10 @@ export class EditorsModule extends EditorsBaseModule {
       }
     };
 
-    this.menubar.addSectionReducer(menuReducer);
+    this.menubar.addSectionReducer({
+      id: "core.editorsModule",
+      reducer: menuReducer,
+    });
   }
 
   private hookToInputs() {

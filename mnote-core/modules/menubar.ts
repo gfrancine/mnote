@@ -13,6 +13,11 @@ import { createIcon } from "mnote-components/vanilla/icons";
 
 type SectionReducer = () => MenuItem[] | void;
 
+type SectionReducerInfo = {
+  id: string;
+  reducer: SectionReducer;
+};
+
 export class MenubarModule /* implements Module */ {
   private layout: LayoutModule;
   private log: LogModule;
@@ -23,7 +28,7 @@ export class MenubarModule /* implements Module */ {
   private app: Mnote;
 
   private menuToggle: HTMLElement;
-  private menuReducers: SectionReducer[] = [];
+  private menuReducers: SectionReducerInfo[] = [];
   private menuCurrent?: Menu;
 
   constructor(app: Mnote) {
@@ -91,7 +96,7 @@ export class MenubarModule /* implements Module */ {
 
     const buttons: MenuItem[][] = [];
     this.menuReducers.forEach((reducer) => {
-      const section = reducer();
+      const section = reducer.reducer();
       if (section) buttons.push(section);
     });
 
@@ -127,7 +132,7 @@ export class MenubarModule /* implements Module */ {
     }
   }
 
-  addSectionReducer(reducer: SectionReducer) {
+  addSectionReducer(reducer: SectionReducerInfo) {
     this.menuReducers.push(reducer);
   }
 
