@@ -81,11 +81,15 @@ const IMAGE_EXTENSIONS = new Set(
 
 export class ImageViewerExtension implements Extension {
   mockSrc?: string;
+  app?: Mnote;
+
   constructor(mockSrc?: string) {
     this.mockSrc = mockSrc;
   }
 
   startup(app: Mnote) {
+    this.app = app;
+
     const matchesExtension = (path: string) => {
       const extension = app.modules.fs.getPathExtension(path).toLowerCase();
       return IMAGE_EXTENSIONS.has(extension);
@@ -108,6 +112,9 @@ export class ImageViewerExtension implements Extension {
     });
   }
 
-  /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-  cleanup() {}
+  cleanup() {
+    if (!this.app) return;
+    this.app.modules.editors.unregisterEditor("image-viewer");
+    this.app.modules.fileicons.unregisterIcon("image");
+  }
 }

@@ -148,7 +148,11 @@ class RichtextEditor implements Editor {
 // extension
 
 export class RichtextExtension implements Extension {
+  private app?: Mnote;
+
   startup(app: Mnote) {
+    this.app = app;
+
     const matchesExtension = (path: string) =>
       app.modules.fs.getPathExtension(path) === "html";
 
@@ -191,6 +195,15 @@ export class RichtextExtension implements Extension {
     });
   }
 
-  /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-  cleanup() {}
+  cleanup() {
+    const app = this.app;
+    if (!app) return;
+
+    app.modules.editors.unregisterEditor("richtext");
+    app.modules.fileicons.unregisterIcon("html");
+    app.modules.settings.unregisterSubcategory("richtext");
+    ["richtext.defaultFontSize"].forEach((key) =>
+      app.modules.settings.unregisterInput({ subcategory: "richtext", key })
+    );
+  }
 }

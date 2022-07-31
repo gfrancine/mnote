@@ -105,7 +105,11 @@ class TodoEditor implements Editor {
 // extension
 
 export class TodoExtension implements Extension {
+  private app?: Mnote;
+
   startup(app: Mnote) {
+    this.app = app;
+
     const matchesExtension = (path: string) =>
       app.modules.fs.getPathExtension(path) === "mntodo";
 
@@ -131,6 +135,9 @@ export class TodoExtension implements Extension {
     });
   }
 
-  /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-  cleanup() {}
+  cleanup() {
+    if (!this.app) return;
+    this.app.modules.editors.unregisterEditor("todo");
+    this.app.modules.fileicons.unregisterIcon("todo");
+  }
 }

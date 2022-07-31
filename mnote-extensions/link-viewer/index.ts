@@ -80,7 +80,11 @@ const IMAGE_EXTENSIONS = new Set(
 // extension
 
 export class LinkViewerExtension implements Extension {
+  private app?: Mnote;
+
   startup(app: Mnote) {
+    this.app = app;
+
     const matchesExtension = (path: string) => {
       const extension = app.modules.fs.getPathExtension(path).toLowerCase();
       return extension === "webloc" || extension === "url";
@@ -103,6 +107,9 @@ export class LinkViewerExtension implements Extension {
     });
   }
 
-  /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-  cleanup() {}
+  cleanup() {
+    if (!this.app) return;
+    this.app.modules.editors.unregisterEditor("link-viewer");
+    this.app.modules.fileicons.unregisterIcon("link");
+  }
 }

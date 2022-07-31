@@ -145,7 +145,11 @@ class ExcalidrawEditor implements Editor {
 // extension
 
 export class ExcalidrawExtension implements Extension {
+  private app?: Mnote;
+
   startup(app: Mnote) {
+    this.app = app;
+
     const matchesExtension = (path: string) =>
       app.modules.fs.getPathExtension(path) === "excalidraw";
 
@@ -175,6 +179,9 @@ export class ExcalidrawExtension implements Extension {
     });
   }
 
-  /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-  cleanup() {}
+  cleanup() {
+    if (!this.app) return;
+    this.app.modules.editors.unregisterEditor("excalidraw");
+    this.app.modules.fileicons.unregisterIcon("excalidraw");
+  }
 }

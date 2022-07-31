@@ -153,7 +153,11 @@ class MarkdownEditor implements Editor {
 // extension
 
 export class MarkdownExtension implements Extension {
+  private app?: Mnote;
+
   startup(app: Mnote) {
+    this.app = app;
+
     const matchesExtension = (path: string) =>
       app.modules.fs.getPathExtension(path) === "md";
 
@@ -205,6 +209,15 @@ export class MarkdownExtension implements Extension {
     });
   }
 
-  /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-  cleanup() {}
+  cleanup() {
+    const app = this.app;
+    if (!app) return;
+
+    app.modules.editors.unregisterEditor("markdown");
+    app.modules.fileicons.unregisterIcon("markdown");
+    app.modules.settings.unregisterSubcategory("markdown");
+    ["markdown.lineHeight", "markdown.fontSize"].forEach((key) =>
+      app.modules.settings.unregisterInput({ subcategory: "markdown", key })
+    );
+  }
 }

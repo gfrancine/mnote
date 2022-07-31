@@ -248,7 +248,11 @@ class CalendarEditor implements Editor {
 // extension
 
 export class CalendarExtension implements Extension {
+  private app?: Mnote;
+
   startup(app: Mnote) {
+    this.app = app;
+
     const matchesExtension = (path: string) =>
       app.modules.fs.getPathExtension(path) === "mncalendar";
 
@@ -274,6 +278,9 @@ export class CalendarExtension implements Extension {
     });
   }
 
-  /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-  cleanup() {}
+  cleanup() {
+    if (!this.app) return;
+    this.app.modules.editors.unregisterEditor("calendar");
+    this.app.modules.fileicons.unregisterIcon("calendar");
+  }
 }
