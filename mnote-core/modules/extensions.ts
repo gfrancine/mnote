@@ -29,7 +29,7 @@ export class ExtensionsModule /* implements Module */ {
   async init() {
     const { settings, datadir, fs } = this.app.modules;
 
-    this.extensionsDir = fs.joinPath([datadir.getPath(), "extensions"]);
+    this.extensionsDir = fs.resolvePath(datadir.getPath(), "extensions");
     await fs.ensureDir(this.extensionsDir);
 
     settings.registerSubcategory({
@@ -152,7 +152,7 @@ export class ExtensionsModule /* implements Module */ {
         };
 
         // main script
-        const mainScriptPath = fs.joinPath([dir.path, manifest.main]);
+        const mainScriptPath = fs.resolvePath(dir.path, manifest.main);
         try {
           const contents = await fs.readTextFile(mainScriptPath);
           // https://miyauchi.dev/posts/module-from-string/
@@ -173,7 +173,7 @@ export class ExtensionsModule /* implements Module */ {
           for (const path of manifest.stylesheets) {
             try {
               const contents = await fs.readTextFile(
-                fs.joinPath([dir.path, path])
+                fs.resolvePath(dir.path, path)
               );
               const element = document.createElement("style");
               element.innerHTML = contents;
