@@ -24,6 +24,18 @@ export const run = async (isProduction: boolean) => {
     fs: await new FS().init(),
     system: await new System().init(),
     isProduction,
+    builtinExtensions: [
+      new PlaintextExtension(),
+      new SettingsExtension(),
+      new MarkdownExtension(),
+      new ExcalidrawExtension(),
+      new KanbanExtension(),
+      new CalendarExtension(),
+      new TodoExtension(),
+      new RichtextExtension(),
+      new ImageViewerExtension(),
+      new LinkViewerExtension(),
+    ],
   });
 
   if (!isProduction) {
@@ -31,19 +43,5 @@ export const run = async (isProduction: boolean) => {
   }
 
   await app.init();
-
-  await app.modules.extensions.addAll([
-    new PlaintextExtension(),
-    new SettingsExtension(),
-    new MarkdownExtension(),
-    new ExcalidrawExtension(),
-    new KanbanExtension(),
-    new CalendarExtension(),
-    new TodoExtension(),
-    new RichtextExtension(),
-    new ImageViewerExtension(),
-    new LinkViewerExtension(),
-  ]);
-
   await app.startup();
 };

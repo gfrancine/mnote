@@ -1,6 +1,7 @@
 // common types used by the files
 
 import { Node, NodeWithChildren } from "mnote-util/nodes";
+import { Extension } from "../modules/types";
 
 // options mainly for interop
 // 1. app receives these options, including functions for modules
@@ -13,6 +14,7 @@ export type MnoteOptions = {
   fs?: Partial<FsInteropModule>;
   system?: Partial<SystemInteropModule>;
   isProduction?: boolean;
+  builtinExtensions?: Extension[];
   appSettingsFileName?: string;
 };
 

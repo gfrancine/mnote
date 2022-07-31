@@ -70,6 +70,7 @@ export class ExtensionsModule /* implements Module */ {
     );
 
     this.app.hooks.on("startup", async () => {
+      await this.addAll(this.app.options.builtinExtensions || []);
       // this.userExtensionsEnabled = true;
       if (this.userExtensionsEnabled) await this.loadUserExtensions();
     });

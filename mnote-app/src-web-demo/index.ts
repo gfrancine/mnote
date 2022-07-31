@@ -22,25 +22,23 @@ import { contents } from "./mocks";
   const app = new Mnote("#root", {
     startPath: "startpath",
     fs: new FS(),
+    builtinExtensions: [
+      new PlaintextExtension(),
+      new SettingsExtension(),
+      new SettingsInputsExamples(),
+      new MarkdownExtension(),
+      new ExcalidrawExtension(),
+      new KanbanExtension(),
+      new CalendarExtension(),
+      new TodoExtension(),
+      new RichtextExtension(),
+      new ImageViewerExtension(contents.png),
+      new LinkViewerExtension(),
+    ],
   });
 
   (window as unknown as { app: Mnote }).app = app;
 
   await app.init();
-
-  await app.modules.extensions.addAll([
-    new PlaintextExtension(),
-    new SettingsExtension(),
-    new SettingsInputsExamples(),
-    new MarkdownExtension(),
-    new ExcalidrawExtension(),
-    new KanbanExtension(),
-    new CalendarExtension(),
-    new TodoExtension(),
-    new RichtextExtension(),
-    new ImageViewerExtension(contents.png),
-    new LinkViewerExtension(),
-  ]);
-
   await app.startup();
 })();
