@@ -170,9 +170,7 @@ export class SettingsModule {
 
   unregisterInput(input: { key: string; subcategory: string }) {
     const subcategory = this.subcategories[input.subcategory];
-    if (!subcategory) {
-      throw new Error(`Cannot find subcategory "${input.subcategory}"`);
-    }
+    if (!subcategory) return;
 
     const subcategoryInfo =
       this.inputsIndex[subcategory.category][input.subcategory];
