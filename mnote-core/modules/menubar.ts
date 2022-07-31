@@ -18,6 +18,11 @@ type SectionReducerInfo = {
   reducer: SectionReducer;
 };
 
+type MenubarButtonInfo = {
+  id: string;
+  element: HTMLElement;
+};
+
 export class MenubarModule /* implements Module */ {
   private layout: LayoutModule;
   private log: LogModule;
@@ -26,6 +31,8 @@ export class MenubarModule /* implements Module */ {
   private left: HTMLElement;
   private right: HTMLElement;
   private app: Mnote;
+
+  private menubarButtons: MenubarButtonInfo[] = [];
 
   private menuToggle: HTMLElement;
   private menuReducers: SectionReducerInfo[] = [];
@@ -50,11 +57,11 @@ export class MenubarModule /* implements Module */ {
 
     this.right = el("div").class("menubar-right").element;
 
+    this.updateMenubarButtons();
+
     this.element = el("div")
       .class("menubar")
       .children(this.left, this.right).element;
-
-    this.addMenubarButton(this.menuToggle);
 
     this.log = app.modules.log;
     this.layout = app.modules.layout;
@@ -85,8 +92,22 @@ export class MenubarModule /* implements Module */ {
       ).element;
   }
 
-  addMenubarButton(button: HTMLElement) {
-    this.right.prepend(button);
+  addMenubarButton(button: MenubarButtonInfo) {
+    this.menubarButtons.push(button);
+    this.updateMenubarButtons();
+  }
+
+  removeMenubarButton(id: string) {
+    const index = this.menubarButtons.findIndex((button) => button.id === id);
+    if (index === -1) return;
+    this.menubarButtons.splice(index, 1);
+    this.updateMenubarButtons();
+  }
+
+  private updateMenubarButtons() {
+    this.right.innerHTML = "";
+    this.right.append(this.menuToggle);
+    this.menubarButtons.forEach(({ element }) => this.right.prepend(element));
   }
 
   showMenu() {

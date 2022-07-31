@@ -42,7 +42,10 @@ export class SidebarModule {
       this.setSidebarVisible(!this.sidebarVisible)
     );
 
-    this.menubar.addMenubarButton(this.toggleSidebarButton);
+    this.menubar.addMenubarButton({
+      id: "core.sidebar",
+      element: this.toggleSidebarButton,
+    });
 
     this.updateSidebarVisible();
   }
