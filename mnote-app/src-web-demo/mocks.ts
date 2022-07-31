@@ -36,6 +36,7 @@ export const tree = {
     { path: "dir-a/file-j.png" },
     { path: "dir-a/file-j.webloc" },
     { path: "dir-a/file-j.url" },
+    { path: "dir-a/file-j.pdf" },
   ],
 };
 
@@ -43,6 +44,9 @@ export const tree = {
 
 const exampleImage =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAWSURBVBhXY1Da6PNWRoXh/0k+e48zACTuBXYvab1wAAAAAElFTkSuQmCC";
+
+export const examplePdf =
+  "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
 
 export const contents: Record<string, string> = {
   md: `# lorem ipsum

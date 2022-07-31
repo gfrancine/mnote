@@ -14,6 +14,7 @@ import { TodoExtension } from "mnote-extensions/todo";
 import { RichtextExtension } from "mnote-extensions/richtext";
 import { ImageViewerExtension } from "mnote-extensions/image-viewer";
 import { LinkViewerExtension } from "mnote-extensions/link-viewer";
+import { PdfViewerExtension } from "mnote-extensions/pdf-viewer";
 
 export const run = async (isProduction: boolean) => {
   const args: string[] = await invoke("get_args");
@@ -35,6 +36,7 @@ export const run = async (isProduction: boolean) => {
       new RichtextExtension(),
       new ImageViewerExtension(),
       new LinkViewerExtension(),
+      new PdfViewerExtension(),
     ],
   });
 
