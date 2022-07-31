@@ -136,6 +136,12 @@ export class MenubarModule /* implements Module */ {
     this.menuReducers.push(reducer);
   }
 
+  removeSectionReducer(id: string) {
+    const index = this.menuReducers.findIndex((reducer) => reducer.id === id);
+    if (index === -1) return;
+    this.menuReducers.splice(index, 1);
+  }
+
   setMenubarText(text: string) {
     this.left.innerText = text;
   }
