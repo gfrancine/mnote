@@ -3,6 +3,7 @@ import type { TabManager } from "./editors-tab";
 import type { Mnote } from "..";
 import { Emitter } from "mnote-util/emitter";
 import * as SettingsInputs from "./settings-inputs";
+import { MenuItem } from "mnote-components/vanilla/menu";
 
 // used by the extension module
 export interface Extension {
@@ -160,4 +161,18 @@ export type SettingsSubcategoryInfo = {
 export type SettingsInputIndex = {
   core: Record<string, SettingsSubcategoryInfo>;
   extensions: Record<string, SettingsSubcategoryInfo>;
+};
+
+// menubar
+
+export type MenubarSectionReducer = () => MenuItem[] | void;
+
+export type MenubarSectionReducerInfo = {
+  id: string;
+  reducer: MenubarSectionReducer;
+};
+
+export type MenubarButtonInfo = {
+  id: string;
+  element: HTMLElement;
 };

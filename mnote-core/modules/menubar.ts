@@ -7,21 +7,10 @@ import {
   sectionsToMenuItems,
 } from "mnote-components/vanilla/menu";
 import { LogModule } from "./log";
+import { MenubarButtonInfo, MenubarSectionReducerInfo } from "./types";
 import { createIcon } from "mnote-components/vanilla/icons";
 
 // https://quilljs.com/docs/modules/toolbar/
-
-type SectionReducer = () => MenuItem[] | void;
-
-type SectionReducerInfo = {
-  id: string;
-  reducer: SectionReducer;
-};
-
-type MenubarButtonInfo = {
-  id: string;
-  element: HTMLElement;
-};
 
 export class MenubarModule /* implements Module */ {
   private layout: LayoutModule;
@@ -35,7 +24,7 @@ export class MenubarModule /* implements Module */ {
   private menubarButtons: MenubarButtonInfo[] = [];
 
   private menuToggle: HTMLElement;
-  private menuReducers: SectionReducerInfo[] = [];
+  private menuReducers: MenubarSectionReducerInfo[] = [];
   private menuCurrent?: Menu;
 
   constructor(app: Mnote) {
@@ -153,7 +142,7 @@ export class MenubarModule /* implements Module */ {
     }
   }
 
-  addSectionReducer(reducer: SectionReducerInfo) {
+  addSectionReducer(reducer: MenubarSectionReducerInfo) {
     this.menuReducers.push(reducer);
   }
 
