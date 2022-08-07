@@ -60,7 +60,7 @@ $list-padding: 1.2em;
 
 @mixin hr {
   border: none;
-  border-top: solid 1px map-get(mn.$vars, main-border);
+  border-top: solid 1px map-get(mn.$vars, main-fg-dim);
 }
 
 @mixin blockquote {
