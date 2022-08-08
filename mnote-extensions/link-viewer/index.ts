@@ -48,7 +48,7 @@ class LinkViewer implements Editor {
 
     this.element.innerHTML = `
     <div>
-      <p style="margin-top:0">This link leads to <b>${link}</b>.</p>
+      <p style="margin-top:0">This Internet shortcut opens in <b>${link}</b>.</p>
       <a class="open-button" target="_blank" href="${link}">
         Open in Default Browser
         <span>
