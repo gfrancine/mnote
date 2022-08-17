@@ -348,7 +348,14 @@ export class FiletreeModule {
           // a directory
           const buttons = [];
 
-          if (this.tree?.path !== dirPath) {
+          if (this.tree?.path === dirPath) {
+            buttons.push({
+              name: "Close folder",
+              click: () => {
+                this.appdir.closeDirectory();
+              },
+            });
+          } else {
             buttons.push({
               name: "Delete folder",
               click: () => {
