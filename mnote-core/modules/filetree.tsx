@@ -20,9 +20,12 @@ import React from "react";
 import FileTree from "./filetree-component";
 import { SystemModule } from "./system";
 
+function FileTreePlaceholder() {
+  return <div className="placeholder-nothing">No Opened Folder</div>;
+}
+
 export class FiletreeModule {
   private element: HTMLElement;
-  private nothingHere: HTMLElement;
   private reactRoot: Root;
 
   private fs: FSModule;
@@ -54,13 +57,7 @@ export class FiletreeModule {
     this.fileicons = app.modules.fileicons;
     this.filesearch = app.modules.filesearch;
 
-    this.nothingHere = el("div")
-      .inner("No Opened Folder")
-      .class("placeholder-nothing").element;
-
-    this.element = el("div")
-      .class("filetree-container")
-      .children(this.nothingHere).element;
+    this.element = el("div").class("filetree-container").element;
 
     this.reactRoot = createRoot(this.element);
 
@@ -174,8 +171,7 @@ export class FiletreeModule {
         />
       );
     } else {
-      this.reactRoot.render(<></>);
-      this.element.appendChild(this.nothingHere);
+      this.reactRoot.render(<FileTreePlaceholder />);
     }
   }
 
