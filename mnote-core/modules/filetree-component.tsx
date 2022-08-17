@@ -342,7 +342,7 @@ export default function (props: {
     );
     // dirs shouldn't be dropped on a dir inside it
     dirs.forEach((path) => {
-      if (!path.startsWith(props.ensureSeparatorAtEnd(targetDirPath))) {
+      if (!props.ensureSeparatorAtEnd(targetDirPath).startsWith(path)) {
         props.hooks?.dirDroppedOnDir?.(targetDirPath, path);
       }
     });
