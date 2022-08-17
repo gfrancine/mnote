@@ -80,7 +80,7 @@ export default function (props: {
           const searchResultRanges = searchResults?.[name];
           const openFileTabCtx = props.getOpenFileTabCtx(tab);
 
-          return (searchResults ? searchResultRanges : true) ? (
+          return searchResultRanges || !searchResults ? (
             <TreeItem
               text={
                 searchResultRanges ? (
@@ -114,7 +114,7 @@ export default function (props: {
               </button>
             </TreeItem>
           ) : (
-            <></>
+            <div></div>
           );
         }}
       </List>
