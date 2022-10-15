@@ -1,4 +1,5 @@
 @use "~mnote-styles/mnote-inputs" as inputs;
+@use "~mnote-components/resets";
 
 .link-viewer-editor {
   // todo
@@ -17,9 +18,15 @@
     margin: auto; // https://stackoverflow.com/questions/33454533/
   }
 
-  .open-button {
+  .copy-button {
+    @include resets.input;
+  }
+
+  .open-button,
+  .copy-button {
     text-decoration: none;
     color: inherit;
+    margin-block-end: 0.5em;
 
     @include inputs.button-normal;
   }
