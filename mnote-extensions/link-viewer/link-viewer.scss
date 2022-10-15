@@ -5,10 +5,17 @@
   height: 100%;
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 10%;
+  overflow: auto;
+
+  .content {
+    word-break: break-word;
+    box-sizing: border-box;
+    padding: 10%;
+    height: fit-content;
+    margin: auto; // https://stackoverflow.com/questions/33454533/
+  }
 
   .open-button {
     text-decoration: none;

@@ -47,7 +47,7 @@ class LinkViewer implements Editor {
         : extractFromInternetShortcut(contents);
 
     this.element.innerHTML = `
-    <div>
+    <div class="content">
       <p style="margin-top:0">This Internet shortcut opens in <b>${link}</b>.</p>
       <a class="open-button" target="_blank" href="${link}">
         Open in Default Browser
