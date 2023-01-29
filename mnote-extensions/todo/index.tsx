@@ -29,12 +29,11 @@ function migrate(value: TodoParsedFile): TodoFile {
 
   switch (value.version) {
     case 1:
-      value.data.itemsOrder = value.data.itemsOrder?.map(
-        ({ id }: { id: string }) => ({
-          id,
-          depth: 0,
-        })
-      );
+      // version 2: items order is now { id: string, depth: number } instead of just the id
+      value.data.itemsOrder = value.data.itemsOrder?.map((id: string) => ({
+        id,
+        depth: 0,
+      }));
       value.version = 2;
     // falls through
     default:
