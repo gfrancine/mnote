@@ -249,6 +249,11 @@
     @include richtext.code-inline;
   }
 
+  .code-fence_select-wrapper {
+    // remove temporarily
+    display: none;
+  }
+
   .code-fence {
     padding: 0 !important;
     font-size: 1em;
