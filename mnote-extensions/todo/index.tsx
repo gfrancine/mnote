@@ -18,15 +18,17 @@ type TodoFile = {
   data: Partial<TodoData>;
 };
 
-// current file version: 2
+const CURRENT_FILE_VERSION = 2;
 
 function migrate(value: TodoParsedFile): TodoFile {
   switch (value.version) {
     case 1:
-      value.data.itemsOrder = value.data.itemsOrder?.map((id: string) => ({
-        id,
-        depth: 0,
-      }));
+      value.data.itemsOrder = value.data.itemsOrder?.map(
+        ({ id }: { id: string }) => ({
+          id,
+          depth: 0,
+        })
+      );
       value.version = 2;
     // falls through
     default:
@@ -58,7 +60,7 @@ class TodoEditor implements Editor {
   ctx?: EditorContext;
 
   todo: TodoFile = {
-    version: 1,
+    version: CURRENT_FILE_VERSION,
     data: {},
   };
 
