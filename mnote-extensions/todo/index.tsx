@@ -21,6 +21,12 @@ type TodoFile = {
 const CURRENT_FILE_VERSION = 2;
 
 function migrate(value: TodoParsedFile): TodoFile {
+  if (value.version > CURRENT_FILE_VERSION) {
+    throw new Error(
+      `This version of the file is newer and unsupported. Try updating the app.`
+    );
+  }
+
   switch (value.version) {
     case 1:
       value.data.itemsOrder = value.data.itemsOrder?.map(
