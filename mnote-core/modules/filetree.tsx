@@ -395,6 +395,43 @@ export class FiletreeModule {
 
           buttons.push(makeShowInExplorerButton(dirPath));
 
+          // save current file here as ...
+          if (
+            this.editors.currentTab &&
+            !this.editors.currentTab.info.editorInfo.disableSaveAs
+          ) {
+            buttons.push({
+              name: "Save current file here as...",
+              click: async () => {
+                const tab = this.editors.currentTab;
+                if (!tab) return;
+                this.log.info("Save current file in dir", dirPath, tab);
+
+                const extension = this.fs.getPathExtension(
+                  tab.info.document.name
+                );
+                let name = await this.popups.promptTextInput(
+                  `Save current file in folder as...`,
+                  this.fs
+                    .getPathName(tab.info.document.name)
+                    .slice(0, -extension.length - 1)
+                );
+                if (!name) return;
+                name += "." + extension;
+                const newPath = this.fs.joinPath([dirPath, name]);
+
+                if (await this.fs.isFile(newPath)) {
+                  const overwrite = await this.popups.confirm(
+                    `A file named "${name}" already exists in the directory. Would you like to overwrite it?`
+                  );
+                  if (!overwrite) return;
+                }
+
+                this.editors.saveAs(tab, newPath);
+              },
+            });
+          }
+
           return buttons;
         }
       } else if (ctx.elements.includes(this.element) && dir) {

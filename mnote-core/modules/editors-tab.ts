@@ -127,11 +127,14 @@ export class TabManager {
     return true;
   }
 
-  async saveAs(): Promise<boolean> {
+  /** if path is not provided, the user will get a file dialog */
+  async saveAs(path?: string): Promise<boolean> {
     const { editor, editorInfo, document } = this.ctx.getTabInfo();
     if (editorInfo.disableSaveAs) return false;
 
-    const newPath = editorInfo.disableSaveAs
+    const newPath = path
+      ? path
+      : editorInfo.disableSaveAs
       ? document.path
       : await this.fs.dialogSave({
           filters: editorInfo.saveAsFileTypes,

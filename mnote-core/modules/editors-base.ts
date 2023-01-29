@@ -299,10 +299,10 @@ export class EditorsBaseModule {
     this.events.emitSync("activeTabsChanged");
   }
 
-  // prompt a save dialog
+  // if path is not provided, prompt a save as dialog
   // returns a success boolean (whether the user cancelled)
-  saveAs(tab: Tab): Promise<boolean> {
-    return tab.manager.saveAs();
+  saveAs(tab: Tab, path?: string): Promise<boolean> {
+    return tab.manager.saveAs(path);
   }
 
   // directly save the current document, or prompt if it doesn't have a path
