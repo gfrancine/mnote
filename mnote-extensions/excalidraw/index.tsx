@@ -16,6 +16,9 @@ import "./styles.scss";
 import { excalidrawIcon } from "./icon";
 
 type ExcalidrawData = {
+  type: "excalidraw";
+  version: number;
+  source: string;
   readonly elements: ExcalidrawElement[];
   appState: ExcalidrawAppState;
   files: BinaryFiles;
@@ -34,6 +37,9 @@ function Wrapper(props: {
   const appState = props.initialData.appState;
 
   const initialData = {
+    type: "excalidraw",
+    version: props.initialData.version || 2,
+    source: props.initialData.source || "Mnote",
     elements: props.initialData.elements,
     appState: {
       theme: appState?.theme,
@@ -51,6 +57,7 @@ function Wrapper(props: {
       <Excalidraw
         onChange={(elements, appState, files) =>
           props.emitter.emit("change", {
+            ...initialData,
             elements,
             appState,
             files,
