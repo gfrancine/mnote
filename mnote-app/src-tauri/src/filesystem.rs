@@ -31,10 +31,14 @@ pub fn fs_read_binary_file(path: &str) -> Result<Vec<u8>, String> {
   Ok(contents)
 }
 
+// https://discord.com/channels/616186924390023171/731495028677148753/1023163473615663166
 #[tauri::command]
-pub fn fs_write_binary_file(path: &str, contents: &[u8]) -> Result<(), String> {
+pub fn fs_write_binary_file(
+  path: &str,
+  contents: Vec<u8>,
+) -> Result<(), String> {
   let mut file = File::create(path).map_err(|e| e.to_string())?;
-  file.write_all(contents).map_err(|e| e.to_string())?;
+  file.write_all(&contents).map_err(|e| e.to_string())?;
   Ok(())
 }
 

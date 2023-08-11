@@ -104,7 +104,10 @@ export class FS implements FsInteropModule {
   }
 
   writeBinaryFile(path: string, contents: ArrayBuffer): Promise<void> {
-    return invoke("fs_write_binary_file", { path, contents });
+    return invoke("fs_write_binary_file", {
+      path,
+      contents: Array.from(new Uint8Array(contents)),
+    });
   }
 
   async readBinaryFile(path: string): Promise<ArrayBuffer> {
