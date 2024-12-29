@@ -383,9 +383,8 @@ export default function (props: {
           ensureSeparatorAtEnd={props.ensureSeparatorAtEnd}
         />
       ) : (
-        <></>
-      )}{" "}
-      ? () : (<></>)
+          <></>
+        )}{" "}
     </div>
   );
 }
