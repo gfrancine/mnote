@@ -30,14 +30,14 @@ jobs:
 
     - name: upload (windows)
       if: matrix.platform == 'windows-latest'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.platform }}
         path: ./mnote-app/src-tauri/target/debug/bundle
 
     - name: upload (macos)
       if: matrix.platform == 'macos-latest'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.platform }}
         path: ./mnote-app/src-tauri/target/debug/bundle
