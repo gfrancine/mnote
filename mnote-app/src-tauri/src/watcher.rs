@@ -24,7 +24,7 @@ impl Watcher {
 #[tauri::command]
 pub fn watch(
   path: String,
-  window: tauri::Window,
+  window: tauri::WebviewWindow,
   watcher: tauri::State<'_, Watcher>,
 ) {
   watcher
