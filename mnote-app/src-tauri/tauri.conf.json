@@ -5,7 +5,6 @@
   "mainBinaryName": "Mnote",
   "build": {
     "frontendDist": "../dist",
-    "devUrl": "../dist",
     "beforeDevCommand": "",
     "beforeBuildCommand": ""
   },
