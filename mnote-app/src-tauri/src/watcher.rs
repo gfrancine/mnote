@@ -2,6 +2,7 @@ use hotwatch::{Event, Hotwatch};
 use serde::Serialize;
 use std::sync::Mutex;
 use std::time::Duration;
+use tauri::Emitter;
 
 #[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]

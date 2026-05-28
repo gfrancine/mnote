@@ -18,6 +18,7 @@ mod filesystem;
 mod show;
 mod watcher;
 
+use tauri::Emitter;
 use tauri::Manager;
 
 #[cfg(target_os = "macos")]
@@ -54,7 +55,7 @@ pub fn run() {
 
       #[cfg(target_os = "macos")]
       {
-        let quit = PredefinedMenuItem::quit(app)?;
+        let quit = PredefinedMenuItem::quit(app, None)?;
 
         let main_submenu = SubmenuBuilder::new(app, "Mnote")
           .item(&quit)
