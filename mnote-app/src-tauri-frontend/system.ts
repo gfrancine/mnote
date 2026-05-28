@@ -4,10 +4,10 @@ import {
   SystemCancelQuitHook,
   SystemInteropModule,
 } from "mnote-core";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { Event, listen } from "@tauri-apps/api/event";
 import { Signal } from "mnote-util/signal";
-import { appWindow, getCurrent } from "@tauri-apps/api/window";
+import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 
 export class System
   implements
@@ -25,7 +25,9 @@ export class System
   async init() {
     this.USES_CMD = await invoke("is_mac");
 
-    await getCurrent().listen("close-requested", async () => {
+    const appWindow = getCurrentWebviewWindow();
+
+    await appWindow.listen("close-requested", async () => {
       let quitCanceled = false;
       const cancel = () => (quitCanceled = true);
 
