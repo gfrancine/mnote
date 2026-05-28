@@ -2,6 +2,7 @@ use hotwatch::{Event, Hotwatch};
 use serde::Serialize;
 use std::sync::Mutex;
 use std::time::Duration;
+use tauri::Emitter;
 
 #[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -24,7 +25,7 @@ impl Watcher {
 #[tauri::command]
 pub fn watch(
   path: String,
-  window: tauri::Window,
+  window: tauri::WebviewWindow,
   watcher: tauri::State<'_, Watcher>,
 ) {
   watcher

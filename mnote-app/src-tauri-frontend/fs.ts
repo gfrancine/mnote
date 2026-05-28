@@ -6,10 +6,9 @@ import {
   FsReadDirOptions,
   FsWatcherEvents,
 } from "mnote-core";
-import { convertFileSrc, invoke } from "@tauri-apps/api/tauri";
+import { convertFileSrc, invoke } from "@tauri-apps/api/core";
 import { Event as TauriEvent, listen } from "@tauri-apps/api/event";
-import * as dialog from "@tauri-apps/api/dialog";
-import { Emitter } from "mnote-util/emitter";
+import { open as dialogOpen, save as dialogSave } from "@tauri-apps/plugin-dialog";
 import * as pathLib from "@tauri-apps/api/path";
 import { posix, win32 } from "mnote-deps/path-browser";
 
@@ -190,7 +189,7 @@ export class FS implements FsInteropModule {
     startingDirectory?: string;
     startingFileName?: string;
   }): Promise<string | void> {
-    const results: string[] | string | null = await dialog.open({
+    const result = await dialogOpen({
       filters: opts.filters,
       directory: opts.isDirectory,
       defaultPath: this.getDefaultPath(
@@ -199,9 +198,8 @@ export class FS implements FsInteropModule {
       ),
     });
 
-    if (!results) return;
-    if (results instanceof Array) return results[0];
-    return results;
+    if (!result) return;
+    return result;
   }
 
   async dialogSave(opts: {
@@ -209,7 +207,7 @@ export class FS implements FsInteropModule {
     startingDirectory?: string;
     startingFileName?: string;
   }): Promise<string | void> {
-    const results: string | null = await dialog.save({
+    const result = await dialogSave({
       filters: opts.filters,
       defaultPath: this.getDefaultPath(
         opts.startingDirectory,
@@ -217,8 +215,8 @@ export class FS implements FsInteropModule {
       ),
     });
 
-    if (!results) return;
-    return results;
+    if (!result) return;
+    return result;
   }
 
   async getDataDir(): Promise<string> {

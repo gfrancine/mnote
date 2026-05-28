@@ -1,7 +1,7 @@
 import { Mnote } from "mnote-core";
 import { FS } from "./fs";
 import { System } from "./system";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import "../styles.scss";
 
 import { PlaintextExtension } from "mnote-extensions/plaintext";

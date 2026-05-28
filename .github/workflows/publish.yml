@@ -10,17 +10,15 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: setup node
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
-        node-version: 16
+        node-version: 20
 
     - name: install Rust stable
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
+      uses: dtolnay/rust-toolchain@stable
 
     # - name: install webkit2gtk (ubuntu only)
     #   if: matrix.platform == 'ubuntu-latest'
@@ -29,17 +27,16 @@ jobs:
     #     sudo apt-get install -y webkit2gtk-4.0
 
     - name: install dependencies
-      run: npm i -g npm@8 && npm --version && npm i --force
+      run: npm i --force
 
     - uses: tauri-apps/tauri-action@v0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tagName: mnote-debug-__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+        tagName: mnote-debug-__VERSION__
         releaseName: "[DEBUG] Mnote __VERSION__"
-        body: "See the assets to download this version and install."
-        draft: true
+        releaseBody: "See the assets to download this version and install."
+        releaseDraft: true
         prerelease: false
         projectPath: "./mnote-app"
-        npmScript: "action-publish"
-        includeDebug: true
+        args: "--debug"
